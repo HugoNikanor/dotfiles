@@ -1,0 +1,14 @@
+#general
+bin/
+*~
+*.swp
+*.zip
+*.tar.gz
+
+#c++
+*.exe
+*.out
+
+#java
+*.class
+*.jar
