@@ -10,3 +10,6 @@
 :set background=light
 
 :set laststatus=2
+
+"if filetype == html | php 
+"then indentation = 2
