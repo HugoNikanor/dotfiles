@@ -4,6 +4,7 @@ bin/
 *.swp
 *.zip
 *.tar.gz
+*.log
 
 #c++
 *.exe
@@ -12,3 +13,9 @@ bin/
 #java
 *.class
 *.jar
+
+#LaTeX
+*.fdb_latexmk
+*.aux
+*.fls
+*.pdf
