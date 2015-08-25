@@ -18,4 +18,5 @@ bin/
 *.fdb_latexmk
 *.aux
 *.fls
+*.dvi
 *.pdf
