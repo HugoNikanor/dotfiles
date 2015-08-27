@@ -11,5 +11,8 @@
 
 :set laststatus=2
 
+" Highlight all mactching words during search
+:set hlsearch
+
 "if filetype == html | php 
 "then indentation = 2
