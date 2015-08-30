@@ -12,7 +12,10 @@
 :set laststatus=2
 
 " Highlight all mactching words during search
-:set hlsearch
+":set hlsearch
+
+" ATM mainly here for eclim
+filetype plugin on
 
 "if filetype == html | php 
 "then indentation = 2
