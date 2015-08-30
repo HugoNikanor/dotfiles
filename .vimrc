@@ -1,3 +1,8 @@
+scriptencoding utf-8
+set encoding=utf-8
+
+:set nocompatible
+
 ":set autoindent
 :set smartindent
 :set mouse=nicr
@@ -6,8 +11,14 @@
 :set tabstop=4
 :set shiftwidth=4
 
-:color torte
-:set background=light
+" Color marking when passing line 80
+	:call matchadd('ColorColumn', '\%81v', 100)
+
+" Highlighting
+	:colorscheme torte
+	:set background=light
+	:highlight ColorColumn ctermbg=5
+
 
 :set vb
 
@@ -25,7 +36,7 @@
 " Ignore case while searching
 :set ic
 
-" Tab shows options
+" Tab shows options, <ctrl-d> is also here
 :set wildmenu
 
 " Mainly here for eclim
@@ -36,9 +47,41 @@ filetype plugin on
 :set splitright
 
 " ctrl-letter instead of ctrl-w + letter
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+	nnoremap <C-J> <C-W><C-J>
+	nnoremap <C-K> <C-W><C-K>
+	nnoremap <C-L> <C-W><C-L>
+	nnoremap <C-H> <C-W><C-H>
 
-"if filetype == html | php 
+
+""""""""""""""""""""""""""""""""""""""
+" Better highlighting when searching "
+""""""""""""""""""""""""""""""""""""""
+
+	" Press space to remove search highlight
+	:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+
+	:hi Search ctermfg=1 ctermbg=3
+	
+	" Function supposed to make currently marked search term blink
+	" But I couldn't get it to work.
+	"
+	"function! HLNext (blinktime)
+	"	let [bufnum, lnum, col, off] = getpos('.')
+	"	let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+	"	let target_pat = '\c\%#\%('.@/.'\)'
+	"	let ring = matchadd('WhiteOnRed', target_pat, 101)
+	"	redraw
+	"	exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
+	"	call matchdelete(ring)
+	"	redraw
+	"endfunction
+
+	":call HLNext (10)
+
+	:set incsearch
+	:set hlsearch
+"""""""""""""""""""""""""""""""""""""""
+
+" :set list " To show the whitespace characters
+	exec "set listchars=tab:\u21e5\u00a0,eol:\u00b6,nbsp:\u2423,trail:~"
+
