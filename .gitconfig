@@ -1,6 +1,0 @@
-[user]
-	name = Hugo
-	email = hugo.hornquist@gmail.com
-[core]
-	excludesfile = /home/hugo/.gitignore_global
-	editor = vim
