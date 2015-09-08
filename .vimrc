@@ -5,11 +5,24 @@ set encoding=utf-8
 
 ":set autoindent
 :set smartindent
-:set mouse=nicr
+":set mouse=nicr
 :set number
 
 :set tabstop=4
 :set shiftwidth=4
+
+"""""""""""""""""""""""""""""
+" Sets the tabwith to 2 for html files
+	autocmd BufNewFile,BufRead *.html set tabstop=2
+	autocmd BufNewFile,BufRead *.html set shiftwidth=2
+
+	autocmd BufNewFile,BufRead *.htm  set tabstop=2
+	autocmd BufNewFile,BufRead *.htm  set shiftwidth=2
+
+	autocmd BufNewFile,BufRead *.php  set tabstop=2
+	autocmd BufNewFile,BufRead *.php  set shiftwidth=2
+
+
 
 " Color marking when passing line 80
 	:call matchadd('ColorColumn', '\%81v', 100)
