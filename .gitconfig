@@ -1,5 +1,5 @@
 [core]
-	excludesfile = /home/hugo/.gitfiles/dotFiles/.gitignore_global
+	excludesfile = /home/hugo/.gitfiles/dotfiles/.gitignore_global
 	editor = vim
 [user]
 	email = hugo.hornquist@gmail.com
