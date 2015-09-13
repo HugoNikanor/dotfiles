@@ -5,7 +5,7 @@ set encoding=utf-8
 
 ":set autoindent
 :set smartindent
-":set mouse=nicr
+:set mouse=a
 :set number
 
 :set tabstop=4
@@ -22,6 +22,8 @@ set encoding=utf-8
 	autocmd BufNewFile,BufRead *.php  set tabstop=2
 	autocmd BufNewFile,BufRead *.php  set shiftwidth=2
 
+	autocmd BufNewFile,BufRead *.css  set tabstop=4
+	autocmd BufNewFile,BufRead *.css  set shiftwidth=4
 
 
 " Color marking when passing line 80

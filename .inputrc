@@ -1,0 +1,4 @@
+# shows if the terminal is in 'normal' or 'insert' mode (vi mode)
+set show-mode-in-prompt on
+
+set editing-mode vi

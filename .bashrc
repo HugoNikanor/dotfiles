@@ -106,3 +106,15 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+###################################################
+# Start of my changes
+###################################################
+
+# Sets vim to some sort of default editor
+export VISUAL=/usr/bin/vim
+export EDITOR=/usr/bin/vim
+
+# Sets the terminal to "vi" mode
+#set -o vi
+
