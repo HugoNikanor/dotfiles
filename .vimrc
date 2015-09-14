@@ -1,7 +1,26 @@
 scriptencoding utf-8
 set encoding=utf-8
 
-:set nocompatible
+
+set nocompatible
+
+"""""""""""""""""""""""""""""""
+" Vundle / Plugin manager
+" https://github.com/VundleVim/Vundle.vim
+"""""""""""""""""""""""""""""""
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+	Plugin 'VundleVim/Vundle.vim'
+	
+	" Tmux & vim integration, somehow
+	Plugin 'christoomey/vim-tmux-navigator' 
+
+call vundle#end()
+filetype plugin indent on
+
+
 
 ":set autoindent
 :set smartindent

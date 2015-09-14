@@ -118,3 +118,4 @@ export EDITOR=/usr/bin/vim
 # Sets the terminal to "vi" mode
 #set -o vi
 
+tmux
