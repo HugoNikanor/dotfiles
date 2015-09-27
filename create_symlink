@@ -1,0 +1,18 @@
+ln -s ~/.gitfiles/dotfiles/.bashrc           ~/.bashrc
+ln -s ~/.gitfiles/dotfiles/.git              ~/.git
+ln -s ~/.gitfiles/dotfiles/.gitconfig        ~/.gitconfig
+ln -s ~/.gitfiles/dotfiles/.gitignore_global ~/.gitignore_global
+ln -s ~/.gitfiles/dotfiles/.inputrc          ~/.inputrc
+ln -s ~/.gitfiles/dotfiles/.lynxrc           ~/.lynxrc
+ln -s ~/.gitfiles/dotfiles/.tmux.conf        ~/.tmux.conf
+ln -s ~/.gitfiles/dotfiles/.vimrc            ~/.vimrc
+
+
+
+
+
+
+
+
+
+
