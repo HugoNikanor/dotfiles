@@ -116,7 +116,10 @@ export VISUAL=/usr/bin/vim
 export EDITOR=/usr/bin/vim
 
 # Sets the terminal to "vi" mode
+# This is instead done in .inputrc
 #set -o vi
+
+PS1='\u@\h [\w]\$ '
 
 eval $(thefuck --alias)
 

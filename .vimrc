@@ -49,9 +49,14 @@ filetype plugin indent on
 	:call matchadd('ColorColumn', '\%81v', 100)
 
 " Highlighting
+	:syntax on
 	:colorscheme torte
 	:set background=light
-	:highlight ColorColumn ctermbg=5
+	:hi ColorColumn ctermbg=5
+
+	" rgb=38,38,38
+	:hi normal ctermbg=235
+	:hi LineNr ctermfg=yellow 
 
 
 :set vb
