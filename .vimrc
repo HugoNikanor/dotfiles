@@ -17,6 +17,9 @@ call vundle#begin()
 	" Tmux & vim integration, somehow
 	Plugin 'christoomey/vim-tmux-navigator' 
 
+	" Aligning of text
+	Plugin 'godlygeek/tabular'
+
 call vundle#end()
 filetype plugin indent on
 
@@ -79,17 +82,23 @@ filetype plugin indent on
 :set wildmenu
 
 " Mainly here for eclim
-filetype plugin on
+" filetype plugin on
 
 " New splits in better places
 :set splitbelow
 :set splitright
 
 " ctrl-letter instead of ctrl-w + letter
+" Used when switching between splits
 	nnoremap <C-J> <C-W><C-J>
 	nnoremap <C-K> <C-W><C-K>
 	nnoremap <C-L> <C-W><C-L>
 	nnoremap <C-H> <C-W><C-H>
+
+""" Folding
+set foldenable
+set foldmethod=marker
+set foldlevelstart=0
 
 
 """"""""""""""""""""""""""""""""""""""
