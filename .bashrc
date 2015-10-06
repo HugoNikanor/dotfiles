@@ -119,8 +119,13 @@ export EDITOR=/usr/bin/vim
 # This is instead done in .inputrc
 #set -o vi
 
-PS1='\u@\h [\w]\$ '
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+#PS1="\u@\h ${bold}[${normal}\w${bold}]${normal}\$ "
+PS1="\u@\h [${bold}\w${normal}]\$ "
 
 eval $(thefuck --alias)
 
-tmux
+
+#tmux

@@ -49,7 +49,7 @@ set shiftwidth=4
 " Color marking when passing line 80
 	call matchadd('ColorColumn', '\%81v', 100)
 
-" Highlighting
+"" Highlighting
 	syntax on
 	colorscheme torte
 	set background=light
@@ -77,6 +77,8 @@ set shiftwidth=4
 	""" Leader maps
 	nnoremap <silent> <leader>o :nohlsearch <cr>
 	nnoremap <leader>h :vertical help 
+	" Used by eclim to fix everything
+	nnoremap <leader>j :JavaCorrect <cr>
 
 	""" other
 	nnoremap <cr> o<esc>
@@ -90,27 +92,30 @@ set mouse=a
 
 set number
 
+" makes wrapped lines have the same indention as the original line
+set breakindent
+
 " use a visual cue instead of a sound cue for messages
-:set visualbell
+set visualbell
 
 " Display filename on the next to last line
-:set laststatus=2
+set laststatus=2
 
 " Show cursor possition in info bar
-:set ruler
+set ruler
 
 " Show button presses in lower right portion of the screen
-:set showcmd
+set showcmd
 
 " Ignore case while searching
-:set ignorecase
+set ignorecase
 
 " Tab shows options, <ctrl-d> is used to show all possabilities
-:set wildmenu
+set wildmenu
 
 " New splits in better places
-:set splitbelow
-:set splitright
+set splitbelow
+set splitright
 
 """ Folding
 set foldenable
@@ -118,8 +123,8 @@ set foldmethod=marker
 set foldlevelstart=0
 
 """ Searching
-:set incsearch
-:set hlsearch
+set incsearch
+set hlsearch
 
 " Whitespace highlighting
 " ':set list' to enable
