@@ -119,7 +119,7 @@ export EDITOR=/usr/bin/vim
 # This is instead done in .inputrc
 #set -o vi
 
-PS1='\u@\h [\w]\$ '
+#PS1='\u@\h [\w]\$ '
 
 eval $(thefuck --alias)
 

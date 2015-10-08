@@ -45,7 +45,7 @@ set shiftwidth=4
 
 "}}}
 
-"""" Higlighting {{{
+""zzaza"" Higlighting {{{
 " Color marking when passing line 80
 	call matchadd('ColorColumn', '\%81v', 100)
 
@@ -56,8 +56,11 @@ set shiftwidth=4
 	hi ColorColumn ctermbg=5
 
 	" rgb=38,38,38
-	hi normal ctermbg=235
-	hi LineNr ctermfg=yellow 
+	"hi normal ctermbg=235
+	"hi normal ctermbg=black
+	"hi LineNr ctermfg=yellow 
+
+	"hi statement ctermfg=yellow
 
 	hi Search ctermfg=1 ctermbg=3
 
