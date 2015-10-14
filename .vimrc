@@ -56,7 +56,7 @@ set shiftwidth=4
 	hi ColorColumn ctermbg=5
 
 	" rgb=38,38,38
-	hi normal ctermbg=235
+	"hi normal ctermbg=235
 	hi LineNr ctermfg=yellow 
 
 	hi Search ctermfg=1 ctermbg=3
@@ -77,6 +77,9 @@ set shiftwidth=4
 	""" Leader maps
 	nnoremap <silent> <leader>o :nohlsearch <cr>
 	nnoremap <leader>h :vertical help 
+
+	nnoremap <leader>j :JavaCorrect<cr>
+	nnoremap <f4> :Java<cr>
 
 	""" other
 	nnoremap <cr> o<esc>
