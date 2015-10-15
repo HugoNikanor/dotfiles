@@ -21,6 +21,9 @@ call vundle#begin()
 	" Aligning of text
 	Plugin 'godlygeek/tabular'
 
+	" Draw lines and boxes
+	Plugin 'hrj/vim-DrawIt'
+
 call vundle#end()
 filetype plugin indent on
 
@@ -58,6 +61,7 @@ set shiftwidth=4
 	" rgb=38,38,38
 	hi normal ctermbg=235
 	hi LineNr ctermfg=yellow 
+	hi spellbad ctermbg=red
 
 	hi Search ctermfg=1 ctermbg=3
 
@@ -79,6 +83,8 @@ set shiftwidth=4
 	nnoremap <leader>h :vertical help 
 	" Used by eclim to fix everything
 	nnoremap <leader>j :JavaCorrect <cr>
+	
+	nnoremap <leader>t iTODO
 
 	""" other
 	nnoremap <cr> o<esc>

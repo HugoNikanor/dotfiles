@@ -122,10 +122,8 @@ export EDITOR=/usr/bin/vim
 bold=$(tput bold)
 normal=$(tput sgr0)
 
-#PS1="\u@\h ${bold}[${normal}\w${bold}]${normal}\$ "
-PS1="\u@\h [${bold}\w${normal}]\$ "
+PS1="\u@\h [\[${bold}\]\w\[${normal}\]]\n\$ "
 
 eval $(thefuck --alias)
-
 
 #tmux
