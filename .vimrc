@@ -45,7 +45,7 @@ set shiftwidth=4
 
 "}}}
 
-""zzaza"" Higlighting {{{
+"""" Higlighting {{{
 " Color marking when passing line 80
 	call matchadd('ColorColumn', '\%81v', 100)
 
@@ -61,6 +61,7 @@ set shiftwidth=4
 	"hi LineNr ctermfg=yellow 
 
 	"hi statement ctermfg=yellow
+	hi LineNr ctermfg=yellow 
 
 	hi Search ctermfg=1 ctermbg=3
 
@@ -83,6 +84,9 @@ set shiftwidth=4
 	" Used by eclim to fix everything
 	nnoremap <leader>j :JavaCorrect <cr>
 
+	nnoremap <leader>j :JavaCorrect<cr>
+	nnoremap <f4> :Java<cr>
+
 	""" other
 	nnoremap <cr> o<esc>
 
@@ -96,7 +100,7 @@ set mouse=a
 set number
 
 " makes wrapped lines have the same indention as the original line
-set breakindent
+"set breakindent
 
 " use a visual cue instead of a sound cue for messages
 set visualbell
