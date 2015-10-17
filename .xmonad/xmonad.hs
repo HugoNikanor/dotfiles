@@ -113,9 +113,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 main = xmonad defaults
 
 defaults = defaultConfig
-    { terminal = myTerminal
+    { terminal          = myTerminal
     , focusFollowsMouse = myFocusFollowsMouse
-    , modMask  = myModMask
-    , keys = myKeys
+    , modMask           = myModMask
+    , keys              = myKeys
     }
 
