@@ -7,3 +7,5 @@ ln -s ~/.gitfiles/dotfiles/.tmux.conf        ~/.tmux.conf
 ln -s ~/.gitfiles/dotfiles/.vimrc            ~/.vimrc
 ln -s ~/.gitfiles/dotfiles/.bash_aliases     ~/.bash_aliases
 ln -s ~/.gitfiles/dotfiles/.bash_profile     ~/.bash_profile
+ln -s ~/.gitfiles/dotfiles/.xinitrc          ~/.xinitrc
+ln -s ~/.gitfiles/dotfiles/.xmonad/          ~/.xmonad
