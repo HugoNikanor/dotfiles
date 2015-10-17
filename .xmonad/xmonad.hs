@@ -2,6 +2,8 @@ import XMonad
 import Data.Monoid
 import System.Exit
 
+import XMonad.Actions.PhysicalScreens
+
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
@@ -104,10 +106,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     ]
     ++
 
-    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_a, xK_o, xK_e, xK_u] [0..]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
-
+    [((modm .|. mask, key), f sc)
+       | (key, sc) <- zip [xK_a, xK_o, xK_e, xK_u] [0..]
+       , (f, mask) <- [(viewScreen, 0), (sendToScreen, shiftMask)]]
 
 main = xmonad defaults
 
