@@ -3,6 +3,7 @@ import Data.Monoid
 import System.Exit
 
 import XMonad.Actions.PhysicalScreens
+import XMonad.Hooks.InsertPosition
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -108,6 +109,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
        , (f, mask) <- [(viewScreen, 0), (sendToScreen, shiftMask)]]
 -- End of myKeys
 
+myManageHook :: ManageHook
+myManageHook = composeAll
+                [ className =? "MPlayer" --> doFloat
+                , className =? "Gimp"    --> doFloat ]
 
 main = xmonad defaults
 
@@ -117,5 +122,6 @@ defaults = defaultConfig
     , modMask           = myModMask
     , keys              = myKeys
     , clickJustFocuses  = myClickJustFocuses
+    , manageHook        = insertPosition Below Newer <+> myManageHook
     }
 
