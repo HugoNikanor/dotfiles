@@ -18,7 +18,6 @@ myClickJustFocuses = False
 
 myModMask = mod4Mask
 
-
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
@@ -107,6 +106,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((modm .|. mask, key), f sc)
        | (key, sc) <- zip [xK_a, xK_o, xK_e, xK_u] [0..]
        , (f, mask) <- [(viewScreen, 0), (sendToScreen, shiftMask)]]
+-- End of myKeys
+
 
 main = xmonad defaults
 
