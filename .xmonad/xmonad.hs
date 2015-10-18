@@ -13,6 +13,9 @@ myTerminal = "gnome-terminal"
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
+myClickJustFocuses :: Bool
+myClickJustFocuses = False
+
 myModMask = mod4Mask
 
 
@@ -112,5 +115,6 @@ defaults = defaultConfig
     , focusFollowsMouse = myFocusFollowsMouse
     , modMask           = myModMask
     , keys              = myKeys
+    , clickJustFocuses  = myClickJustFocuses
     }
 
