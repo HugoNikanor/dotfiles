@@ -4,6 +4,10 @@ import System.Exit
 
 import XMonad.Actions.PhysicalScreens
 import XMonad.Hooks.InsertPosition
+import XMonad.Hooks.ManageDocks
+
+import XMonad.Hooks.DynamicLog --show workspace?
+import XMonad.Util.Run --for spawnPipe & hPutStrLn
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -122,6 +126,8 @@ defaults = defaultConfig
     , modMask           = myModMask
     , keys              = myKeys
     , clickJustFocuses  = myClickJustFocuses
-    , manageHook        = insertPosition Below Newer <+> myManageHook
+    -- , manageHook        = insertPosition Below Newer <+> myManageHook
+    , manageHook        = manageDocks <+> manageHook defaultConfig <+> insertPosition Below Newer
+    , layoutHook        = avoidStruts $ layoutHook defaultConfig
     }
 
