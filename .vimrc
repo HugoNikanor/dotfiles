@@ -46,6 +46,9 @@ set shiftwidth=4
 	autocmd BufNewFile,BufRead *.css  set tabstop=4
 	autocmd BufNewFile,BufRead *.css  set shiftwidth=4
 
+" Soft tabs in haskell
+	autocmd BufNewFile,BufRead *.hs set expandtab
+
 "}}}
 
 """" Higlighting {{{
