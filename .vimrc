@@ -91,6 +91,7 @@ set shiftwidth=4
 
 	""" other
 	nnoremap <cr> o<esc>
+	nnoremap <leader>d 0D
 
 "}}}	
 
