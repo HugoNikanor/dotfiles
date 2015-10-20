@@ -128,6 +128,11 @@ fi
 
 # Other stuff
 
+if [ -d "$HOME/bin" ]; then
+	PATH="$HOME/bin:$PATH"
+fi
+
+
 if [ $(hostname) == "HPLinux" ]; then
 	if [[ ! $TERM =~ screen ]]; then
 		exec tmux
