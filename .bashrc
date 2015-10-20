@@ -132,6 +132,8 @@ if [ -d "$HOME/bin" ]; then
 	PATH="$HOME/bin:$PATH"
 fi
 
+alias fgit="git log --all --oneline --decorate --graph"
+
 
 if [ $(hostname) == "HPLinux" ]; then
 	if [[ ! $TERM =~ screen ]]; then
