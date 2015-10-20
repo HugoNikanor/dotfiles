@@ -89,9 +89,11 @@ set shiftwidth=4
 	
 	nnoremap <leader>t iTODO
 
+	nnoremap <leader>d 0D
+	nnoremap <leader>a :set foldlevel=0 <cr>
+
 	""" other
 	nnoremap <cr> o<esc>
-	nnoremap <leader>d 0D
 
 "}}}	
 
