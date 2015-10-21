@@ -93,13 +93,33 @@ set shiftwidth=4
 	
 	nnoremap <leader>t iTODO
 
-	nnoremap <leader>j :JavaCorrect<cr>
-	nnoremap <f4> :Java<cr>
+	nnoremap <leader>d 0D
+	nnoremap <leader>a :set foldlevel=0 <cr>
 
 	""" other
 	nnoremap <cr> o<esc>
+	" uses what looks like a line, instead of the actual lines
+	nnoremap j gj
+	nnoremap k gk
 
 "}}}	
+
+""" Folding {{{
+	set foldmethod=marker
+	set foldnestmax=20
+	set foldlevelstart=0
+	set foldlevel=0
+
+	autocmd Filetype java call SetJavaIndent()
+	function SetJavaIndent()
+		set foldmethod=indent
+		set foldnestmax=2
+		set foldlevelstart=99
+		set foldlevel=99
+	endfunction
+
+	set foldenable
+"}}}
 
 """ Other {{{
 
@@ -133,10 +153,6 @@ set wildmenu
 set splitbelow
 set splitright
 
-""" Folding
-set foldenable
-set foldmethod=marker
-set foldlevelstart=0
 
 """ Searching
 set incsearch

@@ -3,6 +3,11 @@ import Data.Monoid
 import System.Exit
 
 import XMonad.Actions.PhysicalScreens
+import XMonad.Hooks.InsertPosition
+import XMonad.Hooks.ManageDocks
+
+import XMonad.Hooks.DynamicLog --show workspace?
+import XMonad.Util.Run --for spawnPipe & hPutStrLn
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -13,8 +18,10 @@ myTerminal = "gnome-terminal"
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
-myModMask = mod4Mask
+myClickJustFocuses :: Bool
+myClickJustFocuses = False
 
+myModMask = mod4Mask
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
@@ -104,6 +111,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((modm .|. mask, key), f sc)
        | (key, sc) <- zip [xK_a, xK_o, xK_e, xK_u] [0..]
        , (f, mask) <- [(viewScreen, 0), (sendToScreen, shiftMask)]]
+-- End of myKeys
+
+myManageHook :: ManageHook
+myManageHook = composeAll
+                [ className =? "MPlayer" --> doFloat
+                , className =? "Gimp"    --> doFloat ]
 
 main = xmonad defaults
 
@@ -112,5 +125,9 @@ defaults = defaultConfig
     , focusFollowsMouse = myFocusFollowsMouse
     , modMask           = myModMask
     , keys              = myKeys
+    , clickJustFocuses  = myClickJustFocuses
+    -- , manageHook        = insertPosition Below Newer <+> myManageHook
+    , manageHook        = manageDocks <+> manageHook defaultConfig <+> insertPosition Below Newer
+    , layoutHook        = avoidStruts $ layoutHook defaultConfig
     }
 
