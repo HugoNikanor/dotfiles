@@ -100,7 +100,7 @@ export VISUAL=/usr/bin/vim
 export EDITOR=/usr/bin/vim
 
 ### Sets the prompt string
-if [ $(hostname) == "HPLinux" ]; then
+if [ $(hostname) == "HPlinux" ]; then
 	if [ "$color_prompt" = yes ]; then
 		PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 	else
@@ -133,7 +133,7 @@ fi
 alias fgit="git log --all --oneline --decorate --graph"
 
 
-if [ $(hostname) == "HPLinux" ]; then
+if [ $(hostname) == "HPlinux" ]; then
 	if [[ ! $TERM =~ screen ]]; then
 		exec tmux
 	fi
