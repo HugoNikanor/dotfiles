@@ -6,7 +6,7 @@ set nocompatible
 
 "}}}
 
-"""" Vundle / Plugin manager {{{
+" Vundle / Plugin manager {{{
 " https://github.com/VundleVim/Vundle.vim
 
 filetype off
@@ -29,7 +29,7 @@ filetype plugin indent on
 
 "}}}
 
-"""" Tabs {{{
+" Tabs {{{
 set tabstop=4
 set shiftwidth=4
 
@@ -51,7 +51,7 @@ set shiftwidth=4
 
 "}}}
 
-"""" Higlighting {{{
+" Higlighting {{{
 " Color marking when passing line 80
 	call matchadd('ColorColumn', '\%81v', 100)
 
@@ -70,7 +70,7 @@ set shiftwidth=4
 
 "}}}
 
-"""" Key remaps {{{
+" Key remaps {{{
 	""" maps space to <leader>, and makes it show up with 'showcmd'
 	nnoremap <leader> \
 	nmap <space> \
@@ -90,7 +90,7 @@ set shiftwidth=4
 	nnoremap <leader>t iTODO
 
 	nnoremap <leader>d 0D
-	nnoremap <leader>a :set foldlevel=0 <cr>
+	nnoremap <silent> <leader>a :set foldlevel=0 <cr>
 
 	""" other
 	nnoremap <cr> o<esc>
@@ -100,7 +100,7 @@ set shiftwidth=4
 
 "}}}	
 
-""" Folding {{{
+" Folding {{{
 	set foldmethod=marker
 	set foldnestmax=20
 	set foldlevelstart=0
@@ -117,7 +117,7 @@ set shiftwidth=4
 	set foldenable
 "}}}
 
-""" Other {{{
+" Other {{{
 
 set smartindent
 set mouse=a
