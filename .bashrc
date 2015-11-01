@@ -131,6 +131,8 @@ if [ -d "$HOME/bin" ]; then
 fi
 
 alias fgit="git log --all --oneline --decorate --graph"
+alias open="xdg-open"
+alias arnoldc="java -jar ~/other/programs/arnoldC/ArnoldC.jar -declaim"
 
 
 if [ $(hostname) == "HPlinux" ]; then

@@ -129,7 +129,7 @@ set mouse=a
 set number
 
 " makes wrapped lines have the same indention as the original line
-"set breakindent
+set breakindent
 
 " use a visual cue instead of a sound cue for messages
 set visualbell
@@ -161,5 +161,7 @@ set hlsearch
 " Whitespace highlighting
 " ':set list' to enable
 exec "set listchars=tab:>\u2015,eol:\u00b6,nbsp:\u2423,trail:~"
+
+com! FormatJSON %!python -m json.tool
 
 "}}}

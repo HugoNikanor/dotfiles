@@ -13,6 +13,13 @@ bin/
 #java
 *.class
 *.jar
+!jars/*jar
+
+#Eclim / Eclipse
+workbench.xmi
+.classpath
+.project
+.settings/
 
 #LaTeX
 *.fdb_latexmk
