@@ -4,3 +4,5 @@
 [user]
 	email = hugo.hornquist@gmail.com
 	name = Hugo
+[push]
+	default = current

@@ -132,7 +132,9 @@ fi
 
 alias fgit="git log --all --oneline --decorate --graph"
 alias open="xdg-open"
-alias arnoldc="java -jar ~/other/programs/arnoldC/ArnoldC.jar -declaim"
+alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
+alias pm-suspend="sudo pm-suspend"
+alias pm-hibernate="sudo pm-hibernate"
 
 
 if [ $(hostname) == "HPlinux" ]; then

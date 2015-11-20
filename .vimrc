@@ -158,10 +158,14 @@ set splitright
 set incsearch
 set hlsearch
 
+set completeopt=longest,menuone
+
 " Whitespace highlighting
 " ':set list' to enable
 exec "set listchars=tab:>\u2015,eol:\u00b6,nbsp:\u2423,trail:~"
 
 com! FormatJSON %!python -m json.tool
+
+
 
 "}}}
