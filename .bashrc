@@ -136,6 +136,14 @@ alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
 alias pm-suspend="sudo pm-suspend"
 alias pm-hibernate="sudo pm-hibernate"
 
+sudo() {
+	if [[ $@ == "mount /dev/sdb2 /mnt/winStorage" ]]; then
+		command sudo mount -t ntfs -o umask=000 /dev/sdb2 /mnt/winStorage
+	else
+		command sudo "$@"
+	fi
+}
+
 
 if [ $(hostname) == "HPlinux" ]; then
 	if [[ ! $TERM =~ screen ]]; then

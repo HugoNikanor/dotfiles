@@ -101,6 +101,8 @@ set shiftwidth=4
 	" uses what looks like a line, instead of the actual lines
 	nnoremap j gj
 	nnoremap k gk
+	nnoremap gj j
+	nnoremap gk k
 
 "}}}	
 

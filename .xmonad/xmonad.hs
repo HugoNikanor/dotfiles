@@ -94,6 +94,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+
+    , ((modm              , xK_s     ), spawn "sudo pm-suspend")
+
     ]
     ++
 
