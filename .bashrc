@@ -135,6 +135,7 @@ alias open="xdg-open"
 alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
 alias pm-suspend="sudo pm-suspend"
 alias pm-hibernate="sudo pm-hibernate"
+alias ]]="setxkbmap se custom compose:ralt"
 
 sudo() {
 	if [[ $@ == "mount /dev/sdb2 /mnt/winStorage" ]]; then
