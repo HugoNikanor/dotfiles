@@ -99,6 +99,41 @@ fi
 export VISUAL=/usr/bin/vim
 export EDITOR=/usr/bin/vim
 
+function __prompt_command() {
+	local EXIT="$?"
+	PS1="\u@\h "
+
+	bold=$(tput bold)
+	normal=$(tput sgr0)
+
+	local RCol='\[\e[0m\]'
+
+	local Red='\[\e[0;31m\]'
+	local Gre='\[\e[0;32m\]'
+	local BYel='\[\e[1;33m\]'
+	local BBlu='\[\e[1;34m\]'
+	local Pur='\[\e[0;35m\]'
+
+	# Make the brackets '[]' around the path green if the 
+	#last command was a success, otherwise, make them red
+	if [ $EXIT != 0 ]; then
+		PS1+="${Red}[${RCol}"
+	else
+		PS1+="${Gre}[${RCol}"
+	fi
+
+	PS1+="\[${bold}\]\w\[${bold}\]"
+
+	if [ $EXIT != 0 ]; then
+		PS1+="${Red}]${RCol}"
+	else
+		PS1+="${Gre}]${RCol}"
+	fi
+
+
+	PS1+="\n\$ "
+}
+
 ### Sets the prompt string
 if [ $(hostname) == "HPlinux" ]; then
 	if [ "$color_prompt" = yes ]; then
@@ -121,7 +156,8 @@ elif [ $(hostname) == "arch2012" ]; then
 	bold=$(tput bold)
 	normal=$(tput sgr0)
 
-	PS1="\u@\h [\[${bold}\]\w\[${normal}\]]\n\$ "
+	#PS1="\u@\h [\[${bold}\]\w\[${normal}\]]\n\$ "
+	export PROMPT_COMMAND=__prompt_command
 fi
 
 # Other stuff
