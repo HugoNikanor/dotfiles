@@ -11,7 +11,7 @@ alias uu="cd ../.."
 alias uuu="cd ../../.."
 
 alias ed="ex"
-alias echo="echo -e"
+alias time="echo \"you want 'date'\"; time"
 
 
 # addes lesspipe to the less command
@@ -62,4 +62,13 @@ extract () {
 	else
 		echo "'$1' is not a valid file!"
 	fi
+}
+
+# Note that this only uploads without an account
+# TODO check how to upload to an account
+imgur() {
+    for i in "$@"; do
+        curl -# -F "image"=@"$i" -F "key"="4907fcd89e761c6b07eeb8292d5a9b2a" imgur.com/api/upload.xml|\
+        grep -Eo '<[a-z_]+>http[^<]+'|sed 's/^<.\|_./\U&/g;s/_/ /;s/<\(.*\)>/\x1B[0;34m\1:\x1B[0m /'
+    done
 }
