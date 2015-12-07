@@ -143,6 +143,8 @@ sudo() {
 		command sudo "$@"
 	fi
 }
+alias arnoldc="java -jar ~/other/programs/arnoldC/ArnoldC.jar -declaim"
+alias minecraft="java -jar ~/programs/minecraft/Minecraft.jar"
 
 
 if [ $(hostname) == "HPlinux" ]; then

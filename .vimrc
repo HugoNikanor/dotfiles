@@ -131,7 +131,7 @@ set mouse=a
 set number
 
 " makes wrapped lines have the same indention as the original line
-set breakindent
+" set breakindent
 
 " use a visual cue instead of a sound cue for messages
 set visualbell
