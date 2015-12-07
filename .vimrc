@@ -24,6 +24,8 @@ call vundle#begin()
 	" Draw lines and boxes
 	Plugin 'hrj/vim-DrawIt'
 
+	Plugin 'lervag/vimtex'
+
 call vundle#end()
 filetype plugin indent on
 

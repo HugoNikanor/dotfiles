@@ -6,3 +6,5 @@
 	name = Hugo
 [push]
 	default = current
+[alias]
+	gud = diff HEAD

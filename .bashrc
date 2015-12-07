@@ -5,14 +5,45 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
+
+
+# Normal Colors
+Black='\e[0;30m'        # Black
+Red='\e[0;31m'          # Red
+Green='\e[0;32m'        # Green
+Yellow='\e[0;33m'       # Yellow
+Blue='\e[0;34m'         # Blue
+Purple='\e[0;35m'       # Purple
+Cyan='\e[0;36m'         # Cyan
+White='\e[0;37m'        # White
+
+# Bold
+BBlack='\e[1;30m'       # Black
+BRed='\e[1;31m'         # Red
+BGreen='\e[1;32m'       # Green
+BYellow='\e[1;33m'      # Yellow
+BBlue='\e[1;34m'        # Blue
+BPurple='\e[1;35m'      # Purple
+BCyan='\e[1;36m'        # Cyan
+BWhite='\e[1;37m'       # White
+
+# Background
+On_Black='\e[40m'       # Black
+On_Red='\e[41m'         # Red
+On_Green='\e[42m'       # Green
+On_Yellow='\e[43m'      # Yellow
+On_Blue='\e[44m'        # Blue
+On_Purple='\e[45m'      # Purple
+On_Cyan='\e[46m'        # Cyan
+On_White='\e[47m'       # White
+
+Normal="\e[m"               # Color Reset
+
+
+
+# nice bash history settings
 HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
 shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
 
@@ -25,7 +56,12 @@ shopt -s checkwinsize
 #shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+# Relace this with a scrint:
+# if it's a text file then:
+#	less filename
+# if't it's a binary then:
+# 	lesspipe.sh filename | less
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
@@ -66,38 +102,45 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+# enable programmable completion features
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-###################################################
-# Start of my changes
-###################################################
 
 # Sets vim to some sort of default editor
 export VISUAL=/usr/bin/vim
 export EDITOR=/usr/bin/vim
+
+function __prompt_command() {
+	local EXIT="$?"
+	PS1="\u@\h "
+
+
+	# Make the brackets '[]' around the path green if the 
+	#last command was a success, otherwise, make them red
+	if [ $EXIT != 0 ]; then
+		PS1+="${Red}[${Normal}"
+	else
+		PS1+="${Green}[${Normal}"
+	fi
+
+	PS1+="\[${BWhite}\]\w\[${BWhite}\]"
+
+	if [ $EXIT != 0 ]; then
+		PS1+="${Red}]${Normal}"
+	else
+		PS1+="${Green}]${Normal}"
+	fi
+
+
+	PS1+="\n\$ "
+}
 
 ### Sets the prompt string
 if [ $(hostname) == "HPlinux" ]; then
@@ -118,33 +161,14 @@ if [ $(hostname) == "HPlinux" ]; then
 		;;
 	esac
 elif [ $(hostname) == "arch2012" ]; then
-	bold=$(tput bold)
-	normal=$(tput sgr0)
-
-	PS1="\u@\h [\[${bold}\]\w\[${normal}\]]\n\$ "
+	#PS1="\u@\h [\[${bold}\]\w\[${normal}\]]\n\$ "
+	export PROMPT_COMMAND=__prompt_command
 fi
 
-# Other stuff
 
 if [ -d "$HOME/bin" ]; then
 	PATH="$HOME/bin:$PATH"
 fi
-
-alias fgit="git log --all --oneline --decorate --graph"
-alias open="xdg-open"
-alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
-alias pm-suspend="sudo pm-suspend"
-alias pm-hibernate="sudo pm-hibernate"
-
-sudo() {
-	if [[ $@ == "mount /dev/sdb2 /mnt/winStorage" ]]; then
-		command sudo mount -t ntfs -o umask=000 /dev/sdb2 /mnt/winStorage
-	else
-		command sudo "$@"
-	fi
-}
-alias arnoldc="java -jar ~/other/programs/arnoldC/ArnoldC.jar -declaim"
-alias minecraft="java -jar ~/programs/minecraft/Minecraft.jar"
 
 
 if [ $(hostname) == "HPlinux" ]; then
@@ -157,4 +181,8 @@ fi
 #fi
 
 eval $(thefuck --alias)
+
+
+#find ~/tmp/* -type d -ctime +5 -exec /bin/rm -rf {} \;
+#find ~/Trash/* -type d -ctime +5 -exec /bin/rm -rf {} \;
 
