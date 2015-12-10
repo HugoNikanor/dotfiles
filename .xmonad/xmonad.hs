@@ -119,7 +119,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 myManageHook :: ManageHook
 myManageHook = composeAll
                 [ className =? "MPlayer" --> doFloat
-                , className =? "Gimp"    --> doFloat ]
+                , className =? "Gimp"    --> doFloat
+                , className =? "Steam"   --> doFloat ]
 
 main = xmonad defaults
 
