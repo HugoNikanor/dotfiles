@@ -76,6 +76,8 @@ set shiftwidth=4
 
 	autocmd Filetype lisp call SetLispMode()
 	function SetLispMode()
+		" More complete version of the 'colorscheme'
+		" https://gist.github.com/hkmix/41492855c3fcc7a9393b
 		set expandtab
 		set background=dark
 		hi Comment    cterm=NONE ctermfg=08
