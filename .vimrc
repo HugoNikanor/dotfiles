@@ -74,6 +74,23 @@ set shiftwidth=4
 
 	hi Search ctermfg=1 ctermbg=3
 
+	autocmd Filetype lisp call SetLispMode()
+	function SetLispMode()
+		" More complete version of the 'colorscheme'
+		" https://gist.github.com/hkmix/41492855c3fcc7a9393b
+		set expandtab
+		set background=dark
+		hi Comment    cterm=NONE ctermfg=08
+		hi Constant   cterm=NONE ctermfg=White
+		hi Identifier cterm=NONE ctermfg=White
+		hi Function   cterm=NONE ctermfg=White
+		hi Statement  cterm=NONE ctermfg=White
+		hi PreProc    cterm=NONE ctermfg=White
+		hi Type	      cterm=NONE ctermfg=White
+		hi Special    cterm=NONE ctermfg=White
+		hi Delimiter  cterm=NONE ctermfg=White
+	endfunction
+
 "}}}
 
 " Key remaps {{{
@@ -166,7 +183,8 @@ set completeopt=longest,menuone
 
 " Whitespace highlighting
 " ':set list' to enable
-exec "set listchars=tab:>\u2015,eol:\u00b6,nbsp:\u2423,trail:~"
+"exec "set listchars=tab:>\u2015,eol:\u00b6,nbsp:\u2423,trail:~"
+exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
 
 com! FormatJSON %!python -m json.tool
 

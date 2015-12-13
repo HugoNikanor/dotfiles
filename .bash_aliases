@@ -40,7 +40,6 @@ trash() {
 		rm $*
 	fi
 }
-alias rm="trash"
 
 
 extract () {
