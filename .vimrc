@@ -75,10 +75,13 @@ set shiftwidth=4
 	hi Search ctermfg=1 ctermbg=3
 
 	autocmd Filetype lisp call SetLispMode()
+	autocmd Filetype scheme call SetLispMode()
 	function SetLispMode()
 		" More complete version of the 'colorscheme'
 		" https://gist.github.com/hkmix/41492855c3fcc7a9393b
 		set expandtab
+		set tabstop=2
+		set shiftwidth=2
 		set background=dark
 		hi Comment    cterm=NONE ctermfg=08
 		hi Constant   cterm=NONE ctermfg=White
@@ -135,6 +138,14 @@ set shiftwidth=4
 	function SetJavaIndent()
 		set foldmethod=indent
 		set foldnestmax=2
+		set foldlevelstart=99
+		set foldlevel=99
+	endfunction
+
+	autocmd Filetype lua call SetLuaIndent()
+	function SetLuaIndent()
+		set foldmethod=indent
+		set foldnestmax=1
 		set foldlevelstart=99
 		set foldlevel=99
 	endfunction

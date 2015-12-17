@@ -10,6 +10,8 @@ alias u="cd .."
 alias uu="cd ../.."
 alias uuu="cd ../../.."
 
+alias l="ls"
+
 alias ed="ex"
 alias time="echo \"you want 'date'\"; time"
 

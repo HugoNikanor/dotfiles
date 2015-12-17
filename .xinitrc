@@ -56,6 +56,9 @@ xterm -geometry 80x20+494-0 &
 
 # This is probably not the best way to do it
 if [ "$(hostname)" == "arch2012" ] ; then 
+	xset -dpms
+	setterm -blank 0 -powerdown 0
+	xset s off
 	xrdb -merge ~/.Xresources
 fi
 
