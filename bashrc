@@ -5,6 +5,21 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+declare arr names=(
+	"Boole"
+	"Hurd"
+	"McCarthy"
+	"Pascal"
+	"Turing"
+	"Knuth"
+	"Stallman"
+	"Gates"
+)
+
+
+[[ $- != *i* ]] && return
+[[ -z "$TMUX" ]] && exec tmux
+
 
 
 # Normal Colors
@@ -28,14 +43,14 @@ BCyan='\e[1;36m'        # Cyan
 BWhite='\e[1;37m'       # White
 
 # Background
-On_Black='\e[40m'       # Black
-On_Red='\e[41m'         # Red
-On_Green='\e[42m'       # Green
-On_Yellow='\e[43m'      # Yellow
-On_Blue='\e[44m'        # Blue
-On_Purple='\e[45m'      # Purple
-On_Cyan='\e[46m'        # Cyan
-On_White='\e[47m'       # White
+OnBlack='\e[40m'       # Black
+OnRed='\e[41m'         # Red
+OnGreen='\e[42m'       # Green
+OnYellow='\e[43m'      # Yellow
+OnBlue='\e[44m'        # Blue
+OnPurple='\e[45m'      # Purple
+OnCyan='\e[46m'        # Cyan
+OnWhite='\e[47m'       # White
 
 Normal="\e[m"               # Color Reset
 
@@ -172,11 +187,16 @@ fi
 
 
 
-if [ $(hostname) == "HPlinux" ]; then
-	if [[ ! $TERM =~ screen ]]; then
-		exec tmux
-	fi
-fi
+
+#if [ $(hostname) == "HPlinux" ]; then
+#	if [[ ! $TERM =~ screen ]]; then
+#		exec tmux
+#	fi
+#fi
+#number=$(shuf -i 1-${#names[@]} -n 1)
+#name="${names[number]}"
+#tmux new -s "$name"
+#exec tmux
 
 #if [ $(hostname) == "arch2012" ]; then
 #fi

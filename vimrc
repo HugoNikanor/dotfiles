@@ -4,6 +4,8 @@ set encoding=utf-8
 
 set nocompatible
 
+set t_Co=256
+
 "}}}
 
 " Vundle / Plugin manager {{{

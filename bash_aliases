@@ -65,6 +65,10 @@ extract () {
 	fi
 }
 
+tmp() {
+	vim ~/tmp/tempFile_`date +%Y-%m%d_%H:%M:%S`
+}
+
 # Note that this only uploads without an account
 # TODO check how to upload to an account
 imgur() {
