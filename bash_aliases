@@ -1,6 +1,5 @@
 
 # serius aliases
-alias fgit="git log --all --oneline --decorate --graph"
 alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
 alias pm-suspend="sudo pm-suspend"
 alias pm-hibernate="sudo pm-hibernate"
@@ -10,6 +9,16 @@ alias uu="cd ../.."
 alias uuu="cd ../../.."
 
 alias l="ls"
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
 
 alias ed="ex"
 alias time="echo \"you want 'date'\"; time"

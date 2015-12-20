@@ -8,3 +8,4 @@
 	default = current
 [alias]
 	gud = diff HEAD
+	list = log --all --oneline --decorate --graph

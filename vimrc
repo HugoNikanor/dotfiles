@@ -74,7 +74,7 @@ set shiftwidth=4
 
 	autocmd Filetype markdown call SetMdMode()
 	function SetMdMode()
-		colorscheme mycolors
+		colorscheme myDef
 	endfunction
 
 "}}}
