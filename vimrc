@@ -137,12 +137,12 @@ set shiftwidth=4
 "}}}
 
 " Functions {{{
-
 	function! HandleURL()
 		let uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
 		if uri != ""
-			echo "opened ".uri
-			silent exec "!tmux new-window -n \"vim-elinks\" 'elinks ".uri."'"
+			" on desktop, if I have 'xdg-open' here then chrome is opened
+			" even though elinks is set as the default browser.
+			silent exec "!tmux new-window -n \"elinks(vim)\" elinks ".uri
 			redraw!
 		endif
 	endfunction
