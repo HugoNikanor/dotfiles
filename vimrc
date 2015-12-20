@@ -61,39 +61,20 @@ set shiftwidth=4
 
 "" Highlighting
 	syntax on
-	colorscheme torte
-	set background=light
+	colorscheme comments
 	hi ColorColumn ctermbg=5
-
-	" rgb=38,38,38
-	hi normal ctermbg=235
-	"hi normal ctermbg=black
-	"hi LineNr ctermfg=yellow 
-
-	"hi statement ctermfg=yellow
-	hi LineNr ctermfg=yellow 
-	hi spellbad ctermbg=red
-
-	hi Search ctermfg=1 ctermbg=3
 
 	autocmd Filetype lisp call SetLispMode()
 	autocmd Filetype scheme call SetLispMode()
 	function SetLispMode()
-		" More complete version of the 'colorscheme'
-		" https://gist.github.com/hkmix/41492855c3fcc7a9393b
 		set expandtab
 		set tabstop=2
 		set shiftwidth=2
-		set background=dark
-		hi Comment    cterm=NONE ctermfg=08
-		hi Constant   cterm=NONE ctermfg=White
-		hi Identifier cterm=NONE ctermfg=White
-		hi Function   cterm=NONE ctermfg=White
-		hi Statement  cterm=NONE ctermfg=White
-		hi PreProc    cterm=NONE ctermfg=White
-		hi Type	      cterm=NONE ctermfg=White
-		hi Special    cterm=NONE ctermfg=White
-		hi Delimiter  cterm=NONE ctermfg=White
+	endfunction
+
+	autocmd Filetype markdown call SetMdMode()
+	function SetMdMode()
+		colorscheme mycolors
 	endfunction
 
 "}}}
@@ -154,6 +135,19 @@ set shiftwidth=4
 
 	set foldenable
 "}}}
+
+" Functions {{{
+
+	function! HandleURL()
+		let uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
+		if uri != ""
+			echo "opened ".uri
+			silent exec "!tmux new-window -n \"vim-elinks\" 'elinks ".uri."'"
+			redraw!
+		endif
+	endfunction
+	map gx :call HandleURL()<cr>
+" }}}
 
 " Other {{{
 

@@ -137,7 +137,8 @@ fi
 
 # Sets vim to some sort of default editor
 export VISUAL=/usr/bin/vim
-export EDITOR=/usr/bin/vim
+export EDITOR="vi -e"
+export BROWSER="tmux new-window -d /usr/bin/elinks"
 
 function __prompt_command() {
 	local EXIT="$?"
