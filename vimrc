@@ -4,6 +4,8 @@ set encoding=utf-8
 
 set nocompatible
 
+set t_Co=256
+
 "}}}
 
 " Vundle / Plugin manager {{{
@@ -59,36 +61,20 @@ set shiftwidth=4
 
 "" Highlighting
 	syntax on
-	colorscheme torte
-	set background=light
-	hi ColorColumn ctermbg=5
-
-	" rgb=38,38,38
-	hi normal ctermbg=235
-	"hi normal ctermbg=black
-	"hi LineNr ctermfg=yellow 
-
-	"hi statement ctermfg=yellow
-	hi LineNr ctermfg=yellow 
-	hi spellbad ctermbg=red
-
-	hi Search ctermfg=1 ctermbg=3
+	colorscheme comments
+	"hi ColorColumn ctermbg=5
 
 	autocmd Filetype lisp call SetLispMode()
+	autocmd Filetype scheme call SetLispMode()
 	function SetLispMode()
-		" More complete version of the 'colorscheme'
-		" https://gist.github.com/hkmix/41492855c3fcc7a9393b
 		set expandtab
-		set background=dark
-		hi Comment    cterm=NONE ctermfg=08
-		hi Constant   cterm=NONE ctermfg=White
-		hi Identifier cterm=NONE ctermfg=White
-		hi Function   cterm=NONE ctermfg=White
-		hi Statement  cterm=NONE ctermfg=White
-		hi PreProc    cterm=NONE ctermfg=White
-		hi Type	      cterm=NONE ctermfg=White
-		hi Special    cterm=NONE ctermfg=White
-		hi Delimiter  cterm=NONE ctermfg=White
+		set tabstop=2
+		set shiftwidth=2
+	endfunction
+
+	autocmd Filetype markdown call SetMdMode()
+	function SetMdMode()
+		colorscheme myDef
 	endfunction
 
 "}}}
@@ -139,8 +125,29 @@ set shiftwidth=4
 		set foldlevel=99
 	endfunction
 
+	autocmd Filetype lua call SetLuaIndent()
+	function SetLuaIndent()
+		set foldmethod=indent
+		set foldnestmax=1
+		set foldlevelstart=99
+		set foldlevel=99
+	endfunction
+
 	set foldenable
 "}}}
+
+" Functions {{{
+	function! HandleURL()
+		let uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
+		if uri != ""
+			" on desktop, if I have 'xdg-open' here then chrome is opened
+			" even though elinks is set as the default browser.
+			silent exec "!tmux new-window -n \"elinks(vim)\" elinks ".uri
+			redraw!
+		endif
+	endfunction
+	map gx :call HandleURL()<cr>
+" }}}
 
 " Other {{{
 

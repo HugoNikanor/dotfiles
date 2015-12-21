@@ -1,12 +1,21 @@
-ln -s ~/.gitfiles/dotfiles/.bashrc           ~/.bashrc
-ln -s ~/.gitfiles/dotfiles/.gitconfig        ~/.gitconfig
-ln -s ~/.gitfiles/dotfiles/.gitignore_global ~/.gitignore_global
-ln -s ~/.gitfiles/dotfiles/.inputrc          ~/.inputrc
-ln -s ~/.gitfiles/dotfiles/.lynxrc           ~/.lynxrc
-ln -s ~/.gitfiles/dotfiles/.tmux.conf        ~/.tmux.conf
-ln -s ~/.gitfiles/dotfiles/.vimrc            ~/.vimrc
-ln -s ~/.gitfiles/dotfiles/.bash_aliases     ~/.bash_aliases
-ln -s ~/.gitfiles/dotfiles/.bash_profile     ~/.bash_profile
-ln -s ~/.gitfiles/dotfiles/.xinitrc          ~/.xinitrc
-ln -s ~/.gitfiles/dotfiles/.xmonad/          ~/.xmonad
-ln -s ~/.gitfiles/dotfiles/.Xresources       ~/.Xresources
+#!/bin/bash
+
+path="$(dirname "$(realpath "$0")")"
+ln -s "$path/bashrc"            ~/.bashrc
+ln -s "$path/gitconfig"         ~/.gitconfig
+ln -s "$path/gitignore_global"  ~/.gitignore_global
+ln -s "$path/inputrc"           ~/.inputrc
+ln -s "$path/lynxrc"            ~/.lynxrc
+ln -s "$path/tmux.conf"         ~/.tmux.conf
+ln -s "$path/vimrc"             ~/.vimrc
+ln -s "$path/bash_aliases"      ~/.bash_aliases
+ln -s "$path/bash_profile"      ~/.bash_profile
+ln -s "$path/xinitrc"           ~/.xinitrc
+ln -s "$path/xmonad/"           ~/.xmonad
+ln -s "$path/Xresources"        ~/.Xresources
+ln -s "$path/start_tmux"        ~/.start_tmux
+
+ELINK_DIR="~/.elinks"
+if [ -d "`eval echo ${ELINK_DIR//>}`" ]; then
+	ln -s "$path/elinks.conf" ~/.elinks/elinks.conf
+fi

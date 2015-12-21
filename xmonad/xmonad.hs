@@ -12,6 +12,10 @@ import XMonad.Util.Run --for spawnPipe & hPutStrLn
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
+--import XMonad.Hooks.ServerMode
+--import XMonad.Actions.Commands
+import XMonad.Hooks.EwmhDesktops
+
 
 myTerminal = "gnome-terminal"
 
@@ -122,16 +126,21 @@ myManageHook = composeAll
                 , className =? "Gimp"    --> doFloat
                 , className =? "Steam"   --> doFloat ]
 
-main = xmonad defaults
 
-defaults = defaultConfig
-    { terminal          = myTerminal
-    , focusFollowsMouse = myFocusFollowsMouse
-    , modMask           = myModMask
-    , keys              = myKeys
-    , clickJustFocuses  = myClickJustFocuses
-    -- , manageHook        = insertPosition Below Newer <+> myManageHook
-    , manageHook        = manageDocks <+> manageHook defaultConfig <+> insertPosition Below Newer
-    , layoutHook        = avoidStruts $ layoutHook defaultConfig
-    }
+
+main = xmonad $
+    ewmh defaultConfig
+        { terminal          = myTerminal
+        , focusFollowsMouse = myFocusFollowsMouse
+        , modMask           = myModMask
+        , keys              = myKeys
+        , clickJustFocuses  = myClickJustFocuses
+        -- , manageHook        = insertPosition Below Newer <+> myManageHook
+        , manageHook        = manageDocks <+> manageHook defaultConfig <+> insertPosition Below Newer
+        , layoutHook        = avoidStruts $ layoutHook defaultConfig
+        , handleEventHook   = handleEventHook defaultConfig <+> fullscreenEventHook
+        }
+
+--main = xmonad $ ewmh defaultConfig{ handleEventHook =
+--           handleEventHook defaultConfig <+> fullscreenEventHook }
 

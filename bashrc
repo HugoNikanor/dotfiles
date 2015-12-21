@@ -5,6 +5,9 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+[[ $- != *i* ]] && return
+[[ -z "$TMUX" ]] && exec "$HOME/.start_tmux"
+
 
 
 # Normal Colors
@@ -28,14 +31,14 @@ BCyan='\e[1;36m'        # Cyan
 BWhite='\e[1;37m'       # White
 
 # Background
-On_Black='\e[40m'       # Black
-On_Red='\e[41m'         # Red
-On_Green='\e[42m'       # Green
-On_Yellow='\e[43m'      # Yellow
-On_Blue='\e[44m'        # Blue
-On_Purple='\e[45m'      # Purple
-On_Cyan='\e[46m'        # Cyan
-On_White='\e[47m'       # White
+OnBlack='\e[40m'       # Black
+OnRed='\e[41m'         # Red
+OnGreen='\e[42m'       # Green
+OnYellow='\e[43m'      # Yellow
+OnBlue='\e[44m'        # Blue
+OnPurple='\e[45m'      # Purple
+OnCyan='\e[46m'        # Cyan
+OnWhite='\e[47m'       # White
 
 Normal="\e[m"               # Color Reset
 
@@ -90,19 +93,6 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -115,7 +105,8 @@ fi
 
 # Sets vim to some sort of default editor
 export VISUAL=/usr/bin/vim
-export EDITOR=/usr/bin/vim
+export EDITOR="/usr/bin/vim"
+export BROWSER="tmux new-window -n elinks(auto) /usr/bin/elinks"
 
 function __prompt_command() {
 	local EXIT="$?"
@@ -171,11 +162,16 @@ if [ -d "$HOME/bin" ]; then
 fi
 
 
-if [ $(hostname) == "HPlinux" ]; then
-	if [[ ! $TERM =~ screen ]]; then
-		exec tmux
-	fi
-fi
+
+#if [ $(hostname) == "HPlinux" ]; then
+#	if [[ ! $TERM =~ screen ]]; then
+#		exec tmux
+#	fi
+#fi
+#number=$(shuf -i 1-${#names[@]} -n 1)
+#name="${names[number]}"
+#tmux new -s "$name"
+#exec tmux
 
 #if [ $(hostname) == "arch2012" ]; then
 #fi
