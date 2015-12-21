@@ -74,9 +74,10 @@ extract () {
 }
 
 tmp() {
-	vim ~/tmp/tempFile_`date +%Y-%m%d_%H:%M:%S`
+	vim ~/tmp/tempFile_`date +%Y-%m-%d_%H:%M:%S`
 }
 
+# close current terminal window if it's an tmux session
 texit() {
 	cur=$(tmux display-message -p '#S')
 	tmux kill-session -t "$cur"

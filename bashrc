@@ -5,9 +5,12 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# start tmux if tmux ins't runnig
 [[ $- != *i* ]] && return
-[[ -z "$TMUX" ]] && exec "$HOME/.start_tmux"
-
+if [ -z "$TMUX" ]; then
+	#tmux new-window
+   	exec "$HOME/.start_tmux"
+fi
 
 
 # Normal Colors
