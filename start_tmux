@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# check if xmonad is the window manager
+
+# de is set to the name of the current desktop enviroment
+de=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')
+#echo -e "$de\n---"
+
+if [ "$de" != "xmonad" ]; then
+	return 0
+fi
+
+
+# Get which workspace the window was opened on
+ws=$(wmctrl -d | tr '\n' ' ' | sed 's/.*\([0-9]\)  \*.*/\1/')
+ws=$(($ws + 1))
+#echo -e "$ws\n---"
+
+# get all tmux session names starting with 'W'
+ses=$(tmux list-sessions | sed -n 's/^\(W.\{0,10\}\):.*/\1/p')
+#echo -e "$ses\n---"
+
+# Get how many tmux sessions are connected to that workspace
+no=$(grep -o "W$ws" <<< "$ses" | wc -l)
+#echo -e "$no\n---"
+
+# launch tmux and connect it to that session
+# and make sure that it gets a new number
+if [ "$no" == 0 ]; then
+	# make $no one larger, since I want it 1 indexed
+	no=$(($no + 1))
+	tmux new-session -s "W$ws($no)"
+	#echo "Started"
+else
+	# make $no one larger, since I want it 1 indexed
+	no=$(($no + 1))
+	tmux new-session -s "W$ws($no)" -t "W$ws(1)"
+fi
+
+return 0
+

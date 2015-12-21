@@ -13,6 +13,7 @@ ln -s "$path/bash_profile"      ~/.bash_profile
 ln -s "$path/xinitrc"           ~/.xinitrc
 ln -s "$path/xmonad/"           ~/.xmonad
 ln -s "$path/Xresources"        ~/.Xresources
+ln -s "$path/start_tmux"        ~/.start_tmux
 
 ELINK_DIR="~/.elinks"
 if [ -d "`eval echo ${ELINK_DIR//>}`" ]; then

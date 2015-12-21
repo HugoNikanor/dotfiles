@@ -62,7 +62,7 @@ set shiftwidth=4
 "" Highlighting
 	syntax on
 	colorscheme comments
-	hi ColorColumn ctermbg=5
+	"hi ColorColumn ctermbg=5
 
 	autocmd Filetype lisp call SetLispMode()
 	autocmd Filetype scheme call SetLispMode()

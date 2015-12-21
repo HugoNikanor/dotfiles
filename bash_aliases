@@ -77,6 +77,11 @@ tmp() {
 	vim ~/tmp/tempFile_`date +%Y-%m%d_%H:%M:%S`
 }
 
+texit() {
+	cur=$(tmux display-message -p '#S')
+	tmux kill-session -t "$cur"
+}
+
 # Note that this only uploads without an account
 # TODO check how to upload to an account
 imgur() {

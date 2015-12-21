@@ -5,27 +5,8 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-declare arr names=(
-	"Boole"
-	"Hurd"
-	"McCarthy"
-	"Pascal"
-	"Turing"
-	"Knuth"
-	"Stallman"
-	"Gates"
-)
-
-# TODO fix this so that the same exact string is never used twice
-# Preferably through some cool contraption, but a simple system for
-# appending numbers to the names if need be would also work
-
-#number=$(shuf -i 1-${#names[@]} -n 1)
-#name="${names[number]}"
-
 [[ $- != *i* ]] && return
-#[[ -z "$TMUX" ]] && exec tmux new -s "$name"
-[[ -z "$TMUX" ]] && exec tmux
+[[ -z "$TMUX" ]] && exec "$HOME/.start_tmux"
 
 
 
