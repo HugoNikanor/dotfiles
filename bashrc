@@ -5,12 +5,16 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+
+de=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')
 # start tmux if tmux ins't runnig
 [[ $- != *i* ]] && return
 if [ -z "$TMUX" ]; then
-	#tmux new-window
-   	exec "$HOME/.start_tmux"
+	if [ "$de" == "xmonad" ]; then
+		exec "$HOME/.start_tmux"
+	fi
 fi
+
 
 
 # Normal Colors
