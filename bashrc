@@ -6,13 +6,10 @@
 [ -z "$PS1" ] && return
 
 
-de=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')
-# start tmux if tmux ins't runnig
+# start tmux if tmux isn't runnig
 [[ $- != *i* ]] && return
 if [ -z "$TMUX" ]; then
-	if [ "$de" == "xmonad" ]; then
-		exec "$HOME/.start_tmux"
-	fi
+	source .start_tmux
 fi
 
 

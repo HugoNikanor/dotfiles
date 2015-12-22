@@ -1,14 +1,23 @@
 #!/bin/bash
 
+########################################
+# A script that checks if xmonad is the window manager,
+# If it is, then start a tmux session independently connected
+# to any other session created on the same workspace with this script.
+# TODO currently if 'W1(1)' and 'W1(3)' are open then a new session
+# can't be created with this script, due to it only counting the number
+# of sessions and creating the next number.
+#######################################
+
 # check if xmonad is the window manager
 
 # de is set to the name of the current desktop enviroment
-#de=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')
+de=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')
 #echo -e "$de\n---"
 
-#if [ "$de" != "xmonad" ]; then
-#	return 0
-#fi
+if [ "$de" != "xmonad" ]; then
+	return 0
+fi
 
 
 # Get which workspace the window was opened on
@@ -29,12 +38,15 @@ no=$(grep -o "W$ws" <<< "$ses" | wc -l)
 if [ "$no" == 0 ]; then
 	# make $no one larger, since I want it 1 indexed
 	no=$(($no + 1))
-	tmux new-session -s "W$ws($no)"
+	exec tmux new-session -s "W$ws($no)"
 	#echo "Started"
 else
 	# make $no one larger, since I want it 1 indexed
 	no=$(($no + 1))
-	tmux new-session -s "W$ws($no)" -t "W$ws(1)"
+
+	exec tmux -q new-session -s "W$ws($no)" -t "W$ws(1)"\; source-file ~/.tmux.conf \; \
+		source-file ~/.tmux/sessions/workspace
+
 fi
 
 return 0
