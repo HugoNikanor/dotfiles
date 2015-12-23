@@ -5,8 +5,12 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+
+# start tmux if tmux isn't runnig
 [[ $- != *i* ]] && return
-[[ -z "$TMUX" ]] && exec "$HOME/.start_tmux"
+if [ -z "$TMUX" ]; then
+	source .start_tmux
+fi
 
 
 

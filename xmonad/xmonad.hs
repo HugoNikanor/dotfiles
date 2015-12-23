@@ -101,6 +101,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     , ((modm              , xK_s     ), spawn "sudo pm-suspend")
 
+    , ((modm              , xK_c     ), spawn "google-chrome-stable")
+
     ]
     ++
 
