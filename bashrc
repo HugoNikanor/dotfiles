@@ -191,9 +191,6 @@ fi
 #if [ $(hostname) == "arch2012" ]; then
 #fi
 
-eval $(thefuck --alias)
-
-
 #find ~/tmp/* -type d -ctime +5 -exec /bin/rm -rf {} \;
 #find ~/Trash/* -type d -ctime +5 -exec /bin/rm -rf {} \;
 
