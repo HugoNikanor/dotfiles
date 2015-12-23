@@ -7,6 +7,9 @@
 # TODO currently if 'W1(1)' and 'W1(3)' are open then a new session
 # can't be created with this script, due to it only counting the number
 # of sessions and creating the next number.
+#
+# Hugo Hornquist
+# 20151222
 #######################################
 
 # check if xmonad is the window manager
@@ -24,6 +27,10 @@ fi
 ws=$(wmctrl -d | tr '\n' ' ' | sed 's/.*\([0-9]\)  \*.*/\1/')
 ws=$(($ws + 1))
 #echo -e "$ws\n---"
+
+if [ "$ws" == 9 ]; then
+	return 0
+fi
 
 # get all tmux session names starting with 'W'
 ses=$(tmux list-sessions | sed -n 's/^\(W.\{0,10\}\):.*/\1/p')
@@ -46,6 +53,7 @@ else
 
 	exec tmux -q new-session -s "W$ws($no)" -t "W$ws(1)"\; source-file ~/.tmux.conf \; \
 		source-file ~/.tmux/sessions/workspace
+
 
 fi
 

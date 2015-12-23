@@ -16,3 +16,12 @@ mkdir ~/.gitfiles; cd ~/.gitfiles; git clone https://github.com/hugoNikanor/gitf
 ---
 
 *As if anyone ever would want to use my settings for anything...*
+
+## Problems
+### Kill Window
+Focus isn't set to the same place as xmonad show where it is, causing multiple
+kill calls to be misdirected.
+
+If a window that isn't a tmux client has a tmux client name, then the wrong kill
+script is called. This can happen if a *"regular"* terminal is attached to a
+tmux session, but later detached.

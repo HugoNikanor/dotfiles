@@ -11,9 +11,10 @@ ln -s "$path/vimrc"             ~/.vimrc
 ln -s "$path/bash_aliases"      ~/.bash_aliases
 ln -s "$path/bash_profile"      ~/.bash_profile
 ln -s "$path/xinitrc"           ~/.xinitrc
-ln -s "$path/xmonad/"           ~/.xmonad
+ln -s "$path/xmonad"            ~/.xmonad # This currently creates a recursize symilnk
 ln -s "$path/Xresources"        ~/.Xresources
 ln -s "$path/start_tmux"        ~/.start_tmux
+ln -s "$path/kill_window"       ~/.kill_window
 
 ELINK_DIR="~/.elinks"
 if [ -d "`eval echo ${ELINK_DIR//>}`" ]; then
