@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# A program that kills the current window.
+# If it's a tmux session named in a very special manner then kill the tmux 
+# session (which will kill the window if tmux is the current shell),
+# otherwise, just send a kill signal to the window
+#
+# Hugo Hornquist
+# 20151223
+
+
+# get the name of the window
+tmuxname=$(xdotool getactivewindow getwindowname | sed -n 's/\(W[1-9]([1-9]*)\)/\1/p')
+
+if [ -z $tmuxname ]; then
+	id=$(xprop -root | grep _NET_ACTIVE_WINDOW\(WINDOW\) | sed 's/.*# \(.*\)/\1/')
+	wmctrl -ic $id
+	#xdotool windowkill $id
+	#echo $id >> /tmp/killedWindows
+else
+	cur=$(tmux display-message -p '#S')
+	tmux kill-session -t "$cur"
+	#echo $tmuxname >> /tmp/killedWindows
+fi

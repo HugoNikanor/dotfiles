@@ -12,6 +12,16 @@ if [ -z "$TMUX" ]; then
 	source .start_tmux
 fi
 
+desktopEnv=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')
+
+# this should possibly have some sort of check if the system is running
+# by itself or if it's controlled via ssh or the like
+if [ -n "$TMUX" ] && [ "$desktopEnv" == "xmonad" ]; then
+	sname=$(tmux display-message -p '#S')
+	tmux set-option set-titles-string "$sname"
+fi
+
+
 
 
 # Normal Colors
@@ -179,9 +189,6 @@ fi
 
 #if [ $(hostname) == "arch2012" ]; then
 #fi
-
-eval $(thefuck --alias)
-
 
 #find ~/tmp/* -type d -ctime +5 -exec /bin/rm -rf {} \;
 #find ~/Trash/* -type d -ctime +5 -exec /bin/rm -rf {} \;
