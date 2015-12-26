@@ -84,8 +84,7 @@ sl() {
 
 # close current terminal window if it's an tmux session
 texit() {
-	cur=$(tmux display-message -p '#S')
-	tmux kill-session -t "$cur"
+	~/.kill_window
 }
 
 # Note that this only uploads without an account
