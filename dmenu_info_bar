@@ -2,8 +2,10 @@
 ws=$(wmctrl -d | tr '\n' ' ' | sed 's/.*\([0-9]\)  \*.*/\1/')
 ws=$(($ws + 1))
 
-# TODO don't open the secound dmenu if no command was typed
-	echo -e "Workspace: $ws\nDate: $(date)\n$(upower -i $(upower -e | grep battery) | grep percentage)"|\
+# TODO possibly allow for continius commands
+cmdOut="$(echo -e "Workspace: $ws\nDate: $(date)\n$(upower -i $(upower -e | grep battery) | grep percentage)"|\
 	dmenu |\
-	/bin/bash |\
-	dmenu -nb "Dark Slate Gray" -l 20
+	/bin/bash)"
+if [ -n "$cmdOut" ]; then
+	echo "$cmdOut" | dmenu -nb "Dark Slate Gray" -l 20
+fi
