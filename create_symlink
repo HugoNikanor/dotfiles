@@ -15,6 +15,8 @@ ln -s "$path/xmonad"            ~/.xmonad # This currently creates a recursize s
 ln -s "$path/Xresources"        ~/.Xresources
 ln -s "$path/start_tmux"        ~/.start_tmux
 ln -s "$path/kill_window"       ~/.kill_window
+ln -s "$path/dmenu_info_bar"    ~/.dmenu_info_bar
+ln -s "$path/dmenuCMD"          ~/.dmenuCMD
 
 ELINK_DIR="~/.elinks"
 if [ -d "`eval echo ${ELINK_DIR//>}`" ]; then
