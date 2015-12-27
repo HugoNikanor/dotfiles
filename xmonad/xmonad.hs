@@ -16,6 +16,8 @@ import qualified Data.Map        as M
 --import XMonad.Actions.Commands
 import XMonad.Hooks.EwmhDesktops
 
+import Graphics.X11.ExtraTypes.XF86
+import XMonad.Util.EZConfig
 
 myTerminal = "gnome-terminal"
 
@@ -106,8 +108,17 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     , ((modm              , xK_b     ), spawn "google-chrome-stable")
 
+    --,((modm , xF86XK_MonBrightnessDown ), spawn "xbacklight -10" )
+    ,((modm               , xK_Next  ), spawn "xbacklight -10" )
+    ,((modm               , xK_Prior  ), spawn "xbacklight +10" )
+
+
     ]
     ++
+
+    --[((xF86XK_MonBrightnessUp), spawn "xbacklight +10")]
+
+    -- ++
 
     --
     -- mod-[1..9], Switch to workspace N
@@ -123,6 +134,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((modm .|. mask, key), f sc)
        | (key, sc) <- zip [xK_a, xK_o, xK_e, xK_u] [0..]
        , (f, mask) <- [(viewScreen, 0), (sendToScreen, shiftMask)]]
+
 -- End of myKeys
 
 myManageHook :: ManageHook
