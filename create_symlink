@@ -18,6 +18,8 @@ ln -s "$path/kill_window"       ~/.kill_window
 ln -s "$path/dmenu_info_bar"    ~/.dmenu_info_bar
 ln -s "$path/dmenuCMD"          ~/.dmenuCMD
 
+ln -s "$path/termite-config"    ~/.config/termite/config
+
 ELINK_DIR="~/.elinks"
 if [ -d "`eval echo ${ELINK_DIR//>}`" ]; then
 	ln -s "$path/elinks.conf" ~/.elinks/elinks.conf

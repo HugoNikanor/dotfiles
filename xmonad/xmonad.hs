@@ -19,7 +19,7 @@ import XMonad.Hooks.EwmhDesktops
 import Graphics.X11.ExtraTypes.XF86
 import XMonad.Util.EZConfig
 
-myTerminal = "gnome-terminal"
+myTerminal = "termite"
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
