@@ -3,7 +3,8 @@ ws=$(wmctrl -d | tr '\n' ' ' | sed 's/.*\([0-9]\)  \*.*/\1/')
 ws=$(($ws + 1))
 
 # TODO possibly allow for continius commands
-cmdOut="$(echo -e "Workspace: $ws\nDate: $(date)\n$(upower -i $(upower -e | grep battery) | grep percentage)"|\
+# TODO replace cmdOut with an array
+cmdOut="$(echo -e "Workspace: $ws\n$(date +'Time: %R')\n$(upower -i $(upower -e | grep battery) | grep percentage | sed 's/\s//g' | sed 's/:/: /')"|\
 	dmenu |\
 	/bin/bash)"
 if [ -n "$cmdOut" ]; then

@@ -3,7 +3,7 @@
 alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
 alias pm-suspend="sudo pm-suspend"
 alias pm-hibernate="sudo pm-hibernate"
-alias asdf="setxkbmap se custom compose:ralt"
+#lias asdf="setxkbmap se custom compose:ralt"
 alias u="cd .."
 alias uu="cd ../.."
 alias uuu="cd ../../.."
@@ -20,7 +20,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-alias ed="ex"
+#alias ed="ex"
 alias time="echo \"you want 'date'\"; time"
 
 
