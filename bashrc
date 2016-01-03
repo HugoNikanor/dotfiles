@@ -135,7 +135,8 @@ function __prompt_command() {
 		PS1+="${Green}[${Normal}"
 	fi
 
-	PS1+="\[${BWhite}\]\w\[${BWhite}\]"
+	#PS1+="\[${BWhite}\]\w\[${BWhite}\]"
+	PS1+="\e[1;39m\w"
 
 	if [ $EXIT != 0 ]; then
 		PS1+="${Red}]${Normal}"

@@ -5,7 +5,7 @@ ws=$(($ws + 1))
 # TODO possibly allow for continius commands
 # TODO replace cmdOut with an array
 cmdOut="$(echo -e "Workspace: $ws\n$(date +'Time: %R')\n$(upower -i $(upower -e | grep battery) | grep percentage | sed 's/\s//g' | sed 's/:/: /')"|\
-	dmenu |\
+	dmenu -p "$:"|\
 	/bin/bash)"
 if [ -n "$cmdOut" ]; then
 	echo "$cmdOut" | dmenu -nb "Dark Slate Gray" -l 20

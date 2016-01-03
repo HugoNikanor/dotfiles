@@ -19,7 +19,8 @@ import XMonad.Hooks.EwmhDesktops
 import Graphics.X11.ExtraTypes.XF86
 import XMonad.Util.EZConfig
 
-myTerminal = "termite"
+--myTerminal = "termite"
+myTerminal = "start-termite"
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
@@ -144,6 +145,10 @@ myManageHook = composeAll
                 , className =? "Gimp"    --> doFloat
                 , className =? "Steam"   --> doFloat ]
 
+myNormalBorderColor, myFocusedBorderColor :: String
+myNormalBorderColor  = "#1d1f21"
+myFocusedBorderColor = "#de935f"
+
 
 
 main = xmonad $
@@ -152,6 +157,8 @@ main = xmonad $
         , focusFollowsMouse = myFocusFollowsMouse
         , modMask           = myModMask
         , keys              = myKeys
+        , normalBorderColor = myNormalBorderColor
+        , focusedBorderColor= myFocusedBorderColor
         , clickJustFocuses  = myClickJustFocuses
         -- , manageHook        = insertPosition Below Newer <+> myManageHook
         , manageHook        = manageDocks <+> manageHook defaultConfig <+> insertPosition Below Newer
