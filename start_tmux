@@ -52,7 +52,7 @@ else
 	no=$(($no + 1))
 
 	exec tmux -q new-session -s "W$ws($no)" -t "W$ws(1)"\; source-file ~/.tmux.conf \; \
-		source-file ~/.tmux/sessions/workspace
+		source-file ~/.tmux.extra.conf
 
 
 fi

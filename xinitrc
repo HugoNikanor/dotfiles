@@ -63,5 +63,6 @@ if [ "$(hostname)" == "arch2012" ] ; then
 fi
 
 setxkbmap se custom compose:ralt
+xst r off
 
 exec xmonad

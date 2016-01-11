@@ -21,6 +21,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 #alias ed="ex"
+alias kitty="cat"
 alias time="echo \"you want 'date'\"; time"
 
 

@@ -2,11 +2,25 @@
 ws=$(wmctrl -d | tr '\n' ' ' | sed 's/.*\([0-9]\)  \*.*/\1/')
 ws=$(($ws + 1))
 
+declare -a barData
+barData[0]="Workspace: $ws\n"
+barData[1]="$(date +'Time: %R')\n"
+barData[2]="$(upower -i $(upower -e | grep battery) |\
+   	grep percentage | sed 's/\s//g' | sed 's/:/: /')\n"
+
 # TODO possibly allow for continius commands
-# TODO replace cmdOut with an array
-cmdOut="$(echo -e "Workspace: $ws\n$(date +'Time: %R')\n$(upower -i $(upower -e | grep battery) | grep percentage | sed 's/\s//g' | sed 's/:/: /')"|\
-	dmenu -p "$:"|\
+cmdOut="$(echo -e "${barData[*]}" | 
+	dmenu \
+	      -nb "#1d1f21" \
+	      -sb "#1d1f21" \
+	      -nf "#c8c8c6" \
+	      -sf "#c8c8c6" \
+	      -p "$:"|\
 	/bin/bash)"
 if [ -n "$cmdOut" ]; then
-	echo "$cmdOut" | dmenu -nb "Dark Slate Gray" -l 20
+	#echo "$cmdOut" | dmenu -nb "Dark Slate Gray" -l 20
+	echo "$cmdOut" | dmenu -i -l 20 \
+		-nb "#282a2e" \
+		-sb "#1d1f21"
+
 fi

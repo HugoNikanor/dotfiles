@@ -175,6 +175,9 @@ fi
 if [ -d "$HOME/bin" ]; then
 	PATH="$HOME/bin:$PATH"
 fi
+if [ -d "$HOME/.gem/ruby/2.3.0/bin" ]; then
+	PATH="$HOME/.gem/ruby/2.3.0/bin:$PATH"
+fi
 
 
 

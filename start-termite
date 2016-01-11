@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# this is used by xmonad as the default terminal
+# place this in any active bin directory
+
+if [ "$1" == "large" ]; then
+	current="$(cat $HOME/.termite/currentLarge)"
+elif [ "$1" == "1337" ]; then
+	current="$(cat $HOME/.termite/current1337)"
+else
+	current="$(cat $HOME/.termite/currentDefault)"
+fi
+termite -c "$HOME/.dotfiles/termite/$current"

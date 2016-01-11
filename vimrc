@@ -28,6 +28,10 @@ call vundle#begin()
 
 	Plugin 'lervag/vimtex'
 
+	Plugin 'scrooloose/nerdtree'
+
+	Plugin 'Xuyuanp/nerdtree-git-plugin'
+
 call vundle#end()
 filetype plugin indent on
 
