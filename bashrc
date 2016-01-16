@@ -8,7 +8,8 @@
 
 # start tmux if tmux isn't runnig
 [[ $- != *i* ]] && return
-if [ -z "$TMUX" ] && [ "$(hostname)" != "HPlinux" ]; then
+#if [ -z "$TMUX" ] && [ "$(hostname)" != "HPlinux" ]; then
+if [ -z "$TMUX" ]; then
 	source .start_tmux
 fi
 

@@ -10,4 +10,4 @@ elif [ "$1" == "1337" ]; then
 else
 	current="$(cat $HOME/.termite/currentDefault)"
 fi
-termite -c "$HOME/.dotfiles/termite/$current"
+termite -c "$HOME/.termite/$current"
