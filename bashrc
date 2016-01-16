@@ -197,3 +197,7 @@ fi
 #find ~/tmp/* -type d -ctime +5 -exec /bin/rm -rf {} \;
 #find ~/Trash/* -type d -ctime +5 -exec /bin/rm -rf {} \;
 
+# eat the error message if 'food' doesn't exist.
+# This however leads the shell to start with a non 0 exit status
+food 2> /dev/null
+

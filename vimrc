@@ -81,6 +81,13 @@ set shiftwidth=4
 		colorscheme myDef
 	endfunction
 
+	hi NerdTreeDir ctermfg=blue
+	hi NERDtreeExecFile ctermfg=10
+	hi NERDtreeRO ctermfg=06
+	hi NERDtreeOpenable ctermfg=07
+	hi NERDtreeClosable ctermfg=07
+
+
 "}}}
 
 " Key remaps {{{
