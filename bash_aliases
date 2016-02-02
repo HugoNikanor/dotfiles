@@ -1,5 +1,4 @@
 
-# serius aliases
 alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
 #lias asdf="setxkbmap se custom compose:ralt"
 alias u="cd .."
@@ -20,7 +19,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-#alias ed="ex"
 alias kitty="cat"
 alias time="echo \"you want 'date'\"; time"
 
@@ -30,20 +28,6 @@ alias time="echo \"you want 'date'\"; time"
 # opened with less
 LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
 
-
-# Mount my windows drive with the correct settings, using the same command 
-# that I use for mounting ext4 partitions. This should be updated to a general
-# NTFS mount command
-sudo() {
-	if [[ $@ == "mount /dev/sdb2 /mnt/winStorage" ]]; then
-		command sudo mount -t ntfs -o umask=000 /dev/sdb2 /mnt/winStorage
-	else
-		command sudo "$@"
-	fi
-}
-
-# 'rm' is now soft remove that moves removed files to trash directory
-# 'rm' with multiple arguments is regular rm
 trash() {
 	if [ $# -eq 1 ]; then
 		mv $1 ~/Trash/
@@ -51,7 +35,6 @@ trash() {
 		rm $*
 	fi
 }
-
 
 extract () {
 	if [ -f $1 ] ; then
@@ -84,9 +67,9 @@ sl() {
 }
 
 # close current terminal window if it's an tmux session
-texit() {
-	~/.kill_window
-}
+#texit() {
+#	~/.kill_window
+#}
 
 # Note that this only uploads without an account
 # TODO check how to upload to an account

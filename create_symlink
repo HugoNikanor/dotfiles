@@ -5,7 +5,6 @@ ln -s "$path/bashrc"            ~/.bashrc
 ln -s "$path/gitconfig"         ~/.gitconfig
 ln -s "$path/gitignore_global"  ~/.gitignore_global
 ln -s "$path/inputrc"           ~/.inputrc
-ln -s "$path/lynxrc"            ~/.lynxrc
 ln -s "$path/tmux.conf"         ~/.tmux.conf
 ln -s "$path/vimrc"             ~/.vimrc
 ln -s "$path/bash_aliases"      ~/.bash_aliases
@@ -14,8 +13,8 @@ ln -s "$path/xinitrc"           ~/.xinitrc
 ln -s "$path/xmonad"            ~/.xmonad # This currently creates a recursize symilnk
 ln -s "$path/Xresources"        ~/.Xresources
 ln -s "$path/start_tmux"        ~/.start_tmux
-ln -s "$path/kill_window"       ~/.kill_window
-ln -s "$path/dmenu_info_bar"    ~/.dmenu_info_bar
+ln -s "$path/kill_window"       ~/bin/texit
+ln -s "$path/dmenu_info_bar"    ~/bin/dmenu_info_bar
 ln -s "$path/tmux.extra.conf"   ~/.tmux.extra.conf
 
 #ln -s "$path/termite-config"    ~/.config/termite/config
