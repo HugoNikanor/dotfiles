@@ -13,7 +13,7 @@ if [ -z "$TMUX" ]; then
 	source .start_tmux
 fi
 
-desktopEnv=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g' &> /dev/null)
+desktopEnv=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')
 
 # this should possibly have some sort of check if the system is running
 # by itself or if it's controlled via ssh or the like

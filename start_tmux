@@ -15,7 +15,7 @@
 # check if xmonad is the window manager
 
 # de is set to the name of the current desktop enviroment
-de="$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g' &> /dev/null)"
+de="$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')"
 #echo -e "$de\n---"
 
 if [ "$de" != "xmonad" ]; then
@@ -24,7 +24,7 @@ fi
 
 
 # Get which workspace the window was opened on
-ws="$(wmctrl -d | tr '\n' ' ' | sed 's/.*\([0-9]\)  \*.*/\1/' &> /dev/null)"
+ws="$(wmctrl -d | tr '\n' ' ' | sed 's/.*\([0-9]\)  \*.*/\1/')"
 ws=$(($ws + 1))
 #echo -e "$ws\n---"
 
