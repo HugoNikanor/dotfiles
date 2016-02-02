@@ -1,13 +1,25 @@
 #!/bin/bash
 
-# this is used by xmonad as the default terminal
-# place this in any active bin directory
+# allows for dynamic choosing of termite colorschemes
+
+curColor="default"
+curOther="default"
+
+if [ "$(hostname)" == "arch2012" ]; then
+	curOther="archdesktop"
+fi
 
 if [ "$1" == "large" ]; then
-	current="$(cat $HOME/.termite/currentLarge)"
+	curOther="large"
 elif [ "$1" == "1337" ]; then
-	current="$(cat $HOME/.termite/current1337)"
-else
-	current="$(cat $HOME/.termite/currentDefault)"
+	curColor="1337"
 fi
-termite -c "$HOME/.termite/$current"
+
+curColor="$HOME/.termite/selectorFiles/color/$curColor";
+curOther="$HOME/.termite/selectorFiles/other/$curOther";
+
+rm "$HOME/.termite/generated.conf"
+for x in $(cat $curColor $curOther); do
+	cat "$HOME/.termite/$x" >> "$HOME/.termite/generated.conf"
+done
+termite -c "$HOME/.termite/generated.conf"

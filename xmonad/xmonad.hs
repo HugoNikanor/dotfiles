@@ -94,7 +94,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Deincrement the number of windows in the master area
     , ((modm,               xK_z     ), sendMessage (IncMasterN (-1))) 
 
-    , ((modm,               xK_w     ), spawn "~/.dmenu_info_bar")
+    , ((modm,               xK_w     ), spawn "dmenu_info_bar")
     
 
     -- Toggle the status bar gap
