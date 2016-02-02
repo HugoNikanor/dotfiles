@@ -1,12 +1,12 @@
 
 # serius aliases
 alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
-alias pm-suspend="sudo pm-suspend"
-alias pm-hibernate="sudo pm-hibernate"
 #lias asdf="setxkbmap se custom compose:ralt"
 alias u="cd .."
 alias uu="cd ../.."
 alias uuu="cd ../../.."
+
+alias ll="cd $OLDPWD";
 
 alias l="ls"
 if [ -x /usr/bin/dircolors ]; then

@@ -52,7 +52,7 @@ twm &
 xclock -geometry 50x50-1+1 &
 #xterm -geometry 80x50+494+51 &
 #xterm -geometry 80x20+494-0 &
-#exec xterm -geometry 80x66+0+0 -name login
+#xterm -geometry 80x66+0+0 -name login
 
 # This is probably not the best way to do it
 if [ "$(hostname)" == "arch2012" ] ; then 
@@ -64,5 +64,6 @@ fi
 
 setxkbmap se custom compose:ralt
 xst r off
+
 
 exec xmonad

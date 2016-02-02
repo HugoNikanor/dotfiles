@@ -15,6 +15,11 @@ bin/
 *.jar
 !jars/*jar
 
+#Gradle
+build/
+gen/
+.gradle/
+
 #Eclim / Eclipse
 workbench.xmi
 .classpath

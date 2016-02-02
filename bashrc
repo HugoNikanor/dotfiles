@@ -125,7 +125,8 @@ export BROWSER="tmux new-window -n elinks(auto) /usr/bin/elinks"
 
 function __prompt_command() {
 	local EXIT="$?"
-	PS1="\u@\h "
+	#PS1="\u@\h "
+	PS1="\u "
 
 
 	# Make the brackets '[]' around the path green if the 

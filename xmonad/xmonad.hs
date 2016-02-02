@@ -19,6 +19,8 @@ import XMonad.Hooks.EwmhDesktops
 import Graphics.X11.ExtraTypes.XF86
 import XMonad.Util.EZConfig
 
+import XMonad.Actions.SpawnOn
+
 --myTerminal = "termite"
 myTerminal = "start-termite"
 
@@ -104,16 +106,21 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
+    --, ((modm              , xK_d     ), spawnOn "workspace1" "emacs")
+    , ((modm              , xK_d     ), spawn "notify-send $(date +%s)")
+
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
 
-    , ((modm              , xK_s     ), spawn "sudo pm-suspend")
+    , ((modm              , xK_s     ), spawn "systemctl suspend")
 
-    , ((modm              , xK_b     ), spawn "google-chrome-stable")
+    , ((modm              , xK_b     ), spawn "google-chrome-stable --disable-gpu")
 
     --,((modm , xF86XK_MonBrightnessDown ), spawn "xbacklight -10" )
     ,((modm               , xK_Next  ), spawn "xbacklight -10" )
     ,((modm               , xK_Prior  ), spawn "xbacklight +10" )
+
+    ,((noModMask          , xK_Scroll_Lock ), spawn "date +'Time: %R' | dmenu  -nb \"#1d1f21\" -nf \"#c8c8c6\"" )
 
 
     ]
@@ -150,6 +157,8 @@ myNormalBorderColor, myFocusedBorderColor :: String
 myNormalBorderColor  = "#1d1f21"
 myFocusedBorderColor = "#de935f"
 
+myBorderWidth :: Dimension
+myBorderWidth = 1
 
 
 main = xmonad $
@@ -165,6 +174,7 @@ main = xmonad $
         , manageHook        = manageDocks <+> manageHook defaultConfig <+> insertPosition Below Newer
         , layoutHook        = avoidStruts $ layoutHook defaultConfig
         , handleEventHook   = handleEventHook defaultConfig <+> fullscreenEventHook
+        , borderWidth       = myBorderWidth
         }
 
 --main = xmonad $ ewmh defaultConfig{ handleEventHook =

@@ -158,6 +158,15 @@ set shiftwidth=4
 		endif
 	endfunction
 	map gx :call HandleURL()<cr>
+
+  function! InterpretScheme()
+    !car % | scheme
+  endfunction
+
+" }}}
+
+" ex aliases {{{
+	cnoreabbrev ntt NERDTreeToggle
 " }}}
 
 " Other {{{
