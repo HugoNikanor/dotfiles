@@ -69,23 +69,6 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-# Relace this with a scrint:
-# if it's a text file then:
-#	less filename
-# if't it's a binary then:
-# 	lesspipe.sh filename | less
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color) color_prompt=yes;;
@@ -121,13 +104,19 @@ fi
 # Sets vim to some sort of default editor
 export VISUAL=/usr/bin/vim
 export EDITOR="/usr/bin/vim"
-export BROWSER="tmux new-window -n elinks(auto) /usr/bin/elinks"
+if [ -n $TMUX ]; then
+	export BROWSER="tmux new-window -n elinks(auto) $(which elinks)"
+else
+	export BROWSER="$(which elinks)"
+fi
 
 function __prompt_command() {
 	local EXIT="$?"
-	#PS1="\u@\h "
-	PS1="\u "
-
+	if [ $(hostname) != "arch2012" ]; then
+		PS1="\u "
+	else
+		PS1="\u@\h "
+	fi
 
 	# Make the brackets '[]' around the path green if the 
 	#last command was a success, otherwise, make them red
@@ -146,33 +135,11 @@ function __prompt_command() {
 		PS1+="${Green}]${Normal}"
 	fi
 
-
 	PS1+="\n\$ "
 }
 
-### Sets the prompt string
-if [ $(hostname) == "HPlinux" ]; then
-	if [ "$color_prompt" = yes ]; then
-		PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-	else
-		PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-
-	fi
-	unset color_prompt force_color_prompt
-
-	# If this is an xterm set the title to user@host:dir
-	case "$TERM" in
-	xterm*|rxvt*)
-		PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-		;;
-	*)
-		;;
-	esac
-elif [ $(hostname) == "arch2012" ]; then
-	#PS1="\u@\h [\[${bold}\]\w\[${normal}\]]\n\$ "
-	export PROMPT_COMMAND=__prompt_command
-fi
-
+#PS1="\u@\h [\[${bold}\]\w\[${normal}\]]\n\$ "
+export PROMPT_COMMAND=__prompt_command
 
 if [ -d "$HOME/bin" ]; then
 	PATH="$HOME/bin:$PATH"
@@ -181,25 +148,9 @@ if [ -d "$HOME/.gem/ruby/2.3.0/bin" ]; then
 	PATH="$HOME/.gem/ruby/2.3.0/bin:$PATH"
 fi
 
-
-
-#if [ $(hostname) == "HPlinux" ]; then
-#	if [[ ! $TERM =~ screen ]]; then
-#		exec tmux
-#	fi
-#fi
-#number=$(shuf -i 1-${#names[@]} -n 1)
-#name="${names[number]}"
-#tmux new -s "$name"
-#exec tmux
-
-#if [ $(hostname) == "arch2012" ]; then
-#fi
-
-#find ~/tmp/* -type d -ctime +5 -exec /bin/rm -rf {} \;
-#find ~/Trash/* -type d -ctime +5 -exec /bin/rm -rf {} \;
-
 # eat the error message if 'food' doesn't exist.
-# This however leads the shell to start with a non 0 exit status
-food 2> /dev/null
-
+# is it even possible to write something other than hacks in bash?
+fooddata="$(food 2> /dev/null)"
+if [ $? == 0 ]; then
+	echo "$fooddata"
+fi
