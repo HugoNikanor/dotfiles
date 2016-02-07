@@ -8,6 +8,9 @@ curOther="default"
 if [ "$(hostname)" == "arch2012" ]; then
 	curOther="archdesktop"
 fi
+if [ "$(hostname)" == "HPlinux" ]; then
+	curOther="laptop"
+fi
 
 if [ "$1" == "large" ]; then
 	curOther="large"
