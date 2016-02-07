@@ -10,7 +10,7 @@
 
 
 # get the name of the window
-tmuxname=$(xdotool getactivewindow getwindowname | sed -n 's/\(W[1-9]([1-9]*)\)/\1/p')
+tmuxname=$(xdotool getactivewindow getwindowname | sed -n 's/\(W[0-9]([0-9]*)\)/\1/p')
 
 if [ -z $tmuxname ]; then
 	id=$(xprop -root | grep _NET_ACTIVE_WINDOW\(WINDOW\) | sed 's/.*# \(.*\)/\1/')
