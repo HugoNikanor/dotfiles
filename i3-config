@@ -178,7 +178,7 @@ mouse_warping output
 hide_edge_borders both
 force_focus_wrapping yes
 
-new_window 1pixel
+new_window pixel 1
 
 # Switch to workspace like xmonad
 # Currently the focus follows the workspace, which is not to good
