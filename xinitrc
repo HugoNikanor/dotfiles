@@ -66,4 +66,5 @@ setxkbmap se custom compose:ralt
 xst r off
 
 
-exec xmonad
+%exec xmonad
+exec i3
