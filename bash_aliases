@@ -26,7 +26,12 @@ alias time="echo \"you want 'date'\"; time"
 # addes lesspipe to the less command
 # allows for a wider range of formats to be
 # opened with less
-LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
+if [ $(hostname) == "arch2012" ]; then
+	LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
+else
+	export LESSOPEN="| /usr/bin/lesspipe %s";
+	export LESSCLOSE="/usr/bin/lesspipe %s %s";
+fi
 
 trash() {
 	if [ $# -eq 1 ]; then
