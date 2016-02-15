@@ -4,9 +4,7 @@ alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
 alias u="cd .."
 alias uu="cd ../.."
 alias uuu="cd ../../.."
-
 alias ll="cd $OLDPWD";
-
 alias l="ls"
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -20,6 +18,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 alias kitty="cat"
+alias nano="echo \"NO!\""
 alias time="echo \"you want 'date'\"; time"
 
 

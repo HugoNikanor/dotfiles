@@ -16,6 +16,7 @@ ln -s "$path/start_tmux"        ~/.start_tmux
 ln -s "$path/kill_window"       ~/bin/texit
 ln -s "$path/dmenu_info_bar"    ~/bin/dmenu_info_bar
 ln -s "$path/tmux.extra.conf"   ~/.tmux.extra.conf
+ln -s "$path/i3-config"         ~/.config/i3/config # the i3 dir might not be there
 
 #ln -s "$path/termite-config"    ~/.config/termite/config
 ln -s "$path/termite" ~/.termite

@@ -26,7 +26,7 @@ call vundle#begin()
 	" Draw lines and boxes
 	Plugin 'hrj/vim-DrawIt'
 
-	Plugin 'lervag/vimtex'
+	"Plugin 'lervag/vimtex'
 
 	Plugin 'scrooloose/nerdtree'
 
