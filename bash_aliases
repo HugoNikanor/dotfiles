@@ -66,7 +66,7 @@ tmp() {
 }
 
 sl() {
-	/usr/bin/sl $*
+	$(which sl) $*
 	ls $*
 }
 
