@@ -37,6 +37,8 @@ bindsym $mod+b exec google-chrome-stable
 # kill focused window
 bindsym $mod+Shift+c kill
 
+bindsym $mod+Shift+s exec systemctl suspend
+
 # start dmenu (a program launcher)
 bindsym $mod+p exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
@@ -108,16 +110,29 @@ bindsym $mod+Shift+u move output DisplayPort-1
 bindsym $mod+i exec notify-send "$(date +%s)"
 
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+#bindsym $mod+1 workspace 1
+#bindsym $mod+2 workspace 2
+#bindsym $mod+3 workspace 3
+#bindsym $mod+4 workspace 4
+#bindsym $mod+5 workspace 5
+#bindsym $mod+6 workspace 6
+#bindsym $mod+7 workspace 7
+#bindsym $mod+8 workspace 8
+#bindsym $mod+9 workspace 9
+#bindsym $mod+0 workspace 10
+
+bindsym $mod+1 exec move-to-workspace 1
+bindsym $mod+2 exec move-to-workspace 2
+bindsym $mod+3 exec move-to-workspace 3
+bindsym $mod+4 exec move-to-workspace 4
+bindsym $mod+5 exec move-to-workspace 5
+bindsym $mod+6 exec move-to-workspace 6
+bindsym $mod+7 exec move-to-workspace 7
+bindsym $mod+8 exec move-to-workspace 8
+bindsym $mod+9 exec move-to-workspace 9
+bindsym $mod+0 exec move-to-workspace 0
+
+bindsym $mod+c exec rename-workspace
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1

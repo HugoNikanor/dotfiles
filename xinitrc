@@ -65,6 +65,7 @@ fi
 setxkbmap se custom compose:ralt
 xst r off
 
+unclutter &
 
 %exec xmonad
 exec i3
