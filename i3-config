@@ -107,6 +107,11 @@ bindsym $mod+Shift+o move output DisplayPort-0
 bindsym $mod+Shift+e move output DVI-0
 bindsym $mod+Shift+u move output DisplayPort-1
 
+#bindsym '$mod+;' move workspace to output DVI-1
+bindsym $mod+Mod1+o move workspace to output DisplayPort-0
+#bindsym '$mod+(' move workspace to output DVI-0
+#bindsym '$mod+)' move workspace to output DisplayPort-1
+
 bindsym $mod+i exec notify-send "$(date +%s)"
 
 # switch to workspace
