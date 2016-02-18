@@ -83,3 +83,4 @@ imgur() {
         grep -Eo '<[a-z_]+>http[^<]+'|sed 's/^<.\|_./\U&/g;s/_/ /;s/<\(.*\)>/\x1B[0;34m\1:\x1B[0m /'
     done
 }
+alias ls='ls -F'
