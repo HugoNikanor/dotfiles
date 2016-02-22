@@ -73,8 +73,8 @@ bindsym $mod+Shift+Right move right
 #bindsym $mod+w workspace next
 #bindsym $mod+m workspace prev
 
-bindsym $mod+w exec next-workspace
-bindsym $mod+m exec prev-workspace
+bindsym $mod+w exec step-workspace 1
+bindsym $mod+m exec step-workspace -1
 
 # split in horizontal orientation
 #bindsym $mod+b split h
@@ -145,8 +145,6 @@ bindsym $mod+8 exec move-to-workspace 8
 bindsym $mod+9 exec move-to-workspace 9
 bindsym $mod+0 exec move-to-workspace 0
 
-bindsym $mod+c exec rename-workspace
-
 # move focused container to workspace
 bindsym $mod+Shift+1 exec move-cont-to-workspace 1
 bindsym $mod+Shift+2 exec move-cont-to-workspace 2
@@ -158,6 +156,11 @@ bindsym $mod+Shift+7 exec move-cont-to-workspace 7
 bindsym $mod+Shift+8 exec move-cont-to-workspace 8
 bindsym $mod+Shift+9 exec move-cont-to-workspace 9
 bindsym $mod+Shift+0 exec move-cont-to-workspace 10
+
+bindsym $mod+Shift+F1 move workspace to output DVI-1
+
+
+bindsym $mod+c exec rename-workspace
 
 # reload the configuration file
 bindsym $mod+Shift+q reload
@@ -225,10 +228,13 @@ new_window pixel 1
 
 for_window [class="gimp"] floating enable
 
+bindsym $mod+F5 exec start-undertale
+
 #Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+#bindsym XF86AudioMute exec start-undertale
 
 # Screen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness

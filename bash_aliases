@@ -4,6 +4,7 @@ alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
 alias u="cd .."
 alias uu="cd ../.."
 alias uuu="cd ../../.."
+alias uuuu="cd ../../../.."
 alias ll="cd $OLDPWD";
 alias l="ls"
 if [ -x /usr/bin/dircolors ]; then
@@ -83,4 +84,4 @@ imgur() {
         grep -Eo '<[a-z_]+>http[^<]+'|sed 's/^<.\|_./\U&/g;s/_/ /;s/<\(.*\)>/\x1B[0;34m\1:\x1B[0m /'
     done
 }
-alias ls='ls -F'
+alias ls="ls --color=always"
