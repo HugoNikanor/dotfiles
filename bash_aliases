@@ -20,7 +20,6 @@ fi
 
 alias kitty="cat"
 alias nano="echo \"NO!\""
-alias time="echo \"you want 'date'\"; time"
 
 
 # addes lesspipe to the less command

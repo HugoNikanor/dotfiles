@@ -113,9 +113,9 @@ fi
 function __prompt_command() {
 	local EXIT="$?"
 	if [ $(hostname) != "arch2012" ]; then
-		PS1="\u "
-	else
 		PS1="\u@\h "
+	else
+		PS1="\u "
 	fi
 
 	# Make the brackets '[]' around the path green if the 

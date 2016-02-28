@@ -62,7 +62,8 @@ if [ "$(hostname)" == "arch2012" ] ; then
 	xrdb -merge ~/.Xresources
 fi
 
-setxkbmap se custom compose:ralt
+#setxkbmap se custom compose:ralt
+setxkbmap se planck
 xst r off
 
 unclutter &
