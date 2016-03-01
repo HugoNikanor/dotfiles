@@ -9,3 +9,5 @@
 [alias]
 	gud = diff HEAD
 	list = log --all --oneline --decorate --graph
+[github]
+	user = HugoNikanor

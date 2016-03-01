@@ -3,3 +3,4 @@ xmonad/*
 !xmonad/xmobar.hs
 
 termite/generated.conf
+secretFiles/
