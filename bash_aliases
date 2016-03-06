@@ -18,6 +18,8 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+alias rename="perl-rename"
+
 alias kitty="cat"
 alias nano="echo \"NO!\""
 

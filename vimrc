@@ -26,7 +26,7 @@ call vundle#begin()
 	" Draw lines and boxes
 	Plugin 'hrj/vim-DrawIt'
 
-	"Plugin 'lervag/vimtex'
+	Plugin 'lervag/vimtex'
 
 	Plugin 'scrooloose/nerdtree'
 
@@ -76,9 +76,13 @@ set shiftwidth=4
 		set shiftwidth=2
 	endfunction
 
+	syntax match Error "\s$"
+
 	autocmd Filetype markdown call SetMdMode()
 	function SetMdMode()
-		colorscheme myDef
+		"colorscheme myDef
+		" highlight double space at the end of line
+		syntax match Visual "\s\{2}$"
 	endfunction
 
 	hi NerdTreeDir ctermfg=blue

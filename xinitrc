@@ -63,7 +63,7 @@ if [ "$(hostname)" == "arch2012" ] ; then
 fi
 
 #setxkbmap se custom compose:ralt
-setxkbmap se planck
+setxkbmap se planck compose:caps
 xst r off
 
 unclutter &
