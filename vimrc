@@ -85,6 +85,12 @@ set shiftwidth=4
 		syntax match Visual "\s\{2}$"
 	endfunction
 
+	autocmd Filetype tex call SetTexMode()
+	function SetTexMode()
+		set textwidth=80
+		set spell spelllang=sv
+	endfunction
+
 	hi NerdTreeDir ctermfg=blue
 	hi NERDtreeExecFile ctermfg=10
 	hi NERDtreeRO ctermfg=06
@@ -163,10 +169,14 @@ set shiftwidth=4
 	endfunction
 	map gx :call HandleURL()<cr>
 
-  function! InterpretScheme()
-    !car % | scheme
-  endfunction
+	function! InterpretScheme()
+		!car % | scheme
+	endfunction
 
+	function! JavaMain()
+		r ~/Templates/java/main
+	endfunction
+	cnoreabbrev JavaMain call JavaMain()
 " }}}
 
 " ex aliases {{{
