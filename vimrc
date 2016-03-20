@@ -32,6 +32,8 @@ call vundle#begin()
 
 	Plugin 'Xuyuanp/nerdtree-git-plugin'
 
+	Plugin 'tpope/vim-surround'
+
 call vundle#end()
 filetype plugin indent on
 
