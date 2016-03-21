@@ -21,7 +21,7 @@ alias rename="perl-rename"
 alias eclim="eclim -command"
 
 alias kitty="cat"
-alias nano="echo \"NO!\""
+alias nano="echo \"Seriously? Why don't you just use Notepade.exe? Or MS Paint?\""
 
 
 # addes lesspipe to the less command
