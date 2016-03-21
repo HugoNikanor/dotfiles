@@ -41,6 +41,7 @@ bindsym $mod+Shift+s exec systemctl suspend
 
 # start dmenu (a program launcher)
 bindsym $mod+p exec dmenu_run
+bindsym $mod+i exec dmenu_info_bar
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -120,7 +121,7 @@ bindsym $mod+Mod1+o move workspace to output DisplayPort-0
 #bindsym '$mod+(' move workspace to output DVI-0
 #bindsym '$mod+)' move workspace to output DisplayPort-1
 
-bindsym $mod+i exec notify-send "$(date +%s)"
+#bindsym $mod+i exec notify-send "$(date +%s)"
 
 # switch to workspace
 #bindsym $mod+1 workspace 1
