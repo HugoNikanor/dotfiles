@@ -148,6 +148,10 @@ if [ -d "$HOME/.gem/ruby/2.3.0/bin" ]; then
 	PATH="$HOME/.gem/ruby/2.3.0/bin:$PATH"
 fi
 
+if [ -f ~/.ghiToken ]; then
+	source ~/.ghiToken
+fi
+
 # eat the error message if 'food' doesn't exist.
 # is it even possible to write something other than hacks in bash?
 fooddata="$(food 2> /dev/null)"

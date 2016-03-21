@@ -26,11 +26,13 @@ call vundle#begin()
 	" Draw lines and boxes
 	Plugin 'hrj/vim-DrawIt'
 
-	"Plugin 'lervag/vimtex'
+	Plugin 'lervag/vimtex'
 
 	Plugin 'scrooloose/nerdtree'
 
 	Plugin 'Xuyuanp/nerdtree-git-plugin'
+
+	Plugin 'tpope/vim-surround'
 
 call vundle#end()
 filetype plugin indent on
@@ -76,9 +78,19 @@ set shiftwidth=4
 		set shiftwidth=2
 	endfunction
 
+	syntax match Error "\s$"
+
 	autocmd Filetype markdown call SetMdMode()
 	function SetMdMode()
-		colorscheme myDef
+		"colorscheme myDef
+		" highlight double space at the end of line
+		syntax match Visual "\s\{2}$"
+	endfunction
+
+	autocmd Filetype tex call SetTexMode()
+	function SetTexMode()
+		set textwidth=80
+		set spell spelllang=sv
 	endfunction
 
 	hi NerdTreeDir ctermfg=blue
@@ -159,10 +171,14 @@ set shiftwidth=4
 	endfunction
 	map gx :call HandleURL()<cr>
 
-  function! InterpretScheme()
-    !car % | scheme
-  endfunction
+	function! InterpretScheme()
+		!car % | scheme
+	endfunction
 
+	function! JavaMain()
+		r ~/Templates/java/main
+	endfunction
+	cnoreabbrev JavaMain call JavaMain()
 " }}}
 
 " ex aliases {{{

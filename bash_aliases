@@ -5,7 +5,6 @@ alias u="cd .."
 alias uu="cd ../.."
 alias uuu="cd ../../.."
 alias uuuu="cd ../../../.."
-alias ll="cd $OLDPWD";
 alias l="ls"
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -17,6 +16,9 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
+
+alias rename="perl-rename"
+alias eclim="eclim -command"
 
 alias kitty="cat"
 alias nano="echo \"NO!\""
@@ -31,6 +33,10 @@ else
 	export LESSOPEN="| /usr/bin/lesspipe %s";
 	export LESSCLOSE="/usr/bin/lesspipe %s %s";
 fi
+
+ll() {
+	cd "$OLDPWD"
+}
 
 trash() {
 	if [ $# -eq 1 ]; then
@@ -62,7 +68,7 @@ extract () {
 }
 
 tmp() {
-	vim ~/tmp/tempFile_`date +%Y-%m-%d_%H:%M:%S`
+	vim /tmp/tempFile_`date +%Y-%m-%d_%H:%M:%S`
 }
 
 sl() {
