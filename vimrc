@@ -104,8 +104,11 @@ set shiftwidth=4
 
 " Key remaps {{{
 	""" maps space to <leader>, and makes it show up with 'showcmd'
-	nnoremap <leader> \
-	nmap <space> \
+	"nnoremap <leader> \
+	"nmap <space> \
+	
+	""nnoremap <space> <leader>
+	let mapleader=" "
 
 	""" Moving between buffers
 	nnoremap <C-J> <C-W><C-J>
@@ -120,6 +123,8 @@ set shiftwidth=4
 	nnoremap <leader>j :JavaCorrect <cr>
 	
 	nnoremap <leader>t iTODO
+
+	nnoremap <leader>s :s/ //g<cr> :nohlsearch<cr>
 
 	nnoremap <leader>d 0D
 	nnoremap <silent> <leader>a :set foldlevel=0 <cr>
