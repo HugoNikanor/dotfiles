@@ -64,7 +64,24 @@ set shiftwidth=4
 
 "" Highlighting
 	syntax on
-	colorscheme comments
+	if $TERM == "linux"
+		"00 black
+		"01 red
+		"02 green
+		"03 orange
+		"04 Blue
+		"05 Purple
+		"06 Cyan
+		"07 White
+		colorscheme default
+		hi Search ctermbg=01
+		hi Comment ctermfg=03
+		hi WildMenu ctermfg=01
+		exec "set listchars=tab:>-,eol:\u00b6,nbsp:_,trail:~"
+	else
+		colorscheme comments
+		exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
+	endif
 	"hi ColorColumn ctermbg=5
 
 	autocmd Filetype lisp call SetLispMode()
@@ -229,7 +246,6 @@ set completeopt=longest,menuone
 " Whitespace highlighting
 " ':set list' to enable
 "exec "set listchars=tab:>\u2015,eol:\u00b6,nbsp:\u2423,trail:~"
-exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
 
 com! FormatJSON %!python -m json.tool
 
