@@ -227,7 +227,7 @@ new_window pixel 1
 #bindsym $mod+9 $x_switch 9
 #bindsym $mod+0 $x_switch 10
 
-for_window [class="gimp"] floating enable
+bindsym $mod+g exec /home/hugo/code/python/org-notify/notifyer.py
 
 bindsym $mod+F5 exec start-undertale
 
@@ -248,3 +248,4 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 for_window [class="feh"] border normal
+for_window [class="gimp-image-window"] floating enable border normal
