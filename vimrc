@@ -19,20 +19,17 @@ call vundle#begin()
 	
 	" Tmux & vim integration, somehow
 	Plugin 'christoomey/vim-tmux-navigator' 
-
 	" Aligning of text
 	Plugin 'godlygeek/tabular'
-
 	" Draw lines and boxes
 	Plugin 'hrj/vim-DrawIt'
-
 	Plugin 'lervag/vimtex'
-
 	Plugin 'scrooloose/nerdtree'
-
 	Plugin 'Xuyuanp/nerdtree-git-plugin'
-
 	Plugin 'tpope/vim-surround'
+	Plugin 'tpope/vim-dispatch'
+	Plugin 'scrooloose/syntastic'
+	Plugin 'ctrlpvim/ctrlp.vim'
 
 call vundle#end()
 filetype plugin indent on
