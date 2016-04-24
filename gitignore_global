@@ -1,10 +1,13 @@
 #general
 bin/
-*~
-*.swp
 *.zip
 *.tar.gz
 *.log
+
+# vim / emacs
+*~
+*.swp
+\#**
 
 #c++
 *.exe
