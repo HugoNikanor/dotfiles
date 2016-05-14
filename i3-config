@@ -249,3 +249,4 @@ bindsym XF86AudioPrev exec playerctl previous
 
 for_window [class="feh"] border normal
 for_window [class="gimp-image-window"] floating enable border normal
+for_window [class="Gvim"] floating enable
