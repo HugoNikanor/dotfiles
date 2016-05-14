@@ -36,6 +36,14 @@ filetype plugin indent on
 
 "}}}
 
+" Plugin settings {{{
+":call SetDrawIt('A','B','C','D','E','F','G')
+":call SetDrawIt("-","|","-","â½","/","/","*")
+" setting these also somethow sets the 'half-cross' pieces...?
+" ─│┼╱╳╲
+" down, side intersect right-down left-down intersect other
+" }}}
+
 " Tabs {{{
 set tabstop=4
 set shiftwidth=4
