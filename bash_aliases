@@ -90,3 +90,4 @@ imgur() {
     done
 }
 alias ls="ls --color=always"
+alias info='info --vi-keys'
