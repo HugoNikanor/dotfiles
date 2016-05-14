@@ -18,6 +18,8 @@ elif [ "$1" == "1337" ]; then
 	curColor="1337"
 elif [ "$1" == "test" ]; then
 	curColor="test"
+elif [ "$1" == "simple" ]; then
+	curOther="simple"
 fi
 
 curColor="$HOME/.termite/selectorFiles/color/$curColor";
