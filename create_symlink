@@ -27,6 +27,12 @@ else
 	echo "no bin directory"
 fi
 
+[ ! -b ~/.config/i3status ] && mkdir ~/.config/i3status
+tput bold
+echo "YOU HAVE TO SYMLING THE I3 STATUS YOUSELF!"
+echo "it should be in ~/.config/i3status/config"
+tput sgr0
+
 ELINK_DIR="~/.elinks"
 if [ -d "`eval echo ${ELINK_DIR//>}`" ]; then
 	ln -s "$path/elinks.conf" ~/.elinks/elinks.conf
