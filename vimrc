@@ -30,6 +30,7 @@ call vundle#begin()
 	Plugin 'tpope/vim-dispatch'
 	Plugin 'scrooloose/syntastic'
 	Plugin 'ctrlpvim/ctrlp.vim'
+	Plugin 'derekwyatt/vim-scala'
 
 call vundle#end()
 filetype plugin indent on
