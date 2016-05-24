@@ -41,7 +41,7 @@ bindsym $mod+Shift+s exec systemctl suspend
 
 # start dmenu (a program launcher)
 bindsym $mod+p exec dmenu_run
-bindsym $mod+i exec dmenu_info_bar
+#bindsym $mod+i exec dmenu_info_bar
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -250,3 +250,14 @@ bindsym XF86AudioPrev exec playerctl previous
 for_window [class="feh"] border normal
 for_window [class="gimp-image-window"] floating enable border normal
 for_window [class="Gvim"] floating enable
+
+#———————————————————————————————————————————————————————————————————————————————
+
+# Termituake!
+bindsym $mod+shift+i                exec start-termite transparent -e tmux --geometry=640x400 --name=floating
+bindsym $mod+i                      [instance="^floating$" class="(?i)termite"] scratchpad show
+#bindsym 0xff9e                      [instance="^floating$" class="(?i)termite"] scratchpad show
+#for_window [instance="^floating$" class="(?i)termite"] floating enable, move position -1px 580px, move scratchpad, sticky toggle, border none
+for_window [instance="^floating$" class="(?i)termite"] floating enable, move position -100px -100px, move scratchpad, sticky toggle, border none
+
+exec compton -b

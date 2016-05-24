@@ -29,4 +29,4 @@ rm "$HOME/.termite/generated.conf"
 for x in $(cat $curColor $curOther); do
 	cat "$HOME/.termite/$x" >> "$HOME/.termite/generated.conf"
 done
-termite -c "$HOME/.termite/generated.conf"
+termite -c "$HOME/.termite/generated.conf" "${@:2}"
