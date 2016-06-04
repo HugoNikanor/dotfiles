@@ -1,5 +1,7 @@
 Xcursor*theme: aero-large-drop
-#Xcursor*size: 10
 xft.dpi: 100
 
 URxvt.scrollBar: false
+
+URxvt*background:  Black
+URxvt*foreground: White
