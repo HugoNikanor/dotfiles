@@ -7,20 +7,20 @@
 
 
 # start tmux if tmux isn't runnig
-[[ $- != *i* ]] && return
-#if [ -z "$TMUX" ] && [ "$(hostname)" != "HPlinux" ]; then
-if [ -z "$TMUX" ]; then
-	source .start_tmux
-fi
+#[[ $- != *i* ]] && return
+##if [ -z "$TMUX" ] && [ "$(hostname)" != "HPlinux" ]; then
+#if [ -z "$TMUX" ]; then
+#	source .start_tmux
+#fi
 
-desktopEnv=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')
+#desktopEnv=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')
 
 # this should possibly have some sort of check if the system is running
 # by itself or if it's controlled via ssh or the like
-if [ -n "$TMUX" ] && [ "$desktopEnv" == "xmonad" ]; then
-	sname=$(tmux display-message -p '#S')
-	tmux set-option set-titles-string "$sname"
-fi
+#if [ -n "$TMUX" ] && [ "$desktopEnv" == "xmonad" ]; then
+#	sname=$(tmux display-message -p '#S')
+#	tmux set-option set-titles-string "$sname"
+#fi
 
 
 
@@ -104,14 +104,15 @@ fi
 # Sets vim to some sort of default editor
 export VISUAL=/usr/bin/vim
 export EDITOR="/usr/bin/vim"
-if [ -n $TMUX ]; then
-	export BROWSER="tmux new-window -n elinks(auto) $(which elinks)"
-else
-	export BROWSER="$(which elinks)"
-fi
+#if [ -n $TMUX ]; then
+#	export BROWSER="tmux new-window -n elinks(auto) $(which elinks)"
+#else
+#	export BROWSER="$(which elinks)"
+#fi
 
 function __prompt_command() {
 	local EXIT="$?"
+	# I'm only interested in the hostname if I'm not at home
 	if [ $(hostname) != "arch2012" ]; then
 		PS1="\u@\h "
 	else
@@ -154,7 +155,7 @@ fi
 
 # eat the error message if 'food' doesn't exist.
 # is it even possible to write something other than hacks in bash?
-fooddata="$(food 2> /dev/null)"
-if [ $? == 0 ]; then
-	echo "$fooddata"
-fi
+#fooddata="$(food 2> /dev/null)"
+#if [ $? == 0 ]; then
+#	echo "$fooddata"
+#fi
