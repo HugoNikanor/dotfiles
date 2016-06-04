@@ -35,3 +35,20 @@ workbench.xmi
 *.fls
 *.dvi
 *.pdf
+
+# Unity
+Temp/
+Library/
+
+# MonoDevelop
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+/*.csproj
+*.pidb
+*.suo
+/*.sln
+*.user
+*.unityproj
+*.booproj
