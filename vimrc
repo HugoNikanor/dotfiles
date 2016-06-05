@@ -262,6 +262,14 @@ com! FormatJSON %!python -m json.tool
 
 "}}}
 
+" Raw TTY {{{
+if &term == "linux"
+	" Note that the preto colorscheme needs to be downloaded
+	" https://github.com/ewilazarus/preto
+	colorscheme preto
+endif
+" }}}
+
 " GUI {{{
 " This sholud possibly be split into .gvimrc
 if has("gui_running")
