@@ -147,7 +147,7 @@ set shiftwidth=4
 	
 	nnoremap <leader>t iTODO
 
-	nnoremap <leader>s :s/ //g<cr> :nohlsearch<cr>
+	nnoremap <leader>s :%s/\s\+$// <cr>
 
 	nnoremap <leader>d 0D
 	nnoremap <silent> <leader>a :set foldlevel=0 <cr>
@@ -207,6 +207,7 @@ set shiftwidth=4
 		r ~/Templates/java/main
 	endfunction
 	cnoreabbrev JavaMain call JavaMain()
+
 " }}}
 
 " ex aliases {{{
