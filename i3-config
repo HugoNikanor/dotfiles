@@ -104,20 +104,20 @@ bindsym $mod+v focus parent
 # focus the child container
 bindsym $mod+z focus child
 
-bindsym $mod+a focus output DVI-1
-bindsym $mod+o focus output DisplayPort-0
-bindsym $mod+e focus output DVI-0
-bindsym $mod+u focus output DisplayPort-1
+#bindsym $mod+a focus output DVI-1
+bindsym $mod+o focus output DVI-1
+bindsym $mod+e focus output DisplayPort-1
+bindsym $mod+u focus output DVI-0
 
-bindsym $mod+Shift+a move output DVI-1
-bindsym $mod+Shift+o move output DisplayPort-0
-bindsym $mod+Shift+e move output DVI-0
-bindsym $mod+Shift+u move output DisplayPort-1
+#bindsym $mod+Shift+a move output 
+bindsym $mod+Shift+o move output DVI-1
+bindsym $mod+Shift+e move output DisplayPort-1
+bindsym $mod+Shift+u move output DVI-0
 
 # TODO have some way to move a workspace to another screen
 
 #bindsym '$mod+;' move workspace to output DVI-1
-bindsym $mod+Mod1+o move workspace to output DisplayPort-0
+#bindsym $mod+Mod1+o move workspace to output DisplayPort-0
 #bindsym '$mod+(' move workspace to output DVI-0
 #bindsym '$mod+)' move workspace to output DisplayPort-1
 
@@ -158,7 +158,7 @@ bindsym $mod+Shift+8 exec move-cont-to-workspace 8
 bindsym $mod+Shift+9 exec move-cont-to-workspace 9
 bindsym $mod+Shift+0 exec move-cont-to-workspace 10
 
-bindsym $mod+Shift+F1 move workspace to output DVI-1
+#bindsym $mod+Shift+F1 move workspace to output DVI-1
 
 
 bindsym $mod+c exec rename-workspace
@@ -250,6 +250,9 @@ bindsym XF86AudioPrev exec playerctl previous
 for_window [class="feh"] border normal
 for_window [class="gimp-image-window"] floating enable border normal
 for_window [class="Gvim"] floating enable
+for_window [class="nautilus"] floating enable
+
+bindsym $mod+q exec xdotool key "U`echo "" | dmenu`"
 
 #———————————————————————————————————————————————————————————————————————————————
 
