@@ -7,6 +7,7 @@ ln -s "$path/gitignore_global"  ~/.gitignore_global
 ln -s "$path/inputrc"           ~/.inputrc
 ln -s "$path/tmux.conf"         ~/.tmux.conf
 ln -s "$path/vimrc"             ~/.vimrc
+ln -s "$path/gvimrc"            ~/.gvimrc
 ln -s "$path/bash_aliases"      ~/.bash_aliases
 ln -s "$path/bash_profile"      ~/.bash_profile
 ln -s "$path/xinitrc"           ~/.xinitrc
