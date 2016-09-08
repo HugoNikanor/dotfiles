@@ -65,6 +65,8 @@ set shiftwidth=4
 " Soft tabs in haskell
 	autocmd BufNewFile,BufRead *.hs set expandtab
 
+	set softtabstop=4
+	autocmd Filetype python set expandtab
 "}}}
 
 " Higlighting {{{
