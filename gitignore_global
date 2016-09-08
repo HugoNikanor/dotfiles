@@ -35,6 +35,7 @@ workbench.xmi
 *.fls
 *.dvi
 *.pdf
+*.keywords
 
 #Python
 __pycache__/
