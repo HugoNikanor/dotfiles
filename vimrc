@@ -113,7 +113,7 @@ set shiftwidth=4
 	autocmd Filetype tex call SetTexMode()
 	function SetTexMode()
 		set textwidth=80
-		set spell spelllang=sv
+		set spell spelllang=en
 	endfunction
 
 	hi NerdTreeDir ctermfg=blue
