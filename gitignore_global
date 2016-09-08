@@ -36,6 +36,9 @@ workbench.xmi
 *.dvi
 *.pdf
 
+#Python
+__pycache__/
+
 # Unity
 Temp/
 Library/
