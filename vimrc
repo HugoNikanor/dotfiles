@@ -115,7 +115,19 @@ set shiftwidth=4
 	autocmd Filetype tex call SetTexMode()
 	function SetTexMode()
 		set textwidth=80
-		set spell spelllang=en
+
+		" Turn on spell for language babel is given. Otherwise turn off spell
+		set spell
+		" Get language argument from babel inport,
+		" Strip newline
+		let @a = system("grep -oP '(?<=\\\\usepackage\\[)[^\\]]*(?=\\]{babel})' " .  expand('%:p') . "| tr -d '\n'")
+		if @a == "swedish"
+			set spell spelllang=sv
+		elseif @a == "english"
+			set spell spelllang=en
+		else
+			set nospell
+		endif
 	endfunction
 
 	hi NerdTreeDir ctermfg=blue
