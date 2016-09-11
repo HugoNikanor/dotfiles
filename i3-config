@@ -144,7 +144,7 @@ bindsym $mod+6 exec move-to-workspace 6
 bindsym $mod+7 exec move-to-workspace 7
 bindsym $mod+8 exec move-to-workspace 8
 bindsym $mod+9 exec move-to-workspace 9
-bindsym $mod+0 exec move-to-workspace 0
+bindsym $mod+0 exec move-to-workspace 10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 exec move-cont-to-workspace 1
