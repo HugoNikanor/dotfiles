@@ -75,7 +75,7 @@ set shiftwidth=4
 
 "" Highlighting
 	syntax on
-	if $TERM == "linux"
+	if $TERM ==? "linux"
 		"00 black
 		"01 red
 		"02 green
@@ -88,10 +88,15 @@ set shiftwidth=4
 		hi Search ctermbg=01
 		hi Comment ctermfg=03
 		hi WildMenu ctermfg=01
-		exec "set listchars=tab:>-,eol:\u00b6,nbsp:_,trail:~"
-	else
+		exec "set listchars=tab:>-,eol:%,nbsp:_,trail:~"
+	" This won't target xterm-termite, change termite to match
+	elseif $TERM ==? "xterm"
 		colorscheme comments
 		exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
+	else " This should be targeted at tmux
+		"colorscheme preto
+		exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
+		syntax off
 	endif
 	"hi ColorColumn ctermbg=5
 
@@ -121,9 +126,9 @@ set shiftwidth=4
 		" Get language argument from babel inport,
 		" Strip newline
 		let @a = system("grep -oP '(?<=\\\\usepackage\\[)[^\\]]*(?=\\]{babel})' " .  expand('%:p') . "| tr -d '\n'")
-		if @a == "swedish"
+		if @a ==? "swedish"
 			set spell spelllang=sv
-		elseif @a == "english"
+		elseif @a ==? "english"
 			set spell spelllang=en
 		else
 			set nospell
@@ -276,13 +281,5 @@ com! FormatJSON %!python -m json.tool
 
 
 "}}}
-
-" Raw TTY {{{
-if &term == "linux"
-	" Note that the preto colorscheme needs to be downloaded
-	" https://github.com/ewilazarus/preto
-	colorscheme preto
-endif
-" }}}
 
 	syntax match Error "\s$"
