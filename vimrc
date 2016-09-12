@@ -108,7 +108,6 @@ set shiftwidth=4
 		set shiftwidth=2
 	endfunction
 
-	syntax match Error "\s$"
 
 	autocmd Filetype markdown call SetMdMode()
 	function SetMdMode()
@@ -141,6 +140,7 @@ set shiftwidth=4
 	hi NERDtreeOpenable ctermfg=07
 	hi NERDtreeClosable ctermfg=07
 
+	syntax match Error "\s$"
 
 "}}}
 
@@ -282,4 +282,3 @@ com! FormatJSON %!python -m json.tool
 
 "}}}
 
-	syntax match Error "\s$"
