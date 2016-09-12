@@ -21,6 +21,7 @@ ln -s "$path/i3-config"         ~/.config/i3/config # the i3 dir might not be th
 
 #ln -s "$path/termite-config"    ~/.config/termite/config
 ln -s "$path/termite" ~/.termite
+ln -s "$path/vim" ~/.vim
 
 if [ -n "~/bin" ]; then
 	ln -s "$path/start-termite" ~/bin/start-termite
