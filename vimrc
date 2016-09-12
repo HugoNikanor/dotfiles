@@ -16,9 +16,9 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 	Plugin 'VundleVim/Vundle.vim'
-	
+
 	" Tmux & vim integration, somehow
-	Plugin 'christoomey/vim-tmux-navigator' 
+	Plugin 'christoomey/vim-tmux-navigator'
 	" Aligning of text
 	Plugin 'godlygeek/tabular'
 	" Draw lines and boxes
@@ -148,7 +148,7 @@ set shiftwidth=4
 	""" maps space to <leader>, and makes it show up with 'showcmd'
 	"nnoremap <leader> \
 	"nmap <space> \
-	
+
 	""nnoremap <space> <leader>
 	let mapleader=" "
 
@@ -160,10 +160,10 @@ set shiftwidth=4
 
 	""" Leader maps
 	nnoremap <silent> <leader>o :nohlsearch <cr>
-	nnoremap <leader>h :vertical help 
+	nnoremap <leader>h :vertical help
 	" Used by eclim to fix everything
 	nnoremap <leader>j :JavaCorrect <cr>
-	
+
 	nnoremap <leader>t iTODO
 
 	nnoremap <leader>s :%s/\s\+$// <cr>
@@ -179,7 +179,7 @@ set shiftwidth=4
 	nnoremap gj j
 	nnoremap gk k
 
-"}}}	
+"}}}
 
 " Folding {{{
 	set foldmethod=marker
