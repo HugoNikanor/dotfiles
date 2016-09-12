@@ -3,5 +3,8 @@ xft.dpi: 100
 
 URxvt.scrollBar: false
 
-URxvt*background:  Black
+URxvt*background: Black
 URxvt*foreground: White
+
+XTerm*background: Black
+XTerm*foreground: White
