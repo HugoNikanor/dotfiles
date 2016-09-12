@@ -89,8 +89,7 @@ set shiftwidth=4
 		hi Comment ctermfg=03
 		hi WildMenu ctermfg=01
 		exec "set listchars=tab:>-,eol:%,nbsp:_,trail:~"
-	" This won't target xterm-termite, change termite to match
-	elseif $TERM ==? "xterm"
+	elseif ($TERM ==? "xterm") + ($TERM ==? "xterm-termite")
 		colorscheme comments
 		exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
 	else " This should be targeted at tmux
