@@ -1,0 +1,7 @@
+# This file is sourced by i3 upon logon, maybe also other window managers...
+
+if [ -d "$HOME/bin" ]; then
+	PATH="$HOME/bin:$PATH"
+fi
+
+setxkbmap se dvorak
