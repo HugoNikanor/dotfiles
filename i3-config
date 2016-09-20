@@ -104,14 +104,13 @@ bindsym $mod+v focus parent
 # focus the child container
 bindsym $mod+z focus child
 
-# TODO remaining monitor names
-bindsym $mod+o exec "i3-msg focus output `get-output-name left`"
-bindsym $mod+e exec "i3-msg focus output `get-output-name normal`"
-bindsym $mod+u exec "i3-msg focus output `get-output-name right`"
+bindsym $mod+o exec "i3-msg focus output `get-output-by-no 1`"
+bindsym $mod+e exec "i3-msg focus output `get-output-by-no 2`"
+bindsym $mod+u exec "i3-msg focus output `get-output-by-no 3`"
 
-bindsym $mod+Shift+o exec "i3-msg move output `get-output-name left`
-bindsym $mod+Shift+e exec "i3-msg move output `get-output-name normal`
-bindsym $mod+Shift+u exec "i3-msg move output `get-output-name right`
+bindsym $mod+Shift+o exec "i3-msg move output `get-output-by-no 1`"
+bindsym $mod+Shift+e exec "i3-msg move output `get-output-by-no 2`"
+bindsym $mod+Shift+u exec "i3-msg move output `get-output-by-no 3`"
 
 # TODO have some way to move a workspace to another screen
 
