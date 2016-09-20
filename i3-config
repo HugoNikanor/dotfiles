@@ -104,15 +104,14 @@ bindsym $mod+v focus parent
 # focus the child container
 bindsym $mod+z focus child
 
-#bindsym $mod+a focus output DVI-1
-bindsym $mod+o focus output DVI-1
-bindsym $mod+e focus output DisplayPort-1
-bindsym $mod+u focus output DVI-0
+# TODO remaining monitor names
+bindsym $mod+o exec "i3-msg focus output `get-output-name left`"
+bindsym $mod+e exec "i3-msg focus output `get-output-name normal`"
+bindsym $mod+u exec "i3-msg focus output `get-output-name right`"
 
-#bindsym $mod+Shift+a move output 
-bindsym $mod+Shift+o move output DVI-1
-bindsym $mod+Shift+e move output DisplayPort-1
-bindsym $mod+Shift+u move output DVI-0
+bindsym $mod+Shift+o exec "i3-msg move output `get-output-name left`
+bindsym $mod+Shift+e exec "i3-msg move output `get-output-name normal`
+bindsym $mod+Shift+u exec "i3-msg move output `get-output-name right`
 
 # TODO have some way to move a workspace to another screen
 
