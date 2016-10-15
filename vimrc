@@ -84,7 +84,7 @@ set shiftwidth=4
 		"05 Purple
 		"06 Cyan
 		"07 White
-		colorscheme default
+		colorscheme comments-simple
 		hi Search ctermbg=01
 		hi Comment ctermfg=03
 		hi WildMenu ctermfg=01
@@ -94,8 +94,9 @@ set shiftwidth=4
 		exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
 	else " This should be targeted at tmux
 		"colorscheme preto
-		exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
-		syntax off
+		colorscheme comments-simple
+		exec "set listchars=tab:>-,eol:\u00b6,nbsp:\u2423,trail:~"
+		"syntax off
 	endif
 	"hi ColorColumn ctermbg=5
 
