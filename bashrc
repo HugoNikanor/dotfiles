@@ -1,29 +1,7 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
-
-
-# start tmux if tmux isn't runnig
-#[[ $- != *i* ]] && return
-##if [ -z "$TMUX" ] && [ "$(hostname)" != "HPlinux" ]; then
-#if [ -z "$TMUX" ]; then
-#	source .start_tmux
-#fi
-
-#desktopEnv=$(wmctrl -m | tr '\n' ' ' | sed 's/^Name:\s\([^ ]*\).*/\1/g')
-
-# this should possibly have some sort of check if the system is running
-# by itself or if it's controlled via ssh or the like
-#if [ -n "$TMUX" ] && [ "$desktopEnv" == "xmonad" ]; then
-#	sname=$(tmux display-message -p '#S')
-#	tmux set-option set-titles-string "$sname"
-#fi
-
-
-
 
 # Normal Colors
 Black='\e[0;30m'        # Black
@@ -69,28 +47,6 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color) color_prompt=yes;;
-esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -104,11 +60,6 @@ fi
 # Sets vim to some sort of default editor
 export VISUAL=/usr/bin/vim
 export EDITOR="/usr/bin/vim"
-#if [ -n $TMUX ]; then
-#	export BROWSER="tmux new-window -n elinks(auto) $(which elinks)"
-#else
-#	export BROWSER="$(which elinks)"
-#fi
 
 function __prompt_command() {
 	local EXIT="$?"
@@ -152,10 +103,3 @@ fi
 if [ -f ~/.ghiToken ]; then
 	source ~/.ghiToken
 fi
-
-# eat the error message if 'food' doesn't exist.
-# is it even possible to write something other than hacks in bash?
-#fooddata="$(food 2> /dev/null)"
-#if [ $? == 0 ]; then
-#	echo "$fooddata"
-#fi

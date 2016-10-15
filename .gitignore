@@ -1,6 +1,2 @@
-xmonad/*
-!xmonad/xmonad.hs
-!xmonad/xmobar.hs
-
 termite/generated.conf
 secretFiles/
