@@ -278,7 +278,8 @@ set completeopt=longest,menuone
 
 com! FormatJSON %!python -m json.tool
 
-
+" disable terminal flashing on error
+set t_vb=
 
 "}}}
 
