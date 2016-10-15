@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Semi program for setting up symlinks. Should probably be replaced
+# with a Makefile, and possibly rethought.
+
 path="$(dirname "$(realpath "$0")")"
 ln -s "$path/bashrc"            ~/.bashrc
 ln -s "$path/gitconfig"         ~/.gitconfig
