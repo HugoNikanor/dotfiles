@@ -3,7 +3,7 @@
 	editor = vim
 [user]
 	email = hugo.hornquist@gmail.com
-	name = Hugo
+	name = Hugo Hörnquist
 [push]
 	default = current
 [alias]
