@@ -1,28 +1,42 @@
-
-alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
-#lias asdf="setxkbmap se custom compose:ralt"
+# propper aliases
 alias u="cd .."
 alias uu="cd ../.."
 alias uuu="cd ../../.."
 alias uuuu="cd ../../../.."
 alias l="ls"
+alias info='info --vi-keys'
+
+# aliases of questionable quality 
+alias rename="perl-rename"
+alias eclim="eclim -command"
+alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
+
+# joke aliases
+alias kitty="cat"
+alias nano="echo \"Seriously? Why don't you just use Notepade.exe? Or MS Paint?\""
+
+# enable colors if available
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=always'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
+    alias ls='ls --color=auto'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
 
-alias rename="perl-rename"
-alias eclim="eclim -command"
-
-alias kitty="cat"
-alias nano="echo \"Seriously? Why don't you just use Notepade.exe? Or MS Paint?\""
-
+ll() {
+	cd "$OLDPWD"
+}
+x() {
+	chmod +x $1
+}
+sl() {
+	$(which sl) $*
+	ls $*
+}
+tmp() {
+	vim /tmp/tempFile_`date +%Y-%m-%dT%H:%M:%S`
+}
 
 # addes lesspipe to the less command
 # allows for a wider range of formats to be
@@ -33,18 +47,6 @@ else
 	export LESSOPEN="| /usr/bin/lesspipe %s";
 	export LESSCLOSE="/usr/bin/lesspipe %s %s";
 fi
-
-ll() {
-	cd "$OLDPWD"
-}
-
-trash() {
-	if [ $# -eq 1 ]; then
-		mv $1 ~/Trash/
-	else
-		rm $*
-	fi
-}
 
 extract () {
 	if [ -f $1 ] ; then
@@ -67,22 +69,3 @@ extract () {
 	fi
 }
 
-tmp() {
-	vim /tmp/tempFile_`date +%Y-%m-%d_%H:%M:%S`
-}
-
-sl() {
-	$(which sl) $*
-	ls $*
-}
-
-# close current terminal window if it's an tmux session
-#texit() {
-#	~/.kill_window
-#}
-
-alias ls="ls --color=always"
-alias info='info --vi-keys'
-function x() {
-	chmod +x $1
-}
