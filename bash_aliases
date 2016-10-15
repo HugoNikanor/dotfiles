@@ -5,6 +5,8 @@ alias uuu="cd ../../.."
 alias uuuu="cd ../../../.."
 alias l="ls"
 alias info='info --vi-keys'
+alias ll="cd -"
+alias x="chmod +x"
 
 # aliases of questionable quality 
 alias rename="perl-rename"
@@ -24,12 +26,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-ll() {
-	cd "$OLDPWD"
-}
-x() {
-	chmod +x $1
-}
 sl() {
 	$(which sl) $*
 	ls $*
