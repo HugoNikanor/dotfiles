@@ -33,6 +33,9 @@ sl() {
 tmp() {
 	vim /tmp/tempFile_`date +%Y-%m-%dT%H:%M:%S`
 }
+irc() {
+	ssh -t remote@actuallysan.tk tmux attach -t irssi
+}
 
 # addes lesspipe to the less command
 # allows for a wider range of formats to be
