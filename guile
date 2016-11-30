@@ -1,0 +1,25 @@
+;(add-to-load-path "/home/hugo/lib/guile")
+(add-to-load-path "/home/hugo/code/guile/lib")
+
+(add-to-load-path ".")
+
+;(load-modules (utils disp))
+
+(define-syntax displayln
+  (syntax-rules
+    ()
+    ((_ data)
+     (begin (display data)
+            (newline)))
+    ((_ data port)
+     (begin (display data port)
+            (newline port)))))
+
+(define-syntax l
+  (syntax-rules ()
+    ((_ file)
+     (load (string-append (symbol->string file) ".scm")))))
+
+(use-modules (ice-9 readline))
+(activate-readline)
+;,option prompt "> "
