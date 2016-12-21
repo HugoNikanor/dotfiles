@@ -140,7 +140,7 @@ set shiftwidth=4
 	hi NERDtreeOpenable ctermfg=07
 	hi NERDtreeClosable ctermfg=07
 
-	syntax match Error "\s$"
+	syntax match Error "\s*$"
 
 "}}}
 
