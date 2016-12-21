@@ -12,6 +12,7 @@ alias x="chmod +x"
 alias rename="perl-rename"
 alias eclim="eclim -command"
 alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
+alias em="emacsclient -c"
 
 # joke aliases
 alias kitty="cat"
@@ -34,6 +35,7 @@ tmp() {
 	vim /tmp/tempFile_`date +%Y-%m-%dT%H:%M:%S`
 }
 irc() {
+	export TERM=xterm
 	ssh -t remote@actuallysan.tk tmux attach -t irssi
 }
 

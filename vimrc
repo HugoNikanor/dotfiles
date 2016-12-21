@@ -140,7 +140,7 @@ set shiftwidth=4
 	hi NERDtreeOpenable ctermfg=07
 	hi NERDtreeClosable ctermfg=07
 
-	syntax match Error "\s$"
+	syntax match Error "\s*$"
 
 "}}}
 
@@ -227,6 +227,20 @@ set shiftwidth=4
 	endfunction
 	cnoreabbrev JavaMain call JavaMain()
 
+" }}}
+
+" Binary Files {{{
+" I'm not actually sure that this work as intended
+" When I tried it on a larger wav file it might have corrupted it.
+function! BinaryEdit()
+	set binary
+	set noeol
+	%!xxd
+endfunction
+" the wav can be extended to match any types of binary files
+autocmd BufNewFile,BufRead *.wav silent call BinaryEdit()
+autocmd BufWritePre *.wav silent %!xxd -r
+autocmd BufWritePost *.wav silent %!xxd
 " }}}
 
 " ex aliases {{{
