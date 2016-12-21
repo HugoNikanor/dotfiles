@@ -103,3 +103,12 @@ fi
 if [ -f ~/.ghiToken ]; then
 	source ~/.ghiToken
 fi
+
+case $TERM in
+	xterm-256color)
+		alias ls=tyls
+		alias cat=tycat
+		;;
+	xterm-termite)
+		;;
+esac
