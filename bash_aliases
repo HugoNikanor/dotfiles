@@ -36,7 +36,7 @@ tmp() {
 }
 irc() {
 	export TERM=xterm
-	ssh -t remote@actuallysan.tk tmux attach -t irssi
+	ssh -t hugo@hornquist.se tmux attach -t irc
 }
 
 # addes lesspipe to the less command
