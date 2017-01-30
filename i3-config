@@ -251,6 +251,7 @@ for_window [class="Gvim"] floating enable
 for_window [class="nautilus"] floating enable
 
 bindsym $mod+q exec xdotool key "U`echo "" | dmenu`"
+bindsym $mod+y exec passmenu
 
 #———————————————————————————————————————————————————————————————————————————————
 
