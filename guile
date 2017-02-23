@@ -1,19 +1,14 @@
 ;(add-to-load-path "/home/hugo/lib/guile")
 (add-to-load-path "/home/hugo/code/guile/lib")
 
-(add-to-load-path ".")
+;(add-to-load-path ".")
+;(add-to-load-path "/home/hugo/")
 
 ;(load-modules (utils disp))
 
-(define-syntax displayln
-  (syntax-rules
-    ()
-    ((_ data)
-     (begin (display data)
-            (newline)))
-    ((_ data port)
-     (begin (display data port)
-            (newline port)))))
+;(define* (displayln data #:optional (port (current-output-port)))
+;         (display data port)
+;		          (newline port))
 
 (define-syntax l
   (syntax-rules ()
