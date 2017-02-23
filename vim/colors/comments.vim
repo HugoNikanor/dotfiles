@@ -16,6 +16,8 @@ highlight Normal ctermfg=NONE ctermbg=NONE guifg=#dddddd guibg=#505050
 
 " Syntax highlighting (other color-groups using default, see :help group-name):
 highlight Comment      cterm=NONE        ctermfg=08
+highlight String       cterm=NONE        ctermfg=08
+highlight Keyword      cterm=NONE        ctermfg=08
 highlight Constant     cterm=NONE        ctermfg=NONE
 highlight Identifier   cterm=NONE        ctermfg=NONE
 highlight Function     cterm=NONE        ctermfg=NONE
