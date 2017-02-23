@@ -9,10 +9,12 @@ alias ll="cd -"
 alias x="chmod +x"
 
 # aliases of questionable quality 
-alias rename="perl-rename"
+[ -x /usr/bin/perl-rename ] && alias rename="perl-rename"
 alias eclim="eclim -command"
 alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
-alias em="emacsclient -c"
+emacs() {
+	emacsclient -ca "" $* &
+}
 
 # joke aliases
 alias kitty="cat"
@@ -23,8 +25,6 @@ if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
 fi
 
 sl() {
@@ -32,11 +32,16 @@ sl() {
 	ls $*
 }
 tmp() {
-	vim /tmp/tempFile_`date +%Y-%m-%dT%H:%M:%S`
+	vim /tmp/file-`date +%Y-%m-%dT%H:%M:%S`
+}
+# Sets the TERM to something more widely recongnised, when needed
+ssh() {
+	[ $TERM == "xterm-termite" ] && export TERM=xterm
+	$(which ssh) $*
 }
 irc() {
-	export TERM=xterm
-	ssh -t remote@actuallysan.tk tmux attach -t irssi
+	url=hugo@hornquist.se
+	ssh -t $url tmux attach -t irc
 }
 
 # addes lesspipe to the less command
