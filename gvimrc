@@ -1,5 +1,6 @@
-" My GVim is set up to be a quick note window.
-" This means that 80x24 characters, and no decorations
+" Set's up GVim as a small floating terminal,
+" The floating part should be handled by the window manager 
+
 set lines=24 columns=80
 " disables all silly gui stuff
 set guioptions-=m
@@ -17,3 +18,9 @@ set noshowcmd
 set statusline=""
 
 colorscheme darkblue
+
+" Make the Gui Window semi transparent.
+" This should preferably be changed so it's set in the wm settings
+autocmd GUIEnter    * silent exec "!transset-df -a 0.9"
+"autocmd FocusLost   * exec "!transset-df -n "GVIM$" 0.5"
+"autocmd FocusGained * exec "!transset-df -a 0.9"
