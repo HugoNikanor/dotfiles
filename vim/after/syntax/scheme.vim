@@ -1,4 +1,5 @@
 syn region Comment start=/#|/ end=/|#/
+syn region Comment start=/#!/ end=/!#/
 
 " TODO check if there's a better way to do this
 syn region Keyword start=/#:/ end=/ / 
