@@ -1,0 +1,5 @@
+source ~/.mutt/vim
+
+set realname = "Hugo Hörnquist"
+
+folder-hook 'imaps://imap.lysator.liu.se' 'source ~/.mutt/lysator.account'
