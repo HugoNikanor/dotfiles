@@ -1,27 +1,5 @@
 # vim:ft=muttrc
 
-# This file is meant to be sourced from the main Mutt configuration file
-
-set sort     = threads
-set sort_aux = last-date-received
-
-set index_format  = "%[%b %d %H:%M]   %-15.15L   %?M?<%03M> &      ?%s"
-set status_format = "%f (%s) (%?V?limited to '%V'&no limit pattern?) (%P)"
-
-set menu_scroll
-
-set editor = vim
-
-# I18n
-
-set charset      = utf-8
-set send_charset = utf-8
-
-# Caching
-
-set header_cache     = ~/.mutt_cache
-set message_cachedir = ~/.mutt_cache
-
 # Vim-like keybindings
 
 # Index

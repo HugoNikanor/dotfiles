@@ -1,5 +1,43 @@
 source ~/.mutt/vim
 
+set sort     = threads
+set sort_aux = last-date-received
+
+set index_format  = "%[%b %d %H:%M]   %-15.15L   %?M?<%03M> &      ?%s"
+set status_format = "%f (%s) (%?V?limited to '%V'&no limit pattern?) (%P)"
+
+set menu_scroll
+
+set editor = vim
+
+# I18n
+
+set charset      = utf-8
+set send_charset = utf-8
+
+# Caching
+
+set header_cache     = ~/.mutt_cache
+set message_cachedir = ~/.mutt_cache
+
+################################################################################
+
 set realname = "Hugo Hörnquist"
 
-folder-hook 'imaps://imap.lysator.liu.se' 'source ~/.mutt/lysator.account'
+macro index <f2> '<change-folder>imaps://hugo@imap.lysator.liu.se<enter>'
+macro index <f3> '<change-folder>imaps://propaganda@vastgota.nation.liu.se@imap.gmail.com<enter>'
+
+#macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/lysator.account<enter><change-folder>!<enter>'
+
+#folder-hook 'imaps://imap.lysator.liu.se' 'source ~/.mutt/lysator.account'
+
+account-hook . "unset imap_user; unset imap_pass; unset tunnel"
+account-hook "lysator.liu.se" source ~/.mutt/lysator.account
+account-hook "vastgota.nation.liu.se" source ~/.mutt/propaganda.account
+account-hook "gmail.com" source ~/.mutt/hugo.hornquist@gmail.account
+
+# set default account by sourcing that config
+#
+# spoolfile is [INBOX]
+#
+# The arch wiki has rather good documentation
