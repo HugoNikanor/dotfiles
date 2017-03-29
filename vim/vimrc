@@ -50,23 +50,23 @@ set tabstop=4
 set shiftwidth=4
 
 " Sets the tabwith to 2 for html files
-	autocmd BufNewFile,BufRead *.html set tabstop=2
-	autocmd BufNewFile,BufRead *.html set shiftwidth=2
+	autocmd BufNewFile,BufRead *.html setlocal tabstop=2
+	autocmd BufNewFile,BufRead *.html setlocal shiftwidth=2
 
-	autocmd BufNewFile,BufRead *.htm  set tabstop=2
-	autocmd BufNewFile,BufRead *.htm  set shiftwidth=2
+	autocmd BufNewFile,BufRead *.htm  setlocal tabstop=2
+	autocmd BufNewFile,BufRead *.htm  setlocal shiftwidth=2
 
-	autocmd BufNewFile,BufRead *.php  set tabstop=2
-	autocmd BufNewFile,BufRead *.php  set shiftwidth=2
+	autocmd BufNewFile,BufRead *.php  setlocal tabstop=2
+	autocmd BufNewFile,BufRead *.php  setlocal shiftwidth=2
 
-	autocmd BufNewFile,BufRead *.css  set tabstop=4
-	autocmd BufNewFile,BufRead *.css  set shiftwidth=4
+	autocmd BufNewFile,BufRead *.css  setlocal tabstop=4
+	autocmd BufNewFile,BufRead *.css  setlocal shiftwidth=4
 
 " Soft tabs in haskell
-	autocmd BufNewFile,BufRead *.hs set expandtab
+	autocmd BufNewFile,BufRead *.hs setlocal expandtab
 
 	set softtabstop=4
-	autocmd Filetype python set expandtab
+	autocmd Filetype python setlocal expandtab
 "}}}
 
 " Higlighting {{{
@@ -103,9 +103,9 @@ set shiftwidth=4
 	autocmd Filetype lisp call SetLispMode()
 	autocmd Filetype scheme call SetLispMode()
 	function SetLispMode()
-		set expandtab
-		set tabstop=2
-		set shiftwidth=2
+		setlocal expandtab
+		setlocal tabstop=2
+		setlocal shiftwidth=2
 	endfunction
 
 
@@ -118,19 +118,19 @@ set shiftwidth=4
 
 	autocmd Filetype tex call SetTexMode()
 	function SetTexMode()
-		set textwidth=80
+		setlocal textwidth=80
 
 		" Turn on spell for language babel is given. Otherwise turn off spell
-		set spell
+		setlocal spell
 		" Get language argument from babel inport,
 		" Strip newline
 		let @a = system("grep -oP '(?<=\\\\usepackage\\[)[^\\]]*(?=\\]{babel})' " .  expand('%:p') . "| tr -d '\n'")
 		if @a ==? "swedish"
-			set spell spelllang=sv
+			setlocal spell spelllang=sv
 		elseif @a ==? "english"
-			set spell spelllang=en
+			setlocal spell spelllang=en
 		else
-			set nospell
+			setlocal nospell
 		endif
 	endfunction
 
@@ -189,18 +189,18 @@ set shiftwidth=4
 
 	autocmd Filetype java call SetJavaIndent()
 	function SetJavaIndent()
-		set foldmethod=indent
-		set foldnestmax=2
-		set foldlevelstart=99
-		set foldlevel=99
+		setlocal foldmethod=indent
+		setlocal foldnestmax=2
+		setlocal foldlevelstart=99
+		setlocal foldlevel=99
 	endfunction
 
 	autocmd Filetype lua call SetLuaIndent()
 	function SetLuaIndent()
-		set foldmethod=indent
-		set foldnestmax=1
-		set foldlevelstart=99
-		set foldlevel=99
+		setlocal foldmethod=indent
+		setlocal foldnestmax=1
+		setlocal foldlevelstart=99
+		setlocal foldlevel=99
 	endfunction
 
 	set foldenable
@@ -233,8 +233,8 @@ set shiftwidth=4
 " I'm not actually sure that this work as intended
 " When I tried it on a larger wav file it might have corrupted it.
 function! BinaryEdit()
-	set binary
-	set noeol
+	setlocal binary
+	setlocal noeol
 	%!xxd
 endfunction
 " the wav can be extended to match any types of binary files
@@ -296,4 +296,3 @@ com! FormatJSON %!python -m json.tool
 set t_vb=
 
 "}}}
-
