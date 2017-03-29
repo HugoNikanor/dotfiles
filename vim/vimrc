@@ -131,6 +131,7 @@ set softtabstop=4
 "}}}
 
 " Functions {{{
+	" Does this even work?
 	function! HandleURL()
 		let uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
 		if uri != ""
@@ -141,11 +142,6 @@ set softtabstop=4
 		endif
 	endfunction
 	map gx :call HandleURL()<cr>
-
-	function! InterpretScheme()
-		!car % | scheme
-	endfunction
-
 " }}}
 
 " Binary Files {{{
