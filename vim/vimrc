@@ -58,31 +58,22 @@ set softtabstop=4
 	call matchadd('ColorColumn', '\%81v', 100)
 
 	" Trailing whitespace
-	syntax match Error "\s*$"
+	syntax match Error "\s\+$"
+
+	colorscheme comments
 
 	if $TERM ==? "linux"
-		"00 black
-		"01 red
-		"02 green
-		"03 orange
-		"04 Blue
-		"05 Purple
-		"06 Cyan
-		"07 White
-		colorscheme comments-simple
-		hi Search ctermbg=01
-		hi Comment ctermfg=03
-		hi WildMenu ctermfg=01
 		exec "set listchars=tab:>-,eol:%,nbsp:_,trail:~"
+	" This should be changed to match anything containing xterm
 	elseif ($TERM ==? "xterm") + ($TERM ==? "xterm-termite")
-		colorscheme comments
 		exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
-	else " This should be targeted at tmux
-		"colorscheme preto
-		colorscheme comments-simple
+	elseif expand($TMUX) != ''
 		exec "set listchars=tab:>-,eol:\u00b6,nbsp:\u2423,trail:~"
-		"syntax off
+	else " who knows what this is
+		colorscheme blue
 	endif
+	" There should also be a clause for anything containing 'screen'
+
 
 "}}}
 
