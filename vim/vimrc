@@ -48,33 +48,18 @@ filetype plugin indent on
 " Tabs {{{
 set tabstop=4
 set shiftwidth=4
-
-" Sets the tabwith to 2 for html files
-	autocmd BufNewFile,BufRead *.html set tabstop=2
-	autocmd BufNewFile,BufRead *.html set shiftwidth=2
-
-	autocmd BufNewFile,BufRead *.htm  set tabstop=2
-	autocmd BufNewFile,BufRead *.htm  set shiftwidth=2
-
-	autocmd BufNewFile,BufRead *.php  set tabstop=2
-	autocmd BufNewFile,BufRead *.php  set shiftwidth=2
-
-	autocmd BufNewFile,BufRead *.css  set tabstop=4
-	autocmd BufNewFile,BufRead *.css  set shiftwidth=4
-
-" Soft tabs in haskell
-	autocmd BufNewFile,BufRead *.hs set expandtab
-
-	set softtabstop=4
-	autocmd Filetype python set expandtab
+set softtabstop=4
 "}}}
 
 " Higlighting {{{
-" Color marking when passing line 80
+	syntax on
+
+	" Color marking when passing line 80
 	call matchadd('ColorColumn', '\%81v', 100)
 
-"" Highlighting
-	syntax on
+	" Trailing whitespace
+	syntax match Error "\s*$"
+
 	if $TERM ==? "linux"
 		"00 black
 		"01 red
@@ -98,49 +83,6 @@ set shiftwidth=4
 		exec "set listchars=tab:>-,eol:\u00b6,nbsp:\u2423,trail:~"
 		"syntax off
 	endif
-	"hi ColorColumn ctermbg=5
-
-	autocmd Filetype lisp call SetLispMode()
-	autocmd Filetype scheme call SetLispMode()
-	function SetLispMode()
-		set expandtab
-		set tabstop=2
-		set shiftwidth=2
-	endfunction
-
-
-	autocmd Filetype markdown call SetMdMode()
-	function SetMdMode()
-		"colorscheme myDef
-		" highlight double space at the end of line
-		syntax match Visual "\s\{2}$"
-	endfunction
-
-	autocmd Filetype tex call SetTexMode()
-	function SetTexMode()
-		set textwidth=80
-
-		" Turn on spell for language babel is given. Otherwise turn off spell
-		set spell
-		" Get language argument from babel inport,
-		" Strip newline
-		let @a = system("grep -oP '(?<=\\\\usepackage\\[)[^\\]]*(?=\\]{babel})' " .  expand('%:p') . "| tr -d '\n'")
-		if @a ==? "swedish"
-			set spell spelllang=sv
-		elseif @a ==? "english"
-			set spell spelllang=en
-		else
-			set nospell
-		endif
-	endfunction
-
-	hi NerdTreeDir ctermfg=blue
-	hi NERDtreeExecFile ctermfg=10
-	hi NERDtreeRO ctermfg=06
-	hi NERDtreeOpenable ctermfg=07
-	hi NERDtreeClosable ctermfg=07
-
-	syntax match Error "\s*$"
 
 "}}}
 
@@ -161,8 +103,6 @@ set shiftwidth=4
 	""" Leader maps
 	nnoremap <silent> <leader>o :nohlsearch <cr>
 	nnoremap <leader>h :vertical help
-	" Used by eclim to fix everything
-	nnoremap <leader>j :JavaCorrect <cr>
 
 	nnoremap <leader>t iTODO
 
@@ -182,31 +122,16 @@ set shiftwidth=4
 "}}}
 
 " Folding {{{
+	set foldenable
+
 	set foldmethod=marker
 	set foldnestmax=20
 	set foldlevelstart=0
 	set foldlevel=0
-
-	autocmd Filetype java call SetJavaIndent()
-	function SetJavaIndent()
-		set foldmethod=indent
-		set foldnestmax=2
-		set foldlevelstart=99
-		set foldlevel=99
-	endfunction
-
-	autocmd Filetype lua call SetLuaIndent()
-	function SetLuaIndent()
-		set foldmethod=indent
-		set foldnestmax=1
-		set foldlevelstart=99
-		set foldlevel=99
-	endfunction
-
-	set foldenable
 "}}}
 
 " Functions {{{
+	" Does this even work?
 	function! HandleURL()
 		let uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
 		if uri != ""
@@ -217,24 +142,14 @@ set shiftwidth=4
 		endif
 	endfunction
 	map gx :call HandleURL()<cr>
-
-	function! InterpretScheme()
-		!car % | scheme
-	endfunction
-
-	function! JavaMain()
-		r ~/Templates/java/main
-	endfunction
-	cnoreabbrev JavaMain call JavaMain()
-
 " }}}
 
 " Binary Files {{{
 " I'm not actually sure that this work as intended
 " When I tried it on a larger wav file it might have corrupted it.
 function! BinaryEdit()
-	set binary
-	set noeol
+	setlocal binary
+	setlocal noeol
 	%!xxd
 endfunction
 " the wav can be extended to match any types of binary files
@@ -296,4 +211,3 @@ com! FormatJSON %!python -m json.tool
 set t_vb=
 
 "}}}
-

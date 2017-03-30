@@ -17,7 +17,7 @@
 [url "ssh+git://aur4.archlinux.org/"]
     pushInsteadOf = "aur:"
 
-[url "https://github/"]
+[url "https://github.com/"]
     insteadOf = "gh:"
 # Enable these when I have set up an ssh key
 # [url "git@github.com:"]
