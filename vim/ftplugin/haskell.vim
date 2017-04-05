@@ -1,1 +1,1 @@
-setlocal expandtax
+setlocal expandtab
