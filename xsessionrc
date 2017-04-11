@@ -4,4 +4,5 @@ if [ -d "$HOME/bin" ]; then
 	PATH="$PATH:$HOME/bin"
 fi
 
-setxkbmap se dvorak_a5
+#setxkbmap se dvorak_a5
+setxkbmap se nodeadkeys

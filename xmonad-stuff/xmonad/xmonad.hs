@@ -21,33 +21,28 @@ import XMonad.Util.EZConfig
 
 import XMonad.Actions.SpawnOn
 
---myTerminal = "termite"
-myTerminal = "start-termite"
+myTerminal = "termite -c ~/.termite/lysator.conf"
 
-myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = False
+-- myFocusFollowsMouse :: Bool
+myFocusFollowsMouse = False :: Bool
 
-myClickJustFocuses :: Bool
-myClickJustFocuses = False
+-- myClickJustFocuses :: Bool
+myClickJustFocuses = False :: Bool
 
+-- super key
 myModMask = mod4Mask
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
-    , ((modm .|. shiftMask, xK_l     ), spawn "start-termite large")
 
     -- launch dmenu
     --, ((modm,               xK_p     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
     , ((modm,              xK_p     ), spawn "dmenu_run")
 
-    -- launch gmrun
-    , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
-
     -- close focused window
-    --, ((modm .|. shiftMask, xK_c     ), kill)
-    , ((modm .|. shiftMask, xK_c     ), spawn "texit")
+    , ((modm .|. shiftMask, xK_c     ), kill)
 
      -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
@@ -94,20 +89,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Deincrement the number of windows in the master area
     , ((modm,               xK_z     ), sendMessage (IncMasterN (-1))) 
 
-    , ((modm,               xK_w     ), spawn "dmenu_info_bar")
-    
-
-    -- Toggle the status bar gap
-    -- Use this binding with avoidStruts from Hooks.ManageDocks.
-    -- See also the statusBar function from Hooks.DynamicLog.
-    --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
-
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
-
-    --, ((modm              , xK_d     ), spawnOn "workspace1" "emacs")
-    , ((modm              , xK_d     ), spawn "notify-send $(date +%s)")
 
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
@@ -117,10 +100,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_b     ), spawn "google-chrome-stable --disable-gpu")
 
     --,((modm , xF86XK_MonBrightnessDown ), spawn "xbacklight -10" )
-    ,((modm               , xK_Next  ), spawn "xbacklight -10" )
-    ,((modm               , xK_Prior  ), spawn "xbacklight +10" )
+    --,((modm               , xK_Next  ), spawn "xbacklight -10" )
+    --,((modm               , xK_Prior  ), spawn "xbacklight +10" )
 
-    ,((noModMask          , xK_Scroll_Lock ), spawn "date +'Time: %R' | dmenu  -nb \"#1d1f21\" -nf \"#c8c8c6\"" )
+    --,((noModMask          , xK_Scroll_Lock ), spawn "date +'Time: %R' | dmenu  -nb \"#1d1f21\" -nf \"#c8c8c6\"" )
 
 
     ]
@@ -153,12 +136,11 @@ myManageHook = composeAll
                 , className =? "Gimp"    --> doFloat
                 , className =? "Steam"   --> doFloat ]
 
-myNormalBorderColor, myFocusedBorderColor :: String
+-- myNormalBorderColor, myFocusedBorderColor :: String
 myNormalBorderColor  = "#1d1f21"
 myFocusedBorderColor = "#de935f"
 
-myBorderWidth :: Dimension
-myBorderWidth = 1
+myBorderWidth = 1 :: Dimension
 
 
 main = xmonad $

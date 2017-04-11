@@ -32,7 +32,7 @@ floating_modifier $mod
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
 # this is a program, but I'm migrating to xmonad, so it shouldn't matter 
-bindsym $mod+Return exec termite -c ~/.config/termite/laptop.conf
+bindsym $mod+Return exec termite -c ~/.config/termite/lysator.conf
 bindsym $mod+b exec google-chrome-stable
 
 # kill focused window
