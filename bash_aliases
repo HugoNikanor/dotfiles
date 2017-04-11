@@ -1,8 +1,10 @@
 # propper aliases
+
 alias u="cd .."
 alias uu="cd ../.."
 alias uuu="cd ../../.."
 alias uuuu="cd ../../../.."
+
 alias l="ls"
 alias info='info --vi-keys'
 alias ll="cd -"

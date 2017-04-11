@@ -107,5 +107,17 @@ case $TERM in
 		alias cat=tycat
 		;;
 	xterm-termite)
+		TERM=xterm
 		;;
 esac
+
+# auto keybinds on lysators system
+# this could probably be better solved by
+# actually importing my planck keymap.
+if [ -n $DISPLAY ]; then
+	xinput | grep planck \
+		&& setxkbmap se \
+		|| setxkbmap se dvorak_a5 caps:escape
+fi
+
+export MPD_HOST=jukebox.lysator.liu.se
