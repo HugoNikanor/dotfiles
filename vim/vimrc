@@ -63,7 +63,7 @@ set softtabstop=4
 	colorscheme comments
 
 	if $TERM ==? "linux"
-		exec "set listchars=tab:>-,eol:%,nbsp:_,trail:~"
+		exec "set listchars=tab:>-,eol:$,nbsp:_,trail:~"
 	" This should be changed to match anything containing xterm
 	elseif ($TERM ==? "xterm") + ($TERM ==? "xterm-termite")
 		exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
