@@ -267,10 +267,8 @@ bindsym $mod+y exec passmenu
 #———————————————————————————————————————————————————————————————————————————————
 
 # Termituake!
-bindsym $mod+shift+i                exec start-termite transparent -e tmux --geometry=640x400 --name=floating
+bindsym $mod+shift+i                exec termite -c ~/.config/termite/transparent.conf --name=floating -e "tmux new-session -s floating"
 bindsym $mod+i                      [instance="^floating$" class="(?i)termite"] scratchpad show
-#bindsym 0xff9e                      [instance="^floating$" class="(?i)termite"] scratchpad show
-#for_window [instance="^floating$" class="(?i)termite"] floating enable, move position -1px 580px, move scratchpad, sticky toggle, border none
 for_window [instance="^floating$" class="(?i)termite"] floating enable, move position -100px -100px, move scratchpad, sticky toggle, border none
 
 exec compton -b
