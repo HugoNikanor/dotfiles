@@ -1,20 +1,27 @@
-;(add-to-load-path "/home/hugo/lib/guile")
-(add-to-load-path "/home/hugo/code/guile/lib")
+;;; -*- mode: scheme -*-
 
-;(add-to-load-path ".")
-;(add-to-load-path "/home/hugo/")
+;; maybe install modules in /usr/lib or simmilar
+(let ((home (getenv "HOME")))
+  (for-each
+    (lambda (path-part)
+      (add-to-load-path (string-append home path-part)))
+    '("/lib/guile" "/code/guile")))
 
-;(load-modules (utils disp))
+(define (displayln x) (display x) (newline))
+(define (writeln x) (write x) (newline))
 
-;(define* (displayln data #:optional (port (current-output-port)))
-;         (display data port)
-;		          (newline port))
+(define-macro (l file)
+  `(load ,(string-append
+            (symbol->string file)
+            ".scm")))
 
-(define-syntax l
+(define-syntax thunk
   (syntax-rules ()
-    ((_ file)
-     (load (string-append (symbol->string file) ".scm")))))
+    ((_ body ...)
+     (lambda () body ...))))
 
 (use-modules (ice-9 readline))
 (activate-readline)
-;,option prompt "> "
+
+
+;;; vim: filetype=scheme
