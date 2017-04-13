@@ -1,8 +1,15 @@
 # This file is sourced by i3 upon logon, maybe also other window managers...
+# used for lysator, since these settings can't be set on a system level there
 
 if [ -d "$HOME/bin" ]; then
 	PATH="$PATH:$HOME/bin"
 fi
 
-#setxkbmap se dvorak_a5
-setxkbmap se nodeadkeys
+# auto keybinds on lysators system
+# this could probably be better solved by
+# actually importing my planck keymap.
+if [ -n $DISPLAY ]; then
+	xinput | grep -i planck \
+		&& setxkbmap se nodeadkeys \
+		|| setxkbmap se dvorak_a5 caps:escape
+fi
