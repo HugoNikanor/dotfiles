@@ -22,22 +22,29 @@ set message_cachedir = ~/.mutt_cache
 
 ################################################################################
 
+set imap_check_subscribed = yes
+set imap_list_subscribed = yes
+
 set realname = "Hugo Hörnquist"
 
-macro index <f2> '<change-folder>imaps://hugo@imap.lysator.liu.se<enter>'
-macro index <f3> '<change-folder>imaps://propaganda@vastgota.nation.liu.se@imap.gmail.com<enter>'
+mailboxes imaps://hugo@imap.lysator.liu.se \
+          imaps://hugo.hornquist@imap.gmail.com \
+		  imaps://propaganda@vastgota.nation.liu.se@imap.gmail.com \
+		  imaps://guckel@vastgota.nation.liu.se@imap.gmail.com #\
+		  #imaps://hugho389@student.liu.se@outlook.office365.com
 
-#macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/lysator.account<enter><change-folder>!<enter>'
+# TODO set up student.liu.se mailbox
+# TODO check if more variables needs to change between the mail accounts
+# TODO allow "unsecure" clients for guckelmailen
 
-#folder-hook 'imaps://imap.lysator.liu.se' 'source ~/.mutt/lysator.account'
+account-hook "imaps://hugo.hornquist@imap.gmail.com" \
+             "set imap_pass='`pass google.com/hugo.hornquist`'"
+account-hook "imaps://hugo@imap.lysator.liu.se" \
+             "set imap_pass='`pass lysator/mail/hugo`'"
+account-hook "imaps://propaganda@vastgota.nation.liu.se@imap.gmail.com" \
+             "set imap_pass='`pass vastgota.nation.liu.se/mail/propaganda`'"
+account-hook "imaps://guckel@vastgota.nation.liu.se@imap.gmail.com" \
+             "set imap_pass='`pass vastgota.nation.liu.se/mail/guckel`'"
+#account-hook "imaps://hugho389@student.liu.se@outlook.office365.com \
+#             "set imap_pass='`pass liu/mail/hugho389`'"
 
-account-hook . "unset imap_user; unset imap_pass; unset tunnel"
-account-hook "lysator.liu.se" source ~/.mutt/lysator.account
-account-hook "vastgota.nation.liu.se" source ~/.mutt/propaganda.account
-account-hook "gmail.com" source ~/.mutt/hugo.hornquist@gmail.account
-
-# set default account by sourcing that config
-#
-# spoolfile is [INBOX]
-#
-# The arch wiki has rather good documentation
