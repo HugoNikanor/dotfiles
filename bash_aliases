@@ -14,9 +14,6 @@ alias x="chmod +x"
 [ -x /usr/bin/perl-rename ] && alias rename="perl-rename"
 alias eclim="eclim -command"
 alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
-emacs() {
-	emacsclient -ca "" $* &
-}
 
 # joke aliases
 alias kitty="cat"
@@ -41,10 +38,7 @@ ssh() {
 	[ $TERM == "xterm-termite" ] && export TERM=xterm
 	$(which ssh) $*
 }
-irc() {
-	url=hugo@hornquist.se
-	ssh -t $url tmux attach -t irc
-}
+alias irc="ssh irc -t screen -x"
 
 # addes lesspipe to the less command
 # allows for a wider range of formats to be
