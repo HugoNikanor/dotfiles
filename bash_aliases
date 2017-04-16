@@ -38,6 +38,7 @@ ssh() {
 	[ $TERM == "xterm-termite" ] && export TERM=xterm
 	$(which ssh) $*
 }
+# irc host is supposed to be set in ~/.ssh/config
 alias irc="ssh irc -t screen -x"
 
 # addes lesspipe to the less command
