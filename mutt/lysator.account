@@ -1,8 +1,0 @@
-set from=hugo@lysator.liu.se
-set hostname="lysator.liu.se"
-set imap_user = hugo
-set imap_pass = `pass lysator/mail/hugo`
-set folder = "imaps://hugo@imap.lysator.liu.se:993/"
-set spoolfile = "+INBOX"
-set postponed = "+[lysator]/Drafts"
-set trash = "+[lysator]/Trash"

@@ -1,8 +1,0 @@
-set from=hugo.hornquist@gmail.com
-set hostname="gmail.com"
-set imap_user = hugo.hornquist
-set imap_pass = `pass google.com/hugo.hornquist`
-set folder = "imaps://hugo.hornquist@imap.gmail.com:993/"
-set spoolfile = "+INBOX"
-set postponed = "+[Gmail]/Drafts"
-set trash = "+[Gmail]/Trash"
