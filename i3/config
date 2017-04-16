@@ -32,8 +32,8 @@ floating_modifier $mod
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
 # this is a program, but I'm migrating to xmonad, so it shouldn't matter 
-bindsym $mod+Return exec termite -c ~/.config/termite/lysator.conf
-bindsym $mod+b exec google-chrome-stable
+bindsym $mod+Return exec termite -c ~/.config/termite/desktop.conf
+bindsym $mod+b exec firefox
 
 # kill focused window
 bindsym $mod+Shift+c kill
@@ -41,7 +41,8 @@ bindsym $mod+Shift+c kill
 bindsym $mod+Shift+s exec systemctl suspend
 
 # start dmenu (a program launcher)
-bindsym $mod+p exec dmenu_run
+#bindsym $mod+p exec dmenu_run
+bindsym $mod+p exec "dmenu_path | dmenu | $(which bash)"
 #bindsym $mod+i exec dmenu_info_bar
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -177,7 +178,8 @@ bindsym $mod+Shift+q reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+p restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+odiaeresis exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+#bindsym $mod+Shift+odiaeresis exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+odiaeresis exit
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -259,18 +261,18 @@ bindsym XF86AudioPrev exec playerctl previous
 for_window [class="feh"] border normal
 for_window [class="gimp-image-window"] floating enable border normal
 for_window [class="Gvim"] floating enable
-for_window [class="nautilus"] floating enable
 
-bindsym $mod+q exec xdotool key "U`echo "" | dmenu`"
+bindsym $mod+q exec xdotool key "U`echo "" | dmenu -p unicode:`"
 bindsym $mod+y exec passmenu
 
 #———————————————————————————————————————————————————————————————————————————————
 
 # Termituake!
-bindsym $mod+shift+i                exec termite -c ~/.config/termite/transparent.conf --name=floating -e "tmux new-session -s floating"
-bindsym $mod+i                      [instance="^floating$" class="(?i)termite"] scratchpad show
+bindsym $mod+shift+i exec termite -c ~/.config/termite/transparent.conf --name=floating -e "tmux new-session -s floating"
+bindsym $mod+i [instance="^floating$" class="(?i)termite"] scratchpad show
 for_window [instance="^floating$" class="(?i)termite"] floating enable, move position -100px -100px, move scratchpad, sticky toggle, border none
 
-exec compton -b
+# TODO remove this, it's temporary and only here so thet `get-output-by-no` doesn't crash
+exec xrandr --noprimary
 
-bindsym $mod+aring exec ~/.config/i3/i3lock-fancy-multimonitor/lock
+exec compton -b

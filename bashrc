@@ -111,4 +111,12 @@ case $TERM in
 		;;
 esac
 
-export MPD_HOST=jukebox.lysator.liu.se
+case `hostname` in
+	arch2012)
+		if [ -d "$HOME/bin" ]; then
+			PATH="$HOME/bin:$PATH"
+		fi
+		;;
+	*)
+		export MPD_HOST=jukebox.lysator.liu.se
+esac
