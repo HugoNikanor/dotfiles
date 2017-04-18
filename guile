@@ -22,10 +22,8 @@
 (define* (displayln data #:optional (port #f))
          (higher-order-show display data port))
 
-           
-                    
-
 (define-macro (l file)
+  "Macro for quicker file loading"
   `(load ,(string-append
             (symbol->string file)
             ".scm")))
@@ -34,6 +32,19 @@
   (syntax-rules ()
     ((_ body ...)
      (lambda () body ...))))
+
+(define (expand-filepath path)
+  "Expands a '~' at the start of a filepath into /home/<user>
+  Note that '~<otheruser>/' doesn't work"
+  (regexp-substitute #f (string-match "^~" path)
+                     (getenv "HOME") 'post))
+
+(define* (to-file expr #:optional (filename "/tmp/guile-output")
+                                  (displayfunc displayln))
+  "Write expr to a file, with an optional display func"
+  (with-output-to-file (expand-filepath filename)
+    (thunk
+      (displayfunc expr))))
 
 (use-modules (ice-9 readline))
 (activate-readline)
