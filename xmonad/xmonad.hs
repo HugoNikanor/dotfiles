@@ -41,6 +41,7 @@ TODO
 * Add key to tile a floating window
 * Allow transparent windows
 * Look through which of the imports are needed
+* Mouse sholud move to currently active workspace when workspaces switch
 -}
 
 -- This function should possibly be changed to take a context string instead of
@@ -63,8 +64,6 @@ spawnToWorkspace workspace program = do
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
-    , ((modm,               xK_y     ), spawn "dmenu_run")
-    , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart") -- Restart xmonad
     ]
     ++
     [((m .|. modm, k), windows $ onCurrentScreen f i)
@@ -91,7 +90,7 @@ main = do
         , terminal          = termCommand
         , layoutHook        = subTabbed $ B.boringWindows $ Tall 1 (3/100) (3/5) ||| Full
         , manageHook        = insertPosition Below Newer
-        , workspaces        = (withScreens nScreens $ show <$> [1..9]) ++ ["mail"]
+        , workspaces        = (withScreens nScreens $ show <$> [1..9]) ++ [mailWS]
         }
         `additionalKeysP`
         [ (pre ++ "b", spawn gBrowser)
@@ -103,7 +102,7 @@ main = do
         , (pre ++ "s", spawn gSound)
         , (pre ++ "f", spawn gFiles)
 
-        , ("M-b", toggleOrView "mail")
+        , ("M-b", toggleOrView mailWS)
 
         , ("M-j", B.focusDown)
         , ("M-k", B.focusUp)
@@ -120,6 +119,7 @@ main = do
 
         -- Do I even want these?
         -- especcially if they don't work on a per-screen basis
+        -- Possibly write some own which works together with IndependentScreens
         , ("M-g"  , prevScreen)
         , ("M-c"  , nextScreen)
         , ("M-S-g", shiftPrevScreen)
@@ -133,19 +133,25 @@ main = do
         , ("M-m", onGroup W.focusUp')
         , ("M-w", onGroup W.focusDown')
 
+        , ("M-y", spawn gRun)
+
+        , ("M-q", spawn xmonadRe)
+
         , ("M-S-c", kill)
         , ("M-<Space>", sendMessage NextLayout) -- TODO get a better binding
 
         --, ("M-u", selectWorkspace def)
         --, ("M-i", spawnToWorkspace "mail" "xterm")
-        ] where pre         = "M-f "
-                gBrowser    = "firefox"
-                gEmacs      = "emacsclient -c"
-                gMail       = "thunderbird"
-                gRun        = "dmenu_path | dmenu | $(which bash)"
-                gPass       = "passmenu"
-                gIrc        = "xterm -e ssh irc screen -x"
-                gSound      = "pavucontrol"
-                gFiles      = "thunar"
+        ] where pre      = "M-f "
 
-    -- TODO mouse sholud move to currently active workspace when workspaces switch
+                gBrowser = "firefox"
+                gEmacs   = "emacsclient -c"
+                gMail    = "thunderbird"
+                gRun     = "dmenu_path | dmenu | $(which bash)"
+                gPass    = "passmenu"
+                gIrc     = "xterm -e ssh irc screen -x"
+                gSound   = "pavucontrol"
+                gFiles   = "thunar"
+
+                xmonadRe = "xmonad --recompile; xmonad --restart"
+                mailWS   = "mail"
