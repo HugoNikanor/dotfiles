@@ -122,8 +122,8 @@ main = do
         -- Possibly write some own which works together with IndependentScreens
         , ("M-g"  , prevScreen)
         , ("M-c"  , nextScreen)
-        , ("M-S-g", shiftPrevScreen)
-        , ("M-S-c", shiftNextScreen)
+        --, ("M-S-g", shiftPrevScreen)
+        --, ("M-S-c", shiftNextScreen)
 
         , ("M-C-k", withFocused $ sendMessage . mergeDir W.focusUp')
         , ("M-C-j", withFocused $ sendMessage . mergeDir W.focusDown')
