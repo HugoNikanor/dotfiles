@@ -4,6 +4,9 @@
 if [ -d "$HOME/bin" ]; then
 	PATH="$PATH:$HOME/bin"
 fi
+if [ -d "$HOME/.cabal/bin" ]; then
+	PATH="$PATH:$HOME/.cabal/bin"
+fi
 
 # auto keybinds on lysators system this could probably be better solved by actually importing my planck keymap.
 # This should be changed to only trigger on lys-systems in ~, instead of everywhere except arch2012
