@@ -25,7 +25,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Hooks.InsertPosition
 import Network.HostName
 
--- xK_aring = å
+-- xK_aring      = å
 -- xK_adiaeresis = ä
 -- xK_odiaeresis = ö
 
@@ -83,14 +83,16 @@ main = do
     --addWorkspace "mail"
     --withWorkspace def $ sendMessage . spawn "thunderbird"
     xmonad $ def {
-          modMask           = mod4Mask
-        , focusFollowsMouse = False
-        , clickJustFocuses  = False
-        , keys              = myKeys
-        , terminal          = termCommand
-        , layoutHook        = subTabbed $ B.boringWindows $ Tall 1 (3/100) (3/5) ||| Full
-        , manageHook        = insertPosition Below Newer
-        , workspaces        = (withScreens nScreens $ show <$> [1..9]) ++ [mailWS]
+          modMask            = mod4Mask
+        , focusFollowsMouse  = False
+        , clickJustFocuses   = False
+        , keys               = myKeys
+        , terminal           = termCommand
+        , layoutHook         = subTabbed $ B.boringWindows $ Tall 1 (3/100) (3/5) ||| Full
+        , manageHook         = insertPosition Below Newer
+        , workspaces         = (withScreens nScreens $ show <$> [1..9]) ++ [mailWS]
+        , normalBorderColor  = "#1d1f21"
+        , focusedBorderColor = "#FF0000"
         }
         `additionalKeysP`
         [ (pre ++ "b", spawn gBrowser)
