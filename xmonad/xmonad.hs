@@ -48,11 +48,9 @@ TODO
 -- just a hostname, this to simplify having multiple terminal types on one system
 -- `hostname -y` return "lysator" on some systems, "(none)" on other
 getTerminalCommand :: HostName -> String
-getTerminalCommand hostName =
-    case hostName of
-        "arch2012"       -> "termite -c ~/.config/termite/desktop.conf"
-        "STATENS_laptop" -> "termite -c ~/.config/termite/laptop.conf"
-        _                -> "termite -c ~/.config/termite/lysator.conf"
+getTerminalCommand "arch2012"       = "termite -c ~/.config/termite/desktop.conf"
+getTerminalCommand "STATENS_laptop" = "termite -c ~/.config/termite/laptop.conf"
+getTerminalCommand _                = "termite -c ~/.config/termite/lysator.conf"
 
 -- TODO figure out how to run this from main
 -- TODO and check if a window can be spawned without viewing that window
