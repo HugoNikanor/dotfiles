@@ -1,0 +1,15 @@
+set font "Iosevka Slab Medium 10"
+
+set statusbar-bg "#1d1f21"
+set statusbar-fg "#c5c8c6"
+
+set default-bg "#1d1f21"
+set default-fg "#c5c8c6"
+
+set recolor "true"
+# The dark here is light and the light dark to give me "white" on "black"
+set recolor-lightcolor  "#1d1f21"
+set recolor-darkcolor "#c5c8c6"
+
+set scroll-page-aware "true"
+
