@@ -151,7 +151,7 @@ main = do
                 gMail    = "thunderbird"
                 gRun     = "dmenu_path | dmenu | $(which bash)"
                 gPass    = "passmenu"
-                gIrc     = "xterm -e ssh irc screen -x"
+                gIrc     = "xterm -e ssh irc -t screen -x"
                 gSound   = "pavucontrol"
                 gFiles   = "thunar"
 
