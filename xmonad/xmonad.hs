@@ -11,6 +11,8 @@ import qualified Data.Map as M
 import qualified XMonad.StackSet as W
 
 import XMonad.Layout
+import XMonad.Layout.Grid
+import XMonad.Layout.PerScreen
 
 import XMonad.Actions.PhysicalScreens
 
@@ -86,7 +88,7 @@ main = do
         , clickJustFocuses   = False
         , keys               = myKeys
         , terminal           = termCommand
-        , layoutHook         = subTabbed $ B.boringWindows $ Tall 1 (3/100) (3/5) ||| Full
+        , layoutHook         = subTabbed $ B.boringWindows $ ifWider tallThreshold wideLayouts tallLayouts
         , manageHook         = insertPosition Below Newer
         , workspaces         = (withScreens nScreens $ show <$> [1..9]) ++ [mailWS]
         , normalBorderColor  = "#1d1f21"
@@ -155,3 +157,10 @@ main = do
 
                 xmonadRe = "xmonad --recompile; xmonad --restart"
                 mailWS   = "mail"
+
+                -- TODO possibly auto get this number dependend on the system
+                -- possibly also change to a check if a screen is higher than
+                -- it is wide, and then change layouts
+                tallThreshold = 1200
+                wideLayouts   = Tall 1 (3/100) (3/5) ||| Full
+                tallLayouts   = Grid ||| Full
