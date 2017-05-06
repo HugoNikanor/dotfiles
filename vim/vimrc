@@ -94,6 +94,8 @@ set softtabstop=4
 	nnoremap <leader>d 0D
 	nnoremap <silent> <leader>a :set foldlevel=0 <cr>
 
+	nnoremap <leader>f :NERDTreeToggle<cr>
+
 	""" other
 	nnoremap <cr> o<esc>
 	" uses what looks like a line, instead of the actual lines
