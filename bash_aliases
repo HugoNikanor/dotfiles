@@ -32,9 +32,7 @@ sl() {
 	$(which sl) $*
 	ls $*
 }
-tmp() {
-	vim /tmp/file-`date +%Y-%m-%dT%H:%M:%S`
-}
+alias tmp="vim +'setlocal buftype=nofile' -n"
 # Sets the TERM to something more widely recongnised, when needed
 ssh() {
 	[ $TERM == "xterm-termite" ] && export TERM=xterm
