@@ -95,14 +95,14 @@ main = do
         , focusedBorderColor = "#FF0000"
         }
         `additionalKeysP`
-        [ (pre ++ "b", spawn gBrowser)
-        , (pre ++ "e", spawn gEmacs)
+        [ (pre "b", spawn gBrowser)
+        , (pre "e", spawn gEmacs)
         --, (pre ++ "m", spawn gMail)
-        , (pre ++ "y", spawn gRun)
-        , (pre ++ "p", spawn gPass)
-        , (pre ++ "i", spawn gIrc)
-        , (pre ++ "s", spawn gSound)
-        , (pre ++ "f", spawn gFiles)
+        , (pre "y", spawn gRun)
+        , (pre "p", spawn gPass)
+        , (pre "i", spawn gIrc)
+        , (pre "s", spawn gSound)
+        , (pre "f", spawn gFiles)
 
         , ("M-b", toggleOrView mailWS)
 
@@ -144,7 +144,7 @@ main = do
 
         --, ("M-u", selectWorkspace def)
         --, ("M-i", spawnToWorkspace "mail" "xterm")
-        ] where pre      = "M-f "
+        ] where pre      = ("M-f " ++)
 
                 gBrowser = "firefox"
                 gEmacs   = "emacsclient -c"
