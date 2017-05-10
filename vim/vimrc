@@ -37,14 +37,6 @@ filetype plugin indent on
 
 "}}}
 
-" Plugin settings {{{
-":call SetDrawIt('A','B','C','D','E','F','G')
-":call SetDrawIt("-","|","-","â½","/","/","*")
-" setting these also somethow sets the 'half-cross' pieces...?
-" ─│┼╱╳╲
-" down, side intersect right-down left-down intersect other
-" }}}
-
 " Tabs {{{
 set tabstop=4
 set shiftwidth=4
@@ -101,6 +93,8 @@ set softtabstop=4
 
 	nnoremap <leader>d 0D
 	nnoremap <silent> <leader>a :set foldlevel=0 <cr>
+
+	nnoremap <leader>f :NERDTreeToggle<cr>
 
 	""" other
 	nnoremap <cr> o<esc>

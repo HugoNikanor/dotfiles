@@ -1,0 +1,18 @@
+[general]
+accounts = Lysator
+pythonfile = ~/.config/offlineimap/code.py
+
+[Account Lysator]
+localrepository = Lysator-Local
+remoterepository = Lysator-Remote
+
+[Repository Lysator-Remote]
+type = IMAP
+remoteuser = hugo
+remotehost = imap.lysator.liu.se
+remotepasseval = get_pass("lysator/mail/hugo")
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[Repository Lysator-Local]
+type = Maildir
+localfolders = ~/mail/Lysator

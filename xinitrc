@@ -48,7 +48,10 @@ fi
 #xset r off
 
 # This forces the mouse to hide itself after not having been moved for a while.
-unclutter &
+unclutter   &
+# transparent windows
+compton     &
+# graphical mail
+thunderbird &
 
-#exec i3
 exec xmonad
