@@ -1,1 +1,1 @@
-autocmd BufNewFile,BufRead *.irc set filetype=irc
+autocmd BufNewFile,BufRead *.irc,*.weechatlog set filetype=irc
