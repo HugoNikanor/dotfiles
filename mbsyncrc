@@ -63,7 +63,33 @@ SyncState *
 #
 # ----------------------------------------
 
+IMAPAccount liu
+Host outlook.office365.com
+User hugho389@student.liu.se
+PassCmd +"pass liu/mail/hugho389"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+MaildirStore liu-local
+Path ~/mail/Liu/
+Inbox ~/mail/Liu/INBOX
+AltMap yes
+
+IMAPStore liu-remote
+Account liu
+
+Channel liu-channel
+Master :liu-remote:
+Slave :liu-local:
+Patterns *
+Create Both
+Sync All
+SyncState *
+
+# ----------------------------------------
+
 Group all
 Channel lys-channel
 Channel gmail-channel
+Channel liu-channel
 #Channel hornquist-channel
