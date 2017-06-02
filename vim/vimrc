@@ -62,7 +62,7 @@ set softtabstop=4
 	elseif expand($TMUX) != ''
 		exec "set listchars=tab:>-,eol:\u00b6,nbsp:\u2423,trail:~"
 	else " who knows what this is
-		colorscheme blue
+		colorscheme delek
 	endif
 	" There should also be a clause for anything containing 'screen'
 
