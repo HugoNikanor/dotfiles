@@ -1,5 +1,8 @@
 ;;; -*- mode: scheme -*-
 
+(use-modules (ice-9 pretty-print)
+             (language tree-il))
+
 ;; maybe install modules in /usr/lib or simmilar
 (let ((home (getenv "HOME")))
   (for-each
@@ -45,6 +48,8 @@
   (with-output-to-file (expand-filepath filename)
     (thunk
       (displayfunc expr))))
+
+(define mac-exp (compose pretty-print tree-il->scheme macroexpand))
 
 (use-modules (ice-9 readline))
 (activate-readline)
