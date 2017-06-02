@@ -56,3 +56,8 @@ obj/
 *.user
 *.unityproj
 *.booproj
+
+# Haskell
+*hi
+*o
+*db
