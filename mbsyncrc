@@ -1,0 +1,69 @@
+IMAPAccount lysator
+Host imap.lysator.liu.se
+User hugo@lysator.liu.se
+PassCmd +"pass lysator/mail/hugo"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+MaildirStore lys-local
+Path ~/mail/Lysator/
+Inbox ~/mail/Lysator/INBOX
+AltMap yes
+
+IMAPStore lys-remote
+Account lysator
+
+Channel lys-channel
+Master :lys-remote:
+Slave :lys-local:
+Patterns *
+Create Both
+Sync All
+SyncState *
+
+# -------------------------------------------------
+
+IMAPAccount gmail
+Host imap.gmail.com
+User hugo.hornquist@gmail.com
+PassCmd +"pass google.com/hugo.hornquist"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+MaildirStore gmail-local
+Path ~/mail/Gmail/
+Inbox ~/mail/Gmail/INBOX
+AltMap yes
+
+IMAPStore gmail-remote
+Account gmail
+
+Channel gmail-channel
+Master :gmail-remote:
+Slave :gmail-local:
+Patterns *
+Create Both
+Sync All
+SyncState *
+
+# ----------------------------------------
+
+#MaildirStore hornquist-local
+#Path ~/mail/Hornquist/
+#Inbox ~/mail/Hornquist/INBOX
+#AltMap yes
+#
+#Channel hornquist-channel
+#Master :gmail-remote:"hornquist"
+#Slave :hornquist-local:
+#Patterns *
+#Create Both
+#Sync All
+#SyncState *
+#
+# ----------------------------------------
+
+Group all
+Channel lys-channel
+Channel gmail-channel
+#Channel hornquist-channel
