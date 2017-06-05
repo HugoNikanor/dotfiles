@@ -13,7 +13,7 @@ AltMap yes
 IMAPStore lys-remote
 Account lysator
 
-Channel lys-channel
+Channel lys
 Master :lys-remote:
 Slave :lys-local:
 Patterns *
@@ -38,29 +38,14 @@ AltMap yes
 IMAPStore gmail-remote
 Account gmail
 
-Channel gmail-channel
+Channel gmail
 Master :gmail-remote:
 Slave :gmail-local:
-Patterns *
+Patterns * ![Gmail]*
 Create Both
 Sync All
 SyncState *
 
-# ----------------------------------------
-
-#MaildirStore hornquist-local
-#Path ~/mail/Hornquist/
-#Inbox ~/mail/Hornquist/INBOX
-#AltMap yes
-#
-#Channel hornquist-channel
-#Master :gmail-remote:"hornquist"
-#Slave :hornquist-local:
-#Patterns *
-#Create Both
-#Sync All
-#SyncState *
-#
 # ----------------------------------------
 
 IMAPAccount liu
@@ -78,7 +63,7 @@ AltMap yes
 IMAPStore liu-remote
 Account liu
 
-Channel liu-channel
+Channel liu
 Master :liu-remote:
 Slave :liu-local:
 Patterns *
@@ -88,8 +73,62 @@ SyncState *
 
 # ----------------------------------------
 
+IMAPAccount guckel
+Host imap.gmail.com
+User guckel@vastgota.nation.liu.se
+PassCmd +"pass vastgota.nation.liu.se/mail/guckel"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+MaildirStore guckel-local
+Path ~/mail/Vastgota/Guckel/
+Inbox ~/mail/Vastgota/Guckel/INBOX
+AltMap yes
+
+IMAPStore guckel-remote
+Account guckel
+
+Channel guckel
+Master :guckel-remote:
+Slave :guckel-local:
+Patterns *
+Patterns * ![Gmail]*
+Create Both
+Sync All
+SyncState *
+
+# ----------------------------------------
+
+IMAPAccount propaganda
+Host imap.gmail.com
+User propaganda@vastgota.nation.liu.se
+PassCmd +"pass vastgota.nation.liu.se/mail/propaganda"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+MaildirStore propaganda-local
+Path ~/mail/Vastgota/Propaganda/
+Inbox ~/mail/Vastgota/Propaganda/INBOX
+AltMap yes
+
+IMAPStore propaganda-remote
+Account propaganda
+
+Channel propaganda
+Master :propaganda-remote:
+Slave :propaganda-local:
+Patterns * ![Gmail]*
+Create Both
+Sync All
+SyncState *
+
+# ----------------------------------------
+
 Group all
-Channel lys-channel
-Channel gmail-channel
-Channel liu-channel
-#Channel hornquist-channel
+Channel lys
+Channel gmail
+Channel liu
+Channel propaganda
+#Channel hornquist
+
+# vim: set filetype=conf:
