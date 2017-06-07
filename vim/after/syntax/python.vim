@@ -1,1 +1,1 @@
-syn region Comment start=/"""/ end=/"""/
+syntax region Comment start=/"""/ end=/"""/

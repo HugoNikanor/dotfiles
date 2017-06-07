@@ -3,7 +3,7 @@ source ~/.mutt/vim
 set sort     = threads
 set sort_aux = last-date-received
 
-set index_format  = "%[%b %d %H:%M]   %-15.15L   %?M?<%03M> &      ?%s"
+set index_format = "%[%y-%m-%d  %H:%M]  %-15.15L %Z %s"
 set status_format = "%f (%s) (%?V?limited to '%V'&no limit pattern?) (%P)"
 
 set menu_scroll
@@ -12,7 +12,8 @@ set editor = vim
 
 # I18n
 
-set charset      = utf-8
+#set charset = utf-8
+#set charset = iso-8859-1
 set send_charset = utf-8
 
 # Caching
@@ -20,33 +21,29 @@ set send_charset = utf-8
 set header_cache     = ~/.mutt_cache
 set message_cachedir = ~/.mutt_cache
 
-################################################################################
+############################################################################
 
-set folder = ~/.mail"
+set folder = ~/mail
+set record = ~/mail/sent
 
 set imap_check_subscribed = yes
 set imap_list_subscribed = yes
 
 set realname = "Hugo Hörnquist"
 
-mailboxes imaps://hugo@imap.lysator.liu.se \
-          imaps://hugo.hornquist@imap.gmail.com \
-		  imaps://propaganda@vastgota.nation.liu.se@imap.gmail.com \
-		  imaps://guckel@vastgota.nation.liu.se@imap.gmail.com #\
-		  #imaps://hugho389@student.liu.se@outlook.office365.com
+auto_view text/html
+alternative_order text/plain text/enriched text/html
 
-# TODO set up student.liu.se mailbox
-# TODO check if more variables needs to change between the mail accounts
-# TODO allow "unsecure" clients for guckelmailen
+set ssl_starttls=yes
+set smtp_url="smtp://hugo@mail.lysator.liu.se:26"
+set smtp_pass="`pass lysator/mail/hugo`"
+set ssl_force_tls = yes
 
-account-hook "imaps://hugo.hornquist@imap.gmail.com" \
-             "set imap_pass='`pass google.com/hugo.hornquist`'"
-account-hook "imaps://hugo@imap.lysator.liu.se" \
-             "set imap_pass='`pass lysator/mail/hugo`'"
-account-hook "imaps://propaganda@vastgota.nation.liu.se@imap.gmail.com" \
-             "set imap_pass='`pass vastgota.nation.liu.se/mail/propaganda`'"
-account-hook "imaps://guckel@vastgota.nation.liu.se@imap.gmail.com" \
-             "set imap_pass='`pass vastgota.nation.liu.se/mail/guckel`'"
-#account-hook "imaps://hugho389@student.liu.se@outlook.office365.com \
-#             "set imap_pass='`pass liu/mail/hugho389`'"
+## TODO set up this one better
+folder-hook Hornquist  "set from='Hugo Hörnquist <hugo@hornquist.se>'"
+folder-hook Gmail      "set from='Hugo Hörnquist <hugo.hornquist@gmail.com>'"
+folder-hook Lysator    "set from='Hugo Hörnquist <hugo@lysator.liu.se>'"
+folder-hook Liu        "set from='Hugo Hörnquist (hugho389) <hugho389@student.liu.se>'"
+folder-hook Propaganda "set from='Hugo Hörnquist <propaganda@vastgota.nation.lu.se>'"
+folder-hook Guckel     "set from='Hugo Hörnquist <guckel@vastgota.nation.lu.se>'"
 
