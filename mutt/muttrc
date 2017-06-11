@@ -10,21 +10,16 @@ set menu_scroll
 
 set editor = vim
 
-# I18n
-
 #set charset = utf-8
 #set charset = iso-8859-1
 set send_charset = utf-8
 
-# Caching
-
-set header_cache     = ~/.mutt_cache
-set message_cachedir = ~/.mutt_cache
-
-############################################################################
+set header_cache     = ~/.mutt/cache
+set message_cachedir = ~/.mutt/cache
 
 set folder = ~/mail
 set record = ~/mail/sent
+set postponed = ~/mail/postponed
 
 set imap_check_subscribed = yes
 set imap_list_subscribed = yes
@@ -39,11 +34,16 @@ set smtp_url="smtp://hugo@mail.lysator.liu.se:26"
 set smtp_pass="`pass lysator/mail/hugo`"
 set ssl_force_tls = yes
 
+# TODO this should be dependent on from where I send it
+# my_hdr Bcc: <hugo@hornquist.se>
+
 ## TODO set up this one better
 folder-hook Hornquist  "set from='Hugo Hörnquist <hugo@hornquist.se>'"
 folder-hook Gmail      "set from='Hugo Hörnquist <hugo.hornquist@gmail.com>'"
 folder-hook Lysator    "set from='Hugo Hörnquist <hugo@lysator.liu.se>'"
 folder-hook Liu        "set from='Hugo Hörnquist (hugho389) <hugho389@student.liu.se>'"
-folder-hook Propaganda "set from='Hugo Hörnquist <propaganda@vastgota.nation.lu.se>'"
-folder-hook Guckel     "set from='Hugo Hörnquist <guckel@vastgota.nation.lu.se>'"
+folder-hook Propaganda "set from='Hugo Hörnquist <propaganda@vastgota.nation.liu.se>'"
+folder-hook Guckel     "set from='Hugo Hörnquist <guckel@vastgota.nation.liu.se>'"
 
+
+# vim: set nowrap:
