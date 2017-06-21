@@ -1,7 +1,5 @@
 ;;; -*- mode: scheme -*-
 
-(use-modules (ice-9 pretty-print)
-             (language tree-il))
 
 ;; maybe install modules in /usr/lib or simmilar
 (let ((home (getenv "HOME")))
@@ -10,19 +8,11 @@
       (add-to-load-path (string-append home path-part)))
     '("/lib/guile" "/code/guile")))
 
-(define (higher-order-show show-func data port)
-  (if port
-    (begin
-      (show-func data port)
-      (newline port))
-    (begin
-      (show-func data)
-      (newline))))
+(use-modules (ice-9 pretty-print)
+             (language tree-il)
+             (output line)
+             (macros arrow))
 
-(define* (writeln data #:optional (port #f))
-         (higher-order-show write data port))
-(define* (displayln data #:optional (port #f))
-         (higher-order-show display data port))
 
 (define-macro (l file)
   "Macro for quicker file loading"
