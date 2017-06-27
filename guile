@@ -38,10 +38,12 @@
     (thunk
       (displayfunc expr))))
 
-(define mac-exp (compose pretty-print tree-il->scheme macroexpand))
+;;(define mac-exp (compose pretty-print tree-il->scheme macroexpand))
+;; use ,expand instead
 
 (use-modules (ice-9 readline))
 (activate-readline)
 
+;;; (repl-default-option-set print (lambda (repl value) (pretty-print value)))
 
 ;;; vim: filetype=scheme
