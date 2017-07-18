@@ -169,8 +169,9 @@ set ruler
 " Show button presses in lower right portion of the screen
 set showcmd
 
-" Ignore case while searching
+" Ignore case while searching, but keep if capitals are present
 set ignorecase
+set smartcase
 
 " Tab shows options, <ctrl-d> is used to show all possabilities
 set wildmenu
