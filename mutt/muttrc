@@ -34,16 +34,20 @@ set smtp_url="smtp://hugo@mail.lysator.liu.se:26"
 set smtp_pass="`pass lysator/mail/hugo`"
 set ssl_force_tls = yes
 
+macro index \cb |urlscan\n
+macro pager \cb |urlscan\n
+
 # TODO this should be dependent on from where I send it
 # my_hdr Bcc: <hugo@hornquist.se>
 
-## TODO set up this one better
-folder-hook Hornquist  "set from='Hugo Hörnquist <hugo@hornquist.se>'"
-folder-hook Gmail      "set from='Hugo Hörnquist <hugo.hornquist@gmail.com>'"
+set from='Hugo Hörnquist <hugo@hornquist.se>'
+
+#folder-hook Hornquist  "set from='Hugo Hörnquist <hugo@hornquist.se>'"
+#folder-hook Gmail      "set from='Hugo Hörnquist <hugo.hornquist@gmail.com>'"
+folder-hook Gmail      "set from='Hugo Hörnquist <hugo@hornquist.se>
 folder-hook Lysator    "set from='Hugo Hörnquist <hugo@lysator.liu.se>'"
 folder-hook Liu        "set from='Hugo Hörnquist (hugho389) <hugho389@student.liu.se>'"
 folder-hook Propaganda "set from='Hugo Hörnquist <propaganda@vastgota.nation.liu.se>'"
 folder-hook Guckel     "set from='Hugo Hörnquist <guckel@vastgota.nation.liu.se>'"
-
 
 # vim: set nowrap:
