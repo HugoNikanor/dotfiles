@@ -144,7 +144,10 @@ autocmd BufWritePost *.wav silent %!xxd
 " }}}
 
 " ex aliases {{{
+" cmap expands at type time, cnoreabbrev at run time
 	cnoreabbrev ntt NERDTreeToggle
+	"cmap w!! w !sudo tee % > /dev/null
+	cnoreabbrev w!! w !sudo tee % > /dev/null
 " }}}
 
 " Other {{{
