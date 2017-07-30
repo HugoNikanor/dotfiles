@@ -1,3 +1,2 @@
 set expandtab
 colorscheme default
-

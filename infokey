@@ -1,0 +1,11 @@
+#info
+j	down-line
+k	up-line
+J	next-line
+K	prev-line
+# These doesn't work
+<RET>	select-reference-this-line
+<LFD>	select-reference-this-line
+C-m	select-reference-this-line
+
+# vim: set tabstop=8:

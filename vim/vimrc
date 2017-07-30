@@ -73,7 +73,7 @@ set softtabstop=4
 	elseif expand($TMUX) != ''
 		exec "set listchars=tab:>-,eol:\u00b6,nbsp:\u2423,trail:~"
 	else " who knows what this is
-		colorscheme blue
+		colorscheme delek
 	endif
 	" There should also be a clause for anything containing 'screen'
 
@@ -155,7 +155,10 @@ endfunction
 " }}}
 
 " ex aliases {{{
+" cmap expands at type time, cnoreabbrev at run time
 	cnoreabbrev ntt NERDTreeToggle
+	"cmap w!! w !sudo tee % > /dev/null
+	cnoreabbrev w!! w !sudo tee % > /dev/null
 " }}}
 
 " Other {{{
@@ -180,8 +183,9 @@ set ruler
 " Show button presses in lower right portion of the screen
 set showcmd
 
-" Ignore case while searching
+" Ignore case while searching, but keep if capitals are present
 set ignorecase
+set smartcase
 
 " Tab shows options, <ctrl-d> is used to show all possabilities
 set wildmenu
@@ -201,5 +205,7 @@ com! FormatJSON %!python -m json.tool
 
 " disable terminal flashing on error
 set t_vb=
+
+set breakindent
 
 "}}}
