@@ -9,7 +9,14 @@ set t_Co=256
 "}}}
 
 " Vundle / Plugin manager {{{
-" https://github.com/VundleVim/Vundle.vim
+
+let g:downloaded_vundle = 0
+if !isdirectory($HOME . "/.vim/bundle")
+	echo "Downloading Vundle!"
+	echo "Please Wait..."
+	call system("git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim")
+	let g:downloaded_vundle = 1
+endif
 
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -30,10 +37,14 @@ call vundle#begin()
 	Plugin 'tpope/vim-dispatch'
 	Plugin 'scrooloose/syntastic'
 	Plugin 'ctrlpvim/ctrlp.vim'
-	Plugin 'derekwyatt/vim-scala'
 
 call vundle#end()
 filetype plugin indent on
+
+if g:downloaded_vundle
+	:PluginInstall
+	echo "You might want to restart Vim for all settings to take effect"
+endif
 
 "}}}
 
