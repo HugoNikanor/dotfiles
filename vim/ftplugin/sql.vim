@@ -1,1 +1,2 @@
-colorscheme delek
+set expandtab
+colorscheme default

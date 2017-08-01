@@ -54,4 +54,11 @@ compton     &
 # graphical mail
 thunderbird &
 
-exec xmonad
+~/.fehbg &
+
+export WM=xmonad
+
+if [ "$WM" == "i3" ]; then
+	xrandr --noprimary &
+fi
+exec $WM
