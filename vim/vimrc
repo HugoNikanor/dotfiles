@@ -9,7 +9,14 @@ set t_Co=256
 "}}}
 
 " Vundle / Plugin manager {{{
-" https://github.com/VundleVim/Vundle.vim
+
+let g:downloaded_vundle = 0
+if !isdirectory($HOME . "/.vim/bundle")
+	echo "Downloading Vundle!"
+	echo "Please Wait..."
+	call system("git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim")
+	let g:downloaded_vundle = 1
+endif
 
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -30,10 +37,14 @@ call vundle#begin()
 	Plugin 'tpope/vim-dispatch'
 	Plugin 'scrooloose/syntastic'
 	Plugin 'ctrlpvim/ctrlp.vim'
-	Plugin 'derekwyatt/vim-scala'
 
 call vundle#end()
 filetype plugin indent on
+
+if g:downloaded_vundle
+	:PluginInstall
+	echo "You might want to restart Vim for all settings to take effect"
+endif
 
 "}}}
 
@@ -138,13 +149,16 @@ function! BinaryEdit()
 	%!xxd
 endfunction
 " the wav can be extended to match any types of binary files
-autocmd BufNewFile,BufRead *.wav silent call BinaryEdit()
-autocmd BufWritePre *.wav silent %!xxd -r
-autocmd BufWritePost *.wav silent %!xxd
+"autocmd BufNewFile,BufRead *.wav silent call BinaryEdit()
+"autocmd BufWritePre *.wav silent %!xxd -r
+"autocmd BufWritePost *.wav silent %!xxd
 " }}}
 
 " ex aliases {{{
+" cmap expands at type time, cnoreabbrev at run time
 	cnoreabbrev ntt NERDTreeToggle
+	"cmap w!! w !sudo tee % > /dev/null
+	cnoreabbrev w!! w !sudo tee % > /dev/null
 " }}}
 
 " Other {{{
@@ -155,7 +169,7 @@ set mouse=a
 set number
 
 " makes wrapped lines have the same indention as the original line
-" set breakindent
+set breakindent
 
 " use a visual cue instead of a sound cue for messages
 set visualbell
@@ -169,8 +183,9 @@ set ruler
 " Show button presses in lower right portion of the screen
 set showcmd
 
-" Ignore case while searching
+" Ignore case while searching, but keep if capitals are present
 set ignorecase
+set smartcase
 
 " Tab shows options, <ctrl-d> is used to show all possabilities
 set wildmenu
@@ -185,10 +200,6 @@ set incsearch
 set hlsearch
 
 set completeopt=longest,menuone
-
-" Whitespace highlighting
-" ':set list' to enable
-"exec "set listchars=tab:>\u2015,eol:\u00b6,nbsp:\u2423,trail:~"
 
 com! FormatJSON %!python -m json.tool
 

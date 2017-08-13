@@ -81,8 +81,8 @@ SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 MaildirStore guckel-local
-Path ~/mail/Vastgota/Guckel/
-Inbox ~/mail/Vastgota/Guckel/INBOX
+Path ~/mail/Vastgota.Guckel/
+Inbox ~/mail/Vastgota.Guckel/INBOX
 AltMap yes
 
 IMAPStore guckel-remote
@@ -107,8 +107,8 @@ SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 MaildirStore propaganda-local
-Path ~/mail/Vastgota/Propaganda/
-Inbox ~/mail/Vastgota/Propaganda/INBOX
+Path ~/mail/Vastgota.Propaganda/
+Inbox ~/mail/Vastgota.Propaganda/INBOX
 AltMap yes
 
 IMAPStore propaganda-remote
@@ -128,6 +128,7 @@ Group all
 Channel lys
 Channel gmail
 Channel liu
+Channel guckel
 Channel propaganda
 #Channel hornquist
 
