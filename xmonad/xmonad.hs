@@ -138,6 +138,7 @@ main = do
         , ("M-y", spawn gRun)
 
         , ("M-q", spawn xmonadRe)
+        , ("M-t", withFocused $ windows . W.sink)
 
         , ("M-S-c", kill)
         , ("M-<Space>", sendMessage NextLayout) -- TODO get a better binding
