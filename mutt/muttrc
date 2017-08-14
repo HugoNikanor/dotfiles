@@ -37,6 +37,8 @@ set ssl_force_tls = yes
 macro index \cb |urlview\n
 macro pager \cb |urlview\n
 
+push <last-entry>
+
 # TODO this should be dependent on from where I send it
 # my_hdr Bcc: <hugo@hornquist.se>
 
