@@ -1,0 +1,3 @@
+set from='Hugo Hörnquist <guckel@vastgota.nation.liu.se>'
+my_hdr Bcc: <guckel@vastgota.nation.liu.se>
+set signature=~/.mutt/signatures/guckel@vastgota.nation.liu.se

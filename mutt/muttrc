@@ -24,7 +24,6 @@ set postponed = ~/mail/postponed
 set imap_check_subscribed = yes
 set imap_list_subscribed = yes
 
-set realname = "Hugo Hörnquist"
 
 auto_view text/html
 alternative_order text/plain text/enriched text/html
@@ -39,17 +38,16 @@ macro pager \cb |urlview\n
 
 push <last-entry>
 
-# TODO this should be dependent on from where I send it
-# my_hdr Bcc: <hugo@hornquist.se>
-
+set realname = "Hugo Hörnquist"
 set from='Hugo Hörnquist <hugo@hornquist.se>'
+my_hdr Bcc: <hugo@hornquist.se>
 
-#folder-hook Hornquist  "set from='Hugo Hörnquist <hugo@hornquist.se>'"
-#folder-hook Gmail      "set from='Hugo Hörnquist <hugo.hornquist@gmail.com>'"
-folder-hook Gmail      "set from='Hugo Hörnquist <hugo@hornquist.se>
-folder-hook Lysator    "set from='Hugo Hörnquist <hugo@lysator.liu.se>'"
-folder-hook Liu        "set from='Hugo Hörnquist (hugho389) <hugho389@student.liu.se>'"
-folder-hook Propaganda "set from='Hugo Hörnquist <propaganda@vastgota.nation.liu.se>'"
-folder-hook Guckel     "set from='Hugo Hörnquist <guckel@vastgota.nation.liu.se>'"
+folder-hook Gmail      "source ~/.mutt/accounts/hugo.hornquist@gmail.com"
+folder-hook Lysator    "source ~/.mutt/accounts/hugo@lysator.liu.se"
+folder-hook Liu        "source ~/.mutt/accounts/hugho389@student.liu.se"
+folder-hook Propaganda "source ~/.mutt/accounts/propaganda@vastgota.nation.liu.se"
+folder-hook Guckel     "source ~/.mutt/accounts/guckel@vastgota.nation.liu.se"
+
+set spoolfile = ~/mail/Gmail/INBOX
 
 # vim: set nowrap:
