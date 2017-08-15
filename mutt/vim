@@ -14,7 +14,7 @@ bind index ? search-reverse
 bind index n search-next
 bind index N search-opposite
 
-bind index gg first-entry
+bind index g first-entry
 bind index G last-entry
 
 bind index \Cd half-down
@@ -32,8 +32,9 @@ bind index h limit
 # '?' is used for search-opposite
 bind index \Ch help
 
-# Always start with threads collapsed and with the most recent thread selected
-push <collapse-all><last-entry>
+bind generic g first-entry
+bind generic G last-entry
+bind generic \Ch help
 
 # Pager
 
@@ -50,7 +51,7 @@ bind pager ? search-reverse
 bind pager n search-next
 bind pager N search-opposite
 
-bind pager gg top
+bind pager g top
 bind pager G bottom
 
 bind pager \Cd half-down
