@@ -7,3 +7,6 @@ syntax match Keyword "\<#:\S\+\>"
 
 " Possibly group this with something other than Function
 syntax keyword Function -> ->>
+
+syntax match schemeCharacter "#\\tab"
+syntax match schemeError /#\tab[^ \t\[\]()";]\+/
