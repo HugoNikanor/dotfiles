@@ -106,6 +106,8 @@ main = do
 
         , ("M-b", toggleOrView mailWS)
 
+        , ("M-t", withFocused $ windows . W.sink)
+
         , ("M-j", B.focusDown)
         , ("M-k", B.focusUp)
         , ("M-S-j", windows W.swapDown)
