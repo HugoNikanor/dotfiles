@@ -1,6 +1,5 @@
 ;;; -*- mode: scheme -*-
 
-
 ;; maybe install modules in /usr/lib or simmilar
 (let ((home (getenv "HOME")))
   (for-each
@@ -9,10 +8,8 @@
     '("/lib/guile" "/code/guile")))
 
 (use-modules (ice-9 pretty-print)
-             (language tree-il)
              (output line)
              (macros arrow))
-
 
 (define-macro (l file)
   "Macro for quicker file loading"
