@@ -97,6 +97,10 @@ if [ -d "$HOME/.gem/ruby/2.3.0/bin" ]; then
 	PATH="$HOME/.gem/ruby/2.3.0/bin:$PATH"
 fi
 
+if [ -d "$HOME/.cabal/bin" ]; then
+	PATH="$PATH:$HOME/.cabal/bin"
+fi
+
 if [ -f ~/.ghiToken ]; then
 	source ~/.ghiToken
 fi
