@@ -18,3 +18,5 @@ elseif @a ==? "english"
 else
 	setlocal nospell
 endif
+
+set makeprg=latexmk\ -pdf\ %<.tex

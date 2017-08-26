@@ -81,9 +81,6 @@ set softtabstop=4
 "}}}
 
 " Key remaps {{{
-	""" maps space to <leader>, and makes it show up with 'showcmd'
-	"nnoremap <leader> \
-	"nmap <space> \
 
 	""nnoremap <space> <leader>
 	let mapleader=" "
@@ -95,15 +92,14 @@ set softtabstop=4
 	nnoremap <C-H> <C-W><C-H>
 
 	""" Leader maps
-	nnoremap <silent> <leader>o :nohlsearch <cr>
-	nnoremap <leader>h :vertical help
+	nnoremap <silent> <leader>o :nohlsearch<cr>
 
 	nnoremap <leader>t iTODO
 
-	nnoremap <leader>s :%s/\s\+$// <cr>
+	nnoremap <leader>s :%s/\s\+$//<cr>
 
 	nnoremap <leader>d 0D
-	nnoremap <silent> <leader>a :set foldlevel=0 <cr>
+	nnoremap <silent> <leader>a :set foldlevel=0<cr>
 
 	nnoremap <leader>f :NERDTreeToggle<cr>
 
@@ -114,6 +110,10 @@ set softtabstop=4
 	nnoremap k gk
 	nnoremap gj j
 	nnoremap gk k
+
+	" should be default
+	nnoremap Y y$
+
 
 "}}}
 
@@ -141,6 +141,8 @@ set softtabstop=4
 " }}}
 
 " Binary Files {{{
+" just use `vim -b`?
+"
 " I'm not actually sure that this work as intended
 " When I tried it on a larger wav file it might have corrupted it.
 function! BinaryEdit()
@@ -159,6 +161,8 @@ endfunction
 	cnoreabbrev ntt NERDTreeToggle
 	"cmap w!! w !sudo tee % > /dev/null
 	cnoreabbrev w!! w !sudo tee % > /dev/null
+
+	cmap vh vertical help
 " }}}
 
 " Other {{{

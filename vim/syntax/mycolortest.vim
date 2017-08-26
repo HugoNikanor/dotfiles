@@ -1,4 +1,11 @@
-syntax region Comment start=/#/ end="$"
+"syntax region Comment start=/#/ end="$" 
+syntax match Comment "^#.*" contains=00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15
+
+syntax include @inlineIRC syntax/irc.vim
+syntax include @inlineHTML syntax/html.vim
+
+syntax region inlineIRC start="<irc>" keepend end="</irc>"me=s-1 contains=@inlineIRC
+syntax region inlineHTML start="<html>" keepend end="</html>"me=s-1 contains=@inlineHTML
 
 syntax match 00 "\(00\s*\)\@<=\S*"  
 syntax match 01 "\(01\s*\)\@<=\S*"  
@@ -33,3 +40,4 @@ highlight 12 ctermfg=12
 highlight 13 ctermfg=13
 highlight 14 ctermfg=14
 highlight 15 ctermfg=15
+
