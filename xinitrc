@@ -51,14 +51,18 @@ fi
 unclutter   &
 # transparent windows
 compton     &
-# graphical mail
-thunderbird &
 
 ~/.fehbg &
 
 export WM=xmonad
 
-if [ "$WM" == "i3" ]; then
-	xrandr --noprimary &
-fi
+case "$WM" in
+	i3)
+		xrandr --noprimary &
+		;;
+	xmonad)
+		#thunderbird &
+		;;
+esac
+
 exec $WM
