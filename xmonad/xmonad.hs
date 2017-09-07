@@ -4,6 +4,8 @@ import XMonad.Util.SpawnOnce
 
 import XMonad.Util.Types
 
+import XMonad.Prompt
+
 -- mod4mask?
 import XMonad.Util.EZConfig
 
@@ -23,6 +25,15 @@ import qualified XMonad.Layout.BoringWindows as B
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Layout.IndependentScreens
 import XMonad.Actions.CycleWS
+
+import XMonad.Actions.Warp
+import XMonad.Actions.WindowGo
+import XMonad.Actions.Navigation2D
+import XMonad.Layout.Maximize
+
+import XMonad.Layout.Roledex
+import XMonad.Layout.Dishes
+--import XMonad.Layout.Simplest
 
 import XMonad.Hooks.InsertPosition
 import Network.HostName
@@ -46,6 +57,8 @@ TODO
 * Mouse sholud move to currently active workspace when workspaces switch
 -}
 
+myFont = "Iosevka Slab-11"
+
 -- This function should possibly be changed to take a context string instead of
 -- just a hostname, this to simplify having multiple terminal types on one system
 -- `hostname -y` return "lysator" on some systems, "(none)" on other
@@ -61,21 +74,17 @@ spawnToWorkspace workspace program = do
     spawn program
     windows $ W.greedyView workspace
 
+{-
+bootstrap :: X()
+bootstrap = do
+    spawnToWorkspace "firefox" "web"
+    spawnToWorkspace "term"
+-}
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
+    , ((modm, xK_Tab ), windows W.focusDown)
     ]
-    ++
-    [((m .|. modm, k), windows $ onCurrentScreen f i)
-        | (i, k) <- zip (workspaces' conf) [xK_1 .. xK_9]
-        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-    ++
-    -- This is bindings for moving between physical screens
-    -- TODO look into enabling the lower row to be primary, and the upper secondary
-    [((modm .|. mask, key), f sc)
-        | (key, sc) <- zip [xK_adiaeresis, xK_odiaeresis, xK_p, xK_o, xK_e, xK_u] [0..]
-        , (f, mask) <- [(viewScreen, 0), (sendToScreen, shiftMask)]]
-
 
 main = do
     termCommand <- getTerminalCommand <$> getHostName
@@ -88,9 +97,11 @@ main = do
         , clickJustFocuses   = False
         , keys               = myKeys
         , terminal           = termCommand
-        , layoutHook         = subTabbed $ B.boringWindows $ ifWider tallThreshold wideLayouts tallLayouts
+        --, layoutHook         = subTabbed $ B.boringWindows $ ifWider tallThreshold wideLayouts tallLayouts
+        , layoutHook         = B.boringWindows $ maximize $ ifWider tallThreshold wideLayouts tallLayouts
         , manageHook         = insertPosition Below Newer
-        , workspaces         = (withScreens nScreens $ show <$> [1..9]) ++ [mailWS]
+        -- , workspaces         = (withScreens nScreens $ show <$> [1..9]) ++ [mailWS]
+        , workspaces         = ["web", "irc", "mail", "term"]
         , normalBorderColor  = "#1d1f21"
         , focusedBorderColor = "#FF0000"
         }
@@ -104,20 +115,37 @@ main = do
         , (pre "s", spawn gSound)
         , (pre "f", spawn gFiles)
 
-        , ("M-b", toggleOrView mailWS)
+        --, ("M-b", toggleOrView mailWS)
 
         , ("M-t", withFocused $ windows . W.sink)
 
-        , ("M-j", B.focusDown)
-        , ("M-k", B.focusUp)
-        , ("M-S-j", windows W.swapDown)
-        , ("M-S-k", windows W.swapUp)
+        --, ("M-j", B.focusDown)
+        --, ("M-k", B.focusUp)
+        --, ("M-S-j", windows W.swapDown)
+        --, ("M-S-k", windows W.swapUp)
 
-        , ("M-S-h", sendMessage Shrink)
-        , ("M-S-l", sendMessage Expand)
+        --, ("M-S-h", sendMessage Shrink)
+        --, ("M-S-l", sendMessage Expand)
 
-        , ("M-h", sendMessage $ IncMasterN    1)
-        , ("M-l", sendMessage $ IncMasterN $ -1)
+        --, ("M-h", sendMessage $ IncMasterN    1)
+        --, ("M-l", sendMessage $ IncMasterN $ -1)
+
+        , ("M-o", (viewScreen $ P 0) >> banish LowerRight)
+        , ("M-e", (viewScreen $ P 1) >> banish LowerRight)
+        , ("M-S-o", (sendToScreen $ P 0))
+        , ("M-S-e", (sendToScreen $ P 1))
+
+        -- Can keybinds be dependent on current layout?
+        , ("M-l", windowGo R False >> banish LowerRight)
+        , ("M-h", windowGo L False >> banish LowerRight)
+        , ("M-k", windowGo U False >> banish LowerRight)
+        , ("M-j", windowGo D False >> banish LowerRight)
+
+        , ("M-S-l", windowSwap R False)
+        , ("M-S-h", windowSwap L False)
+        , ("M-S-k", windowSwap U False)
+        , ("M-S-j", windowSwap D False)
+
 
         , ("M-s", toggleWS)
 
@@ -134,16 +162,29 @@ main = do
         , ("M-C-z", withFocused $ sendMessage . MergeAll)
         , ("M-C-v", withFocused $ sendMessage . UnMerge)
 
-        , ("M-m", onGroup W.focusUp')
-        , ("M-w", onGroup W.focusDown')
+        --, ("M-m", onGroup W.focusUp')
+        --, ("M-w", onGroup W.focusDown')
 
         , ("M-y", spawn gRun)
 
         , ("M-q", spawn xmonadRe)
         , ("M-t", withFocused $ windows . W.sink)
 
+        , ("M-a", sendMessage $ IncMasterN 1)
+        , ("M-.", sendMessage $ IncMasterN (- 1))
+
         , ("M-S-c", kill)
-        , ("M-<Space>", sendMessage NextLayout) -- TODO get a better binding
+        , ("M-m", sendMessage NextLayout) -- TODO get a better binding
+
+        , ("M-<Space> M-<Space>", selectWorkspace myXPConfig)
+        , ("M-<Space> <Space>", selectWorkspace myXPConfig)
+
+        , ("M-<Space> d", removeWorkspace)
+        , ("M-<Space> M-d", removeEmptyWorkspace)
+        , ("M-<Space> a", addWorkspacePrompt myXPConfig)
+        , ("M-<Space> s", withWorkspace myXPConfig (windows . W.shift))
+        -- This should also select that workspace
+        , ("M-<Space> S-s", withWorkspace myXPConfig (windows . W.shift))
 
         --, ("M-u", selectWorkspace def)
         --, ("M-i", spawnToWorkspace "mail" "xterm")
@@ -161,9 +202,26 @@ main = do
                 xmonadRe = "xmonad --recompile; xmonad --restart"
                 mailWS   = "mail"
 
+                myXPConfig = defaultXPConfig
+                    { position = Top -- CenteredAt
+                    , historySize = 1000
+                    , autoComplete = Just 1
+                    , font = myFont
+                    -- , searchPredicate = isInfixOf
+                    }
+
                 -- TODO possibly auto get this number dependend on the system
                 -- possibly also change to a check if a screen is higher than
                 -- it is wide, and then change layouts
                 tallThreshold = 1200
-                wideLayouts   = Tall 1 (3/100) (3/5) ||| Full
-                tallLayouts   = Grid ||| Full
+                --wideLayouts   = Tall 1 (3/100) (3/5) ||| Full
+                wideLayouts = GridRatio (4/3) ||| Full
+                --tallLayouts = Grid ||| Full
+                tallLayouts = {- Roledex ||| -} Dishes 1 (1/4) ||| Full
+                --tallLayouts = subLayout [0, 1] $  $ Dishes 2 (1/6)
+                --tallLayouts = {- addTabs shrinkText -} subLayout [0, 1, 2, 3] (Simplest ||| Tall 1 0.2 0.5 ||| Circle) $ Tall 1 0.2 0.5 ||| Full
+                --tallLayouts = {- addTabs shrinkText -} subLayout [2] (Circle) $ Tall 1 0.2 0.5 ||| Full
+                ---tallLayouts = {- addTabs shrinkText -} subLayout [0,1]  (Roledex) $ Dishes 2 (1/6)  ||| Full
+                --
+                --tallLayouts = subLayout [0, 1] (Full ||| Grid )
+
