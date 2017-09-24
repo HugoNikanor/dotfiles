@@ -212,4 +212,7 @@ set t_vb=
 
 set breakindent
 
+" like all but only for visual block
+set virtualedit=block
+
 "}}}
