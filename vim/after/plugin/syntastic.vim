@@ -2,11 +2,18 @@
 " first line, without a newline at the end.
 "     Should possibly be somewhere else, but it's
 " here I use it.
+" If nothing was returned from the command return an empty string
 function Sys(arg)
-	return systemlist(a:arg)[0]
+	let l:ret = systemlist(a:arg)
+	if (empty(l:ret))
+		return ""
+	else
+		return systemlist(a:arg)[0]
+	endif
 endfunction
 
-let cpp  = "-I../lib "
+let cpp  = "-std=gnu++11 "
+let cpp .= "-I../lib "
 let cpp .= "-I../lib/StanfordCPPLib "
 let cpp .= "-I/usr/include/qt "
 let cpp .= "-I/usr/include/qt/QtCore "
