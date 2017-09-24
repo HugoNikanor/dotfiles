@@ -38,6 +38,7 @@ call vundle#begin()
 	Plugin 'scrooloose/syntastic'
 	Plugin 'ctrlpvim/ctrlp.vim'
 	Plugin 'airblade/vim-gitgutter'
+	Plugin 'HugoNikanor/vim-breakpoint'
 
 call vundle#end()
 filetype plugin indent on
