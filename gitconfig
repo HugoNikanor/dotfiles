@@ -2,7 +2,7 @@
 	excludesfile = /home/hugo/.gitignore_global
 	editor = vim
 [user]
-	email = hugo.hornquist@gmail.com
+	email = hugo@hornquist.se
 	name = Hugo Hörnquist
 [push]
 	default = current

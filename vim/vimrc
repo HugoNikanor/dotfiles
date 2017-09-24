@@ -37,6 +37,8 @@ call vundle#begin()
 	Plugin 'tpope/vim-dispatch'
 	Plugin 'scrooloose/syntastic'
 	Plugin 'ctrlpvim/ctrlp.vim'
+	Plugin 'airblade/vim-gitgutter'
+	Plugin 'HugoNikanor/vim-breakpoint'
 
 call vundle#end()
 filetype plugin indent on
@@ -211,5 +213,8 @@ com! FormatJSON %!python -m json.tool
 set t_vb=
 
 set breakindent
+
+" like all but only for visual block
+set virtualedit=block
 
 "}}}
