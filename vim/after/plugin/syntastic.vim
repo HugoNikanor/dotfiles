@@ -6,7 +6,9 @@ function Sys(arg)
 	return systemlist(a:arg)[0]
 endfunction
 
-let cpp  = "-I/usr/include/qt "
+let cpp  = "-I../lib "
+let cpp .= "-I../lib/StanfordCPPLib "
+let cpp .= "-I/usr/include/qt "
 let cpp .= "-I/usr/include/qt/QtCore "
 let cpp .= "-I/usr/include/qt/QtSql "
 let cpp .= "-fpermissive "
