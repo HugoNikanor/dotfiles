@@ -51,14 +51,18 @@ hi delek_Statement  cterm=bold ctermfg=Blue        gui=bold guifg=blue
 hi delek_Type       cterm=NONE ctermfg=Blue        gui=bold guifg=blue
 
 " Colorscheme binding {{{1
-" Binds all colors help needs to my delek colorscheme defined above
+" This maps help highlighting to `delek_' where that's available
+" And to the current colorscheme where `delek_' doesn't export any
+" highlighting.
+"     Note that my `Comments' colorscheme doesn't set all these colors
+" to something non-white. But it at least sets `String' and `Keyword'.
 
-hi def link helpIgnore          delek_Ignore
+hi def link helpIgnore          Ignore
 hi def link helpHyperTextJump   delek_Identifier
-hi def link helpBar             delek_Ignore
-hi def link helpBacktick        delek_Ignore
-hi def link helpStar            delek_Ignore
-hi def link helpHyperTextEntry  delek_String
+hi def link helpBar             Ignore
+hi def link helpBacktick        Ignore
+hi def link helpStar            Ignore
+hi def link helpHyperTextEntry  String
 hi def link helpHeadline        delek_Statement
 hi def link helpHeader          delek_PreProc
 hi def link helpSectionDelim    delek_PreProc
@@ -68,41 +72,41 @@ hi def link helpExample         delek_Comment
 hi def link helpOption          delek_Type
 hi def link helpNotVi           delek_Special
 hi def link helpSpecial         delek_Special
-hi def link helpNote            delek_Todo
-hi def link helpWarning         delek_Todo
-hi def link helpDeprecated      delek_Todo
+hi def link helpNote            Todo
+hi def link helpWarning         Todo
+hi def link helpDeprecated      Todo
 
-hi def link helpComment         delek_Comment
+hi def link helpComment         Comment
 hi def link helpConstant        delek_Constant
-hi def link helpString          delek_String
-hi def link helpCharacter       delek_Character
-hi def link helpNumber          delek_Number
-hi def link helpBoolean         delek_Boolean
-hi def link helpFloat           delek_Float
+hi def link helpString          String
+hi def link helpCharacter       Character
+hi def link helpNumber          Number
+hi def link helpBoolean         Boolean
+hi def link helpFloat           Float
 hi def link helpIdentifier      delek_Identifier
-hi def link helpFunction        delek_Function
+hi def link helpFunction        Function
 hi def link helpStatement       delek_Statement
-hi def link helpConditional     delek_Conditional
-hi def link helpRepeat          delek_Repeat
-hi def link helpLabel           delek_Label
-hi def link helpOperator        delek_Operator
-hi def link helpKeyword         delek_Keyword
-hi def link helpException       delek_Exception
+hi def link helpConditional     Conditional
+hi def link helpRepeat          Repeat
+hi def link helpLabel           Label
+hi def link helpOperator        Operator
+hi def link helpKeyword         Keyword
+hi def link helpException       Exception
 hi def link helpPreProc         delek_PreProc
-hi def link helpInclude         delek_Include
-hi def link helpDefine          delek_Define
-hi def link helpMacro           delek_Macro
-hi def link helpPreCondit       delek_PreCondit
+hi def link helpInclude         Include
+hi def link helpDefine          Define
+hi def link helpMacro           Macro
+hi def link helpPreCondit       PreCondit
 hi def link helpType            delek_Type
-hi def link helpStorageClass    delek_StorageClass
-hi def link helpStructure       delek_Structure
-hi def link helpTypedef         delek_Typedef
-hi def link helpSpecialChar     delek_SpecialChar
-hi def link helpTag             delek_Tag
-hi def link helpDelimiter       delek_Delimiter
-hi def link helpSpecialComment  delek_SpecialComment
-hi def link helpDebug           delek_Debug
-hi def link helpUnderlined      delek_Underlined
-hi def link helpError           delek_Error
-hi def link helpTodo            delek_Todo
-hi def link helpURL             delek_String
+hi def link helpStorageClass    StorageClass
+hi def link helpStructure       Structure
+hi def link helpTypedef         Typedef
+hi def link helpSpecialChar     SpecialChar
+hi def link helpTag             Tag
+hi def link helpDelimiter       Delimiter
+hi def link helpSpecialComment  SpecialComment
+hi def link helpDebug           Debug
+hi def link helpUnderlined      Underlined
+hi def link helpError           Error
+hi def link helpTodo            Todo
+hi def link helpURL             String
