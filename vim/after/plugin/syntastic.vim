@@ -12,17 +12,17 @@ function Sys(arg)
 	endif
 endfunction
 
-let cpp  = "-std=gnu++11 "
-let cpp .= "-I../lib "
-let cpp .= "-I../lib/StanfordCPPLib "
-let cpp .= "-I/usr/include/qt "
-let cpp .= "-I/usr/include/qt/QtCore "
-let cpp .= "-I/usr/include/qt/QtSql "
-let cpp .= "-fpermissive "
-let cpp .= Sys("pkg-config --cflags guile-2.2")
-let g:syntastic_cpp_compiler_options = cpp
+let s:cpp  = "-std=gnu++11 "
+let s:cpp .= "-I../lib "
+let s:cpp .= "-I../lib/StanfordCPPLib "
+let s:cpp .= "-I/usr/include/qt "
+let s:cpp .= "-I/usr/include/qt/QtCore "
+let s:cpp .= "-I/usr/include/qt/QtSql "
+let s:cpp .= "-fpermissive "
+let s:cpp .= Sys("pkg-config --cflags guile-2.2")
+let g:syntastic_cpp_compiler_options = s:cpp
 
-let c  = "-std=c99 -pedantic "
-let c .= Sys("pkg-config --cflags guile-2.2")
-let c .= Sys("pkg-config --cflags dbus-1")
-let g:syntastic_c_compiler_options = c
+let s:c  = "-std=c99 -pedantic "
+let s:c .= Sys("pkg-config --cflags guile-2.2")
+let s:c .= Sys("pkg-config --cflags dbus-1")
+let g:syntastic_c_compiler_options = s:c
