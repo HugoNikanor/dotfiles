@@ -19,6 +19,9 @@ set statusline=""
 
 colorscheme darkblue
 
+" TODO if the window is changed to quickly after opening gvim then than window
+" might become transparent instead
+"
 " Make the Gui Window semi transparent.
 " This should preferably be changed so it's set in the wm settings
 autocmd GUIEnter    * silent exec "!transset-df -a 0.9"
