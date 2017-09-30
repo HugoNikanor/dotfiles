@@ -1,9 +1,8 @@
-""" Don't touch stuff {{{
+" initial {{{ 
+
 scriptencoding utf-8
 set encoding=utf-8
-
 set nocompatible
-
 set t_Co=256
 
 "}}}
@@ -24,19 +23,18 @@ call vundle#begin()
 
 	Plugin 'VundleVim/Vundle.vim'
 
-	" Tmux & vim integration, somehow
-	Plugin 'christoomey/vim-tmux-navigator'
-	" Aligning of text
-	Plugin 'godlygeek/tabular'
-	" Draw lines and boxes
-	Plugin 'hrj/vim-DrawIt'
-	Plugin 'lervag/vimtex'
-	Plugin 'scrooloose/nerdtree'
-	Plugin 'Xuyuanp/nerdtree-git-plugin'
-	Plugin 'tpope/vim-surround'
-	Plugin 'tpope/vim-dispatch'
-	Plugin 'scrooloose/syntastic'
-	Plugin 'ctrlpvim/ctrlp.vim'
+	Plugin 'christoomey/vim-tmux-navigator' "  Tmux & vim integration, somehow
+	Plugin 'godlygeek/tabular'              "  Aligning of text
+	Plugin 'hrj/vim-DrawIt'                 "  Draw lines and boxes
+	Plugin 'lervag/vimtex'                  "  latex thingys
+	Plugin 'scrooloose/nerdtree'            "  filetree
+	Plugin 'Xuyuanp/nerdtree-git-plugin'    "  git plugin for ^
+	"Plugin 'tpope/vim-surround'            "
+	"Plugin 'tpope/vim-dispatch'
+	Plugin 'scrooloose/syntastic'           "  error checking
+	Plugin 'ctrlpvim/ctrlp.vim'             "  fuzzy file changer
+	Plugin 'airblade/vim-gitgutter'         "  git diff sign
+	Plugin 'HugoNikanor/vim-breakpoint'     "  gdb breakpoint sign
 
 call vundle#end()
 filetype plugin indent on
@@ -48,168 +46,82 @@ endif
 
 "}}}
 
-" Tabs {{{
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-"}}}
 
 " Higlighting {{{
-	syntax on
 
-	" Color marking when passing line 80
-	call matchadd('ColorColumn', '\%81v', 100)
+syntax on
+colorscheme comments
 
-	" Trailing whitespace
-	syntax match Error "\s\+$"
+call matchadd('ColorColumn', '\%81v', 100) " Color marking when passing line 80
+syntax match Error "\s\+$" " Trailing whitespace
 
-	colorscheme comments
-
-	if $TERM ==? "linux"
-		exec "set listchars=tab:>-,eol:$,nbsp:_,trail:~"
-	" This should be changed to match anything containing xterm
-	elseif ($TERM ==? "xterm") + ($TERM ==? "xterm-termite")
-		exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
-	elseif expand($TMUX) != ''
-		exec "set listchars=tab:>-,eol:\u00b6,nbsp:\u2423,trail:~"
-	else " who knows what this is
-		colorscheme delek
-	endif
-	" There should also be a clause for anything containing 'screen'
-
+if $TERM ==? "linux"
+	exec "set listchars=tab:>-,eol:$,nbsp:_,trail:~"
+" This should be changed to match anything containing xterm
+elseif ($TERM ==? "xterm") + ($TERM ==? "xterm-termite")
+	exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
+elseif expand($TMUX) != ''
+	exec "set listchars=tab:>-,eol:\u00b6,nbsp:\u2423,trail:~"
+else " who knows what this is
+	colorscheme delek
+endif
+" There should also be a clause for anything containing 'screen'
 
 "}}}
-
-" Key remaps {{{
-
-	""nnoremap <space> <leader>
-	let mapleader=" "
-
-	""" Moving between buffers
-	nnoremap <C-J> <C-W><C-J>
-	nnoremap <C-K> <C-W><C-K>
-	nnoremap <C-L> <C-W><C-L>
-	nnoremap <C-H> <C-W><C-H>
-
-	""" Leader maps
-	nnoremap <silent> <leader>o :nohlsearch<cr>
-
-	nnoremap <leader>t iTODO
-
-	nnoremap <leader>s :%s/\s\+$//<cr>
-
-	nnoremap <leader>d 0D
-	nnoremap <silent> <leader>a :set foldlevel=0<cr>
-
-	nnoremap <leader>f :NERDTreeToggle<cr>
-
-	""" other
-	nnoremap <cr> o<esc>
-	" uses what looks like a line, instead of the actual lines
-	nnoremap j gj
-	nnoremap k gk
-	nnoremap gj j
-	nnoremap gk k
-
-	" should be default
-	nnoremap Y y$
-
-
-"}}}
-
-" Folding {{{
-	set foldenable
-
-	set foldmethod=marker
-	set foldnestmax=20
-	set foldlevelstart=0
-	set foldlevel=0
-"}}}
-
-" Functions {{{
-	" Does this even work?
-	function! HandleURL()
-		let uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
-		if uri != ""
-			" on desktop, if I have 'xdg-open' here then chrome is opened
-			" even though elinks is set as the default browser.
-			silent exec "!tmux new-window -n \"elinks(vim)\" elinks ".uri
-			redraw!
-		endif
-	endfunction
-	map gx :call HandleURL()<cr>
-" }}}
-
-" Binary Files {{{
-" just use `vim -b`?
-"
-" I'm not actually sure that this work as intended
-" When I tried it on a larger wav file it might have corrupted it.
-function! BinaryEdit()
-	setlocal binary
-	setlocal noeol
-	%!xxd
-endfunction
-" the wav can be extended to match any types of binary files
-"autocmd BufNewFile,BufRead *.wav silent call BinaryEdit()
-"autocmd BufWritePre *.wav silent %!xxd -r
-"autocmd BufWritePost *.wav silent %!xxd
-" }}}
-
-" ex aliases {{{
-" cmap expands at type time, cnoreabbrev at run time
-	cnoreabbrev ntt NERDTreeToggle
-	"cmap w!! w !sudo tee % > /dev/null
-	cnoreabbrev w!! w !sudo tee % > /dev/null
-
-	cmap vh vertical help
-" }}}
 
 " Other {{{
 
-set smartindent
-set mouse=a
-
-set number
-
-" makes wrapped lines have the same indention as the original line
-set breakindent
-
-" use a visual cue instead of a sound cue for messages
-set visualbell
-
-" Display filename on the next to last line
-set laststatus=2
-
-" Show cursor possition in info bar
-set ruler
-
-" Show button presses in lower right portion of the screen
-set showcmd
-
-" Ignore case while searching, but keep if capitals are present
-set ignorecase
-set smartcase
-
-" Tab shows options, <ctrl-d> is used to show all possabilities
-set wildmenu
-
-" New splits in better places
-set splitbelow
-set splitright
-
-
-""" Searching
-set incsearch
-set hlsearch
-
-set completeopt=longest,menuone
-
+" cmap expands at type time, cnoreabbrev at run time
+cnoreabbrev ntt NERDTreeToggle
+cnoreabbrev w!! w !sudo tee % > /dev/null
+cmap vh vertical help
 com! FormatJSON %!python -m json.tool
 
-" disable terminal flashing on error
-set t_vb=
+let mapleader=" "
 
-set breakindent
+nnoremap <silent> <leader>o :nohlsearch<cr>
+nnoremap <leader>s :%s/\s\+$//<cr>
+nnoremap <leader>d 0D
+nnoremap <silent> <leader>a :set foldlevel=0<cr>
+nnoremap <leader>f :NERDTreeToggle<cr>
+nnoremap <silent> <leader>j :cn<cr>
+nnoremap <silent> <leader>k :cp<cr>
+
+nnoremap <cr> o<esc>
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+nnoremap Y y$
+
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+
+set foldenable
+
+set foldmethod=marker
+set foldnestmax=20
+set foldlevelstart=0
+set foldlevel=0
+
+set smartindent
+set mouse=a
+set number
+set breakindent       " makes wrapped lines have the same indention as the original line
+set visualbell t_vb=  " disable terminal flashing on error
+set laststatus=2      " Display filename on the next to last line
+set ruler             " Show cursor possition in info bar
+set showcmd           " Show button presses in lower right portion of the screen
+set ignorecase        " Ignore case while searching
+set smartcase         " but keep if capitals are present
+set wildmenu          " Tab shows options
+set splitbelow
+set splitright
+set incsearch         " interactive search
+set hlsearch          " highlight all
+set virtualedit=block " like all but only for visual block
+set completeopt=longest,menuone " <C-n> don't autoselect
+set path+=**
 
 "}}}

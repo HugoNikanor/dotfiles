@@ -126,4 +126,5 @@ case `hostname` in
 esac
 
 export INFOPATH="$HOME/info"
-PATH="$PATH:/home/hugo/.gem/ruby/2.3.0/bin"
+PATH="$PATH:$HOME/.gem/ruby/2.3.0/bin"
+PATH="$PATH:$HOME/bin"
