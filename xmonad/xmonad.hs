@@ -29,6 +29,7 @@ import XMonad.Layout.Maximize (maximize)
 import XMonad.Layout.Circle (Circle (..))
 import XMonad.Layout.Cross (simpleCross)
 import XMonad.Layout.PerWorkspace
+import XMonad.Layout.ThreeColumns
 
 import XMonad.Prompt
 
@@ -117,7 +118,7 @@ main = do
                  , keys               = myKeys
                  , terminal           = termCommand
                  --, layoutHook         = subTabbed $ B.boringWindows $ ifWider tallThreshold wideLayouts tallLayouts
-                 , layoutHook         = B.boringWindows $ onWorkspaces ["gimp"] (Circle ||| simpleCross) $ maximize $ ifWider tallThreshold wideLayouts tallLayouts
+                 , layoutHook         = windowNavigation $ subTabbed $ B.boringWindows $ onWorkspaces ["gimp"] (Circle ||| simpleCross) $ maximize $ ifWider tallThreshold wideLayouts tallLayouts
                  , manageHook         = manageDocks <+> myManageHook <+> insertPosition Below Newer
                  , workspaces         = ["default"]
                  , normalBorderColor  = "#1d1f21"
@@ -140,16 +141,18 @@ main = do
 
                  , ("M-t", withFocused $ windows . W.sink)
 
+                 , ("M-S-<Return>", windows W.swapMaster)
+
                  --, ("M-j", B.focusDown)
                  --, ("M-k", B.focusUp)
                  --, ("M-S-j", windows W.swapDown)
                  --, ("M-S-k", windows W.swapUp)
 
-                 --, ("M-S-h", sendMessage Shrink)
-                 --, ("M-S-l", sendMessage Expand)
+                 , ("M-m", sendMessage Shrink)
+                 , ("M-w", sendMessage Expand)
 
-                 --, ("M-h", sendMessage $ IncMasterN    1)
-                 --, ("M-l", sendMessage $ IncMasterN $ -1)
+                 , ("M-S-m", sendMessage $ IncMasterN    1)
+                 , ("M-S-w", sendMessage $ IncMasterN $ -1)
 
                  , ("M-o"  , (viewScreen $ P 0) >> banish LowerRight)
                  , ("M-S-o", (sendToScreen $ P 0))
@@ -201,7 +204,7 @@ main = do
                  , ("M-.", sendMessage $ IncMasterN (- 1))
 
                  , ("M-S-c", kill)
-                 , ("M-m", sendMessage NextLayout)
+                 , ("M-n", sendMessage NextLayout)
 
                  , ("M-<Space> M-<Space>", selectWorkspace myXPConfig)
                  , ("M-<Space> <Space>", selectWorkspace myXPConfig)
@@ -243,8 +246,9 @@ main = do
                          -- it is wide, and then change layouts
                          tallThreshold = 1200
                          --wideLayouts   = Tall 1 (3/100) (3/5) ||| Full
-                         --wideLayouts = GridRatio (4/3) ||| Full
-                         wideLayouts = Tall 1 (3/100) (3/5) ||| GridRatio (4/3) ||| Full
+                         --wideLayouts = Tall 1 (3/100) (3/5) ||| GridRatio (4/3) ||| Full
+                         wideLayouts = ThreeColMid 1 (3/100) (1/2) ||| Tall 1 (3/100) (3/5) ||| GridRatio (4/3) ||| Full
+                         --wideLayouts = (subLayout [] (ThreeColMid 1 (3/100) (1/2) ||| (Dishes 1 (1/4)) ||| Full )) ||| Tall 1 (3/100) (3/5) ||| GridRatio (4/3) ||| Full
                          --tallLayouts = Grid ||| Full
                          tallLayouts = {- Roledex ||| -} Dishes 1 (1/4) ||| Full
 
