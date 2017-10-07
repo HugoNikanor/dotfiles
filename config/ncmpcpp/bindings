@@ -29,10 +29,10 @@ def_key "ctrl-u"
 def_key "ctrl-d"
     page_down
 
-def_key "h"
-    previous_column
-def_key "l"
-    next_column
+#def_key "h"
+#    previous_column
+#def_key "l"
+#    next_column
 
 def_key "."
     show_lyrics
@@ -56,7 +56,7 @@ def_key "g"
 def_key "G"
 	move_end
 
-def_key "h"
-	seek_forward
-def_key "l"
-	seek_backward
+#def_key "h"
+#	seek_backward
+#def_key "l"
+#	seek_forward
