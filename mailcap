@@ -1,0 +1,16 @@
+# Documentation about mailcap
+# http://www.rdrop.com/docs/mutt/manual85.html
+#
+# The source of the mutt_bgrun script, which is needed in X environments
+# https://www.mattcutts.com/files/mutt_bgrun
+
+text/html; firefox '%s'; test=test -n "$DISPLAY";
+text/html; elinks -dump '%s'; nametemplates=%s.html; copiousoutput;
+
+image/*; mutt_bgrun feh --scale-down '%s'; test=test -n "$DISPLAY";
+image/*; fbv '%s'; 
+
+application/pdf; mutt_bgrun zathura '%s' 2> /dev/null; test=test -n "$DISPLAY";
+application/pdf; pdftotext '%s' /dev/stdout; copiousoutput;
+
+application/octet-stream; hexdump -C; copiousoutput; description="Hex dump";
