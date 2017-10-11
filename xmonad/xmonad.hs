@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -W #-}
+
 import System.IO (hPutStrLn)
 import Network.HostName (HostName, getHostName)
 
@@ -13,16 +15,21 @@ import XMonad.Actions.Navigation2D
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks --(manageDocks, ToggleStruts)
 import XMonad.Hooks.InsertPosition
+import XMonad.Hooks.ManageHelpers
 
 import XMonad.Layout
 import XMonad.Layout.Grid (Grid (..))
 import XMonad.Layout.PerScreen
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.WindowNavigation
---import XMonad.Layout.Roledex
+import XMonad.Layout.Roledex
 import XMonad.Layout.Dishes (Dishes (..))
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.Maximize (maximize)
+import XMonad.Layout.Circle (Circle (..))
+import XMonad.Layout.Cross (simpleCross)
+import XMonad.Layout.PerWorkspace
+import XMonad.Layout.ThreeColumns
 
 import XMonad.Prompt
 
@@ -30,6 +37,7 @@ import XMonad.Util.SpawnOnce
 import XMonad.Util.Types
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.EZConfig
+--import qualified XMonad.Util.ExtensibleState as XS
 
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
@@ -42,16 +50,9 @@ import qualified XMonad.Layout.BoringWindows as B
 {-
 TODO
 ====
-* Make it so that when a workspace is pulled from a monitor spawn a new
-  workspace there, this is for better compability with how thunderbird
-  currently works
-* Auto launch thunderbird in mail workspace
-* Possibly add scratchpad (floating term)
-* Set up for some floating windows
-* Add key to tile a floating window
-* Allow transparent windows
+* Possibly add scratchpad (floating term) (I have that for gvim now!)
 * Look through which of the imports are needed
-* Mouse sholud move to currently active workspace when workspaces switch
+* If only one program is i a workspace the workspace should change name to that
 -}
 
 myFont = "Iosevka Slab-11"
@@ -90,16 +91,22 @@ notSoSimlpeBindings =
         , ((modMask .|. shiftMask, xK_odiaeresis), sendToScreen $ P 3)
         ]
         -}
-
-list :: a -> [a]
-list a = [a]
-
 xmobarCurrentWorkspaceColor = "#FFB6B0"
 xmobarTitleColor = "#CEFFAC"
 
--- composeOne vs composeAll
+-- "Steam - News (1 of 2)"
 myManageHook = composeAll
-    [ className =? "Gvim" --> doFloat ]
+    [ className =? "Gvim" --> doFloat
+    , className =? "Pinentry" --> doFloat
+    , className =? "Floating" --> doFloat
+    , className =? "Gimp" --> doShift "gimp"
+    , className =? "Steam" --> doShift "steam"
+    , isDialog --> doFloat
+
+    -- Who doesn't this work!
+    -- , className =? "Gimp" <&&> (appName =? "Toolbox" <||> title =? "Toolbox") --> doFloat ]
+    --, className =? "Gimp" --> doFloat ]
+    , title =? "Toolbox" --> doFloat ]
 
 main = do
     termCommand <- getTerminalCommand <$> getHostName
@@ -111,9 +118,9 @@ main = do
                  , keys               = myKeys
                  , terminal           = termCommand
                  --, layoutHook         = subTabbed $ B.boringWindows $ ifWider tallThreshold wideLayouts tallLayouts
-                 , layoutHook         = B.boringWindows $ maximize $ ifWider tallThreshold wideLayouts tallLayouts
+                 , layoutHook         = windowNavigation $ subTabbed $ B.boringWindows $ onWorkspaces ["gimp"] (Circle ||| simpleCross) $ maximize $ ifWider tallThreshold wideLayouts tallLayouts
                  , manageHook         = manageDocks <+> myManageHook <+> insertPosition Below Newer
-                 , workspaces         = ["web", "irc", "mail", "term"]
+                 , workspaces         = ["default"]
                  , normalBorderColor  = "#1d1f21"
                  , focusedBorderColor = "#FF0000"
                  , logHook            = dynamicLogWithPP $ xmobarPP
@@ -134,16 +141,18 @@ main = do
 
                  , ("M-t", withFocused $ windows . W.sink)
 
+                 , ("M-S-<Return>", windows W.swapMaster)
+
                  --, ("M-j", B.focusDown)
                  --, ("M-k", B.focusUp)
                  --, ("M-S-j", windows W.swapDown)
                  --, ("M-S-k", windows W.swapUp)
 
-                 --, ("M-S-h", sendMessage Shrink)
-                 --, ("M-S-l", sendMessage Expand)
+                 , ("M-m", sendMessage Shrink)
+                 , ("M-w", sendMessage Expand)
 
-                 --, ("M-h", sendMessage $ IncMasterN    1)
-                 --, ("M-l", sendMessage $ IncMasterN $ -1)
+                 , ("M-S-m", sendMessage $ IncMasterN    1)
+                 , ("M-S-w", sendMessage $ IncMasterN $ -1)
 
                  , ("M-o"  , (viewScreen $ P 0) >> banish LowerRight)
                  , ("M-S-o", (sendToScreen $ P 0))
@@ -195,7 +204,7 @@ main = do
                  , ("M-.", sendMessage $ IncMasterN (- 1))
 
                  , ("M-S-c", kill)
-                 , ("M-m", sendMessage NextLayout) -- TODO get a better binding
+                 , ("M-n", sendMessage NextLayout)
 
                  , ("M-<Space> M-<Space>", selectWorkspace myXPConfig)
                  , ("M-<Space> <Space>", selectWorkspace myXPConfig)
@@ -211,7 +220,7 @@ main = do
 
                  --, ("M-u", selectWorkspace def)
                  --, ("M-i", spawnToWorkspace "mail" "xterm")
-                 ] where pre = ("M-f " ++) . list
+                 ] where pre = \a -> "M-f " ++ [a]
                          gBrowser   = "firefox"
                          gEmacs     = "emacsclient -c"
                          gMail      = "thunderbird"
@@ -237,7 +246,9 @@ main = do
                          -- it is wide, and then change layouts
                          tallThreshold = 1200
                          --wideLayouts   = Tall 1 (3/100) (3/5) ||| Full
-                         wideLayouts = GridRatio (4/3) ||| Full
+                         --wideLayouts = Tall 1 (3/100) (3/5) ||| GridRatio (4/3) ||| Full
+                         wideLayouts = ThreeColMid 1 (3/100) (1/2) ||| Tall 1 (3/100) (3/5) ||| GridRatio (4/3) ||| Full
+                         --wideLayouts = (subLayout [] (ThreeColMid 1 (3/100) (1/2) ||| (Dishes 1 (1/4)) ||| Full )) ||| Tall 1 (3/100) (3/5) ||| GridRatio (4/3) ||| Full
                          --tallLayouts = Grid ||| Full
                          tallLayouts = {- Roledex ||| -} Dishes 1 (1/4) ||| Full
 

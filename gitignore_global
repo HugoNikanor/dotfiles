@@ -64,3 +64,6 @@ obj/
 *o
 *db
 *autosave
+
+# CTags
+tags
