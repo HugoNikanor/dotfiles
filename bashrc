@@ -7,14 +7,14 @@
 Black='\e[0;30m'        # Black
 Red='\e[0;31m'          # Red
 Green='\e[0;32m'        # Green
-Yellow='\e[0;33m'       # Yellow
+Yellow='\e[0;33m'       # Yellow (orange)
 Blue='\e[0;34m'         # Blue
 Purple='\e[0;35m'       # Purple
 Cyan='\e[0;36m'         # Cyan
-White='\e[0;37m'        # White
+White='\e[0;37m'        # White (light gray)
 
-# Bold
-BBlack='\e[1;30m'       # Black
+# Bold (light color)
+BBlack='\e[1;30m'       # Black (dark gray)
 BRed='\e[1;31m'         # Red
 BGreen='\e[1;32m'       # Green
 BYellow='\e[1;33m'      # Yellow
