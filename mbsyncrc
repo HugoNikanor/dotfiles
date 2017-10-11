@@ -9,6 +9,7 @@ MaildirStore lys-local
 Path ~/mail/Lysator/
 Inbox ~/mail/Lysator/INBOX
 AltMap yes
+SubFolders Verbatim
 
 IMAPStore lys-remote
 Account lysator
@@ -34,6 +35,7 @@ MaildirStore gmail-local
 Path ~/mail/Gmail/
 Inbox ~/mail/Gmail/INBOX
 AltMap yes
+SubFolders Verbatim
 
 IMAPStore gmail-remote
 Account gmail
@@ -59,6 +61,7 @@ MaildirStore liu-local
 Path ~/mail/Liu/
 Inbox ~/mail/Liu/INBOX
 AltMap yes
+SubFolders Verbatim
 
 IMAPStore liu-remote
 Account liu
