@@ -9,8 +9,12 @@ def_key "t"
 #def_key "="
 #    volume_up
 
+# TODO figure out how to have different
+# bindings for different "windows".
 def_key "space"
-	select_item
+	#select_item
+	add_item_to_playlist
+
 
 def_key "j"
     scroll_down
