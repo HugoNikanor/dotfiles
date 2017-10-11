@@ -24,7 +24,6 @@ set postponed = ~/mail/postponed
 set imap_check_subscribed = yes
 set imap_list_subscribed = yes
 
-
 auto_view text/html
 alternative_order text/plain text/enriched text/html
 
@@ -71,4 +70,6 @@ folder-hook '[Gg]uckel'     "source ~/.mutt/accounts/guckel@vastgota.nation.liu.
 
 set spoolfile = ~/mail/Gmail/INBOX
 
-# vim: set nowrap:
+set markers = no
+
+# vim: set nowrap: set expandtab:
