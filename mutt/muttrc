@@ -72,4 +72,6 @@ set spoolfile = ~/mail/Gmail/INBOX
 
 set markers = no
 
+source `[ $(id -u) -eq 2278 ] && echo $HOME/.mutt/systems/lysator || echo /dev/null`
+
 # vim: set nowrap: set expandtab:
