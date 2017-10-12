@@ -51,6 +51,9 @@ mailboxes imaps://hugo@imap.lysator.liu.se \
           #imaps://HugoNikanor@imap.gmail.com \
           #imaps://HugoNikanor2@imap.gmail.com
 
+# These should preferably not be here on laptop,
+# since all the `pass` commands make canceling
+# GPG login tedious.
 account-hook "imaps://hugo@imap.lysator.liu.se"                         "set imap_pass='`pass lysator/mail/hugo`'"
 account-hook "imaps://hugo.hornquist@imap.gmail.com"                    "set imap_pass='`pass google.com/hugo.hornquist`'"
 account-hook "imaps://propaganda@vastgota.nation.liu.se@imap.gmail.com" "set imap_pass='`pass vastgota.nation.liu.se/mail/propaganda`'"
@@ -68,10 +71,9 @@ folder-hook '[Gg]mail'      "source ~/.mutt/accounts/hugo.hornquist@gmail.com"
 folder-hook '[Pp]ropaganda' "source ~/.mutt/accounts/propaganda@vastgota.nation.liu.se"
 folder-hook '[Gg]uckel'     "source ~/.mutt/accounts/guckel@vastgota.nation.liu.se"
 
-set spoolfile = ~/mail/Gmail/INBOX
-
 set markers = no
 
-source `[ $(id -u) -eq 2278 ] && echo $HOME/.mutt/systems/lysator || echo /dev/null`
+source `[ $(id -u) -eq 2278 ] && echo ~/.mutt/systems/lysator || echo /dev/null`
+source `[ $(hostname) = "STATENS_laptop" ] && echo ~/.mutt/systems/laptop || echo /dev/null`
 
 # vim: set nowrap: set expandtab:
