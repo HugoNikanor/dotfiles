@@ -21,12 +21,15 @@ let s:cpp .= Sys("pkg-config --cflags guile-2.2")
 let g:syntastic_cpp_compiler_options = s:cpp
 
 let s:c  = "-std=c99 -pedantic "
+let s:c  = "-Wall "
 let s:c .= "-D_XOPEN_SOURCE=600 "
 let s:c .= "-lm "
 let s:c .= "-I../tetris/src "
 "let s:c .= Sys("pkg-config --cflags libpng") . " "
 let s:c .= Sys("pkg-config --cflags guile-2.2") . " "
 let s:c .= Sys("pkg-config --cflags dbus-1")
+let s:c .= Sys("pkg-config --cflags sdl2")
+let s:c .= Sys("pkg-config --cflags SDL2_image")
 let g:syntastic_c_compiler_options = s:c
 
 "let g:syntastic_auto_loc_list = 1
