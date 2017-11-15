@@ -19,9 +19,6 @@ if findfile ("plug.vim", expand("~/.vim/autoload")) == ""
 endif
 
 call plug#begin("~/.vim/plugged")
-
-	Plug 'VundleVim/Vundle.vim'
-
 	Plug 'christoomey/vim-tmux-navigator' "  Tmux & vim integration, somehow
 	Plug 'godlygeek/tabular'              "  Aligning of text
 	Plug 'scrooloose/nerdtree'            "  filetree
