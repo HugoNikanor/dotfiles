@@ -9,43 +9,44 @@ set t_Co=256
 
 " Vundle / Plugin manager {{{
 
-let g:downloaded_vundle = 0
-if !isdirectory($HOME . "/.vim/bundle")
-	echo "Downloading Vundle!"
+let g:downloaded_plug = 0
+if findfile ("plug.vim", expand("~/.vim/autoload")) == ""
+	echo "Downloading Plug!"
 	echo "Please Wait..."
-	call system("git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim")
-	let g:downloaded_vundle = 1
+	call system("curl -fLo ~/.vim/autoload/plug.vim --create-dirs " .
+	          \ "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim")
+	let g:downloaded_plug = 1
 endif
 
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin("~/.vim/plugged")
 
-	Plugin 'VundleVim/Vundle.vim'
+	Plug 'VundleVim/Vundle.vim'
 
-	Plugin 'christoomey/vim-tmux-navigator' "  Tmux & vim integration, somehow
-	Plugin 'godlygeek/tabular'              "  Aligning of text
-	Plugin 'scrooloose/nerdtree'            "  filetree
-	Plugin 'Xuyuanp/nerdtree-git-plugin'    "  git plugin for ^
-	"Plugin 'tpope/vim-surround'            "
-	"Plugin 'tpope/vim-dispatch'
-	Plugin 'scrooloose/syntastic'           "  error checking
-	Plugin 'airblade/vim-gitgutter'         "  git diff sign
-	Plugin 'HugoNikanor/vim-breakpoint'     "  gdb breakpoint sign
-	Plugin 'majutsushi/tagbar'
-	Plugin 'Shougo/unite.vim'
+	Plug 'christoomey/vim-tmux-navigator' "  Tmux & vim integration, somehow
+	Plug 'godlygeek/tabular'              "  Aligning of text
+	Plug 'scrooloose/nerdtree'            "  filetree
+	Plug 'Xuyuanp/nerdtree-git-plugin'    "  git plugin for ^
+	"Plug 'tpope/vim-surround'            "
+	"Plug 'tpope/vim-dispatch'
+	Plug 'scrooloose/syntastic'           "  error checking
+	Plug 'airblade/vim-gitgutter'         "  git diff sign
+	Plug 'HugoNikanor/vim-breakpoint'     "  gdb breakpoint sign
+	Plug 'majutsushi/tagbar'
+	Plug 'Shougo/unite.vim'
 
 	" Requires that fzf is installed on the system
-	Plugin 'junegunn/fzf.vim'
+	Plug 'junegunn/fzf.vim'
 
-	"Plugin 'lervag/vimtex'                  "  latex thingys
+	"Plug 'lervag/vimtex'                  "  latex thingys
 
-call vundle#end()
-filetype plugin indent on
+call plug#end()
 
-if g:downloaded_vundle
-	:PluginInstall
-	echo "You might want to restart Vim for all settings to take effect"
+if g:downloaded_plug
+	" TODO running this from vimrc causes the terminal
+	" to be placed in underline mode. Fix this and reenable
+	" this here.
+	"PlugInstall
+	echo "Run `:PlugInstall` to actually download pluggins"
 endif
 
 "}}}
