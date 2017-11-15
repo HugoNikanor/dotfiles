@@ -25,7 +25,6 @@ call vundle#begin()
 
 	Plugin 'christoomey/vim-tmux-navigator' "  Tmux & vim integration, somehow
 	Plugin 'godlygeek/tabular'              "  Aligning of text
-	Plugin 'hrj/vim-DrawIt'                 "  Draw lines and boxes
 	Plugin 'scrooloose/nerdtree'            "  filetree
 	Plugin 'Xuyuanp/nerdtree-git-plugin'    "  git plugin for ^
 	"Plugin 'tpope/vim-surround'            "
