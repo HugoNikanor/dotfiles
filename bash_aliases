@@ -44,9 +44,10 @@ alias irc="ssh irc -t screen -x"
 # addes lesspipe to the less command
 # allows for a wider range of formats to be
 # opened with less
-if [ $(hostname) == "arch2012" ]; then
-	LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
-else
-	export LESSOPEN="| /usr/bin/lesspipe %s";
-	export LESSCLOSE="/usr/bin/lesspipe %s %s";
-fi
+#if [ $(hostname) == "arch2012" ]; then
+#	LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
+#else
+#	export LESSOPEN="| /usr/bin/lesspipe %s";
+#	export LESSCLOSE="/usr/bin/lesspipe %s %s";
+#fi
+LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
