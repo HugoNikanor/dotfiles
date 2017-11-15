@@ -31,11 +31,13 @@ call vundle#begin()
 	"Plugin 'tpope/vim-surround'            "
 	"Plugin 'tpope/vim-dispatch'
 	Plugin 'scrooloose/syntastic'           "  error checking
-	Plugin 'ctrlpvim/ctrlp.vim'             "  fuzzy file changer
 	Plugin 'airblade/vim-gitgutter'         "  git diff sign
 	Plugin 'HugoNikanor/vim-breakpoint'     "  gdb breakpoint sign
 	Plugin 'majutsushi/tagbar'
 	Plugin 'Shougo/unite.vim'
+
+	" Requires that fzf is installed on the system
+	Plugin 'junegunn/fzf.vim'
 
 	"Plugin 'lervag/vimtex'                  "  latex thingys
 
