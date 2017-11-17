@@ -27,7 +27,10 @@ call plug#begin("~/.vim/plugged")
 	"Plug 'tpope/vim-dispatch'
 	Plug 'scrooloose/syntastic'           "  error checking
 	Plug 'airblade/vim-gitgutter'         "  git diff sign
-	Plug 'HugoNikanor/vim-breakpoint'     "  gdb breakpoint sign
+	" gdb breakpoint sign
+	if version >= 800 |Plug 'HugoNikanor/vim-breakpoint'
+	else              |Plug 'HugoNikanor/vim-breakpoint', {'tag': 'v7'}
+	endif
 	Plug 'majutsushi/tagbar'
 	Plug 'Shougo/unite.vim'
 
