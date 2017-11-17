@@ -37,6 +37,8 @@ call plug#begin("~/.vim/plugged")
 	" Requires that fzf is installed on the system
 	Plug 'junegunn/fzf.vim'
 
+	Plug 'HugoNikanor/vim-plug', {'rtp': 'vim-plug-doc'}
+
 	"Plug 'lervag/vimtex'                  "  latex thingys
 
 call plug#end()
