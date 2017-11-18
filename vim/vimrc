@@ -41,6 +41,8 @@ call plug#begin("~/.vim/plugged")
 				\ { 'rtp': 'vim-plug-doc'
 				\ , 'branch': 'doc-plugin' }
 
+	Plug 'vim-scripts/bnf.vim'
+
 	"Plug 'lervag/vimtex'                  "  latex thingys
 
 call plug#end()
