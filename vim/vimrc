@@ -19,6 +19,7 @@ if findfile ("plug.vim", expand("~/.vim/autoload")) == ""
 endif
 
 call plug#begin("~/.vim/plugged")
+	Plug 'junegunn/vim-plug'              " For Documentation
 	Plug 'christoomey/vim-tmux-navigator' "  Tmux & vim integration, somehow
 	Plug 'godlygeek/tabular'              "  Aligning of text
 	Plug 'scrooloose/nerdtree'            "  filetree
@@ -36,10 +37,6 @@ call plug#begin("~/.vim/plugged")
 
 	" Requires that fzf is installed on the system
 	Plug 'junegunn/fzf.vim'
-
-	Plug 'HugoNikanor/vim-plug',
-				\ { 'rtp': 'vim-plug-doc'
-				\ , 'branch': 'doc-plugin' }
 
 	Plug 'vim-scripts/bnf.vim'
 
