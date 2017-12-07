@@ -102,6 +102,7 @@ Config {
         -- keyboard layout indicator
         , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")
                              , ("us"         , "<fc=#8B0000>US</fc>")
+                             , ("se(planck") , "<gc=#FF0000>A6</fc>")
                              ]
         ]
    }
