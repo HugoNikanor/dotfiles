@@ -1,0 +1,11 @@
+set from='Hugo Hörnquist <hugo@lysator.liu.se>'
+my_hdr Bcc: <hugo@lysator.liu.se>
+
+set spoolfile = /mp/mail/hugo/Maildir
+set mbox      = /mp/mail/hugo/Maildir
+set folder    = /mp/mail/hugo/Maildir/
+
+set mask = "!(dovecot|cur|tmp|new)"
+
+# This would only work when using from here... :(
+#set record = /mp/mail/hugo/Maildir/.Sent

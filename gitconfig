@@ -9,7 +9,7 @@
 [alias]
 	gud = diff HEAD
 	list = log --all --oneline --decorate --graph
-	llist = log --all --pretty=short --decorate --graph
+	llist = log --all --decorate --graph
 [github]
 	user = HugoNikanor
 
@@ -18,8 +18,10 @@
 [url "ssh+git://aur4.archlinux.org/"]
     pushInsteadOf = "aur:"
 
-[url "https://github.com/"]
-    insteadOf = "gh:"
+#[url "https://github.com/"]
+#    insteadOf = "gh:"
 # Enable these when I have set up an ssh key
 # [url "git@github.com:"]
 #     pushInsteadOf = "gh:"
+[url "git@github.com:"]
+	insteadOf = "gh:"

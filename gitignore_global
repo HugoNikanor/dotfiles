@@ -38,6 +38,7 @@ workbench.xmi
 *.dvi
 *.pdf
 *.keywords
+*.toc
 
 #Python
 __pycache__/

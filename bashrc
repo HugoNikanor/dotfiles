@@ -125,6 +125,6 @@ case `hostname` in
 		export MPD_HOST=jukebox.lysator.liu.se
 esac
 
-export INFOPATH="$HOME/info"
+INFOPATH="$HOME/info"
 PATH="$PATH:$HOME/.gem/ruby/2.3.0/bin"
-PATH="$PATH:$HOME/bin"
+PATH="$PATH:$HOME/bin:$HOME/.local/bin"
