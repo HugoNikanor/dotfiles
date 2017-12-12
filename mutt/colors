@@ -1,0 +1,3 @@
+set header_color_partial = yes
+# mark all messages containing the word `deadline' line
+color index red default '=b deadline'
