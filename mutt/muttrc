@@ -24,8 +24,12 @@ set postponed = ~/mail/postponed
 set imap_check_subscribed = yes
 set imap_list_subscribed = yes
 
-auto_view text/html
-alternative_order text/plain text/enriched text/html
+auto_view text/html #application/pdf
+alternative_order \
+	text/plain \
+	text/enriched \
+	text/html #\
+	#application/pdf
 
 set ssl_starttls=yes
 set smtp_url="smtp://hugo@mail.lysator.liu.se:26"
