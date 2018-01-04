@@ -1,3 +1,7 @@
 set header_color_partial = yes
+
 # mark all messages containing the word `deadline' line
-color index red default '=b deadline'
+#	While this is really cool it makes mutt lag like crazy,
+# since it has to read through every letter that's visible
+# on the screen.
+#color index red default '=b deadline'
