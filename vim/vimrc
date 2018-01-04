@@ -95,10 +95,10 @@ nnoremap <silent> <leader>j :cn<cr>
 nnoremap <silent> <leader>k :cp<cr>
 
 nnoremap <cr> o<esc>
-nnoremap j gj
-nnoremap k gk
-nnoremap gj j
-nnoremap gk k
+"nnoremap j gj
+"nnoremap k gk
+"nnoremap gj j
+"nnoremap gk k
 nnoremap Y y$
 
 set tabstop=4
