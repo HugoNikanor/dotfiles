@@ -22,7 +22,7 @@ call plug#begin("~/.vim/plugged")
 	Plug 'junegunn/vim-plug'              " For Documentation
 	Plug 'christoomey/vim-tmux-navigator' "  Tmux & vim integration, somehow
 	Plug 'godlygeek/tabular'              "  Aligning of text
-	Plug 'scrooloose/nerdtree'            "  filetree
+	"Plug 'scrooloose/nerdtree'            "  filetree
 	Plug 'Xuyuanp/nerdtree-git-plugin'    "  git plugin for ^
 	"Plug 'tpope/vim-surround'            "
 	"Plug 'tpope/vim-dispatch'
@@ -90,7 +90,8 @@ nnoremap <silent> <leader>o :nohlsearch<cr>
 nnoremap <leader>s :%s/\s\+$//<cr>
 nnoremap <leader>d 0D
 nnoremap <silent> <leader>a :set foldlevel=0<cr>
-nnoremap <leader>f :NERDTreeToggle<cr>
+"nnoremap <leader>f :NERDTreeToggle<cr>
+nnoremap <leader>f :Files<cr>
 nnoremap <silent> <leader>j :cn<cr>
 nnoremap <silent> <leader>k :cp<cr>
 
