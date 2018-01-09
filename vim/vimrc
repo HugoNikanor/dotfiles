@@ -132,4 +132,6 @@ set virtualedit=block " like all but only for visual block
 set completeopt=longest,menuone " <C-n> don't autoselect
 set path+=**
 
+set wildignore+=tags
+
 "}}}
