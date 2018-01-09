@@ -1,4 +1,5 @@
 source ~/.mutt/vim
+source ~/.mutt/colors
 
 set sort     = threads
 set sort_aux = last-date-received

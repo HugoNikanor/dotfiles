@@ -1,0 +1,8 @@
+browser elinks
+
+auto-reload yes
+
+bind-key j next
+bind-key k prev
+bind-key J next-feed
+bind-key K prev-feed

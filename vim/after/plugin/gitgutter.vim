@@ -1,3 +1,5 @@
-nnoremap <leader>g :GitGutterToggle<cr>
+if exists(":GitGutterDisable")
+	nnoremap <leader>g :GitGutterToggle<cr>
 
-GitGutterDisable
+	GitGutterDisable
+endif
