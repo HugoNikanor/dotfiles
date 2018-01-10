@@ -36,6 +36,12 @@ call plug#begin("~/.vim/plugged")
 	Plug 'Shougo/unite.vim'
 
 	" Requires that fzf is installed on the system
+	"
+	" Assumes $VIM is /usr/share/vim/. Path is pacman path for
+	" vim pluggins. Other package managers might differ
+	if empty(findfile($VIM . "/vimfiles/plugin/fzf.vim"))
+		Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+	endif
 	Plug 'junegunn/fzf.vim'
 
 	Plug 'vim-scripts/bnf.vim'
