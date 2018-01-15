@@ -1,8 +1,8 @@
 #info
-j	down-line
-k	up-line
-J	next-line
-K	prev-line
+#j	down-line
+#k	up-line
+#J	next-line
+#K	prev-line
 # These doesn't work
 <RET>	select-reference-this-line
 <LFD>	select-reference-this-line
