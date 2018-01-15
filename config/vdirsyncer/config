@@ -1,0 +1,92 @@
+# ==================== TODO ==================
+# - Look into conflict resolution for read/write
+#   calendars
+# - Possibly allow HTTP calendars to have local
+#   changes.
+# - Check if common fields between calendars can
+#   be defined globaly.
+
+[general]
+status_path = "~/.local/share/vdirsyncer/status/"
+
+# ==================== Fruux ====================
+# Fruux is just some CalDav server I found. In the
+# future I plan to host my own. VDirSyncer should
+# make this migration fairly simple.
+#
+# Currently Fruux only tracks one calendar, called
+# "Callendar". More calendar can easily be added.
+#
+# Currently it automaticly finds all calendars there
+# and syncs them into directories with UID-names.
+#
+# I believe that this is better than having one sync
+# rule per calendar. Mostly since I wont really be
+# looking at the ~/.calendars/ directory manually that
+# often.
+
+[pair fruux]
+a = "fruux_local"
+b = "fruux_remote"
+# Autodiscover calendars in "fruux_remote" 
+collections = ["from b"]
+metadata = ["color", "displayname"]
+conflict_resolution = ["command", "vimdiff"]
+
+[storage fruux_local]
+type = "filesystem"
+path = "~/.calendars/"
+fileext = ".ics"
+
+[storage fruux_remote]
+type = "caldav"
+url = "https://dav.fruux.com"
+username = "b3297465009"
+password.fetch = ["command",
+        "pass",
+        "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/b3297465009"
+        ]
+
+# ============== LiU Calendars ====================
+# The below callendars just fetch from the Calendar
+# HTTP server. I can reuppload these to a CalDAV
+# server, possibly for syncing them to other places.
+#     Currently I however don't see the need for that
+# since I just sync these into GoogleCalendar also.
+#     Note that these calendars are read only. And
+# events should be copied to a private calendar before
+# being changed.
+
+[pair D1]
+a = "d1_remote"
+b = "d1_local"
+collections = null
+conflict_resolution = "a wins"
+
+[storage d1_remote]
+type = "http"
+read_only = true
+url = "https://se.timeedit.net/web/liu/db1/schema/ri687Q7QYn4ZQ1Q531650976yZZQ6205.ics"
+
+[storage d1_local]
+type = "filesystem"
+path = "~/.calendars/D1.b/"
+fileext = ".ics"
+
+[pair D2]
+a = "d2_remote"
+b = "d2_local"
+collections = null
+conflict_resolution = "a wins"
+
+[storage d2_remote]
+type = "http"
+read_only = true
+url = "https://se.timeedit.net/web/liu/db1/schema/ri687Q7QYn4ZQ1Q538650976yZZQ6305.ics"
+
+[storage d2_local]
+type = "filesystem"
+path = "~/.calendars/D2.b/"
+fileext = ".ics"
+
+# vim:ft=dosini:
