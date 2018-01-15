@@ -1,0 +1,16 @@
+[calendars]
+
+[[calendars]]
+path = ~/.calendars/*
+type = discover
+
+[default]
+default_calendar = "Calendar"
+print_new = event
+
+[locale]
+timeformat = %H:%M
+dateformat = %Y-%m-%d
+longdateformat = %Y-%m-%d
+datetimeformat = %Y-%m-%d %H:%M
+longdatetimeformat = %Y-%m-%d %H:%M
