@@ -9,6 +9,8 @@ alias l="ls"
 alias info='info --vi-keys'
 alias ll="cd -"
 
+alias todo=todo.sh
+
 # aliases of questionable quality 
 [ -x /usr/bin/perl-rename ] && alias rename="perl-rename"
 alias eclim="eclim -command"
