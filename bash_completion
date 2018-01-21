@@ -1,0 +1,29 @@
+# TODO:
+#
+# The completions still contains filenames
+# even when going for tags. They shouldn't.
+#
+# Meta lines in the tags file are presented.
+# Check the command for genererating COMPREPLY
+# to remove these.
+
+_vim_ctags () {
+	local cur prev
+
+	cur=${COMP_WORDS[COMP_CWORD]}
+	prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+	[[ $prev = -t ]] || return
+
+	local tagsdir=$PWD
+	while [[ "$tagsdir" && ! -f "$tagsdir/tags" ]]; do
+		tagsdir=${tagsdir%/*}
+	done
+
+	[[ -f "$tagsdir/tags" ]] || return
+
+	COMPREPLY=( $(grep -o "^$cur[^ 	]*" "$tagsdir/tags" ) )
+
+}
+
+complete -F _vim_ctags -f vim
