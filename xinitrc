@@ -52,17 +52,22 @@ unclutter   &
 # transparent windows
 compton     &
 
-~/.fehbg &
-
-export WM=xmonad
+if [ -z $WM ]; then
+	export WM=xmonad
+fi
 
 case "$WM" in
 	i3)
 		xrandr --noprimary &
 		;;
 	xmonad)
-		#thunderbird &
+		~/.fehbg &
 		;;
+	blackbox)
+		# Will this be run after the display is started?
+		# I think it needs to be, and that there will be
+		# problems otherwise.
+		systemctl start --user penguins
 esac
 
 exec $WM
