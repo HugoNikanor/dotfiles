@@ -98,6 +98,14 @@
 	  ("prod" . #x220f))))
 (add-hook 'scheme-mode-hook #'prettify-scheme)
 
+(defun extra-tex ()
+  ;; Can I hide \left \right?
+  ;; \mathnote{v = p} -> /v = p/ (but with larger slashes)
+  (setq prettify-symbols-alist
+	("\\pm" . 0)
+	("\\sqrt" . 0)))
+
+
 (global-prettify-symbols-mode 1)
 
 ;; 'info-keys
@@ -107,13 +115,16 @@
 (defun info-binds ()
   (print "entering info mode")
   ;;(evil-define-key 'motion info-mode-map "l" 'info-last)
+  ;; this is activated when info mode is left...
   (define-key evil-motion-state-map "l" 'info-last)
   )
 ;; is this for info reader of for texinfo editing
 (add-hook 'Info-mode-hook #'info-binds)
 
+(add-to-list 'Info-default-directory-list "/home/hugo/info")
+
 ;; this doesn't work at all
-(define-key evil-motion-state-map "l" 'info-last)
+;; (define-key evil-motion-state-map "l" 'info-last)
 
 ;;(define-key evil-motion-state-map "l" 'info-last)
 
@@ -122,14 +133,12 @@
 ;;  )
 
 ;; (define-key evil-motion-state-map (kbd "SPC ;") 'paredit-comment-dwim)
-;; (define-key evil-visual-state-map (kbd "SPC ;") 'paredit-comment-dwim)
+(define-key evil-visual-state-map (kbd "SPC ;") 'paredit-comment-dwim)
 ;; evil-visual-state-local-map
 
 ;; (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (defun paredit-stuff ()
-  ;; this is global, I don't want global
-  ;; (define-key evil-visual-state-local-map (kbd "SPC ;") 'paredit-comment-dwim)
-  ;; this doesn't work
+  ;; I think this doesn't work...
   (evil-define-key 'visual lisp-mode-map (kbd "SPC ;") 'paredit-comment-dwim)
   (enable-paredit-mode))
 
@@ -138,15 +147,10 @@
 (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-stuff)
 (add-hook 'ielm-mode-hook             #'paredit-stuff)
 (add-hook 'lisp-mode-hook             #'paredit-stuff)
-;; paredit overrides eval-print-lastt-sexp
 (add-hook 'lisp-interaction-mode-hook #'paredit-stuff)
+(add-hook 'lisp-interaction-mode-hook
+	  (lambda () (define-key paredit-mode-map (kbd "C-j") 'eval-print-last-sexp)))
 (add-hook 'scheme-mode-hook           #'paredit-stuff)
-;; (add-hook 'emacs-lisp-mode-hook       'evil-paredit-mode)
-;; (add-hook 'eval-expression-minibuffer-setup-hook 'evil-paredit-mode)
-;; (add-hook 'ielm-mode-hook             'evil-paredit-mode)
-;; (add-hook 'lisp-mode-hook             'evil-paredit-mode)
-;; (add-hook 'lisp-interaction-mode-hook 'evil-paredit-mode)
-;; (add-hook 'scheme-mode-hook           'evil-paredit-mode)
 
 ;; geiser-repl-mode
 
