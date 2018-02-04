@@ -9,6 +9,7 @@
 ;;; - show bindings when M-x
 ;;; ** Evil
 ;;; :vsp <file>
+;;; :vsplit <file> works, but the short version doesn't
 
 (setq required-packages
       '(
@@ -46,6 +47,10 @@
 	geiser
 
 	haskell-mode
+	;sql
+	;flymake
+	;auto-complete
+	popup
 	))
 
 (package-initialize)
@@ -176,6 +181,13 @@ file for it to work as expceted."
   (find-file
    (thing-at-point 'filename)))
 
+(defun describe-file-at-point ()
+  (interactive)
+  (popup-tip
+   (shell-command-to-string
+    (concat "file "
+	    (thing-at-point 'filename)))))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -186,7 +198,7 @@ file for it to work as expceted."
     ("065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default)))
  '(package-selected-packages
    (quote
-    (evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
+    (auto-complete sql-mode SqlMode evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
