@@ -7,6 +7,8 @@
 ;;; - show name of character under cursor
 ;;; ** Ivy
 ;;; - show bindings when M-x
+;;; ** Evil
+;;; :vsp <file>
 
 (setq required-packages
       '(
@@ -124,6 +126,13 @@
   (evil-define-key 'visual lisp-mode-map (kbd "SPC ;") 'paredit-comment-dwim)
   (enable-paredit-mode))
 
+;; =C-u C-u M-x geiser-eval-last-sexp= does this,
+;; but without the open-line
+(defun geiser-eval-print-last-sexp ()
+  (interactive)
+  (open-line 1)
+  (geiser-eval-last-sexp t))
+
 (add-hook 'emacs-lisp-mode-hook       #'paredit-stuff)
 (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-stuff)
 (add-hook 'ielm-mode-hook             #'paredit-stuff)
@@ -132,6 +141,11 @@
 (add-hook 'lisp-interaction-mode-hook
 	  (lambda () (define-key paredit-mode-map (kbd "C-j") 'eval-print-last-sexp)))
 (add-hook 'scheme-mode-hook           #'paredit-stuff)
+;; Let's pretend any scheme buffer is an interaction scheme buffer!
+;; geiser-eval-last-sexp doesn't like guile reader extensions ("#")
+(add-hook 'scheme-mode-hook
+	  ;; Varför fungerar det inte!?
+	  (lambda () (define-key scheme-mode-map (kbd "C-j") 'geiser-eval-print-last-sexp)))
 
 ;; geiser-repl-mode
 
