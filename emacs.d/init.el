@@ -162,6 +162,20 @@
 (setq geiser-repl-history-filename
       "~/.emacs.d/geiser/history")
 
+;; This should be bound to <RET> in shell-mode and term-mode,
+;; but only when not in the active prompt area.
+;;
+;; It would be amazing if it was possible to let all file-names
+;; store their path context, allowing any file to be opened with
+;; this.
+(defun open-file-at-point ()
+  "Opens file under cursor in a new buffer
+Note that the user needs to stand in the same directory as the
+file for it to work as expceted."
+  (interactive)
+  (find-file
+   (thing-at-point 'filename)))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
