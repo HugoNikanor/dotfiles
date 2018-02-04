@@ -31,7 +31,9 @@
 	;; General keybinds
 	;general
 	ivy ; fuzzy finder
-	;magit ; git thing
+	magit ; git thing
+	magit
+	evil-magit
 	;; Project interaction
 	;; I probably really want this.
 	;; But not currently
@@ -65,6 +67,9 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
+;;; xresources-theme-color: Window system is not in use or not initialized
+;;; xresources-theme needs to be removed from required-packages if emacs
+;;; should be able to be started from a terminal.
 (mapc #'require required-packages)
 
 ;;; ------------------------------------------------------------
@@ -130,7 +135,7 @@
 ;; but without the open-line
 (defun geiser-eval-print-last-sexp ()
   (interactive)
-  (open-line 1)
+  (open-line 1)				; this does't create
   (geiser-eval-last-sexp t))
 
 (add-hook 'emacs-lisp-mode-hook       #'paredit-stuff)
@@ -144,8 +149,9 @@
 ;; Let's pretend any scheme buffer is an interaction scheme buffer!
 ;; geiser-eval-last-sexp doesn't like guile reader extensions ("#")
 (add-hook 'scheme-mode-hook
-	  ;; Varför fungerar det inte!?
-	  (lambda () (define-key scheme-mode-map (kbd "C-j") 'geiser-eval-print-last-sexp)))
+	  ;; C-j fungerar inte att binda här.
+	  ;; C-l är tillfälligt eftersom det fungerar...
+	  (lambda () (define-key scheme-mode-map (kbd "C-l") 'geiser-eval-print-last-sexp)))
 
 ;; geiser-repl-mode
 
@@ -161,9 +167,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default)))
  '(package-selected-packages
    (quote
-    (haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
+    (evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
