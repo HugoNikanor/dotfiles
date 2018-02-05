@@ -104,6 +104,7 @@
 	  ("sum" . #x2211)
 	  ("prod" . #x220f))))
 (add-hook 'scheme-mode-hook #'prettify-scheme)
+(add-hook 'geiser-repl-mode-hook #'prettify-scheme)
 
 (defun prettify-tex ()
   ;; \mathnote{v = p} -> /v = p/ (but with larger slashes)
@@ -140,7 +141,7 @@
 ;; but without the open-line
 (defun geiser-eval-print-last-sexp ()
   (interactive)
-  (open-line 1)				; this does't create
+  (open-line 1)	; this works, but opens the line after the inserted text
   (geiser-eval-last-sexp t))
 
 (add-hook 'emacs-lisp-mode-hook       #'paredit-stuff)
@@ -156,12 +157,15 @@
 (add-hook 'scheme-mode-hook
 	  ;; C-j fungerar inte att binda här.
 	  ;; C-l är tillfälligt eftersom det fungerar...
-	  (lambda () (define-key scheme-mode-map (kbd "C-l") 'geiser-eval-print-last-sexp)))
+	  ;; C-k går inte heller att binda...
+	  (lambda ()
+	    (define-key scheme-mode-map (kbd "C-l") 'geiser-eval-print-last-sexp)
+	    (define-key scheme-mode-map (kbd "C-k") 'geiser-eval-last-sexp)))
 
 ;; geiser-repl-mode
 
 ;; Geiser only looks at these, if this list is here 
-(setq geiser-active-implementations '(guile))
+(setq geiser-active-implementations '(guile racket))
 ;; geiser doesn't seem to find this file,
 ;; and is thereby not able to write to it.
 (setq geiser-repl-history-filename
