@@ -51,6 +51,7 @@
 	;flymake
 	;auto-complete
 	popup
+	lorem-ipsum
 	))
 
 (package-initialize)
@@ -202,7 +203,7 @@ file for it to work as expceted."
     ("065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default)))
  '(package-selected-packages
    (quote
-    (auto-complete sql-mode SqlMode evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
+    (lorem-ipsum auto-complete sql-mode SqlMode evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
