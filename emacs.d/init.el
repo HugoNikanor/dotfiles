@@ -12,7 +12,7 @@
 ;;; :vsplit <file> works, but the short version doesn't
 
 (setq required-packages
-      '(
+      `(
 	;; calendar framework
 	;calfw
 	;calfw-org
@@ -41,7 +41,6 @@
 	;projectile
 	;;vimish-fold
 	which-key ; show possible keys
-	xresources-theme
 
 	paredit
 	geiser
@@ -52,6 +51,10 @@
 	;auto-complete
 	popup
 	lorem-ipsum
+
+	;; When X-window
+	,@ (when (display-graphic-p)
+	     '(xresources-theme))
 	))
 
 (package-initialize)
