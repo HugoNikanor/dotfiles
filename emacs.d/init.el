@@ -2,12 +2,10 @@
 (require 'package)
 (add-to-list 'package-archives '(melpa . "http://melpa.milkbox.net/packages/") t)
 
-;;; * TODO
-;;; ** Status bar
-;;; - show name of character under cursor
-;;; ** Ivy
+;;; TODO
+;;; Ivy
 ;;; - show bindings when M-x
-;;; ** Evil
+;;; Evil
 ;;; :vsp <file>
 ;;; :vsplit <file> works, but the short version doesn't
 
@@ -25,7 +23,6 @@
 	evil ; /good/ vim keybinds
 	;evil-magit
 	evil-org
-	;evil-vimish-fold
 	;flx
 	;; on the fly checking
 	;flycheck
@@ -39,7 +36,6 @@
 	;; I probably really want this.
 	;; But not currently
 	;projectile
-	;;vimish-fold
 	which-key ; show possible keys
 
 	paredit
@@ -152,7 +148,6 @@
   )
 (add-hook 'Info-mode-hook #'info-binds)
 
-
 ;; (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (defun paredit-stuff ()
   (evil-define-key 'visual lisp-mode-map (kbd "SPC ;") 'paredit-comment-dwim)
@@ -165,7 +160,6 @@
   (interactive)
   (open-line 1)	; this works, but opens the line after the inserted text
   (geiser-eval-last-sexp t))
-
 
 (hook-envs
  #'paredit-stuff
@@ -193,6 +187,12 @@
      'geiser-eval-last-sexp)))
 
 ;; geiser-repl-mode
+
+(hook-envs #'hs-minor-mode
+	   '(emacs-lisp-mode-hook
+	     scheme-mode-hook
+	     lisp-mode-hook
+	     c-mode-hook))
 
 ;; Geiser only looks at these, if this list is here 
 (setq geiser-active-implementations '(guile racket))
@@ -244,7 +244,7 @@ file for it to work as expceted."
     ("065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default)))
  '(package-selected-packages
    (quote
-    (smart-tabs-mode smarttabs smart-tabs auto-complete evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
+    (z vimish-fold folding folding-mode smart-tabs-mode smarttabs smart-tabs auto-complete evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
