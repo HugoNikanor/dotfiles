@@ -11,40 +11,16 @@
 
 (setq required-packages
       `(
-        ;; calendar framework
-        ;calfw
-        ;calfw-org
-
-        ;; Complete anything
-        ;company
-        ;counsel
-        ;counsel-projectile
-
-        evil ; /good/ vim keybinds
-        ;evil-magit
-        evil-org
-        ;flx
-        ;; on the fly checking
-        ;flycheck
-        ;; General keybinds
-        ;general
-        ivy ; fuzzy finder
-        magit ; git thing
-        magit
+        evil
         evil-magit
-        ;; Project interaction
-        ;; I probably really want this.
-        ;; But not currently
-        ;projectile
-        which-key ; show possible keys
-
-        paredit
+        evil-org
         geiser
-
-        haskell-mode
-        ;flymake
+        ivy ; fuzzy finder
+        magit
+        paredit
         popup
         smart-tabs-mode
+        which-key ; show possible keys
 
         ;; When X-window
         ,@ (when (display-graphic-p)
@@ -160,6 +136,11 @@
    lisp-interaction-mode-hook
    scheme-mode-hook))
 
+;;; These shouldn't bind to paredit-mode-map,
+;;; but rather to their modes local maps.
+;;; Alternatively a bind this globaly to the
+;;; paredit-mode-map, and only define special
+;;; eval functions for each major mode
 (add-hook
  'lisp-interaction-mode-hook
  (lambda ()
