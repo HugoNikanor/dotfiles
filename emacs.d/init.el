@@ -86,6 +86,16 @@
 
 ;;; ------------------------------------------------------------
 
+;;; This should possibly be a function
+;;; but whatever
+(defmacro hook-envs (function environments)
+  "Add function to list of hooks"
+  `(mapc (lambda (hook)
+	   (add-hook hook ,function))
+	 ,environments))
+
+;;; ------------------------------------------------------------
+
 (evil-mode)
 (ivy-mode)
 (which-key-mode) ; Show possible next keys after some key presses 
@@ -146,7 +156,8 @@
 ;; (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (defun paredit-stuff ()
   (evil-define-key 'visual lisp-mode-map (kbd "SPC ;") 'paredit-comment-dwim)
-  (enable-paredit-mode))
+  (enable-paredit-mode)
+  (evil-paredit-mode))
 
 ;; =C-u C-u M-x geiser-eval-last-sexp= does this,
 ;; but without the open-line
@@ -155,30 +166,39 @@
   (open-line 1)	; this works, but opens the line after the inserted text
   (geiser-eval-last-sexp t))
 
-(add-hook 'emacs-lisp-mode-hook       #'paredit-stuff)
-(add-hook 'eval-expression-minibuffer-setup-hook #'paredit-stuff)
-(add-hook 'ielm-mode-hook             #'paredit-stuff)
-(add-hook 'lisp-mode-hook             #'paredit-stuff)
-(add-hook 'lisp-interaction-mode-hook #'paredit-stuff)
-(add-hook 'lisp-interaction-mode-hook
-	  (lambda () (define-key paredit-mode-map (kbd "C-j") 'eval-print-last-sexp)))
-(add-hook 'scheme-mode-hook           #'paredit-stuff)
+
+(hook-envs
+ #'paredit-stuff
+ '(emacs-lisp-mode-hook
+   eval-expression-minibuffer-setup-hook
+   ielm-mode-hook
+   lisp-mode-hook
+   lisp-interaction-mode-hook
+   scheme-mode-hook))
+
+(add-hook
+ 'lisp-interaction-mode-hook
+ (lambda ()
+   (define-key paredit-mode-map (kbd "C-j")
+     'eval-print-last-sexp)))
+
 ;; Let's pretend any scheme buffer is an interaction scheme buffer!
 ;; geiser-eval-last-sexp doesn't like guile reader extensions ("#")
-(add-hook 'scheme-mode-hook
-	  ;; C-j fungerar inte att binda här.
-	  ;; C-l är tillfälligt eftersom det fungerar...
-	  ;; C-k går inte heller att binda...
-	  (lambda ()
-	    (define-key scheme-mode-map (kbd "C-l") 'geiser-eval-print-last-sexp)
-	    (define-key scheme-mode-map (kbd "C-k") 'geiser-eval-last-sexp)))
+(add-hook
+ 'scheme-mode-hook
+ (lambda ()
+   (define-key paredit-mode-map (kbd "C-j")
+     'geiser-eval-print-last-sexp)
+   (define-key paredit-mode-map (kbd "C-S-j")
+     'geiser-eval-last-sexp)))
 
 ;; geiser-repl-mode
 
 ;; Geiser only looks at these, if this list is here 
 (setq geiser-active-implementations '(guile racket))
-;; geiser doesn't seem to find this file,
-;; and is thereby not able to write to it.
+;;; geiser should also log commands which failed
+;;; I believe that it currently only logs those
+;;; which exited successfully
 (setq geiser-repl-history-filename
       "~/.emacs.d/geiser/history")
 
