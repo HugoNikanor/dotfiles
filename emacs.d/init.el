@@ -105,6 +105,8 @@
 ;;; <CR> should be bound to (normal "o<esc>")
 ;; (define-key evil-normal-state-map (string ?\n) 'evil-open-below)
 
+(setq-default indent-tabs-mode nil)
+
 (smart-tabs-insinuate
  'c 'c++ 'java 'javascript
  'python 'ruby 'cperl 'ruby)
