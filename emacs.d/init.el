@@ -11,45 +11,45 @@
 
 (setq required-packages
       `(
-	;; calendar framework
-	;calfw
-	;calfw-org
+        ;; calendar framework
+        ;calfw
+        ;calfw-org
 
-	;; Complete anything
-	;company
-	;counsel
-	;counsel-projectile
+        ;; Complete anything
+        ;company
+        ;counsel
+        ;counsel-projectile
 
-	evil ; /good/ vim keybinds
-	;evil-magit
-	evil-org
-	;flx
-	;; on the fly checking
-	;flycheck
-	;; General keybinds
-	;general
-	ivy ; fuzzy finder
-	magit ; git thing
-	magit
-	evil-magit
-	;; Project interaction
-	;; I probably really want this.
-	;; But not currently
-	;projectile
-	which-key ; show possible keys
+        evil ; /good/ vim keybinds
+        ;evil-magit
+        evil-org
+        ;flx
+        ;; on the fly checking
+        ;flycheck
+        ;; General keybinds
+        ;general
+        ivy ; fuzzy finder
+        magit ; git thing
+        magit
+        evil-magit
+        ;; Project interaction
+        ;; I probably really want this.
+        ;; But not currently
+        ;projectile
+        which-key ; show possible keys
 
-	paredit
-	geiser
+        paredit
+        geiser
 
-	haskell-mode
-	;flymake
-	popup
-	smart-tabs-mode
+        haskell-mode
+        ;flymake
+        popup
+        smart-tabs-mode
 
-	;; When X-window
-	,@ (when (display-graphic-p)
-	     '(xresources-theme))
-	))
+        ;; When X-window
+        ,@ (when (display-graphic-p)
+             '(xresources-theme))
+        ))
 
 (package-initialize)
 
@@ -57,8 +57,8 @@
   "Returns t if all packages are installed
    nil otherwise."
   (loop for p in required-packages
-	when (not (package-installed-p p)) do (return nil)
-	finally (return t)))
+        when (not (package-installed-p p)) do (return nil)
+        finally (return t)))
 
 (unless (packages-installed-p)
   ;; Refresh
@@ -82,8 +82,8 @@
 (defmacro hook-envs (function environments)
   "Add function to list of hooks"
   `(mapc (lambda (hook)
-	   (add-hook hook ,function))
-	 ,environments))
+           (add-hook hook ,function))
+         ,environments))
 
 ;;; ------------------------------------------------------------
 
@@ -117,11 +117,11 @@
 
 (defun prettify-scheme ()
   (setq prettify-symbols-alist
-	'(("lambda" . #x3bb)
-	  ("<=" . #x2264)
-	  (">=" . #x2265)
-	  ("sum" . #x2211)
-	  ("prod" . #x220f))))
+        '(("lambda" . #x3bb)
+          ("<=" . #x2264)
+          (">=" . #x2265)
+          ("sum" . #x2211)
+          ("prod" . #x220f))))
 (add-hook 'scheme-mode-hook #'prettify-scheme)
 (add-hook 'geiser-repl-mode-hook #'prettify-scheme)
 
@@ -132,12 +132,12 @@
   ;; fails to render. I think it's a vertical tab.
 
   (setq prettify-symbols-alist
-	(append
-	 prettify-symbols-alist
-	 '(("\\pm" . ?±)
-	   ("\\sqrt" . ?√)
-	   ("\\left(" . ?\()
-	   ("\\right)" . ?\))))))
+        (append
+         prettify-symbols-alist
+         '(("\\pm" . ?±)
+           ("\\sqrt" . ?√)
+           ("\\left(" . ?\()
+           ("\\right)" . ?\))))))
 (add-hook 'tex-mode-hook #'prettify-tex)
 
 (global-prettify-symbols-mode 1)
@@ -160,7 +160,7 @@
 ;; but without the open-line
 (defun geiser-eval-print-last-sexp ()
   (interactive)
-  (open-line 1)	; this works, but opens the line after the inserted text
+  (open-line 1)         ; this works, but opens the line after the inserted text
   (geiser-eval-last-sexp t))
 
 (hook-envs
@@ -191,10 +191,10 @@
 ;; geiser-repl-mode
 
 (hook-envs #'hs-minor-mode
-	   '(emacs-lisp-mode-hook
-	     scheme-mode-hook
-	     lisp-mode-hook
-	     c-mode-hook))
+           '(emacs-lisp-mode-hook
+             scheme-mode-hook
+             lisp-mode-hook
+             c-mode-hook))
 
 ;; Geiser only looks at these, if this list is here 
 (setq geiser-active-implementations '(guile racket))
@@ -223,17 +223,17 @@ file for it to work as expceted."
   (popup-tip
    (shell-command-to-string
     (concat "file "
-	    (thing-at-point 'filename)))))
+            (thing-at-point 'filename)))))
 
 ;;; This is /tmp/ by default
 (setq temporary-file-directory
       (or (getenv "XDG_CACHE_HOME")
-	  (concat (getenv "HOME")
-		  "/.cache/emacs")) )
+          (concat (getenv "HOME")
+                  "/.cache/emacs")) )
 
 ;;; Stores all temp files in one central locatio n
 (setq backup-directory-alist
-	`((".*" . ,temporary-file-directory)))
+        `((".*" . ,temporary-file-directory)))
 
 
 (custom-set-variables
