@@ -53,26 +53,14 @@
 
 (package-initialize)
 
-(defun packages-installed-p ()
-  "Returns t if all packages are installed
-   nil otherwise."
-  (loop for p in required-packages
-        when (not (package-installed-p p)) do (return nil)
-        finally (return t)))
+(setq packages-to-install
+      (seq-remove #'package-installed-p
+                  required-packages))
 
-(unless (packages-installed-p)
-  ;; Refresh
-  (message "%s" "Refreshing package lists...")
+(when packages-to-install
   (package-refresh-contents)
-  (message "%s" "done.")
-  ;; Install
-  (dolist (p required-packages)
-    (when (not (package-installed-p p))
-      (package-install p))))
+  (mapc #'package-install packages-to-install))
 
-;;; xresources-theme-color: Window system is not in use or not initialized
-;;; xresources-theme needs to be removed from required-packages if emacs
-;;; should be able to be started from a terminal.
 (mapc #'require required-packages)
 
 ;;; ------------------------------------------------------------
