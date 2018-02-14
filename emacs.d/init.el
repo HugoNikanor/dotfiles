@@ -50,7 +50,10 @@
 	;flymake
 	;auto-complete
 	popup
+	;; I really should get a terminal program
+	;; for lorem ipsum texts instead.
 	lorem-ipsum
+	smart-tabs-mode
 
 	;; When X-window
 	,@ (when (display-graphic-p)
@@ -99,6 +102,10 @@
 (define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
 (define-key evil-motion-state-map "\C-u" 'evil-scroll-up)
 ;; (define-key evil-normal-state-map (string ?\n) 'evil-open-below)
+;; (smart-tabs-mode)
+(smart-tabs-insinuate 'c 'c++ 'java 'javascript 'python 'ruby 'cperl 'ruby)
+;; this should make evil-mode work with smart-tabs-mode, but it doesn't
+(setq evil-indent-convert-tabs nil)
 
 (defun prettify-scheme ()
   (setq prettify-symbols-alist
@@ -206,7 +213,7 @@ file for it to work as expceted."
     ("065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default)))
  '(package-selected-packages
    (quote
-    (lorem-ipsum auto-complete sql-mode SqlMode evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
+    (smart-tabs-mode smarttabs smart-tabs lorem-ipsum auto-complete sql-mode SqlMode evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
