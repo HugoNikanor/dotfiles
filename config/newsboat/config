@@ -1,3 +1,5 @@
+# This should be configurable to be different
+# depending on if the are i X or not
 browser elinks
 
 auto-reload yes

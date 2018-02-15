@@ -1,82 +1,64 @@
-(require 'cl)
 (require 'package)
-(add-to-list 'package-archives '(melpa . "http://melpa.milkbox.net/packages/") t)
 
-;;; * TODO
-;;; ** Status bar
-;;; - show name of character under cursor
-;;; ** Ivy
+(setq package-archives
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")))
+
+;;; TODO
+;;; ==Ivy==
 ;;; - show bindings when M-x
-;;; ** Evil
+;;; ==Evil==
 ;;; :vsp <file>
 ;;; :vsplit <file> works, but the short version doesn't
+;;; ==Speedbar==
+;;; z should toggle expand|contract
+;;; speedbar-expand-line
+;;; speedbar-contract-line
 
 (setq required-packages
-      '(
-	;; calendar framework
-	;calfw
-	;calfw-org
+      `(
+        evil
+        evil-magit
+        evil-org
+        geiser
+        ivy ; fuzzy finder
+        magit
+        paredit
+        popup
+        smart-tabs-mode
+        which-key ; show possible keys
 
-	;; Complete anything
-	;company
-	;counsel
-	;counsel-projectile
-
-	evil ; /good/ vim keybinds
-	;evil-magit
-	evil-org
-	;evil-vimish-fold
-	;flx
-	;; on the fly checking
-	;flycheck
-	;; General keybinds
-	;general
-	ivy ; fuzzy finder
-	magit ; git thing
-	magit
-	evil-magit
-	;; Project interaction
-	;; I probably really want this.
-	;; But not currently
-	;projectile
-	;;vimish-fold
-	which-key ; show possible keys
-	xresources-theme
-
-	paredit
-	geiser
-
-	haskell-mode
-	;sql
-	;flymake
-	;auto-complete
-	popup
-	lorem-ipsum
-	))
+        ;; When X-window
+        ,@ (when (display-graphic-p)
+             '(xresources-theme))
+        ))
 
 (package-initialize)
 
-(defun packages-installed-p ()
-  "Returns t if all packages are installed
-   nil otherwise."
-  (loop for p in required-packages
-	when (not (package-installed-p p)) do (return nil)
-	finally (return t)))
+(setq packages-to-install
+      (seq-remove #'package-installed-p
+                  required-packages))
 
-(unless (packages-installed-p)
-  ;; Refresh
-  (message "%s" "Refreshing package lists...")
+(when packages-to-install
   (package-refresh-contents)
-  (message "%s" "done.")
-  ;; Install
-  (dolist (p required-packages)
-    (when (not (package-installed-p p))
-      (package-install p))))
+  (mapc #'package-install packages-to-install))
 
-;;; xresources-theme-color: Window system is not in use or not initialized
-;;; xresources-theme needs to be removed from required-packages if emacs
-;;; should be able to be started from a terminal.
 (mapc #'require required-packages)
+
+;;; ------------------------------------------------------------
+
+(add-to-list 'load-path "~/.emacs.d/pkg")
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
+
+(autoload 'lyskom "lyskom.elc" "LysKOM" t)
+
+;;; ------------------------------------------------------------
+
+(defmacro hook-envs (function environments)
+  "Add function to list of hooks"
+  `(mapc (lambda (hook)
+           (add-hook hook ,function))
+         ,environments))
 
 ;;; ------------------------------------------------------------
 
@@ -95,15 +77,26 @@
 
 (define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
 (define-key evil-motion-state-map "\C-u" 'evil-scroll-up)
+;;; <CR> should be bound to (normal "o<esc>")
 ;; (define-key evil-normal-state-map (string ?\n) 'evil-open-below)
+
+(setq-default indent-tabs-mode nil)
+
+(smart-tabs-insinuate
+ 'c 'c++ 'java 'javascript
+ 'python 'ruby 'cperl 'ruby)
+
+;;; this should make evil-mode work with smart-tabs-mode,
+;;; Mostly for `<' & `>' shifting. But it doesn't.
+(setq evil-indent-convert-tabs nil)
 
 (defun prettify-scheme ()
   (setq prettify-symbols-alist
-	'(("lambda" . #x3bb)
-	  ("<=" . #x2264)
-	  (">=" . #x2265)
-	  ("sum" . #x2211)
-	  ("prod" . #x220f))))
+        '(("lambda" . #x3bb)
+          ("<=" . #x2264)
+          (">=" . #x2265)
+          ("sum" . #x2211)
+          ("prod" . #x220f))))
 (add-hook 'scheme-mode-hook #'prettify-scheme)
 (add-hook 'geiser-repl-mode-hook #'prettify-scheme)
 
@@ -114,12 +107,12 @@
   ;; fails to render. I think it's a vertical tab.
 
   (setq prettify-symbols-alist
-	(append
-	 prettify-symbols-alist
-	 '(("\\pm" . ?±)
-	   ("\\sqrt" . ?√)
-	   ("\\left(" . ?\()
-	   ("\\right)" . ?\))))))
+        (append
+         prettify-symbols-alist
+         '(("\\pm" . ?±)
+           ("\\sqrt" . ?√)
+           ("\\left(" . ?\()
+           ("\\right)" . ?\))))))
 (add-hook 'tex-mode-hook #'prettify-tex)
 
 (global-prettify-symbols-mode 1)
@@ -132,43 +125,64 @@
   )
 (add-hook 'Info-mode-hook #'info-binds)
 
-
 ;; (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (defun paredit-stuff ()
   (evil-define-key 'visual lisp-mode-map (kbd "SPC ;") 'paredit-comment-dwim)
-  (enable-paredit-mode))
+  (enable-paredit-mode)
+  (evil-paredit-mode))
 
 ;; =C-u C-u M-x geiser-eval-last-sexp= does this,
 ;; but without the open-line
 (defun geiser-eval-print-last-sexp ()
   (interactive)
-  (open-line 1)	; this works, but opens the line after the inserted text
+  ;; this works, but opens the line after the inserted text
+  (open-line 1)
   (geiser-eval-last-sexp t))
 
-(add-hook 'emacs-lisp-mode-hook       #'paredit-stuff)
-(add-hook 'eval-expression-minibuffer-setup-hook #'paredit-stuff)
-(add-hook 'ielm-mode-hook             #'paredit-stuff)
-(add-hook 'lisp-mode-hook             #'paredit-stuff)
-(add-hook 'lisp-interaction-mode-hook #'paredit-stuff)
-(add-hook 'lisp-interaction-mode-hook
-	  (lambda () (define-key paredit-mode-map (kbd "C-j") 'eval-print-last-sexp)))
-(add-hook 'scheme-mode-hook           #'paredit-stuff)
+(hook-envs
+ #'paredit-stuff
+ '(emacs-lisp-mode-hook
+   eval-expression-minibuffer-setup-hook
+   ielm-mode-hook
+   lisp-mode-hook
+   lisp-interaction-mode-hook
+   scheme-mode-hook))
+
+;;; These shouldn't bind to paredit-mode-map,
+;;; but rather to their modes local maps.
+;;; Alternatively a bind this globaly to the
+;;; paredit-mode-map, and only define special
+;;; eval functions for each major mode
+(add-hook
+ 'lisp-interaction-mode-hook
+ (lambda ()
+   (define-key paredit-mode-map (kbd "C-j")
+     'eval-print-last-sexp)))
+
 ;; Let's pretend any scheme buffer is an interaction scheme buffer!
 ;; geiser-eval-last-sexp doesn't like guile reader extensions ("#")
-(add-hook 'scheme-mode-hook
-	  ;; C-j fungerar inte att binda här.
-	  ;; C-l är tillfälligt eftersom det fungerar...
-	  ;; C-k går inte heller att binda...
-	  (lambda ()
-	    (define-key scheme-mode-map (kbd "C-l") 'geiser-eval-print-last-sexp)
-	    (define-key scheme-mode-map (kbd "C-k") 'geiser-eval-last-sexp)))
+(add-hook
+ 'scheme-mode-hook
+ (lambda ()
+   (define-key paredit-mode-map (kbd "C-j")
+     'geiser-eval-print-last-sexp)
+   (define-key paredit-mode-map (kbd "C-S-j")
+     'geiser-eval-last-sexp)))
 
 ;; geiser-repl-mode
 
+;;; Can I somehow enable this for all available modes?
+(hook-envs #'hs-minor-mode
+           '(emacs-lisp-mode-hook
+             scheme-mode-hook
+             lisp-mode-hook
+             c-mode-hook))
+
 ;; Geiser only looks at these, if this list is here 
 (setq geiser-active-implementations '(guile racket))
-;; geiser doesn't seem to find this file,
-;; and is thereby not able to write to it.
+;;; geiser should also log commands which failed
+;;; I believe that it currently only logs those
+;;; which exited successfully
 (setq geiser-repl-history-filename
       "~/.emacs.d/geiser/history")
 
@@ -191,7 +205,18 @@ file for it to work as expceted."
   (popup-tip
    (shell-command-to-string
     (concat "file "
-	    (thing-at-point 'filename)))))
+            (thing-at-point 'filename)))))
+
+;;; This is /tmp/ by default
+(setq temporary-file-directory
+      (or (getenv "XDG_CACHE_HOME")
+          (concat (getenv "HOME")
+                  "/.cache/emacs")) )
+
+;;; Stores all temp files in one central locatio n
+(setq backup-directory-alist
+        `((".*" . ,temporary-file-directory)))
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -203,7 +228,7 @@ file for it to work as expceted."
     ("065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default)))
  '(package-selected-packages
    (quote
-    (lorem-ipsum auto-complete sql-mode SqlMode evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
+    (lyskom lyskom-all z vimish-fold folding folding-mode smart-tabs-mode smarttabs smart-tabs auto-complete evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

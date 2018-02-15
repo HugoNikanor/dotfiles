@@ -1,0 +1,52 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+case `hostname` in
+	STATENS_laptop)
+		source .dotfiles/bash/STATENS_laptop.sh ;;
+	arch2012)
+		source .dotfiles/bash/arch2012.sh ;;
+esac
+
+shopt -s checkwinsize
+HISTCONTROL=ignoreboth
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+true ${BROWSER:="/home/hugo/bin/browser"}
+export EDITOR="/usr/bin/vim"
+export RTV_EDITOR="/usr/bin/vim"
+export RTV_URLVIEWER="/usr/bin/urlview"
+export MPD_HOST=jukebox.lysator.liu.se
+export INFO_PRINT_COMMAND=">/tmp/info"
+export GUILE_LOAD_PATH="/home/hugo/lib/guile"
+export COWPATH=/usr/share/cows/:/usr/local/share/cows/
+export XDG_DOCUMENTS_DIR="$HOME/ldoc"
+export XDG_DOWNLOAD_DIR="$HOME/down/other"
+export XDG_PICTURES_DIR="$HOME/pic"
+export LESSOPEN="|lesspipe.sh %s"
+# info path temporarly disabled due to emacs
+#export INFOPATH="$HOME/info"
+#export INFOPATH="$HOME/info:/usr/local/share/info/:usr/share/info/"
+
+for path in \
+	"$HOME/.local/bin" \
+	"$HOME/bin" \
+	"$HOME/.gem/ruby/2.3.0/bin" \
+	"$HOME/.local/bin" \
+	"$HOME/.cabal/bin" 
+do
+	if [ -d $path ]; then
+		PATH="$path:$PATH"
+	fi
+done
+
+[ -f ~/.dotfiles/bash/bash_aliases ] && source ~/.dotfiles/bash/bash_aliases
+[ -f ~/.ghiToken ] && source ~/.ghiToken
+
+
+source /usr/share/fzf/completion.bash
+source /usr/share/fzf/key-bindings.bash
+#export FZF_TMUX=1
+FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+

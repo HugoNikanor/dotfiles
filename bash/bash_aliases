@@ -10,8 +10,11 @@ alias info='info --vi-keys'
 alias ll="cd -"
 
 alias todo=todo.sh
+alias tmp="vim +'setlocal buftype=nofile' -n"
+alias irc="ssh irc -t screen -x"
 
 # aliases of questionable quality 
+
 [ -x /usr/bin/perl-rename ] && alias rename="perl-rename"
 alias eclim="eclim -command"
 alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
@@ -31,22 +34,3 @@ sl() {
 	$(which sl) $*
 	ls $*
 }
-alias tmp="vim +'setlocal buftype=nofile' -n"
-# Sets the TERM to something more widely recongnised, when needed
-ssh() {
-	[ $TERM == "xterm-termite" ] && export TERM=xterm
-	$(which ssh) $*
-}
-# irc host is supposed to be set in ~/.ssh/config
-alias irc="ssh irc -t screen -x"
-
-# addes lesspipe to the less command
-# allows for a wider range of formats to be
-# opened with less
-#if [ $(hostname) == "arch2012" ]; then
-#	LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
-#else
-#	export LESSOPEN="| /usr/bin/lesspipe %s";
-#	export LESSCLOSE="/usr/bin/lesspipe %s %s";
-#fi
-LESSOPEN="|lesspipe.sh %s"; export LESSOPEN

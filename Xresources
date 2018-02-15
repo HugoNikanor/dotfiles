@@ -1,6 +1,5 @@
 *foreground: #c5c8c6
 *foreground_bold: #c5c8c6
-*cursor: #c5c8c6
 *background: #1d1f21
 
 *color0: #1d1f21
@@ -19,3 +18,6 @@
 *color13: #b294bb
 *color14: #8abeb7
 *color15: #c5c8c6
+
+XTerm*metaSendsEscape: true
+XTerm*eightBitInput: false
