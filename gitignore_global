@@ -9,6 +9,7 @@ bin/
 *.swp
 \#**
 .breakpoints_*
+ltxpng/
 
 #c++
 *.exe
@@ -63,8 +64,15 @@ obj/
 # Haskell
 *hi
 *o
-*db
 *autosave
 
 # CTags
 tags
+TAGS
+.nfs*
+
+# Aspell
+*.bak
+
+# SQLite
+*db
