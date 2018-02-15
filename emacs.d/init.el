@@ -1,4 +1,3 @@
-(require 'cl)
 (require 'package)
 
 (setq package-archives
@@ -6,11 +5,15 @@
         ("melpa" . "https://melpa.org/packages/")))
 
 ;;; TODO
-;;; Ivy
+;;; ==Ivy==
 ;;; - show bindings when M-x
-;;; Evil
+;;; ==Evil==
 ;;; :vsp <file>
 ;;; :vsplit <file> works, but the short version doesn't
+;;; ==Speedbar==
+;;; z should toggle expand|contract
+;;; speedbar-expand-line
+;;; speedbar-contract-line
 
 (setq required-packages
       `(
@@ -46,12 +49,11 @@
 
 (add-to-list 'load-path "~/.emacs.d/pkg")
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
+
 (autoload 'lyskom "lyskom.elc" "LysKOM" t)
 
 ;;; ------------------------------------------------------------
 
-;;; This should possibly be a function
-;;; but whatever
 (defmacro hook-envs (function environments)
   "Add function to list of hooks"
   `(mapc (lambda (hook)
@@ -133,7 +135,8 @@
 ;; but without the open-line
 (defun geiser-eval-print-last-sexp ()
   (interactive)
-  (open-line 1)         ; this works, but opens the line after the inserted text
+  ;; this works, but opens the line after the inserted text
+  (open-line 1)
   (geiser-eval-last-sexp t))
 
 (hook-envs
@@ -168,6 +171,7 @@
 
 ;; geiser-repl-mode
 
+;;; Can I somehow enable this for all available modes?
 (hook-envs #'hs-minor-mode
            '(emacs-lisp-mode-hook
              scheme-mode-hook
@@ -224,7 +228,7 @@ file for it to work as expceted."
     ("065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default)))
  '(package-selected-packages
    (quote
-    (z vimish-fold folding folding-mode smart-tabs-mode smarttabs smart-tabs auto-complete evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
+    (lyskom lyskom-all z vimish-fold folding folding-mode smart-tabs-mode smarttabs smart-tabs auto-complete evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
