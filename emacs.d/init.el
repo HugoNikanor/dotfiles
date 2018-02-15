@@ -1,6 +1,9 @@
 (require 'cl)
 (require 'package)
-(add-to-list 'package-archives '(melpa . "http://melpa.milkbox.net/packages/") t)
+
+(setq package-archives
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")))
 
 ;;; TODO
 ;;; Ivy
@@ -38,6 +41,12 @@
   (mapc #'package-install packages-to-install))
 
 (mapc #'require required-packages)
+
+;;; ------------------------------------------------------------
+
+(add-to-list 'load-path "~/.emacs.d/pkg")
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
+(autoload 'lyskom "lyskom.elc" "LysKOM" t)
 
 ;;; ------------------------------------------------------------
 
