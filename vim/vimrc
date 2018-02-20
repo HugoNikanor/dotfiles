@@ -103,6 +103,11 @@ nnoremap <leader>f :Files<cr>
 nnoremap <silent> <leader>j :cn<cr>
 nnoremap <silent> <leader>k :cp<cr>
 
+" Possibly figure out how to type <C-]> in TTY
+nnoremap <leader>c <C-]>
+" TODO This works, but it doesn't update the screen right away 
+nnoremap <leader>h :call header#change()<cr>
+
 nnoremap <cr> o<esc>
 "nnoremap j gj
 "nnoremap k gk
