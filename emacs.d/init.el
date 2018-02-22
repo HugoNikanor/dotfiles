@@ -17,13 +17,17 @@
 
 (setq required-packages
       `(
+        calfw
+        calfw-org
         evil
         evil-magit
         evil-org
+        ;; evil-org-agenda
         evil-paredit
         geiser
         ivy ; fuzzy finder
         magit
+        ;; org-expiry
         paredit
         popup
         smart-tabs-mode
@@ -90,6 +94,8 @@
 ;;; this should make evil-mode work with smart-tabs-mode,
 ;;; Mostly for `<' & `>' shifting. But it doesn't.
 (setq evil-indent-convert-tabs nil)
+
+(add-hook 'org-mode-hook #'evil-org-mode)
 
 (defun prettify-scheme ()
   (setq prettify-symbols-alist
@@ -218,6 +224,19 @@ file for it to work as expceted."
 (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
 
+(setq org-treat-insert-todo-heading-as-state-change t 
+      org-hide-leading-stars t
+      org-agenda-default-appointment-duration 60)
+
+
+(require 'evil-org-agenda)
+
+(evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+(evil-org-agenda-set-keys)
+
+(setq cfw:org-overwrite-default-keybinding t)
+
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -227,6 +246,7 @@ file for it to work as expceted."
  '(custom-safe-themes
    (quote
     ("065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default)))
+ '(org-agenda-files (quote ("~/Sync/todo/notes/doc.org")))
  '(package-selected-packages
    (quote
     (popup lyskom lyskom-all z vimish-fold folding folding-mode smart-tabs-mode smarttabs smart-tabs auto-complete evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
