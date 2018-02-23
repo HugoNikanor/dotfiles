@@ -1,7 +1,7 @@
 " note that plaintex is a different thing. And that an empty .tex file is
 " interpreted as a plaintex file by default
 
-setlocal textwidth=80
+setlocal textwidth=60
 
 "" Turn on spell for language babel is given. Otherwise turn off spell
 
