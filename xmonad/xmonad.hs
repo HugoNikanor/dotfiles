@@ -6,38 +6,22 @@ import Network.HostName (HostName, getHostName)
 import XMonad
 
 import XMonad.Actions.PhysicalScreens (viewScreen, PhysicalScreen (..), sendToScreen)
-import XMonad.Actions.DynamicWorkspaces
+import XMonad.Actions.DynamicWorkspaces (selectWorkspace, removeWorkspace, removeEmptyWorkspace, addWorkspacePrompt, withWorkspace, renameWorkspace)
 import XMonad.Actions.CycleWS (prevScreen, nextScreen, toggleWS)
 import XMonad.Actions.Warp (banish, Corner (..))
-import XMonad.Actions.WindowGo
-import XMonad.Actions.Navigation2D
+import XMonad.Actions.Navigation2D (windowGo, windowSwap)
 
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks --(manageDocks, ToggleStruts)
-import XMonad.Hooks.InsertPosition
-import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.InsertPosition (Position (Below), Focus (Newer), insertPosition)
+import XMonad.Hooks.ManageHelpers (isDialog)
 
-import XMonad.Layout
 import XMonad.Layout.Grid (Grid (..))
-import XMonad.Layout.PerScreen
-import XMonad.Layout.SubLayouts
-import XMonad.Layout.WindowNavigation
-import XMonad.Layout.Roledex
-import XMonad.Layout.Dishes (Dishes (..))
-import XMonad.Layout.IndependentScreens
-import XMonad.Layout.Maximize (maximize)
-import XMonad.Layout.Circle (Circle (..))
-import XMonad.Layout.Cross (simpleCross)
-import XMonad.Layout.PerWorkspace
-import XMonad.Layout.ThreeColumns
+import XMonad.Layout.PerScreen (ifWider)
+import XMonad.Layout.Dishes (Dishes (Dishes))
 
 import XMonad.Prompt
 
-import XMonad.Util.SpawnOnce
-import XMonad.Util.Types
-import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.Types (Direction2D (U, D, L, R))
 import XMonad.Util.EZConfig
---import qualified XMonad.Util.ExtensibleState as XS
 
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
@@ -63,7 +47,7 @@ myFont = "Iosevka Slab-11"
 getTerminalCommand :: HostName -> String
 getTerminalCommand "arch2012"       = "termite -c ~/.config/termite/desktop.conf"
 getTerminalCommand "STATENS_laptop" = "termite -c ~/.config/termite/laptop.conf"
-getTerminalCommand _                = "termite -c ~/.config/termite/lysator.conf"
+getTerminalCommand _                = "/home/hugo/bin/termite -c ~/.config/termite/lysator.conf"
 
 -- TODO figure out how to run this from main
 -- TODO and check if a window can be spawned without viewing that window
@@ -110,25 +94,19 @@ myManageHook = composeAll
 
 main = do
     termCommand <- getTerminalCommand <$> getHostName
-    nScreens    <- countScreens
-    xmproc      <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
+    -- nScreens    <- countScreens
+    -- xmproc      <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
     xmonad $ def { modMask            = mod4Mask
                  , focusFollowsMouse  = False
                  , clickJustFocuses   = False
                  , keys               = myKeys
                  , terminal           = termCommand
                  --, layoutHook         = subTabbed $ B.boringWindows $ ifWider tallThreshold wideLayouts tallLayouts
-                 , layoutHook         = windowNavigation $ subTabbed $ B.boringWindows $ onWorkspaces ["gimp"] (Circle ||| simpleCross) $ maximize $ ifWider tallThreshold wideLayouts tallLayouts
-                 , manageHook         = manageDocks <+> myManageHook <+> insertPosition Below Newer
-                 , workspaces         = ["default"]
+                 , layoutHook         = ifWider tallThreshold wideLayouts tallLayouts
+                 , manageHook         = myManageHook <+> insertPosition Below Newer
+                 , workspaces         = ["term", "web"]
                  , normalBorderColor  = "#1d1f21"
                  , focusedBorderColor = "#FF0000"
-                 , logHook            = dynamicLogWithPP $ xmobarPP
-                        { ppOutput  = hPutStrLn xmproc
-                        , ppTitle   = xmobarColor xmobarTitleColor "" . shorten 100
-                        , ppCurrent = xmobarColor xmobarCurrentWorkspaceColor ""
-                        , ppSep     = "    "
-                        }
                  } `additionalKeysP`
                  [ (pre 'b', spawn gBrowser)
                  , (pre 'e', spawn gEmacs)
@@ -158,8 +136,8 @@ main = do
                  , ("M-S-o", (sendToScreen $ P 0))
                  , ("M-e"  , (viewScreen $ P 1) >> banish LowerRight)
                  , ("M-S-e", (sendToScreen $ P 1))
-                 , ("M-u"  , (viewScreen $ P 2) >> banish LowerRight)
-                 , ("M-S-u", (sendToScreen $ P 2))
+                 -- , ("M-u"  , (viewScreen $ P 2) >> banish LowerRight)
+                 -- , ("M-S-u", (sendToScreen $ P 2))
                  -- , ("M-<oadiaeresis>", (viewScreen $ P 2) >> banish LowerRight)
                  -- , ("M-S-<oadiaeresis>", (sendToScreen $ P 2))
 
@@ -174,7 +152,7 @@ main = do
                  , ("M-S-k", windowSwap U False)
                  , ("M-S-j", windowSwap D False)
 
-                 , ("M-x", sendMessage $ ToggleStruts)
+                 -- , ("M-x", sendMessage $ ToggleStruts)
 
 
                  , ("M-s", toggleWS)
@@ -187,10 +165,10 @@ main = do
                  --, ("M-S-g", shiftPrevScreen)
                  --, ("M-S-c", shiftNextScreen)
 
-                 , ("M-C-k", withFocused $ sendMessage . mergeDir W.focusUp')
-                 , ("M-C-j", withFocused $ sendMessage . mergeDir W.focusDown')
-                 , ("M-C-z", withFocused $ sendMessage . MergeAll)
-                 , ("M-C-v", withFocused $ sendMessage . UnMerge)
+                 -- , ("M-C-k", withFocused $ sendMessage . mergeDir W.focusUp')
+                 -- , ("M-C-j", withFocused $ sendMessage . mergeDir W.focusDown')
+                 -- , ("M-C-z", withFocused $ sendMessage . MergeAll)
+                 -- , ("M-C-v", withFocused $ sendMessage . UnMerge)
 
                  --, ("M-m", onGroup W.focusUp')
                  --, ("M-w", onGroup W.focusDown')
@@ -218,10 +196,8 @@ main = do
 
                  , ("M-<Space> r", renameWorkspace myXPConfig { autoComplete = Nothing })
 
-                 --, ("M-u", selectWorkspace def)
-                 --, ("M-i", spawnToWorkspace "mail" "xterm")
                  ] where pre = \a -> "M-f " ++ [a]
-                         gBrowser   = "firefox"
+                         gBrowser   = "google-chrome"
                          gEmacs     = "emacsclient -c"
                          gMail      = "thunderbird"
                          gRun       = "dmenu_path | dmenu | $(which bash)"
@@ -241,15 +217,8 @@ main = do
                              -- , searchPredicate = isInfixOf
                              }
 
-                         -- TODO possibly auto get this number dependend on the system
-                         -- possibly also change to a check if a screen is higher than
-                         -- it is wide, and then change layouts
                          tallThreshold = 1200
-                         --wideLayouts   = Tall 1 (3/100) (3/5) ||| Full
-                         --wideLayouts = Tall 1 (3/100) (3/5) ||| GridRatio (4/3) ||| Full
-                         wideLayouts = ThreeColMid 1 (3/100) (1/2) ||| Tall 1 (3/100) (3/5) ||| GridRatio (4/3) ||| Full
-                         --wideLayouts = (subLayout [] (ThreeColMid 1 (3/100) (1/2) ||| (Dishes 1 (1/4)) ||| Full )) ||| Tall 1 (3/100) (3/5) ||| GridRatio (4/3) ||| Full
-                         --tallLayouts = Grid ||| Full
-                         tallLayouts = {- Roledex ||| -} Dishes 1 (1/4) ||| Full
+                         wideLayouts = Tall 1 (3/100) (3/5) ||| GridRatio (4/3)
+                         tallLayouts = Dishes 1 (1/4) ||| GridRatio (4/3)
 
 
