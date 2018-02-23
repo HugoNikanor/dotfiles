@@ -1,3 +1,5 @@
+source .dotfiles/bash/colors
+
 function __prompt_command() {
 	local EXIT="$?"
 	# I'm only interested in the hostname if I'm not at home
