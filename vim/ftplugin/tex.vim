@@ -13,10 +13,10 @@ setlocal spell
 " The pattern to use is:
 " \\usepackage\[\zs[a-z]\+\ze\]{babel}
 " I however don't know how to get the matched part into a variable
-let @a = system("grep -oP '(?<=\\\\usepackage\\[)[^\\]]*(?=\\]{babel})' " .  expand('%:p') . "| tr -d '\n'")
-if @a ==? "swedish"
+let match = system("grep -oP '(?<=\\\\usepackage\\[)[^\\]]*(?=\\]{babel})' " .  expand('%:p') . "| tr -d '\n'")
+if match ==? "swedish"
 	setlocal spell spelllang=sv
-elseif @a ==? "english"
+elseif match ==? "english"
 	setlocal spell spelllang=en
 else
 	setlocal nospell
