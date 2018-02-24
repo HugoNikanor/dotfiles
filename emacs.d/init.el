@@ -19,11 +19,6 @@
       `(
         calfw
         calfw-org
-        evil
-        evil-magit
-        evil-org
-        ;; evil-org-agenda
-        evil-paredit
         geiser
         ivy ; fuzzy finder
         magit
@@ -38,11 +33,26 @@
              '(xresources-theme))
         ))
 
+(setq evil-packages
+      `(evil
+        ;; evil-collection
+        evil-magit
+        evil-org
+        ;; evil-org-agenda
+        evil-paredit
+        ))
+
+(setq all-packages
+      `(
+        ,@ required-packages
+        ,@ evil-packages
+        ))
+
 (package-initialize)
 
 (setq packages-to-install
       (seq-remove #'package-installed-p
-                  required-packages))
+                  all-packages))
 
 (when packages-to-install
   (package-refresh-contents)
@@ -65,9 +75,46 @@
            (add-hook hook ,function))
          ,environments))
 
+;;; This macro expands correctly, but the require doesn't work
+;;; from inside a macro for some reason.
+(defmacro evil-collection-load (mode)
+  (let ((sname  (symbol-name mode)))
+    `(with-eval-after-load (quote ,mode)
+       (require (quote ,(intern (concat "evil-collection-" sname))))
+       (,(intern (concat "evil-collection-" sname "-setup"))))))
+
+
 ;;; ------------------------------------------------------------
 
+;;; TODO: Evil collection wants this, check why
+;;; It's currently disabled because it makes show-paren-mode
+;;; have a off by one error
+;; (setq evil-want-integration nil)
+
+(mapc #'require evil-packages)
+
 (evil-mode)
+
+;;; I think this inits everything at once
+;; (evil-collection-init)
+
+;; (evil-collection-load calendar)
+
+;;; TODO: The simple reqire works, but the macro does't
+;; (require 'evil-collection-eww)
+;; (evil-collection-load eww)
+
+(with-eval-after-load 'geiser
+  (require 'evil-collection-geiser)
+  (evil-collection-geiser-setup))
+
+(with-eval-after-load 'eww
+  (require 'evil-collection-eww)
+  (evil-collection-eww-setup))
+
+;;; ------------------------------------------------------------
+
+
 (ivy-mode)
 (which-key-mode) ; Show possible next keys after some key presses 
 (show-paren-mode)
@@ -143,6 +190,8 @@
 (defun geiser-eval-print-last-sexp ()
   (interactive)
   ;; this works, but opens the line after the inserted text
+  ;; I think I instead wants a `#:' inserted before the output,
+  ;; at least in those schemes which support it.
   (open-line 1)
   (geiser-eval-last-sexp t))
 
@@ -246,10 +295,10 @@ file for it to work as expceted."
  '(custom-safe-themes
    (quote
     ("065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default)))
- '(org-agenda-files (quote ("~/Sync/todo/notes/doc.org")))
+ '(org-agenda-files (quote ("~/todo/notes/doc.org")))
  '(package-selected-packages
    (quote
-    (popup lyskom lyskom-all z vimish-fold folding folding-mode smart-tabs-mode smarttabs smart-tabs auto-complete evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
+    (restclient evil-collection popup lyskom lyskom-all z vimish-fold folding folding-mode smart-tabs-mode smarttabs smart-tabs auto-complete evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
