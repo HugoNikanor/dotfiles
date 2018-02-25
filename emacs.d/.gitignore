@@ -1,4 +1,11 @@
+# Some of these could contain something of importance,
+# Check on this when problem arises
 elpa/
 geiser/
 network-security.data
+.cache/
+eshell/
+games/
+url/
+
 custom.el
