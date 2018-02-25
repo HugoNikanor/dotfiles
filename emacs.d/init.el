@@ -280,28 +280,11 @@ file for it to work as expceted."
 
 (require 'evil-org-agenda)
 
+
 (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
 (evil-org-agenda-set-keys)
 
 (setq cfw:org-overwrite-default-keybinding t)
 
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default)))
- '(org-agenda-files (quote ("~/todo/notes/doc.org")))
- '(package-selected-packages
-   (quote
-    (restclient evil-collection popup lyskom lyskom-all z vimish-fold folding folding-mode smart-tabs-mode smarttabs smart-tabs auto-complete evil-magit magit haskell-mode evil-paredit geiser paredit xresources-theme which-key ivy evil-org evil))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'noerror)
