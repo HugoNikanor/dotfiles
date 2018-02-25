@@ -20,14 +20,14 @@ endif
 
 call plug#begin("~/.vim/plugged")
 	Plug 'junegunn/vim-plug'              " For Documentation
-	Plug 'christoomey/vim-tmux-navigator' "  Tmux & vim integration, somehow
-	Plug 'godlygeek/tabular'              "  Aligning of text
-	"Plug 'scrooloose/nerdtree'            "  filetree
-	Plug 'Xuyuanp/nerdtree-git-plugin'    "  git plugin for ^
+	Plug 'christoomey/vim-tmux-navigator' " Tmux & vim integration, somehow
+	Plug 'godlygeek/tabular'              " Aligning of text
+	Plug 'scrooloose/nerdtree'            " filetree
+	Plug 'Xuyuanp/nerdtree-git-plugin'    " git plugin for ^
 	"Plug 'tpope/vim-surround'            "
 	"Plug 'tpope/vim-dispatch'
-	Plug 'scrooloose/syntastic'           "  error checking
-	Plug 'airblade/vim-gitgutter'         "  git diff sign
+	Plug 'scrooloose/syntastic'           " error checking
+	Plug 'airblade/vim-gitgutter'         " git diff sign
 	" gdb breakpoint sign
 	if version >= 800 |Plug 'HugoNikanor/vim-breakpoint'
 	else              |Plug 'HugoNikanor/vim-breakpoint', {'tag': 'v7'}
