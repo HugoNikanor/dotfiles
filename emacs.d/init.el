@@ -104,13 +104,13 @@
 ;; (require 'evil-collection-eww)
 ;; (evil-collection-load eww)
 
-(with-eval-after-load 'geiser
-  (require 'evil-collection-geiser)
-  (evil-collection-geiser-setup))
+;; (with-eval-after-load 'geiser
+;;   (require 'evil-collection-geiser)
+;;   (evil-collection-geiser-setup))
 
-(with-eval-after-load 'eww
-  (require 'evil-collection-eww)
-  (evil-collection-eww-setup))
+;; (with-eval-after-load 'eww
+;;   (require 'evil-collection-eww)
+;;   (evil-collection-eww-setup))
 
 ;;; ------------------------------------------------------------
 
