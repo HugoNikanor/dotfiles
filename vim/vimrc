@@ -67,20 +67,21 @@ endif
 syntax on
 colorscheme comments
 
-call matchadd('ColorColumn', '\%81v', 100) " Color marking when passing line 80
+" Color marking when passing line 80
+call matchadd('ColorColumn', '\%81v', 100)
 syntax match Error "\s\+$" " Trailing whitespace
 
 if $TERM ==? "linux"
 	exec "set listchars=tab:>-,eol:$,nbsp:_,trail:~"
-" This should be changed to match anything containing xterm
-elseif ($TERM ==? "xterm") + ($TERM ==? "xterm-termite")
+elseif $TERM =~ "xterm"
 	exec "set listchars=tab:>—,eol:\u00b6,nbsp:\u2423,trail:~"
-elseif expand($TMUX) != ''
+elseif $TERM =~ "screen"
+	" Both Screen and Tmux terminals are here
 	exec "set listchars=tab:>-,eol:\u00b6,nbsp:\u2423,trail:~"
-else " who knows what this is
+else
+	" Other terminal types, set safe fallback
 	colorscheme delek
 endif
-" There should also be a clause for anything containing 'screen'
 
 "}}}
 
