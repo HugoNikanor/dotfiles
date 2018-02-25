@@ -3,9 +3,15 @@
 elpa/
 geiser/
 network-security.data
+eww-bookmarks
 .cache/
 eshell/
 games/
 url/
 
 custom.el
+
+# I don't want to sync pkg/, but I do want to sync
+# the list of files it contains. Some form of simple
+# script would probably do the job
+pkg/
