@@ -1,13 +1,13 @@
-" initial {{{ 
+" initial {{{
 
 scriptencoding utf-8
 set encoding=utf-8
-set nocompatible
-set t_Co=256
+"set nocompatible
+"set t_Co=256
 
 "}}}
 
-" Vundle / Plugin manager {{{
+" Plugin manager {{{
 
 let g:downloaded_plug = 0
 if findfile ("plug.vim", expand("~/.vim/autoload")) == ""
