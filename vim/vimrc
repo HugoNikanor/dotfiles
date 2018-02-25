@@ -110,18 +110,16 @@ nnoremap <leader>c <C-]>
 nnoremap <leader>h :call header#change()<cr>
 
 nnoremap <cr> o<esc>
-"nnoremap j gj
-"nnoremap k gk
-"nnoremap gj j
-"nnoremap gk k
 nnoremap Y y$
+
+nnoremap <C-p> :Files<cr>
+nnoremap <C-n> :Tags<cr>
 
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 
 set foldenable
-
 set foldmethod=marker
 set foldnestmax=20
 set foldlevelstart=0
