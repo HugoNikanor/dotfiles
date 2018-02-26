@@ -15,6 +15,7 @@ case `domainname` in
 esac
 
 shopt -s checkwinsize
+shopt -s histappend
 HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
