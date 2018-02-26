@@ -8,7 +8,7 @@ case `hostname` in
 		source .dotfiles/bash/arch2012.sh ;;
 esac
 
-test -f /usr/bin/domainname &&
+test -f /bin/domainname &&
 case `domainname` in
 	lysator)
 		source .dotfiles/bash/arch2012.sh ;;
