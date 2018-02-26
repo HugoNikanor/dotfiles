@@ -43,4 +43,8 @@
 
 ;;; (repl-default-option-set print (lambda (repl value) (pretty-print value)))
 
+(module-set! (resolve-module '(system repl common))
+             'repl-welcome
+             (const #t))
+
 ;;; vim: filetype=scheme
