@@ -10,6 +10,7 @@ games/
 url/
 
 custom.el
+.org-id-locations
 
 # I don't want to sync pkg/, but I do want to sync
 # the list of files it contains. Some form of simple

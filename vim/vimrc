@@ -50,6 +50,8 @@ call plug#begin("~/.vim/plugged")
 
 	Plug 'drmikehenry/vim-headerguard'
 
+	Plug 'tpope/vim-speeddating'
+
 call plug#end()
 
 if g:downloaded_plug
