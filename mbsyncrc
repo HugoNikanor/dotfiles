@@ -127,6 +127,11 @@ SyncState *
 
 # ----------------------------------------
 
+Group vg
+Channel guckel
+Channel propaganda
+
+
 Group all
 Channel lys
 Channel gmail
