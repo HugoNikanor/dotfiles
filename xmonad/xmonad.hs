@@ -17,6 +17,9 @@ import XMonad.Hooks.ManageHelpers (isDialog)
 import XMonad.Layout.Grid (Grid (..))
 import XMonad.Layout.PerScreen (ifWider)
 import XMonad.Layout.Dishes (Dishes (Dishes))
+import XMonad.Layout.Decoration (shrinkText)
+import XMonad.Layout.DwmStyle (dwmStyle)
+import XMonad.Layout.OneBig (OneBig (OneBig))
 
 import XMonad.Prompt
 
@@ -87,6 +90,7 @@ myManageHook = composeAll
     , className =? "Floating" --> doFloat
     , className =? "Gimp" --> doShift "gimp"
     , className =? "Steam" --> doShift "steam"
+    , className =? "Xmessage" --> doFloat
     , isDialog --> doFloat
 
     -- Who doesn't this work!
@@ -104,7 +108,8 @@ main = do
                  , keys               = myKeys
                  , terminal           = termCommand
                  --, layoutHook         = subTabbed $ B.boringWindows $ ifWider tallThreshold wideLayouts tallLayouts
-                 , layoutHook         = ifWider tallThreshold wideLayouts tallLayouts
+                 -- , layoutHook         = noFrillsDeco shrinkText def $ ifWider tallThreshold wideLayouts tallLayouts
+                 , layoutHook         = decoration $ ifWider tallThreshold wideLayouts tallLayouts
                  , manageHook         = myManageHook <+> insertPosition Below Newer
                  , workspaces         = ["term", "web"]
                  , normalBorderColor  = "#1d1f21"
@@ -219,8 +224,10 @@ main = do
                              -- , searchPredicate = isInfixOf
                              }
 
+                         decoration = dwmStyle shrinkText def
+
                          tallThreshold = 1200
-                         wideLayouts = Tall 1 (3/100) (3/5) ||| GridRatio (4/3)
+                         wideLayouts =  OneBig (3/4) (3/4) ||| Tall 1 (3/100) (3/5) ||| GridRatio (4/3)
                          tallLayouts = Dishes 1 (1/4) ||| GridRatio (4/3)
 
 
