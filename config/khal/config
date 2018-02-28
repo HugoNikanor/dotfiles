@@ -14,3 +14,8 @@ dateformat = %Y-%m-%d
 longdateformat = %Y-%m-%d
 datetimeformat = %Y-%m-%d %H:%M
 longdatetimeformat = %Y-%m-%d %H:%M
+
+[view]
+agenda_event_format = "{cancelled}{title} {calendar-color}{repeat-symbol}{start-style}{to-style}{end-style} -- {location}{reset}"
+event_format = "{cancelled}{title} {calendar-color}{repeat-symbol}{start-style}{to-style}{end-style} -- {location}{reset}"
+
