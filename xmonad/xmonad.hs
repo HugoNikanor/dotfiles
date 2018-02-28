@@ -2,16 +2,25 @@
 
 import System.IO (hPutStrLn)
 import Network.HostName (HostName, getHostName)
+import Data.List (isInfixOf)
 
 import XMonad
 
-import XMonad.Actions.PhysicalScreens (viewScreen, PhysicalScreen (..), sendToScreen)
-import XMonad.Actions.DynamicWorkspaces (selectWorkspace, removeWorkspace, removeEmptyWorkspace, addWorkspacePrompt, withWorkspace, renameWorkspace)
+import XMonad.Actions.PhysicalScreens
+    (viewScreen, PhysicalScreen (..), sendToScreen)
+import XMonad.Actions.DynamicWorkspaces
+    ( selectWorkspace
+    , removeWorkspace
+    , removeEmptyWorkspace
+    , addWorkspacePrompt
+    , withWorkspace
+    , renameWorkspace )
 import XMonad.Actions.CycleWS (prevScreen, nextScreen, toggleWS)
 import XMonad.Actions.Warp (banish, Corner (..))
 import XMonad.Actions.Navigation2D (windowGo, windowSwap)
 
-import XMonad.Hooks.InsertPosition (Position (Below), Focus (Newer), insertPosition)
+import XMonad.Hooks.InsertPosition
+    (Position (Below), Focus (Newer), insertPosition)
 import XMonad.Hooks.ManageHelpers (isDialog)
 
 import XMonad.Layout.Grid (Grid (..))
@@ -21,7 +30,10 @@ import XMonad.Layout.Decoration (shrinkText)
 import XMonad.Layout.DwmStyle (dwmStyle)
 import XMonad.Layout.OneBig (OneBig (OneBig))
 
-import XMonad.Prompt
+import XMonad.Prompt (XPConfig (..), defaultXPConfig, XPPosition (Top))
+import XMonad.Prompt.Input (inputPrompt)
+import XMonad.Prompt.Shell (shellPrompt)
+import XMonad.Prompt.XMonad (xmonadPrompt)
 
 import XMonad.Util.Types (Direction2D (U, D, L, R))
 import XMonad.Util.EZConfig
@@ -38,7 +50,6 @@ import qualified XMonad.Layout.BoringWindows as B
 TODO
 ====
 * Possibly add scratchpad (floating term) (I have that for gvim now!)
-* Look through which of the imports are needed
 * If only one program is i a workspace the workspace should change name to that
 -}
 
@@ -59,29 +70,13 @@ spawnToWorkspace workspace program = do
     spawn program
     windows $ W.greedyView workspace
 
-{-
-bootstrap :: X()
-bootstrap = do
-    spawnToWorkspace "firefox" "web"
-    spawnToWorkspace "term"
--}
-
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
     , ((modm, xK_Tab ), windows W.focusDown)
+    , ((modm .|. shiftMask, xK_Tab ), windows W.focusUp)
     -- This doesn't work in the easy config, for some reason
     , ((modm, xK_t), withFocused $ windows . W.sink)
     ]
-
-{-
-notSoSimlpeBindings :: [((KeyMask, KeySym), X ())]
-notSoSimlpeBindings =
-        [ ((modMask              , xK_odiaeresis), (viewScreen $ P 3) >> banish LowerRight)
-        , ((modMask .|. shiftMask, xK_odiaeresis), sendToScreen $ P 3)
-        ]
-        -}
-xmobarCurrentWorkspaceColor = "#FFB6B0"
-xmobarTitleColor = "#CEFFAC"
 
 -- "Steam - News (1 of 2)"
 myManageHook = composeAll
@@ -98,6 +93,13 @@ myManageHook = composeAll
     --, className =? "Gimp" --> doFloat ]
     , title =? "Toolbox" --> doFloat ]
 
+shiftAndGo :: Maybe String -> X ()
+shiftAndGo Nothing = return ()
+shiftAndGo (Just str) =
+    windows $ do
+        W.shift $ str
+        W.greedyView $ str
+
 main = do
     termCommand <- getTerminalCommand <$> getHostName
     -- nScreens    <- countScreens
@@ -107,8 +109,6 @@ main = do
                  , clickJustFocuses   = False
                  , keys               = myKeys
                  , terminal           = termCommand
-                 --, layoutHook         = subTabbed $ B.boringWindows $ ifWider tallThreshold wideLayouts tallLayouts
-                 -- , layoutHook         = noFrillsDeco shrinkText def $ ifWider tallThreshold wideLayouts tallLayouts
                  , layoutHook         = decoration $ ifWider tallThreshold wideLayouts tallLayouts
                  , manageHook         = myManageHook <+> insertPosition Below Newer
                  , workspaces         = ["term", "web"]
@@ -124,14 +124,7 @@ main = do
                  , (pre 'f', spawn gFiles)
                  , (pre 'n', spawn gQuickNote)
 
-                 -- , ("M-t", withFocused $ windows . W.sink)
-
                  , ("M-S-<Return>", windows W.swapMaster)
-
-                 --, ("M-j", B.focusDown)
-                 --, ("M-k", B.focusUp)
-                 --, ("M-S-j", windows W.swapDown)
-                 --, ("M-S-k", windows W.swapUp)
 
                  , ("M-m", sendMessage Shrink)
                  , ("M-w", sendMessage Expand)
@@ -143,10 +136,6 @@ main = do
                  , ("M-S-o", (sendToScreen $ P 0))
                  , ("M-e"  , (viewScreen $ P 1) >> banish LowerRight)
                  , ("M-S-e", (sendToScreen $ P 1))
-                 -- , ("M-u"  , (viewScreen $ P 2) >> banish LowerRight)
-                 -- , ("M-S-u", (sendToScreen $ P 2))
-                 -- , ("M-<oadiaeresis>", (viewScreen $ P 2) >> banish LowerRight)
-                 -- , ("M-S-<oadiaeresis>", (sendToScreen $ P 2))
 
                  -- Can keybinds be dependent on current layout?
                  , ("M-l", windowGo R False >> banish LowerRight)
@@ -159,9 +148,6 @@ main = do
                  , ("M-S-k", windowSwap U False)
                  , ("M-S-j", windowSwap D False)
 
-                 -- , ("M-x", sendMessage $ ToggleStruts)
-
-
                  , ("M-s", toggleWS)
 
                  -- Do I even want these?
@@ -172,15 +158,9 @@ main = do
                  --, ("M-S-g", shiftPrevScreen)
                  --, ("M-S-c", shiftNextScreen)
 
-                 -- , ("M-C-k", withFocused $ sendMessage . mergeDir W.focusUp')
-                 -- , ("M-C-j", withFocused $ sendMessage . mergeDir W.focusDown')
-                 -- , ("M-C-z", withFocused $ sendMessage . MergeAll)
-                 -- , ("M-C-v", withFocused $ sendMessage . UnMerge)
-
-                 --, ("M-m", onGroup W.focusUp')
-                 --, ("M-w", onGroup W.focusDown')
-
-                 , ("M-y", spawn gRun)
+                 , ("M-y", shellPrompt myXPConfig { autoComplete = Nothing
+                                                  , searchPredicate = isInfixOf } )
+                 , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })
 
                  , ("M-q", spawn xmonadRe)
                  , ("M-t", withFocused $ windows . W.sink)
@@ -198,8 +178,7 @@ main = do
                  , ("M-<Space> M-d", removeEmptyWorkspace)
                  , ("M-<Space> a", addWorkspacePrompt myXPConfig)
                  , ("M-<Space> s", withWorkspace myXPConfig (windows . W.shift))
-                 -- This should also select that workspace
-                 , ("M-<Space> S-s", withWorkspace myXPConfig (windows . W.shift))
+                 -- , ("M-<Space> S-s", inputPromptWithCompl myXPConfig "Shift and go" >>= shiftAndGo)
 
                  , ("M-<Space> r", renameWorkspace myXPConfig { autoComplete = Nothing })
 
@@ -207,7 +186,6 @@ main = do
                          gBrowser   = "google-chrome"
                          gEmacs     = "emacsclient -c"
                          gMail      = "thunderbird"
-                         gRun       = "dmenu_path | dmenu | $(which bash)"
                          gPass      = "passmenu"
                          gIrc       = "xterm -e ssh irc -t screen -x"
                          gSound     = "pavucontrol"
