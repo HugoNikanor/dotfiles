@@ -19,9 +19,9 @@
 *color14: #8abeb7
 *color15: #c5c8c6
 
-# Does these even do anything?
-Xmessage.foreground: #ffffff;
-Xmessage.foreground_bold: #ffffff;
+! Does these even do anything?
+! xmessage.foreground: #ffffff;
+! xmessage.foreground_bold: #ffffff;
 
 XTerm*metaSendsEscape: true
 XTerm*eightBitInput: false
