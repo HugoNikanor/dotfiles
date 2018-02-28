@@ -66,6 +66,8 @@ bootstrap = do
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
     , ((modm, xK_Tab ), windows W.focusDown)
+    -- This doesn't work in the easy config, for some reason
+    , ((modm, xK_t), withFocused $ windows . W.sink)
     ]
 
 {-
@@ -117,7 +119,7 @@ main = do
                  , (pre 'f', spawn gFiles)
                  , (pre 'n', spawn gQuickNote)
 
-                 , ("M-t", withFocused $ windows . W.sink)
+                 -- , ("M-t", withFocused $ windows . W.sink)
 
                  , ("M-S-<Return>", windows W.swapMaster)
 
