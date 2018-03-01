@@ -117,7 +117,6 @@ main = do
                  } `additionalKeysP`
                  [ (pre 'b', spawn gBrowser)
                  , (pre 'e', spawn gEmacs)
-                 , (pre 'y', spawn gRun)
                  , (pre 'p', spawn gPass)
                  , (pre 'i', spawn gIrc)
                  , (pre 's', spawn gSound)
