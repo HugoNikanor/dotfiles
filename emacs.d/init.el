@@ -186,14 +186,24 @@
   (evil-paredit-mode))
 
 ;; =C-u C-u M-x geiser-eval-last-sexp= does this,
-;; but without the open-line
+;; But without the fancy formatting!
 (defun geiser-eval-print-last-sexp ()
   (interactive)
-  ;; this works, but opens the line after the inserted text
-  ;; I think I instead wants a `#:' inserted before the output,
-  ;; at least in those schemes which support it.
-  (open-line 1)
-  (geiser-eval-last-sexp t))
+  (let ((ret (geiser-eval-last-sexp nil))
+        (cmnt
+         (if (= (point)
+                 (line-beginning-position))
+             ";; "
+           " ; ")))
+    (if (equalp "=> " ret)
+        ;; TODO better error handling
+        (insert cmnt "EVALUATION ERROR")
+      ;; Mark should be returned after
+      (set-mark (point))
+      (insert cmnt ret)
+      (indent-region (+ 5 (mark))
+                     (point)))))
+
 
 (hook-envs
  #'paredit-stuff
