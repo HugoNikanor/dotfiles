@@ -67,6 +67,11 @@
 
 (autoload 'lyskom "lyskom.elc" "LysKOM" t)
 
+;;; Multi mode stuff, download and start using this
+;;; In the same directory is stuff showcasing how to
+;;; use it with haskell
+;; http://www.loveshack.ukfsn.org/emacs/multi-mode.el
+
 ;;; ------------------------------------------------------------
 
 (defmacro hook-envs (function environments)
@@ -295,6 +300,14 @@ file for it to work as expceted."
 (evil-org-agenda-set-keys)
 
 (setq cfw:org-overwrite-default-keybinding t)
+
+;;; This should be per major mode
+;;; TeX 60
+;;; Other 80
+;; (setq-default fill-column 60)
+;; (setq-default auto-fill-function 'do-auto-fill)
+(setq-default fill-column 80)
+;;; Why isn't this 72 for git commits!?
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
