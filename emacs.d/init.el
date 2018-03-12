@@ -190,6 +190,13 @@
   (enable-paredit-mode)
   (evil-paredit-mode))
 
+;;; Something like this should be used insead,
+;; (use-module (ice-9 pretty-printing))
+;; (call-with-input-string
+;;  (string-drop return-value 3)
+;;  (compose pretty-print
+;;           read))
+          
 ;; =C-u C-u M-x geiser-eval-last-sexp= does this,
 ;; But without the fancy formatting!
 (defun geiser-eval-print-last-sexp ()
