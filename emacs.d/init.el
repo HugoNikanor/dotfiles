@@ -67,6 +67,11 @@
 
 (autoload 'lyskom "lyskom.elc" "LysKOM" t)
 
+;;; Multi mode stuff, download and start using this
+;;; In the same directory is stuff showcasing how to
+;;; use it with haskell
+;; http://www.loveshack.ukfsn.org/emacs/multi-mode.el
+
 ;;; ------------------------------------------------------------
 
 (defmacro hook-envs (function environments)
@@ -185,15 +190,32 @@
   (enable-paredit-mode)
   (evil-paredit-mode))
 
+;;; Something like this should be used insead,
+;; (use-module (ice-9 pretty-printing))
+;; (call-with-input-string
+;;  (string-drop return-value 3)
+;;  (compose pretty-print
+;;           read))
+          
 ;; =C-u C-u M-x geiser-eval-last-sexp= does this,
-;; but without the open-line
+;; But without the fancy formatting!
 (defun geiser-eval-print-last-sexp ()
   (interactive)
-  ;; this works, but opens the line after the inserted text
-  ;; I think I instead wants a `#:' inserted before the output,
-  ;; at least in those schemes which support it.
-  (open-line 1)
-  (geiser-eval-last-sexp t))
+  (let ((ret (geiser-eval-last-sexp nil))
+        (cmnt
+         (if (= (point)
+                 (line-beginning-position))
+             ";; "
+           " ; ")))
+    (if (equalp "=> " ret)
+        ;; TODO better error handling
+        (insert cmnt "EVALUATION ERROR")
+      ;; Mark should be returned after
+      (set-mark (point))
+      (insert cmnt ret)
+      (indent-region (+ 5 (mark))
+                     (point)))))
+
 
 (hook-envs
  #'paredit-stuff
@@ -288,6 +310,14 @@ file for it to work as expceted."
 (evil-org-agenda-set-keys)
 
 (setq cfw:org-overwrite-default-keybinding t)
+
+;;; This should be per major mode
+;;; TeX 60
+;;; Other 80
+;; (setq-default fill-column 60)
+;; (setq-default auto-fill-function 'do-auto-fill)
+(setq-default fill-column 80)
+;;; Why isn't this 72 for git commits!?
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
