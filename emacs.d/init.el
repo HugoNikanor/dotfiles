@@ -264,6 +264,9 @@ file for it to work as expceted."
             (thing-at-point 'filename)))))
 
 ;;; This is /tmp/ by default
+;;; TODO
+;;; This currently brakes if ~/.cache/emacs doesn't
+;;; exists, do something about that.
 (setq temporary-file-directory
       (or (getenv "XDG_CACHE_HOME")
           (concat (getenv "HOME")
