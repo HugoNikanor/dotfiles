@@ -8,7 +8,7 @@ case `hostname` in
 		source .dotfiles/bash/arch2012.sh ;;
 esac
 
-test -f /bin/domainname &&
+test -f  /bin/domainname &&
 case `domainname` in
 	lysator)
 		source .dotfiles/bash/arch2012.sh ;;
@@ -20,7 +20,7 @@ HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-true ${BROWSER:="/home/hugo/bin/browser"}
+#true ${BROWSER:="/home/hugo/bin/browser"}
 export EDITOR="/usr/bin/vim"
 export RTV_EDITOR="/usr/bin/vim"
 export RTV_URLVIEWER="/usr/bin/urlview"
@@ -58,3 +58,7 @@ done
 FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
 [ $TERM == "xterm-termite" ] && export TERM=xterm
+
+#true
+# This shouldn't be required
+. ~/.bash_completion
