@@ -127,9 +127,37 @@ SyncState *
 
 # ----------------------------------------
 
+IMAPAccount lokal
+Host imap.gmail.com
+User lokal@vastgota.nation.liu.se
+PassCmd +"pass vastgota.nation.liu.se/mail/lokal"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+MaildirStore lokal-local
+Path ~/mail/Vastgota.lokal/
+Inbox ~/mail/Vastgota.lokal/INBOX
+AltMap yes
+SubFolders Verbatim
+
+IMAPStore lokal-remote
+Account lokal
+
+Channel lokal
+Master :lokal-remote:
+Slave :lokal-local:
+Patterns * ![Gmail]*
+Create Both
+Sync All
+SyncState *
+
+# ----------------------------------------
+
+
 Group vg
 Channel guckel
 Channel propaganda
+Channel lokal
 
 
 Group all
@@ -138,6 +166,7 @@ Channel gmail
 Channel liu
 Channel guckel
 Channel propaganda
+Channel lokal
 #Channel hornquist
 
 # vim: set filetype=conf:

@@ -4,7 +4,7 @@
 case `hostname` in
 	STATENS_laptop)
 		source .dotfiles/bash/STATENS_laptop.sh ;;
-	arch2012)
+	arch2012|hornquist)
 		source .dotfiles/bash/arch2012.sh ;;
 esac
 
