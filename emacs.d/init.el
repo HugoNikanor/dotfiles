@@ -7,18 +7,18 @@
 ;;; TODO
 ;;; ==Ivy==
 ;;; - show bindings when M-x
-;;; ==Evil==
-;;; :vsp <file>
-;;; :vsplit <file> works, but the short version doesn't
 ;;; ==Speedbar==
 ;;; z should toggle expand|contract
 ;;; speedbar-expand-line
 ;;; speedbar-contract-line
+;;; ==General==
+;;; - Bind =,= to next tag match 
 
 (setq required-packages
       `(
         calfw
         calfw-org
+        flycheck
         geiser
         ivy ; fuzzy finder
         magit
@@ -100,6 +100,18 @@
 
 (evil-mode)
 
+(require 'evil-maps)                    ; Is this required?
+;;; It would be better if this was bound to split on inter-
+;;; nal buffers. Either way, it modifies evil-ex-commands
+(evil-ex-define-cmd "vsp" "vsplit")
+(evil-ex-define-cmd "ta[g]" 'tags-search)
+
+
+
+
+
+
+
 ;;; I think this inits everything at once
 ;; (evil-collection-init)
 
@@ -147,7 +159,14 @@
 ;;; Mostly for `<' & `>' shifting. But it doesn't.
 (setq evil-indent-convert-tabs nil)
 
+(defun org-mode-stuff ()
+  (evil-define-key 'normal org-mode-map (kbd "z j")
+    'org-forward-heading-same-level)
+  (evil-define-key 'normal org-mode-map (kbd "z k")
+    'org-backward-heading-same-level))
+
 (add-hook 'org-mode-hook #'evil-org-mode)
+(add-hook 'org-mode-hook #'org-mode-stuff)
 
 (defun prettify-scheme ()
   (setq prettify-symbols-alist
@@ -169,6 +188,12 @@
         (append
          prettify-symbols-alist
          '(("\\pm" . ?±)
+           ("\\eset" . ?∅)
+           ("\\union" . ?∪)
+           ;; ("\\bunion" . ?⋃)
+           ("\\comp" . ?∁)
+           ("\\endproof" . ?□)
+           ("\\snitt" . ?∩)
            ("\\sqrt" . ?√)
            ("\\left(" . ?\()
            ("\\right)" . ?\))))))
@@ -189,6 +214,7 @@
   (evil-define-key 'visual lisp-mode-map (kbd "SPC ;") 'paredit-comment-dwim)
   (enable-paredit-mode)
   (evil-paredit-mode))
+
 
 ;;; Something like this should be used insead,
 ;; (use-module (ice-9 pretty-printing))
@@ -246,6 +272,11 @@
      'geiser-eval-print-last-sexp)
    (define-key paredit-mode-map (kbd "C-S-j")
      'geiser-eval-last-sexp)))
+
+;;; TODO add optional path argument, which should be able to be given through M-x
+(defun gamesh-connect ()
+  (interactive)
+  (geiser-connect-local 'guile "/tmp/guile-gamesh-repl"))
 
 ;; geiser-repl-mode
 
