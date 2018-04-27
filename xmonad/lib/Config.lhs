@@ -41,35 +41,37 @@
 > import qualified Data.Map as M
 > import qualified XMonad.StackSet as W
 > import qualified XMonad.Layout.BoringWindows as B
-> 
-> -- xK_aring      = å
-> -- xK_adiaeresis = ä
-> -- xK_odiaeresis = ö
-> 
-> {-
-> TODO
-> ====
-> * Possibly add scratchpad (floating term) (I have that for gvim now!)
-> * If only one program is i a workspace the workspace should change name to that
-> -}
-> 
+
+The xK names of the swedish letters
+
+xK_aring      = å
+xK_adiaeresis = ä
+xK_odiaeresis = ö
+
+TODO
+====
+* Possibly add scratchpad (floating term) (I have that for gvim now!)
+* If only one program is in a workspace the workspace should change name to that
+
 > myFont = "Iosevka Slab-11"
-> 
-> -- This function should possibly be changed to take a context string instead of
-> -- just a hostname, this to simplify having multiple terminal types on one system
-> -- `hostname -y` return "lysator" on some systems, "(none)" on other
+
+This function should possibly be changed to take a context string instead of
+just a hostname, this to simplify having multiple terminal types on one system
+`hostname -y` return "lysator" on some systems, "(none)" on other
+
 > getTerminalCommand :: HostName -> String
 > getTerminalCommand "arch2012"       = "termite -c ~/.config/termite/desktop.conf"
 > getTerminalCommand "STATENS_laptop" = "termite -c ~/.config/termite/laptop.conf"
 > getTerminalCommand _                = "/home/hugo/bin/termite -c ~/.config/termite/lysator.conf"
-> 
-> -- TODO figure out how to run this from main
-> -- TODO and check if a window can be spawned without viewing that window
+
+TODO figure out how to run this from main
+TODO and check if a window can be spawned without viewing that window
+
 > spawnToWorkspace :: String -> String -> X ()
 > spawnToWorkspace workspace program = do
 >     spawn program
 >     windows $ W.greedyView workspace
-> 
+
 > myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 >     [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
 >     , ((modm, xK_Tab ), windows W.focusDown)
@@ -77,8 +79,9 @@
 >     -- This doesn't work in the easy config, for some reason
 >     , ((modm, xK_t), withFocused $ windows . W.sink)
 >     ]
-> 
-> -- "Steam - News (1 of 2)"
+
+"Steam - News (1 of 2)"
+
 > myManageHook = composeAll
 >     [ className =? "Gvim" --> doFloat
 >     , className =? "Pinentry" --> doFloat
@@ -99,21 +102,63 @@
 >     windows $ do
 >         W.shift $ str
 >         W.greedyView $ str
-> 
+
+This is the main part of the config. It's currently all
+grouped together, this might change in the future, if I
+can be bothered to do it.
+
+The main reason for breaking it upp is that it will
+allow resources belonging to parts be close to them,
+instead of the current set-up where they are quite far
+sepparated.
+
 > main = do
 >     termCommand <- getTerminalCommand <$> getHostName
 >     -- nScreens    <- countScreens
 >     -- xmproc      <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
->     xmonad $ def { modMask            = mod4Mask
->                  , focusFollowsMouse  = False
->                  , clickJustFocuses   = False
->                  , keys               = myKeys
->                  , terminal           = termCommand
->                  , layoutHook         = decoration $ ifWider tallThreshold wideLayouts tallLayouts
->                  , manageHook         = myManageHook <+> insertPosition Below Newer
->                  , workspaces         = ["term", "web"]
->                  , normalBorderColor  = "#1d1f21"
->                  , focusedBorderColor = "#FF0000"
+>     xmonad $ def {
+
+We use super for xmonad actions, since it shouldn't be used by any
+other program.
+
+> modMask = mod4Mask
+
+A mouse click in a window should always count as if I actually press
+there. Focus also doesn't follow the mouse, allowing me to scroll and
+type in different windows.
+
+This makes it really hard to focus a window without sending an action
+to it, but that's hardly ever needed.
+
+> , clickJustFocuses  = False
+> , focusFollowsMouse = False
+
+TODO gather all key binds in one place
+TODO also document terminal commands
+
+> , keys     = myKeys
+> , terminal = termCommand
+
+A different set of layouts should be used for screens that are tall
+and wide. Decorations are the small labels on each window telling its
+name.
+
+> , layoutHook = decoration $ ifWider tallThreshold wideLayouts tallLayouts
+
+> , manageHook = myManageHook <+> insertPosition Below Newer
+
+Default workspace names, there should be at least as many items in
+this list as there are physical monitors.
+
+> , workspaces = ["term", "web"]
+
+Borders are red and clearly visible, unfocused windows have the same
+gray color as I try to have everything on my system.
+
+> , normalBorderColor  = "#1d1f21"
+> , focusedBorderColor = "#FF0000"
+
+
 >                  } `additionalKeysP`
 >                  [ (pre 'b', spawn gBrowser)
 >                  , (pre 'e', spawn gEmacs)
