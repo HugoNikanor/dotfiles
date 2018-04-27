@@ -3,15 +3,15 @@
 
 case `hostname` in
 	STATENS_laptop)
-		source .dotfiles/bash/STATENS_laptop.sh ;;
+		source ~/.dotfiles/bash/STATENS_laptop.sh ;;
 	arch2012|hornquist)
-		source .dotfiles/bash/arch2012.sh ;;
+		source ~/.dotfiles/bash/arch2012.sh ;;
 esac
 
 test -f  /bin/domainname &&
 case `domainname` in
 	lysator)
-		source .dotfiles/bash/arch2012.sh ;;
+		source ~/.dotfiles/bash/arch2012.sh ;;
 esac
 
 shopt -s checkwinsize
