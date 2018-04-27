@@ -1,4 +1,4 @@
-set header_color_partial = yes
+#set header_color_partial = yes
 
 # mark all messages containing the word `deadline' line
 #	While this is really cool it makes mutt lag like crazy,
