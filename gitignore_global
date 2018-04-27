@@ -10,6 +10,8 @@ bin/
 \#**
 .breakpoints_*
 ltxpng/
+.~lock*
+.#*
 
 #c++
 *.exe
