@@ -74,12 +74,41 @@ TODO and check if a window can be spawned without viewing that window
 
 ------------------------------------------------------------
 
+> xmonadRe = "xmonad --recompile; xmonad --restart"
+
+> myXPConfig = defaultXPConfig
+>              { position = Top -- CenteredAt
+>              , historySize = 1000
+>              , autoComplete = Just 1
+>              , font = myFont
+>                       -- , searchPredicate = isInfixOf
+>              }
+
+> decoration = dwmStyle shrinkText def
+
+> tallThreshold = 1200
+> wideLayouts =  OneBig (3/4) (3/4) ||| Tall 1 (3/100) (3/5) ||| GridRatio (4/3)
+> tallLayouts = Dishes 1 (1/4) ||| GridRatio (4/3)
+
+------------------------------------------------------------
+
 Keys are currently bound in two sepparate places. Both here,
 where I have complete controll over Haskell, and below where
 I allow EZConfig to do the work. The settings that are set
 here is either due to them requiring some data sent to them
 in unusual ways (such as =XMonad.terminal=), or depend on
 actuall code (see monitor movement bindings).
+
+Footnote:
+  The following section uses the function
+=bindWithAndWithoutShift= a fair bit. The function has a
+type signature as follows, and is defined in the appendix.
+
+> bindWithAndWithoutShift :: (a -> X ())
+>                         -> (a -> X ())
+>                         -> [(KeySym, a)]
+>                         -> XConfig l
+>                         -> [((KeyMask, KeySym), X ())]
 
 ----
 
@@ -110,19 +139,27 @@ Choose one of these, depending on the current monitor setup.
 > (a, b, c) = (x, 0, x)
 > (d, e, f) = (1, 2, 3)
 
-> monitorKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
-> monitorKeys conf@(XConfig {XMonad.modMask = modm}) = 
->   [ ((modm .|. m, k), f i)
->   | (k, i) <- [ (xK_adiaeresis, a)
->               , (xK_odiaeresis, b)
->               , (xK_p, c)
->               , (xK_o, d)
->               , (xK_e, e)
->               , (xK_u, f) ]
->   , (m, f) <- zip [0, shiftMask]
->               [ \i -> (viewScreen $ P i) >> banish LowerRight
->               , \i -> (sendToScreen $ P i) ]
->   ]
+> monitorKeys conf = bindWithAndWithoutShift
+>   (\i -> (viewScreen $ P i) >> banish LowerRight)
+>   (\i -> (sendToScreen $ P i))
+>   [ (xK_adiaeresis, a)
+>   , (xK_odiaeresis, b)
+>   , (xK_p, c)
+>   , (xK_o, d)
+>   , (xK_e, e)
+>   , (xK_u, f) ]
+>   conf
+
+----
+
+> movementKeys conf = bindWithAndWithoutShift
+>   (\d -> windowGo d False >> banish LowerRight)
+>   (\d -> windowSwap d False)
+>   [ (xK_h, L)
+>   , (xK_j, D)
+>   , (xK_k, U)
+>   , (xK_l, R) ]
+>   conf
 
 ----
 
@@ -135,7 +172,7 @@ Choose one of these, depending on the current monitor setup.
 >     , ((modm, xK_t), withFocused $ windows . W.sink)
 >     ]
 
-Finnaly we put the two config parts together.
+Finnaly add all the parts together
 
 footnote:
 The =conf@(XConfig {XMonad.modMask = modm})=
@@ -143,8 +180,73 @@ part means that conf is sent as a parameter, and that
 =modm= is bound as if sent by pattern matching!
 
 > myKeys conf@(XConfig {XMonad.modMask = modm}) =
->   M.fromList $ otherKeys   conf
->             ++ monitorKeys conf
+>   M.fromList . mconcat . fmap ($ conf)
+>     $ [ otherKeys
+>       , monitorKeys
+>       , movementKeys ]
+
+----
+
+The following keybinds are managed by EZ-config.
+
+> pre = \a -> "M-f " ++ [a]
+
+> ezkeys =
+>   [ (pre 'b', spawn "google-chrome")
+>   , (pre 'e', spawn "emacsclient -c")
+>   , (pre 'p', spawn "passmenu")
+>   , (pre 'i', spawn "xterm -e ssh irc -t screen -x")
+>   , (pre 's', spawn "pavucontrol")
+>   , (pre 'f', spawn "thunar")
+>   , (pre 'n', spawn "gvim +'setlocal buftype=nofile' -n")
+>   
+>   , ("M-S-<Return>", windows W.swapMaster)
+>   
+>   , ("M-m", sendMessage Shrink)
+>   , ("M-w", sendMessage Expand)
+>   
+>   , ("M-S-m", sendMessage $ IncMasterN    1)
+>   , ("M-S-w", sendMessage $ IncMasterN $ -1)
+>   
+>   , ("M-p"  , (viewScreen $ P 5) >> banish LowerRight)
+>   , ("M-S-p", (sendToScreen $ P 5))
+>   
+>   
+>   , ("M-s", toggleWS)
+>   
+>     -- Do I even want these?
+>     -- especcially if they don't work on a per-screen basis
+>     -- Possibly write some own which works together with IndependentScreens
+>   , ("M-g"  , prevScreen)
+>   , ("M-c"  , nextScreen)
+>     --, ("M-S-g", shiftPrevScreen)
+>     --, ("M-S-c", shiftNextScreen)
+>   
+>   , ("M-y", shellPrompt myXPConfig { autoComplete = Nothing
+>                                    , searchPredicate = isInfixOf } )
+>   , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })
+>   
+>   , ("M-q", spawn xmonadRe)
+>   , ("M-t", withFocused $ windows . W.sink)
+>   
+>   , ("M-a", sendMessage $ IncMasterN 1)
+>   , ("M-.", sendMessage $ IncMasterN (- 1))
+>   
+>   , ("M-S-c", kill)
+>   , ("M-n", sendMessage NextLayout)
+>   
+>   , ("M-<Space> M-<Space>", selectWorkspace myXPConfig)
+>   , ("M-<Space> <Space>", selectWorkspace myXPConfig)
+>   
+>   , ("M-<Space> d", removeWorkspace)
+>   , ("M-<Space> M-d", removeEmptyWorkspace)
+>   , ("M-<Space> a", addWorkspacePrompt myXPConfig)
+>   , ("M-<Space> s", withWorkspace myXPConfig (windows . W.shift))
+>     -- , ("M-<Space> S-s", inputPromptWithCompl myXPConfig "Shift and go" >>= shiftAndGo)
+>   
+>   , ("M-<Space> r", renameWorkspace myXPConfig { autoComplete = Nothing })
+>   
+>   ]
 
 ------------------------------------------------------------
 
@@ -184,138 +286,28 @@ sepparated.
 >     termCommand <- getTerminalCommand <$> getHostName
 >     -- nScreens    <- countScreens
 >     -- xmproc      <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
->     xmonad $ def {
+>     xmonad $ def { modMask = mod4Mask
+>                  , clickJustFocuses  = False
+>                  , focusFollowsMouse = False
+>                  , keys     = myKeys
+>                  , terminal = termCommand
+>                  , layoutHook = decoration $ ifWider tallThreshold wideLayouts tallLayouts
+>                  , manageHook = myManageHook <+> insertPosition Below Newer
+>                  , workspaces = ["term", "web"]
+>                  , normalBorderColor  = "#1d1f21"
+>                  , focusedBorderColor = "#FF0000"
+>                  } `additionalKeysP` ezkeys
 
-We use super for xmonad actions, since it shouldn't be used by any
-other program.
+Appendix:
+=========
 
-> modMask = mod4Mask
+In the key binding section this function is used.
+It should be self explanitory enough (...). Here
+it's used to lower the amount of boilerplate needed.
 
-A mouse click in a window should always count as if I actually press
-there. Focus also doesn't follow the mouse, allowing me to scroll and
-type in different windows.
-
-This makes it really hard to focus a window without sending an action
-to it, but that's hardly ever needed.
-
-> , clickJustFocuses  = False
-> , focusFollowsMouse = False
-
-TODO gather all key binds in one place
-TODO also document terminal commands
-
-> , keys     = myKeys
-> , terminal = termCommand
-
-A different set of layouts should be used for screens that are tall
-and wide. Decorations are the small labels on each window telling its
-name.
-
-> , layoutHook = decoration $ ifWider tallThreshold wideLayouts tallLayouts
-
-> , manageHook = myManageHook <+> insertPosition Below Newer
-
-Default workspace names, there should be at least as many items in
-this list as there are physical monitors.
-
-> , workspaces = ["term", "web"]
-
-Borders are red and clearly visible, unfocused windows have the same
-gray color as I try to have everything on my system.
-
-> , normalBorderColor  = "#1d1f21"
-> , focusedBorderColor = "#FF0000"
-
-
->                  } `additionalKeysP`
->                  [ (pre 'b', spawn gBrowser)
->                  , (pre 'e', spawn gEmacs)
->                  , (pre 'p', spawn gPass)
->                  , (pre 'i', spawn gIrc)
->                  , (pre 's', spawn gSound)
->                  , (pre 'f', spawn gFiles)
->                  , (pre 'n', spawn gQuickNote)
-> 
->                  , ("M-S-<Return>", windows W.swapMaster)
-> 
->                  , ("M-m", sendMessage Shrink)
->                  , ("M-w", sendMessage Expand)
-> 
->                  , ("M-S-m", sendMessage $ IncMasterN    1)
->                  , ("M-S-w", sendMessage $ IncMasterN $ -1)
-> 
->                  , ("M-p"  , (viewScreen $ P 5) >> banish LowerRight)
->                  , ("M-S-p", (sendToScreen $ P 5))
-> 
->                  -- Can keybinds be dependent on current layout?
->                  , ("M-l", windowGo R False >> banish LowerRight)
->                  , ("M-h", windowGo L False >> banish LowerRight)
->                  , ("M-k", windowGo U False >> banish LowerRight)
->                  , ("M-j", windowGo D False >> banish LowerRight)
-> 
->                  , ("M-S-l", windowSwap R False)
->                  , ("M-S-h", windowSwap L False)
->                  , ("M-S-k", windowSwap U False)
->                  , ("M-S-j", windowSwap D False)
-> 
->                  , ("M-s", toggleWS)
-> 
->                  -- Do I even want these?
->                  -- especcially if they don't work on a per-screen basis
->                  -- Possibly write some own which works together with IndependentScreens
->                  , ("M-g"  , prevScreen)
->                  , ("M-c"  , nextScreen)
->                  --, ("M-S-g", shiftPrevScreen)
->                  --, ("M-S-c", shiftNextScreen)
-> 
->                  , ("M-y", shellPrompt myXPConfig { autoComplete = Nothing
->                                                   , searchPredicate = isInfixOf } )
->                  , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })
-> 
->                  , ("M-q", spawn xmonadRe)
->                  , ("M-t", withFocused $ windows . W.sink)
-> 
->                  , ("M-a", sendMessage $ IncMasterN 1)
->                  , ("M-.", sendMessage $ IncMasterN (- 1))
-> 
->                  , ("M-S-c", kill)
->                  , ("M-n", sendMessage NextLayout)
-> 
->                  , ("M-<Space> M-<Space>", selectWorkspace myXPConfig)
->                  , ("M-<Space> <Space>", selectWorkspace myXPConfig)
-> 
->                  , ("M-<Space> d", removeWorkspace)
->                  , ("M-<Space> M-d", removeEmptyWorkspace)
->                  , ("M-<Space> a", addWorkspacePrompt myXPConfig)
->                  , ("M-<Space> s", withWorkspace myXPConfig (windows . W.shift))
->                  -- , ("M-<Space> S-s", inputPromptWithCompl myXPConfig "Shift and go" >>= shiftAndGo)
-> 
->                  , ("M-<Space> r", renameWorkspace myXPConfig { autoComplete = Nothing })
-> 
->                  ] where pre = \a -> "M-f " ++ [a]
->                          gBrowser   = "google-chrome"
->                          gEmacs     = "emacsclient -c"
->                          gMail      = "thunderbird"
->                          gPass      = "passmenu"
->                          gIrc       = "xterm -e ssh irc -t screen -x"
->                          gSound     = "pavucontrol"
->                          gFiles     = "thunar"
->                          gQuickNote = "gvim +'setlocal buftype=nofile' -n" --s <(echo -n i)"
-> 
->                          xmonadRe = "xmonad --recompile; xmonad --restart"
-> 
->                          myXPConfig = defaultXPConfig
->                              { position = Top -- CenteredAt
->                              , historySize = 1000
->                              , autoComplete = Just 1
->                              , font = myFont
->                              -- , searchPredicate = isInfixOf
->                              }
-> 
->                          decoration = dwmStyle shrinkText def
-> 
->                          tallThreshold = 1200
->                          wideLayouts =  OneBig (3/4) (3/4) ||| Tall 1 (3/100) (3/5) ||| GridRatio (4/3)
->                          tallLayouts = Dishes 1 (1/4) ||| GridRatio (4/3)
-> 
-> 
+> bindWithAndWithoutShift noShift withShift binds
+>   conf@(XConfig {XMonad.modMask = modm}) =
+>   [ ((modm .|. m, k), f d)
+>   | (k, d) <- binds
+>   , (m, f) <- [ (0,         noShift)
+>               , (shiftMask, withShift) ]]
