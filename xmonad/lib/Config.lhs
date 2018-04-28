@@ -30,6 +30,11 @@
 > import XMonad.Layout.DwmStyle (dwmStyle)
 > import XMonad.Layout.OneBig (OneBig (OneBig))
 
+IndependentScreens is the library which should allow things
+to happen at points not currently in focus.
+
+> import XMonad.Layout.IndependentScreens (countScreens)
+
 > import XMonad.Prompt (XPConfig (..), defaultXPConfig, XPPosition (Top))
 > import XMonad.Prompt.Input (inputPrompt)
 > import XMonad.Prompt.Shell (shellPrompt)
@@ -42,15 +47,19 @@
 > import qualified XMonad.StackSet as W
 > import qualified XMonad.Layout.BoringWindows as B
 
+------------------------------------------------------------
+
 A list of all(?) X keynames are in =/usr/include/X11/XF86keysym.h=,
 these have to have their first letter downcased. For some media keys
 extra imports have to be done here.
 
 The X key names of the swedish letters is
 
-> å = xK_aring
-> ä = xK_adiaeresis
-> ö = xK_odiaeresis
+> xK_å = xK_aring
+> xK_ä = xK_adiaeresis
+> xK_ö = xK_odiaeresis
+
+------------------------------------------------------------
 
 TODO
 ====
@@ -69,7 +78,6 @@ just a hostname, this to simplify having multiple terminal types on one system
 > getTerminalCommand _                = "/home/hugo/bin/termite -c ~/.config/termite/lysator.conf"
 
 TODO figure out how to run this from main
-TODO and check if a window can be spawned without viewing that window
 
 > spawnToWorkspace :: String -> String -> X ()
 > spawnToWorkspace workspace program = do
@@ -146,8 +154,8 @@ Choose one of these, depending on the current monitor setup.
 > monitorKeys conf = bindWithAndWithoutShift
 >   (\i -> (viewScreen $ P i) >> banish LowerRight)
 >   (\i -> (sendToScreen $ P i))
->   [ (xK_adiaeresis, a)
->   , (xK_odiaeresis, b)
+>   [ (xK_ä, a)
+>   , (xK_ö, b)
 >   , (xK_p, c)
 >   , (xK_o, d)
 >   , (xK_e, e)
@@ -277,18 +285,11 @@ The following keybinds are managed by EZ-config.
 >         W.shift $ str
 >         W.greedyView $ str
 
-This is the main part of the config. It's currently all
-grouped together, this might change in the future, if I
-can be bothered to do it.
-
-The main reason for breaking it upp is that it will
-allow resources belonging to parts be close to them,
-instead of the current set-up where they are quite far
-sepparated.
+------------------------------------------------------------
 
 > main = do
 >     termCommand <- getTerminalCommand <$> getHostName
->     -- nScreens    <- countScreens
+>     nScreens    <- countScreens
 >     -- xmproc      <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
 >     xmonad $ def { modMask = mod4Mask
 >                  , clickJustFocuses  = False
@@ -297,7 +298,7 @@ sepparated.
 >                  , terminal = termCommand
 >                  , layoutHook = decoration $ ifWider tallThreshold wideLayouts tallLayouts
 >                  , manageHook = myManageHook <+> insertPosition Below Newer
->                  , workspaces = ["term", "web"]
+>                  , workspaces = ["term", "web"] ++ map show [3 .. nScreens]
 >                  , normalBorderColor  = "#1d1f21"
 >                  , focusedBorderColor = "#FF0000"
 >                  } `additionalKeysP` ezkeys
