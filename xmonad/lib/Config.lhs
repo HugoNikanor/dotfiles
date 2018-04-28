@@ -1,13 +1,13 @@
 > module Config where
->
+
 > import System.IO (hPutStrLn)
 > import Network.HostName (HostName, getHostName)
 > import Data.List (isInfixOf)
-> 
+
 > import XMonad
-> 
+
 > import XMonad.Actions.PhysicalScreens
->     (viewScreen, PhysicalScreen (..), sendToScreen)
+>     (viewScreen, PhysicalScreen (P), sendToScreen)
 > import XMonad.Actions.DynamicWorkspaces
 >     ( selectWorkspace
 >     , removeWorkspace
@@ -16,28 +16,28 @@
 >     , withWorkspace
 >     , renameWorkspace )
 > import XMonad.Actions.CycleWS (prevScreen, nextScreen, toggleWS)
-> import XMonad.Actions.Warp (banish, Corner (..))
+> import XMonad.Actions.Warp (banish, Corner (LowerRight))
 > import XMonad.Actions.Navigation2D (windowGo, windowSwap)
-> 
+
 > import XMonad.Hooks.InsertPosition
 >     (Position (Below), Focus (Newer), insertPosition)
 > import XMonad.Hooks.ManageHelpers (isDialog)
-> 
-> import XMonad.Layout.Grid (Grid (..))
+
+> import XMonad.Layout.Grid (Grid (Grid, GridRatio))
 > import XMonad.Layout.PerScreen (ifWider)
 > import XMonad.Layout.Dishes (Dishes (Dishes))
 > import XMonad.Layout.Decoration (shrinkText)
 > import XMonad.Layout.DwmStyle (dwmStyle)
 > import XMonad.Layout.OneBig (OneBig (OneBig))
-> 
+
 > import XMonad.Prompt (XPConfig (..), defaultXPConfig, XPPosition (Top))
 > import XMonad.Prompt.Input (inputPrompt)
 > import XMonad.Prompt.Shell (shellPrompt)
 > import XMonad.Prompt.XMonad (xmonadPrompt)
-> 
+
 > import XMonad.Util.Types (Direction2D (U, D, L, R))
 > import XMonad.Util.EZConfig
-> 
+
 > import qualified Data.Map as M
 > import qualified XMonad.StackSet as W
 > import qualified XMonad.Layout.BoringWindows as B
