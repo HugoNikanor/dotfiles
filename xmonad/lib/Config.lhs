@@ -72,13 +72,79 @@ TODO and check if a window can be spawned without viewing that window
 >     spawn program
 >     windows $ W.greedyView workspace
 
-> myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
+------------------------------------------------------------
+
+Keys are currently bound in two sepparate places. Both here,
+where I have complete controll over Haskell, and below where
+I allow EZConfig to do the work. The settings that are set
+here is either due to them requiring some data sent to them
+in unusual ways (such as =XMonad.terminal=), or depend on
+actuall code (see monitor movement bindings).
+
+----
+
+Monitors should be bound to the keys corresponding to the
+keys occupied by the middle three fingers on the left
+homerow, togheter with the three keys above that. On Swedish
+Dvorak that corresponds to (where `e' is the primary
+monitor):
+
+    ä, ö, p
+    o, e, u
+
+Hopefully I can get these to be automaticly bound,
+unfortunately XMonad uses Xinerama to enumerate monitors,
+and I don't understand how they work. It's therefore by the
+user required to modifiy the below bindings to match the
+actuall numbers of the monitors.
+
+footnote:
+Choose one of these, depending on the current monitor setup.
+(`x' declared as binding for /no monitor/)
+
+> x = -1 :: Int
+
+> -- (a, b, c) = (_, 0, _)
+> -- (d, e, f) = (_, 1, 2)
+
+> (a, b, c) = (x, 0, x)
+> (d, e, f) = (1, 2, 3)
+
+> monitorKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
+> monitorKeys conf@(XConfig {XMonad.modMask = modm}) = 
+>   [ ((modm .|. m, k), f i)
+>   | (k, i) <- [ (xK_adiaeresis, a)
+>               , (xK_odiaeresis, b)
+>               , (xK_p, c)
+>               , (xK_o, d)
+>               , (xK_e, e)
+>               , (xK_u, f) ]
+>   , (m, f) <- zip [0, shiftMask]
+>               [ \i -> (viewScreen $ P i) >> banish LowerRight
+>               , \i -> (sendToScreen $ P i) ]
+>   ]
+
+----
+
+> otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
+> otherKeys conf@(XConfig {XMonad.modMask = modm}) = 
 >     [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
 >     , ((modm, xK_Tab ), windows W.focusDown)
 >     , ((modm .|. shiftMask, xK_Tab ), windows W.focusUp)
 >     -- This doesn't work in the easy config, for some reason
 >     , ((modm, xK_t), withFocused $ windows . W.sink)
 >     ]
+
+Finnaly we put the two config parts together.
+NOTE I'm note sure what the =conf@...= part actually does,
+but I believe that it sends =conf= as a parameter, and break
+out the modMask attribute into the parameter =modm=.
+
+> myKeys conf@(XConfig {XMonad.modMask = modm}) =
+>   M.fromList $ otherKeys   conf
+>             ++ monitorKeys conf
+
+------------------------------------------------------------
 
 "Steam - News (1 of 2)"
 
@@ -176,10 +242,8 @@ gray color as I try to have everything on my system.
 >                  , ("M-S-m", sendMessage $ IncMasterN    1)
 >                  , ("M-S-w", sendMessage $ IncMasterN $ -1)
 > 
->                  , ("M-o"  , (viewScreen $ P 0) >> banish LowerRight)
->                  , ("M-S-o", (sendToScreen $ P 0))
->                  , ("M-e"  , (viewScreen $ P 1) >> banish LowerRight)
->                  , ("M-S-e", (sendToScreen $ P 1))
+>                  , ("M-p"  , (viewScreen $ P 5) >> banish LowerRight)
+>                  , ("M-S-p", (sendToScreen $ P 5))
 > 
 >                  -- Can keybinds be dependent on current layout?
 >                  , ("M-l", windowGo R False >> banish LowerRight)
