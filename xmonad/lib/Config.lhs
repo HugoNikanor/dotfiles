@@ -98,14 +98,14 @@ and I don't understand how they work. It's therefore by the
 user required to modifiy the below bindings to match the
 actuall numbers of the monitors.
 
-footnote:
+Footnote:
 Choose one of these, depending on the current monitor setup.
 (`x' declared as binding for /no monitor/)
 
 > x = -1 :: Int
 
-> -- (a, b, c) = (_, 0, _)
-> -- (d, e, f) = (_, 1, 2)
+> -- (a, b, c) = (x, 0, x)
+> -- (d, e, f) = (x, 1, 2)
 
 > (a, b, c) = (x, 0, x)
 > (d, e, f) = (1, 2, 3)
@@ -136,9 +136,11 @@ Choose one of these, depending on the current monitor setup.
 >     ]
 
 Finnaly we put the two config parts together.
-NOTE I'm note sure what the =conf@...= part actually does,
-but I believe that it sends =conf= as a parameter, and break
-out the modMask attribute into the parameter =modm=.
+
+footnote:
+The =conf@(XConfig {XMonad.modMask = modm})=
+part means that conf is sent as a parameter, and that
+=modm= is bound as if sent by pattern matching!
 
 > myKeys conf@(XConfig {XMonad.modMask = modm}) =
 >   M.fromList $ otherKeys   conf
