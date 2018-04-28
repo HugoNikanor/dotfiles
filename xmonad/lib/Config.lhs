@@ -42,11 +42,15 @@
 > import qualified XMonad.StackSet as W
 > import qualified XMonad.Layout.BoringWindows as B
 
-The xK names of the swedish letters
+A list of all(?) X keynames are in =/usr/include/X11/XF86keysym.h=,
+these have to have their first letter downcased. For some media keys
+extra imports have to be done here.
 
-xK_aring      = å
-xK_adiaeresis = ä
-xK_odiaeresis = ö
+The X key names of the swedish letters is
+
+> å = xK_aring
+> ä = xK_adiaeresis
+> ö = xK_odiaeresis
 
 TODO
 ====
