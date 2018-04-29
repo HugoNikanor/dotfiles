@@ -216,13 +216,11 @@ The following keybinds are managed by EZ-config.
 >   
 >   , ("M-m", sendMessage Shrink)
 >   , ("M-w", sendMessage Expand)
->   
 >   , ("M-S-m", sendMessage $ IncMasterN    1)
 >   , ("M-S-w", sendMessage $ IncMasterN $ -1)
 >   
 >   , ("M-p"  , (viewScreen $ P 5) >> banish LowerRight)
 >   , ("M-S-p", (sendToScreen $ P 5))
->   
 >   
 >   , ("M-s", toggleWS)
 >   
@@ -241,9 +239,6 @@ The following keybinds are managed by EZ-config.
 >   , ("M-q", spawn xmonadRe)
 >   , ("M-t", withFocused $ windows . W.sink)
 >   
->   , ("M-a", sendMessage $ IncMasterN 1)
->   , ("M-.", sendMessage $ IncMasterN (- 1))
->   
 >   , ("M-S-c", kill)
 >   , ("M-n", sendMessage NextLayout)
 >   
@@ -254,7 +249,7 @@ The following keybinds are managed by EZ-config.
 >   , ("M-<Space> M-d", removeEmptyWorkspace)
 >   , ("M-<Space> a", addWorkspacePrompt myXPConfig)
 >   , ("M-<Space> s", withWorkspace myXPConfig (windows . W.shift))
->     -- , ("M-<Space> S-s", inputPromptWithCompl myXPConfig "Shift and go" >>= shiftAndGo)
+>   -- , ("M-<Space> S-s", inputPromptWithCompl myXPConfig "Shift and go" >>= shiftAndGo)
 >   
 >   , ("M-<Space> r", renameWorkspace myXPConfig { autoComplete = Nothing })
 >   
