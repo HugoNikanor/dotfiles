@@ -35,7 +35,7 @@ to happen at points not currently in focus.
 
 > import XMonad.Layout.IndependentScreens (countScreens)
 
-> import XMonad.Prompt (XPConfig (..), defaultXPConfig, XPPosition (Top))
+> import XMonad.Prompt (XPConfig (..), XPPosition (Top))
 > import XMonad.Prompt.Input (inputPrompt)
 > import XMonad.Prompt.Shell (shellPrompt)
 > import XMonad.Prompt.XMonad (xmonadPrompt)
@@ -86,15 +86,17 @@ TODO figure out how to run this from main
 
 ------------------------------------------------------------
 
+These should have a propper place somewhere.
+
 > xmonadRe = "xmonad --recompile; xmonad --restart"
 
-> myXPConfig = defaultXPConfig
->              { position = Top -- CenteredAt
->              , historySize = 1000
->              , autoComplete = Just 1
->              , font = myFont
->                       -- , searchPredicate = isInfixOf
->              }
+> myXPConfig = def
+>   { position = Top -- CenteredAt
+>   , historySize = 1000
+>   , autoComplete = Just 1
+>   , font = myFont
+>   -- , searchPredicate = isInfixOf
+>   }
 
 > decoration = dwmStyle shrinkText def
 
@@ -252,7 +254,6 @@ The following keybinds are managed by EZ-config.
 >   -- , ("M-<Space> S-s", inputPromptWithCompl myXPConfig "Shift and go" >>= shiftAndGo)
 >   
 >   , ("M-<Space> r", renameWorkspace myXPConfig { autoComplete = Nothing })
->   
 >   ]
 
 ------------------------------------------------------------
@@ -272,7 +273,7 @@ The following keybinds are managed by EZ-config.
 >     -- , className =? "Gimp" <&&> (appName =? "Toolbox" <||> title =? "Toolbox") --> doFloat ]
 >     --, className =? "Gimp" --> doFloat ]
 >     , title =? "Toolbox" --> doFloat ]
-> 
+
 > shiftAndGo :: Maybe String -> X ()
 > shiftAndGo Nothing = return ()
 > shiftAndGo (Just str) =
