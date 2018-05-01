@@ -22,6 +22,7 @@
 > import XMonad.Hooks.InsertPosition
 >     (Position (Below), Focus (Newer), insertPosition)
 > import XMonad.Hooks.ManageHelpers (isDialog)
+> import XMonad.Hooks.Place
 
 > import XMonad.Layout.Grid (Grid (Grid, GridRatio))
 > import XMonad.Layout.PerScreen (ifWider)
@@ -85,10 +86,9 @@ TODO figure out how to run this from main
 >     windows $ W.greedyView workspace
 
 ------------------------------------------------------------
-
 These should have a propper place somewhere.
 
-> xmonadRe = "xmonad --recompile; xmonad --restart"
+> restartXMonad = spawn "xmonad --recompile; xmonad --restart"
 
 > myXPConfig = def
 >   { position = Top -- CenteredAt
@@ -100,9 +100,23 @@ These should have a propper place somewhere.
 
 > decoration = dwmStyle shrinkText def
 
-> tallThreshold = 1200
-> wideLayouts =  OneBig (3/4) (3/4) ||| Tall 1 (3/100) (3/5) ||| GridRatio (4/3)
-> tallLayouts = Dishes 1 (1/4) ||| GridRatio (4/3)
+The window layouts are split into two parts, those for wide
+screens and those for tall screens. Currently I only check
+a `tallThreshold', but this obviously fails for higher DPI
+screens.
+
+> myLayouts = ifWider tallThreshold wideLayouts tallLayouts
+>   where tallThreshold = 1200
+>         wideLayouts = Tall 1 (3/100) (3/5)
+>                   ||| OneBig (3/4) (3/4)
+>                   ||| GridRatio (4/3)
+>         tallLayouts = Dishes 1 (1/4)
+>                   ||| GridRatio (4/3)
+
+Workspace ID is just the name of the workspace.
+
+> getCurrentWorkspaceId :: X WorkspaceId
+> getCurrentWorkspaceId = gets (W.currentTag . windowset)
 
 ------------------------------------------------------------
 
@@ -147,13 +161,10 @@ Choose one of these, depending on the current monitor setup.
 
 > x = -1 :: Int
 
-> -- (a, b, c) = (x, 0, x)
-> -- (d, e, f) = (x, 1, 2)
+> (a, b, c) = (0, 1, 2)
+> (d, e, f) = (3, 4, 5)
 
-> (a, b, c) = (x, 0, x)
-> (d, e, f) = (1, 2, 3)
-
-> monitorKeys conf = bindWithAndWithoutShift
+> monitorKeys = bindWithAndWithoutShift
 >   (\i -> (viewScreen $ P i) >> banish LowerRight)
 >   (\i -> (sendToScreen $ P i))
 >   [ (xK_ä, a)
@@ -162,18 +173,16 @@ Choose one of these, depending on the current monitor setup.
 >   , (xK_o, d)
 >   , (xK_e, e)
 >   , (xK_u, f) ]
->   conf
 
 ----
 
-> movementKeys conf = bindWithAndWithoutShift
+> movementKeys = bindWithAndWithoutShift
 >   (\d -> windowGo d False >> banish LowerRight)
 >   (\d -> windowSwap d False)
 >   [ (xK_h, L)
 >   , (xK_j, D)
 >   , (xK_k, U)
 >   , (xK_l, R) ]
->   conf
 
 ----
 
@@ -213,16 +222,13 @@ The following keybinds are managed by EZ-config.
 >   , (pre 's', spawn "pavucontrol")
 >   , (pre 'f', spawn "thunar")
 >   , (pre 'n', spawn "gvim +'setlocal buftype=nofile' -n")
->   
+>
 >   , ("M-S-<Return>", windows W.swapMaster)
 >   
 >   , ("M-m", sendMessage Shrink)
 >   , ("M-w", sendMessage Expand)
 >   , ("M-S-m", sendMessage $ IncMasterN    1)
 >   , ("M-S-w", sendMessage $ IncMasterN $ -1)
->   
->   , ("M-p"  , (viewScreen $ P 5) >> banish LowerRight)
->   , ("M-S-p", (sendToScreen $ P 5))
 >   
 >   , ("M-s", toggleWS)
 >   
@@ -238,7 +244,7 @@ The following keybinds are managed by EZ-config.
 >                                    , searchPredicate = isInfixOf } )
 >   , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })
 >   
->   , ("M-q", spawn xmonadRe)
+>   , ("M-q", restartXMonad)
 >   , ("M-t", withFocused $ windows . W.sink)
 >   
 >   , ("M-S-c", kill)
@@ -258,21 +264,33 @@ The following keybinds are managed by EZ-config.
 
 ------------------------------------------------------------
 
-"Steam - News (1 of 2)"
+`placeHook' places floating windows at interesting places.
+This tries to place windows close to the center of the
+screen, which is what I want.
+
+> placeNearCenter = placeHook (withGaps (10, 10, 10, 10) (smart (0.5,0.5)))
+
+Compositioning of rules go from right to left (I think), the
+`doFloat' is just so that the window can actually be placeded
+smartly after.
+
+> doSmartFloat = placeNearCenter <+> doFloat
+
+> -- "Steam - News (1 of 2)"
 
 > myManageHook = composeAll
->     [ className =? "Gvim" --> doFloat
->     , className =? "Pinentry" --> doFloat
->     , className =? "Floating" --> doFloat
+>     [ className =? "Gvim" --> doSmartFloat
+>     , className =? "Pinentry" --> doSmartFloat
+>     , className =? "Floating" --> doSmartFloat
 >     , className =? "Gimp" --> doShift "gimp"
 >     , className =? "Steam" --> doShift "steam"
->     , className =? "Xmessage" --> doFloat
->     , isDialog --> doFloat
+>     , className =? "Xmessage" --> doSmartFloat
+>     , isDialog --> doSmartFloat
 > 
 >     -- Who doesn't this work!
 >     -- , className =? "Gimp" <&&> (appName =? "Toolbox" <||> title =? "Toolbox") --> doFloat ]
 >     --, className =? "Gimp" --> doFloat ]
->     , title =? "Toolbox" --> doFloat ]
+>     , title =? "Toolbox" --> doSmartFloat ]
 
 > shiftAndGo :: Maybe String -> X ()
 > shiftAndGo Nothing = return ()
@@ -292,7 +310,7 @@ The following keybinds are managed by EZ-config.
 >                  , focusFollowsMouse = False
 >                  , keys     = myKeys
 >                  , terminal = termCommand
->                  , layoutHook = decoration $ ifWider tallThreshold wideLayouts tallLayouts
+>                  , layoutHook = decoration $ myLayouts
 >                  , manageHook = myManageHook <+> insertPosition Below Newer
 >                  , workspaces = ["term", "web"] ++ map show [3 .. nScreens]
 >                  , normalBorderColor  = "#1d1f21"
