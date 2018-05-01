@@ -20,8 +20,10 @@
         calfw-org
         flycheck
         geiser
+        haskell-mode
         ivy ; fuzzy finder
         magit
+        mmm-mode
         ;; org-expiry
         paredit
         popup
@@ -317,6 +319,9 @@ file for it to work as expceted."
             (thing-at-point 'filename)))))
 
 ;;; This is /tmp/ by default
+;;; TODO
+;;; This currently brakes if ~/.cache/emacs doesn't
+;;; exists, do something about that.
 (setq temporary-file-directory
       (or (getenv "XDG_CACHE_HOME")
           (concat (getenv "HOME")
@@ -338,6 +343,31 @@ file for it to work as expceted."
 (evil-org-agenda-set-keys)
 
 (setq cfw:org-overwrite-default-keybinding t)
+
+(add-hook 'haskell-mode-hook 'my-mmm-mode)
+
+(mmm-add-classes
+ '((literate-haskell-bird
+    :submode text-mode
+    :front "^[^>]"
+    :include-front true
+    :back "^>\\|$"
+    )
+   (literate-haskell-latex
+    :submode literate-haskell-mode
+    :front "^\\\\begin{code}"
+    :front-offset (end-of-line 1)
+    :back "^\\\\end{code}"
+    :include-back nil
+    :back-offset (beginning-of-line -1)
+    )))
+
+(defun my-mmm-mode ()
+  ;; go into mmm minor mode when class is given
+  (make-local-variable 'mmm-global-mode)
+  (setq mmm-global-mode 'true))
+
+(setq mmm-submode-decoration-level 0)
 
 ;;; This should be per major mode
 ;;; TeX 60

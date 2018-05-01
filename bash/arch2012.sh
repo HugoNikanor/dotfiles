@@ -1,4 +1,4 @@
-source .dotfiles/bash/colors
+source ~/.dotfiles/bash/colors
 
 function __prompt_command() {
 	local EXIT="$?"
