@@ -23,3 +23,5 @@ else
 endif
 
 set makeprg=latexmk\ -pdf\ %<.tex
+
+" iabbrev ==> \Longrightarrow
