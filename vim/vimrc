@@ -24,17 +24,18 @@ call plug#begin("~/.vim/plugged")
 	Plug 'godlygeek/tabular'              " Aligning of text
 	Plug 'scrooloose/nerdtree'            " filetree
 	Plug 'Xuyuanp/nerdtree-git-plugin'    " git plugin for ^
-	"Plug 'tpope/vim-surround'            "
-	"Plug 'tpope/vim-dispatch'
-	Plug 'scrooloose/syntastic'           " error checking
+	Plug 'scrooloose/syntastic'           " Compiler error handler
 	Plug 'airblade/vim-gitgutter'         " git diff sign
+	Plug 'majutsushi/tagbar'              " Side buffer containing tag list
+	" Plug 'Shougo/unite.vim'
+	Plug 'vim-scripts/bnf.vim'            " Backus Naur Form highlighting
+	Plug 'drmikehenry/vim-headerguard'    " Auto place C header guards
+	Plug 'tpope/vim-speeddating'          " Make C-[ax] work with dates
+
 	" gdb breakpoint sign
 	if version >= 800 |Plug 'HugoNikanor/vim-breakpoint'
 	else              |Plug 'HugoNikanor/vim-breakpoint', {'tag': 'v7'}
 	endif
-	Plug 'majutsushi/tagbar'
-	Plug 'Shougo/unite.vim'
-
 	" Requires that fzf is installed on the system
 	"
 	" Assumes $VIM is /usr/share/vim/. Path is pacman path for
@@ -43,14 +44,6 @@ call plug#begin("~/.vim/plugged")
 		Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 	endif
 	Plug 'junegunn/fzf.vim'
-
-	Plug 'vim-scripts/bnf.vim'
-
-	"Plug 'lervag/vimtex'                  "  latex thingys
-
-	Plug 'drmikehenry/vim-headerguard'
-
-	Plug 'tpope/vim-speeddating'
 
 call plug#end()
 
