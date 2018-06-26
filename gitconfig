@@ -6,6 +6,8 @@
 	name = Hugo Hörnquist
 [push]
 	default = current
+[diff]
+	colorMoved = dimmed_zebra
 [alias]
 	gud = diff --cached HEAD
 	list = log --all --oneline --decorate --graph
