@@ -142,4 +142,7 @@ set path+=**
 set wildignore+=tags
 set tags+=tags;/
 
+set textwidth=70
+set formatoptions=croqnlj
+
 "}}}
