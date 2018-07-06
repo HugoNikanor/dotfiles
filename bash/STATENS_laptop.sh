@@ -1,12 +1,10 @@
 case `tty` in
 	/dev/tty1)
-		tmux ls || exec tmux && exec tmux attach
-		#[ -z $TMUX ] && exec tmux attach #-t tty1
-		;;
+		exec tmux new-session -A -s tty1 ;;
 	/dev/tty2)
-		exec ssh -t lys "tmux a -t lys || tmux" ;;
+		exec ssh -t lys "tmux new-session -A -s lys" ;;
 	/dev/tty3)
-		exec ssh -t hornquist "tmux a || tmux" ;;
+		exec ssh -t hornquist "tmux new-session -A -s srv" ;;
 	/dev/tty6)
 		startx ;;
 esac
