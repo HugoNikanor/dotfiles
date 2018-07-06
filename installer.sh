@@ -10,7 +10,7 @@ function contains() {
 	echo $list | grep $item
 }
 
-set -x xtrace
+set -x
 
 ignore_list="config,bash,README.md,installer.sh"
 
@@ -20,14 +20,14 @@ for file in $(ls); do
 	ln -s $(realpath $file) $HOME/.$file
 done
 
-CPWD=$PWD
+pushd
 
 dir=$(realpath config)
 for file in $(ls config/); do
 	cd $HOME/.config/ && ln -s $dir/$file
 done
 
-cd $CPWD
+popd
 
 for b in bash{rc,_completion}; do
 	ln -s $(realpath bash/$b) $HOME/.$b
