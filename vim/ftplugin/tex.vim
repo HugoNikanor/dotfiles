@@ -7,13 +7,9 @@ setlocal textwidth=60
 
 setlocal spell
 
-" Get language argument from babel inport,
-" Strip newline
-" TODO This should be replaced with vim's built in grep
-" The pattern to use is:
-" \\usepackage\[\zs[a-z]\+\ze\]{babel}
-" I however don't know how to get the matched part into a variable
-let match = system("grep -oP '(?<=\\\\usepackage\\[)[^\\]]*(?=\\]{babel})' " .  expand('%:p') . "| tr -d '\n'")
+" Get language argument from babel import.
+let pat = '\\usepackage\[\zs\w\+\ze\]{babel}'
+let match = matchstr(getline(search(pat)), pat)
 if match ==? "swedish"
 	setlocal spell spelllang=sv
 elseif match ==? "english"
