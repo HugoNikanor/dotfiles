@@ -20,6 +20,8 @@
         calfw-org
         flycheck
         geiser
+        ;; git-gutter-fringe
+        git-gutter
         haskell-mode
         ivy ; fuzzy finder
         magit
