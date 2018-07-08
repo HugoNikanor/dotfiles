@@ -28,6 +28,7 @@
         paredit
         popup
         smart-tabs-mode
+        slime
         which-key ; show possible keys
 
         ;; When X-window
@@ -376,6 +377,8 @@ file for it to work as expceted."
 ;; (setq-default auto-fill-function 'do-auto-fill)
 (setq-default fill-column 80)
 ;;; Why isn't this 72 for git commits!?
+
+(setq inferior-lisp-program "sbcl")
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
