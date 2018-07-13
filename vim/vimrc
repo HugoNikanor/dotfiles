@@ -82,10 +82,9 @@ endif
 
 " Other {{{
 
-" cmap expands at type time, cnoreabbrev at run time
 cnoreabbrev ntt NERDTreeToggle
 cnoreabbrev w!! w !sudo tee % > /dev/null
-cmap vh vertical help
+cnoreabbrev vh vertical help
 com! FormatJSON %!python -m json.tool
 
 let mapleader=" "
