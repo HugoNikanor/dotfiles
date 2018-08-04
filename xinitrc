@@ -1,9 +1,17 @@
+#!/bin/bash
+
 resources=$HOME/.Xresources
 test -f $resources && xrdb -merge $resources
 
-unclutter &
-dex /usr/share/applications/polkit-gnome-authentication-agent-1.desktop &
+case $(hostname) in
+	STATENS_laptop)
+		export BROWSER=$(which qutebrowser)
+		xbindkeys
+		;;
+	saruman)
+		unclutter &
+		dex /usr/share/applications/polkit-gnome-authentication-agent-1.desktop &
+		;;
+esac
 
-# export BROWSER=$(which qutebrowser)
-# xbindkeys
 exec ${WM:-i3}
