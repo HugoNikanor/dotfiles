@@ -209,7 +209,8 @@
 
 (global-prettify-symbols-mode 1)
 
-(add-to-list 'Info-default-directory-list "/home/hugo/info")
+(loop for p in '("/home/hugo/info" "/usr/local/share/info")
+      do (add-to-list 'Info-default-directory-list p))
 (defun info-binds ()
   (evil-define-key 'motion Info-mode-map "l" 'Info-last)
   ;; Find non-conflicting binding for this
