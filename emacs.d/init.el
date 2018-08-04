@@ -152,6 +152,8 @@
 
 (define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
 (define-key evil-motion-state-map "\C-u" 'evil-scroll-up)
+;; TODO This should only be for paredit-mode
+(define-key evil-motion-state-map "\C-k" 'kill-sexp)
 ;;; <CR> should be bound to (normal "o<esc>")
 ;; (define-key evil-normal-state-map (string ?\n) 'evil-open-below)
 
