@@ -45,6 +45,7 @@ workbench.xmi
 
 #Python
 __pycache__/
+*.pyc
 
 # Unity
 Temp/
@@ -78,4 +79,4 @@ TAGS
 *.bak
 
 # SQLite
-*db
+*.db
