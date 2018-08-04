@@ -18,6 +18,7 @@
       `(
         calfw
         calfw-org
+        cider
         flycheck
         geiser
         ;; git-gutter-fringe
@@ -255,7 +256,17 @@
    ielm-mode-hook
    lisp-mode-hook
    lisp-interaction-mode-hook
-   scheme-mode-hook))
+   scheme-mode-hook
+   clojure-mode-hook))
+
+(define-clojure-indent
+  (defroutes 'defun)
+  (GET 2) (POST 2) (PUT 2)
+  (DELETE 2) (HEAD 2) (ANY 2)
+  (OPTIONS 2) (PATCH 2) (rfn 2)
+  (let-routes 1) (context 2)
+  (html5 2)
+  (full-page 1))
 
 ;;; These shouldn't bind to paredit-mode-map,
 ;;; but rather to their modes local maps.
@@ -290,6 +301,7 @@
            '(emacs-lisp-mode-hook
              scheme-mode-hook
              lisp-mode-hook
+             clojure-mode-hook
              c-mode-hook))
 
 ;; Geiser only looks at these, if this list is here 
