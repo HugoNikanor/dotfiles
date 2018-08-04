@@ -221,8 +221,7 @@
 ;; (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (defun paredit-stuff ()
   (evil-define-key 'visual lisp-mode-map (kbd "SPC ;") 'paredit-comment-dwim)
-  (enable-paredit-mode)
-  (evil-paredit-mode))
+  (enable-paredit-mode))
 
 
 ;;; Something like this should be used insead,
@@ -251,6 +250,7 @@
       (indent-region (+ 5 (mark))
                      (point)))))
 
+(add-hook 'paredit-mode-hook #'evil-paredit-mode)
 
 (hook-envs
  #'paredit-stuff
