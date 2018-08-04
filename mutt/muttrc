@@ -80,6 +80,11 @@ folder-hook '[Ll]okal'      "source ~/.mutt/accounts/lokal@vastgota.nation.liu.s
 
 set markers = no
 
+# Ignore all headers except a few:
+ignore *
+unignore from: subject to cc date x-url user-agent x-spam-score:
+# x-mailer
+
 source `[ $(id -u) -eq 2278 ] && echo ~/.mutt/systems/lysator || echo /dev/null`
 source `[ $(hostname) = "STATENS_laptop" ] && echo ~/.mutt/systems/laptop || echo /dev/null`
 
