@@ -1,0 +1,5 @@
+Choose on of these by creating a relative symlink to it called
+`config'.
+
+scripted-config required a bunch of weird hacks, which I currently
+aint sure where they are.

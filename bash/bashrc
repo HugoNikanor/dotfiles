@@ -62,3 +62,4 @@ FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || t
 #true
 # This shouldn't be required
 . ~/.bash_completion
+[ $TERM == "xterm-termite" ] && source /etc/profile.d/vte.sh

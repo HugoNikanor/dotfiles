@@ -18,6 +18,7 @@
       `(
         calfw
         calfw-org
+        cider
         flycheck
         geiser
         ;; git-gutter-fringe
@@ -151,6 +152,8 @@
 
 (define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
 (define-key evil-motion-state-map "\C-u" 'evil-scroll-up)
+;; TODO This should only be for paredit-mode
+(define-key evil-motion-state-map "\C-k" 'kill-sexp)
 ;;; <CR> should be bound to (normal "o<esc>")
 ;; (define-key evil-normal-state-map (string ?\n) 'evil-open-below)
 
@@ -206,7 +209,8 @@
 
 (global-prettify-symbols-mode 1)
 
-(add-to-list 'Info-default-directory-list "/home/hugo/info")
+(loop for p in '("/home/hugo/info" "/usr/local/share/info")
+      do (add-to-list 'Info-default-directory-list p))
 (defun info-binds ()
   (evil-define-key 'motion Info-mode-map "l" 'Info-last)
   ;; Find non-conflicting binding for this
@@ -217,8 +221,7 @@
 ;; (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (defun paredit-stuff ()
   (evil-define-key 'visual lisp-mode-map (kbd "SPC ;") 'paredit-comment-dwim)
-  (enable-paredit-mode)
-  (evil-paredit-mode))
+  (enable-paredit-mode))
 
 
 ;;; Something like this should be used insead,
@@ -247,6 +250,7 @@
       (indent-region (+ 5 (mark))
                      (point)))))
 
+(add-hook 'paredit-mode-hook #'evil-paredit-mode)
 
 (hook-envs
  #'paredit-stuff
@@ -255,7 +259,17 @@
    ielm-mode-hook
    lisp-mode-hook
    lisp-interaction-mode-hook
-   scheme-mode-hook))
+   scheme-mode-hook
+   clojure-mode-hook))
+
+(define-clojure-indent
+  (defroutes 'defun)
+  (GET 2) (POST 2) (PUT 2)
+  (DELETE 2) (HEAD 2) (ANY 2)
+  (OPTIONS 2) (PATCH 2) (rfn 2)
+  (let-routes 1) (context 2)
+  (html5 2)
+  (full-page 1))
 
 ;;; These shouldn't bind to paredit-mode-map,
 ;;; but rather to their modes local maps.
@@ -290,6 +304,7 @@
            '(emacs-lisp-mode-hook
              scheme-mode-hook
              lisp-mode-hook
+             clojure-mode-hook
              c-mode-hook))
 
 ;; Geiser only looks at these, if this list is here 
