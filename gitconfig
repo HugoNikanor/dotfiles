@@ -1,5 +1,4 @@
 [core]
-	excludesfile = /home/hugo/.gitignore_global
 	editor = vim
 [user]
 	email = hugo@hornquist.se
