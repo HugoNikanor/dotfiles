@@ -6,7 +6,6 @@ alias uuu="cd ../../.."
 alias uuuu="cd ../../../.."
 
 alias l="ls"
-alias info='info --vi-keys'
 alias ll="cd -"
 
 alias todo=todo.sh
