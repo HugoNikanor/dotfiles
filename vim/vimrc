@@ -110,6 +110,25 @@ endfunction
 
 command! ToggleCheckbox call s:toggleCheckbox()
 
+" Inserts a date at the end of the current line, today if no arguments
+" given, otherwise sends arguments to date(1). Outputs on format
+" <%F %a>.
+" TODO get this working with vim-speeddating
+function! s:insert_date(...)
+	let l:fmt = join(a:000)
+
+	" I know vim has strftime, but it was easier to do everything with
+	" a single command.
+	let l:cmd = printf("date +'<%%F %%a>' --date=%s", shellescape(l:fmt))
+	let l:datestr = trim(system(l:cmd))
+
+	put =l:datestr
+	normal! kJ
+endfunction
+
+command! -nargs=* Date call s:insert_date(<q-args>)
+cnoreabbrev date Date
+
 " }}}
 
 " Other {{{
@@ -132,7 +151,7 @@ nnoremap <silent> <leader>k :cp<cr>
 
 " Possibly figure out how to type <C-]> in TTY
 nnoremap <leader>c <C-]>
-" TODO This works, but it doesn't update the screen right away 
+" TODO This works, but it doesn't update the screen right away
 nnoremap <leader>h :call header#change()<cr>
 
 nnoremap <cr> o<esc>
