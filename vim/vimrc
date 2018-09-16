@@ -127,7 +127,6 @@ function! s:insert_date(...)
 endfunction
 
 command! -nargs=* Date call s:insert_date(<q-args>)
-cnoreabbrev date Date
 
 " }}}
 
