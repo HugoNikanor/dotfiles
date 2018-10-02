@@ -144,8 +144,9 @@ b = \"${name}_remote\"
 ${(fmt-keys ht collections metadata conflict_resolution)}
 
 [storage ${name}_local]
-${(fmt-keys ht path fileext)}
+${(fmt-keys ht fileext)}
 type = ${(get 'itype)}
+path = \"${(remove-quotes (get 'path))}/${name}\"
 
 [storage ${name}_remote]
 ${(fmt-keys ht type url username read_only)}
