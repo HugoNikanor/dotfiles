@@ -14,7 +14,6 @@
              (srfi srfi-69)             ; Hash Tables 
              )
 
-
 (add-to-load-path "/home/hugo/lib/guile")
 (add-to-load-path "/home/hugo/code/guile-fmt")
 (use-modules (fmt))
@@ -33,28 +32,23 @@ Really speciallized for this use case. "
         (else (throw 'not-stringable-exception a))))
 
 (define (nlist->string args)
+  "Turns an args list into a string"
   (string-join (map ->string args)
                " " 'infix))
 
 (define (set-up-cal calendar defaults)
+  "Creates a hash map from a list. Mostly creates strings from all cdr's."
   (let ((table (hash-table-copy defaults)))
     (match calendar
       ((name type . args)
        (for-each (match-lambda
+                   ((name ('quote arg))
+                    (hash-table-set! table name arg))
                    ((name . args)
                     (hash-table-set! table name (nlist->string args))))
                  `((name ,name) (type ,type)
                    ,@args))))
     table))
-
-#;
-(define (hash-copy table)
-  "Shallow copies the given hash table into a new hash table."
-  (let ((new-table (make-hash-table)))
-    ;; Why doesn't cut work here?
-    (hash-table-walk table (lambda (key value)
-                             hash-table-set! new-table key value))
-    new-table))
 
 (define *defaults*
   (set-up-cal
@@ -103,32 +97,47 @@ Really speciallized for this use case. "
   "Like and=>, but returns the empty string if value is #f"
   (and/else=> value proc ""))
 
+(define (remove-quotes str)
+  "Removes the first and last character of a given string.
+Sending strings shorter than 2 is considered an error."
+  (substring str 1 (1- (string-length str))))
+
+(define (string-empty? str)
+  (string=? str ""))
+
+(define (fmt-keys* ht args)
+  (string-join
+   (filter (negate string-empty?)
+           (map (lambda (key)
+                  (str=> (hash-table-ref/default ht key #f)
+                         (cut format #f "~a = ~a" key <>)))
+                args))
+  (format #f "~%")
+  'infix))
+
+(define-syntax-rule (fmt-keys ht arg ...)
+  (fmt-keys* ht (list (quote arg) ...)))
+
 (define (format-block ht)
   (let ((get (cut hash-table-ref ht <>)))
     (let ((pwcommand
            (str=> (hash-table-ref/default ht 'pass #f)
-                  (cut format #f "password.fetch = [\"command\", \"pass\", ~a ]" <>)))
-          (username (str=> (hash-table-ref/default ht 'username #f)
-                           (cut format #f "username = ~a" <>)))
-          (name (substring (get 'name)
-                           1 (1- (string-length (get 'name))))))
+                  (cut format #f
+                       "password.fetch = [\"command\", \"pass\", ~a ]"
+                       <>)))
+          (name (remove-quotes (get 'name))))
       (fmt "
 [pair ${name}]
 a = \"${name}_local\"
 b = \"${name}_remote\"
-collections = ${(get 'collections)}
-metadata = ${(get 'metadata)}
-conflict_resolution = ${(get 'conflict_resolution)}
+${(fmt-keys ht collections metadata conflict_resolution)}
 
 [storage ${name}_local]
+${(fmt-keys ht path fileext)
 type = ${(get 'itype)}
-path = ${(get 'path)}
-fileext = ${(get 'fileext)}
 
 [storage ${name}_remote]
-type = ${(get 'type)}
-url = ${(get 'url)}
-${username}
+${(fmt-keys ht type url usernamme read_only)
 ${pwcommand}
 "))))
 
