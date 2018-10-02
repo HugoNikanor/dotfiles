@@ -1,7 +1,7 @@
 " note that plaintex is a different thing. And that an empty .tex file is
 " interpreted as a plaintex file by default
 
-setlocal textwidth=60
+setlocal textwidth=70
 
 " Turn on spell for language babel is given. Otherwise turn off spell
 
@@ -18,6 +18,7 @@ else
 	setlocal nospell
 endif
 
-set makeprg=latexmk\ -pdf\ %<.tex
+set makeprg=latexmk\ -pdf\ %
+setlocal formatoptions+=t
 
 " iabbrev ==> \Longrightarrow
