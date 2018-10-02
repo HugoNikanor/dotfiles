@@ -9,8 +9,8 @@
 	colorMoved = dimmed_zebra
 [alias]
 	gud = diff --cached HEAD
-	list = log --all --oneline --decorate --graph
 	llist = log --all --decorate --graph
+	list = log --all --oneline --decorate --graph
 [github]
 	user = HugoNikanor
 
@@ -26,3 +26,6 @@
 #     pushInsteadOf = "gh:"
 [url "git@github.com:"]
 	insteadOf = "gh:"
+
+[url "git@gitlab.ida.liu.se:"]
+	insteadOf = "ida:"
