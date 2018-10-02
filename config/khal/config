@@ -17,5 +17,4 @@ longdatetimeformat = %Y-%m-%d %H:%M
 
 [view]
 agenda_event_format = "{cancelled}{title} {calendar-color}{repeat-symbol}{start-style}{to-style}{end-style} -- {location}{reset}"
-event_format = "{cancelled}{title} {calendar-color}{repeat-symbol}{start-style}{to-style}{end-style} -- {location}{reset}"
-
+# event_format = "{cancelled}{title} {calendar-color}{repeat-symbol}{start-style}{to-style}{end-style} -- {location}{reset}"
