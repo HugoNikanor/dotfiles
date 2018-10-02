@@ -25,7 +25,8 @@ status_path = "~/.local/share/vdirsyncer/status/"
 # looking at the ~/.calendars/ directory manually that
 # often.
 
-[pair fruux]
+
+[pair fruux] # {{{
 a = "fruux_local"
 b = "fruux_remote"
 # Autodiscover calendars in "fruux_remote" 
@@ -47,6 +48,8 @@ password.fetch = ["command",
         "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/b3297465009"
         ]
 
+# }}}
+
 # ============== LiU Calendars ====================
 # The below callendars just fetch from the Calendar
 # HTTP server. I can reuppload these to a CalDAV
@@ -57,7 +60,7 @@ password.fetch = ["command",
 # events should be copied to a private calendar before
 # being changed.
 
-[pair D1]
+[pair D1] # {{{2
 a = "d1_remote"
 b = "d1_local"
 collections = null
@@ -73,7 +76,7 @@ type = "filesystem"
 path = "~/.calendars/D1.b/"
 fileext = ".ics"
 
-[pair D2]
+[pair D2] # {{{2
 a = "d2_remote"
 b = "d2_local"
 collections = null
@@ -89,7 +92,7 @@ type = "filesystem"
 path = "~/.calendars/D2.b/"
 fileext = ".ics"
 
-[pair D3]
+[pair D3] # {{{2
 a = "d3_remote"
 b = "d3_local"
 collections = null
@@ -105,7 +108,7 @@ type = "filesystem"
 path = "~/.calendars/D3.b/"
 fileext = ".ics"
 
-[pair TDDE30]
+[pair TDDE30] # {{{2
 a = "TDDE30_remote"
 b = "TDDE30_local"
 collections = null
@@ -121,8 +124,7 @@ type = "filesystem"
 path = "~/.calendars/TDDE30"
 fileext = ".ics"
 
-
-[pair nollep]
+[pair nollep] # {{{2
 a = "nollep_remote"
 b = "nollep_local"
 collections = null
@@ -138,7 +140,7 @@ type = "filesystem"
 path = "~/.calendars/nollep"
 fileext = ".ics"
 
-[pair hafv]
+[pair hafv] # {{{2
 a = "hafv_remote"
 b = "hafv_local"
 collections = null
