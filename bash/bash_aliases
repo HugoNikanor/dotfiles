@@ -11,6 +11,7 @@ alias ll="cd -"
 alias todo=todo.sh
 alias tmp="vim +'setlocal buftype=nofile' -n"
 alias irc="env TERM=xterm ssh irc -t screen -x"
+alias clip="xclip -selection clipboard"
 
 # aliases of questionable quality 
 
