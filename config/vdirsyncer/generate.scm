@@ -7,10 +7,12 @@
 
 (use-modules (ice-9 format)
              (ice-9 match)
-             (srfi srfi-1)
-             (srfi srfi-8)
-             (srfi srfi-26)
-             (srfi srfi-69))
+             (srfi srfi-1)              ; List comprehension
+             (srfi srfi-8)              ; Receive
+             (srfi srfi-9)              ; Records
+             (srfi srfi-26)             ; Cut
+             (srfi srfi-69)             ; Hash Tables 
+             )
 
 
 (add-to-load-path "/home/hugo/lib/guile")
@@ -101,14 +103,13 @@ Really speciallized for this use case. "
   "Like and=>, but returns the empty string if value is #f"
   (and/else=> value proc ""))
 
-;;; TODO this is untested
 (define (format-block ht)
   (let ((get (cut hash-table-ref ht <>)))
     (let ((pwcommand
            (str=> (hash-table-ref/default ht 'pass #f)
-                  (cut format #f "password.fetch = [\"command\", \"pass\", ~s ]" <>)))
+                  (cut format #f "password.fetch = [\"command\", \"pass\", ~a ]" <>)))
           (username (str=> (hash-table-ref/default ht 'username #f)
-                           (cut format #f "username = ~s" <>)))
+                           (cut format #f "username = ~a" <>)))
           (name (substring (get 'name)
                            1 (1- (string-length (get 'name))))))
       (fmt "
