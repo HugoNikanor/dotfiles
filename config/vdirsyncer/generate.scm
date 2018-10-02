@@ -7,6 +7,7 @@
 
 (use-modules (ice-9 format)
              (ice-9 match)
+             (ice-9 rdelim)
              (srfi srfi-1)              ; List comprehension
              (srfi srfi-8)              ; Receive
              (srfi srfi-9)              ; Records
@@ -72,7 +73,14 @@ Really speciallized for this use case. "
 
 ;;; === Main ===
 
+(define (display-file-if-exists file)
+  (when (file-exists? file)
+    (display (with-input-from-file file read-string))))
+
 (define (main args)
+
+  (display-file-if-exists "config.pre")
+ 
   (with-input-from-file "conf.lisp"
     (lambda ()
       (let ((defaults (set-up-cal (read)
@@ -81,8 +89,9 @@ Really speciallized for this use case. "
             (car+cdr (read))
           (for-each (compose display format-block)
                     (map (cut set-up-cal <> defaults)
-                         calendars))
-          )))))
+                         calendars))))
+      (display-file-if-exists "config.post")
+      )))
 
 ;;; ===
 
@@ -127,17 +136,19 @@ Sending strings shorter than 2 is considered an error."
                        <>)))
           (name (remove-quotes (get 'name))))
       (fmt "
+# ========================================
+
 [pair ${name}]
 a = \"${name}_local\"
 b = \"${name}_remote\"
 ${(fmt-keys ht collections metadata conflict_resolution)}
 
 [storage ${name}_local]
-${(fmt-keys ht path fileext)
+${(fmt-keys ht path fileext)}
 type = ${(get 'itype)}
 
 [storage ${name}_remote]
-${(fmt-keys ht type url usernamme read_only)
+${(fmt-keys ht type url username read_only)}
 ${pwcommand}
 "))))
 
