@@ -10,7 +10,7 @@ text/html; elinks -dump '%s'; nametemplates=%s.html; copiousoutput;
 image/*; mutt_bgrun feh --scale-down '%s'; test=test -n "$DISPLAY";
 image/*; fbv '%s'; 
 
-application/pdf; zathura --fork '%s' 2> /dev/null; test=test -n "$DISPLAY";
+application/pdf; mutt_bgrun zathura '%s' 2> /dev/null; test=test -n "$DISPLAY";
 application/pdf; pdftotext '%s' /dev/stdout; copiousoutput;
 
 application/octet-stream; hexdump -C; copiousoutput; description="Hex dump";
