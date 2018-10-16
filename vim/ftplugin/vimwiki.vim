@@ -1,19 +1,6 @@
-let g:vimwiki_list = [{
-			\ 'auto_tags': 1,
-			\ 'list_margin': 2,
-			\ 'auto_toc': 1,
-			\ }]
-
 setlocal formatoptions+=t
 setlocal expandtab
 setlocal shiftwidth=2
-
-let g:vimwiki_diary_months = {
-      \ 1: 'Januari', 2: 'Februari', 3: 'Mars',
-      \ 5: 'Maj', 6: 'Juni',
-      \ 7: 'Juli', 8: 'Augusti',
-      \ 10: 'Oktober', 12: 'December'
-      \ }
 
 let g:tagbar_type_vimwiki = {
 			\   'ctagstype':'vimwiki'
