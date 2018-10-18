@@ -2,6 +2,8 @@ setlocal formatoptions+=t
 setlocal expandtab
 setlocal shiftwidth=2
 
+autocmd BufWritePre index.wiki :VimwikiGenerateTags
+
 let g:tagbar_type_vimwiki = {
 			\   'ctagstype':'vimwiki'
 			\ , 'kinds':['h:header']
