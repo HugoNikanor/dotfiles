@@ -12,6 +12,11 @@ alias todo=todo.sh
 alias tmp="vim +'setlocal buftype=nofile' -n"
 alias irc="env TERM=xterm ssh irc -t screen -x"
 alias clip="xclip -selection clipboard"
+alias wi="wiki"
+alias net="watch -n1 -c nmcli -c yes"
+
+# Creates paste. Uploads file if argument is given, STDIN otherwise.
+pb() { curl -F c="@${1:--}" https://ptpb.pw?u=1; }
 
 # aliases of questionable quality 
 
