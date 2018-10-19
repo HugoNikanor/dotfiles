@@ -29,7 +29,7 @@ status_path = "~/.local/share/vdirsyncer/status/"
 [pair fruux] # {{{
 a = "fruux_local"
 b = "fruux_remote"
-# Autodiscover calendars in "fruux_remote" 
+# Autodiscover calendars in "fruux_remote"
 collections = ["from b"]
 metadata = ["color", "displayname"]
 conflict_resolution = ["command", "vimdiff"]
@@ -47,7 +47,6 @@ password.fetch = ["command",
         "pass",
         "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/b3297465009"
         ]
-
 # }}}
 
 # ============== LiU Calendars ====================
@@ -60,38 +59,38 @@ password.fetch = ["command",
 # events should be copied to a private calendar before
 # being changed.
 
-[pair D1] # {{{2
-a = "d1_remote"
-b = "d1_local"
-collections = null
-conflict_resolution = "a wins"
-
-[storage d1_remote]
-type = "http"
-read_only = true
-url = "https://se.timeedit.net/web/liu/db1/schema/ri687Q7QYn4ZQ1Q531650976yZZQ6205.ics"
-
-[storage d1_local]
-type = "filesystem"
-path = "~/.calendars/D1.b/"
-fileext = ".ics"
-
-[pair D2] # {{{2
-a = "d2_remote"
-b = "d2_local"
-collections = null
-conflict_resolution = "a wins"
-
-[storage d2_remote]
-type = "http"
-read_only = true
-url = "https://se.timeedit.net/web/liu/db1/schema/ri687Q7QYn4ZQ1Q538650976yZZQ6305.ics"
-
-[storage d2_local]
-type = "filesystem"
-path = "~/.calendars/D2.b/"
-fileext = ".ics"
-
+# [pair D1] # {{{2
+# a = "d1_remote"
+# b = "d1_local"
+# collections = null
+# conflict_resolution = "a wins"
+#
+# [storage d1_remote]
+# type = "http"
+# read_only = true
+# url = "https://se.timeedit.net/web/liu/db1/schema/ri687Q7QYn4ZQ1Q531650976yZZQ6205.ics"
+#
+# [storage d1_local]
+# type = "filesystem"
+# path = "~/.calendars/D1.b/"
+# fileext = ".ics"
+#
+# [pair D2] # {{{2
+# a = "d2_remote"
+# b = "d2_local"
+# collections = null
+# conflict_resolution = "a wins"
+#
+# [storage d2_remote]
+# type = "http"
+# read_only = true
+# url = "https://se.timeedit.net/web/liu/db1/schema/ri687Q7QYn4ZQ1Q538650976yZZQ6305.ics"
+#
+# [storage d2_local]
+# type = "filesystem"
+# path = "~/.calendars/D2.b/"
+# fileext = ".ics"
+#
 [pair D3] # {{{2
 a = "d3_remote"
 b = "d3_local"
@@ -108,53 +107,73 @@ type = "filesystem"
 path = "~/.calendars/D3.b/"
 fileext = ".ics"
 
-[pair TDDE30] # {{{2
-a = "TDDE30_remote"
-b = "TDDE30_local"
+# [pair TDDE30] # {{{2
+# a = "TDDE30_remote"
+# b = "TDDE30_local"
+# collections = null
+# conflict_resolution = "a wins"
+#
+# [storage TDDE30_remote]
+# type = "http"
+# read_only = true
+# url = "https://se.timeedit.net/web/liu/db1/schema/ri63KQ72Ym4ZQWQ5o68QqWo8ybZ46535d5W2ll4QZ37lXZa775UQ5bL766nWQX7lR3oZ0Q530Z.ics"
+#
+# [storage TDDE30_local]
+# type = "filesystem"
+# path = "~/.calendars/TDDE30"
+# fileext = ".ics"
+#
+[pair TATA24] # {{{2
+a = "TATA24_remote"
+b = "TATA24_local"
 collections = null
 conflict_resolution = "a wins"
 
-[storage TDDE30_remote]
+[storage TATA24_remote]
 type = "http"
 read_only = true
-url = "https://se.timeedit.net/web/liu/db1/schema/ri63KQ72Ym4ZQWQ5o68QqWo8ybZ46535d5W2ll4QZ37lXZa775UQ5bL766nWQX7lR3oZ0Q530Z.ics"
+url = "https://cloud.timeedit.net/liu/web/schema/ri617Q7QYn6ZQ0Q531855479yZZQ6650.ics"
 
-[storage TDDE30_local]
+[storage TATA24_local]
 type = "filesystem"
-path = "~/.calendars/TDDE30"
+path = "~/.calendars/TATA24"
 fileext = ".ics"
 
-[pair nollep] # {{{2
-a = "nollep_remote"
-b = "nollep_local"
-collections = null
-conflict_resolution = "a wins"
-
-[storage nollep_remote]
-type = "http"
-read_only = true
-url = "https://calendar.google.com/calendar/ical/d.lintek.liu.se_90a0j5e3r9oc6dotfbe716n8ns%40group.calendar.google.com/public/basic.ics"
-
-[storage nollep_local]
-type = "filesystem"
-path = "~/.calendars/nollep"
-fileext = ".ics"
-
-[pair hafv] # {{{2
-a = "hafv_remote"
-b = "hafv_local"
-collections = null
-conflict_resolution = "a wins"
-
-[storage hafv_remote]
-type = "http"
-read_only = true
-url = "https://calendar.google.com/calendar/ical/ma4c1kk57k9p1sirbgu114tsbo%40group.calendar.google.com/public/basic.ics"
-
-[storage hafv_local]
-type = "filesystem"
-path = "~/.calendars/hafv"
-fileext = ".ics"
-
+# [pair nollep] # {{{2
+# a = "nollep_remote"
+# b = "nollep_local"
+# collections = null
+# conflict_resolution = "a wins"
+#
+# [storage nollep_remote]
+# type = "http"
+# read_only = true
+# url = "https://calendar.google.com/calendar/ical/d.lintek.liu.se_90a0j5e3r9oc6dotfbe716n8ns%40group.calendar.google.com/public/basic.ics"
+#
+# [storage nollep_local]
+# type = "filesystem"
+# path = "~/.calendars/nollep"
+# fileext = ".ics"
+#
+# [pair hafv] # {{{2
+# a = "hafv_remote"
+# b = "hafv_local"
+# collections = null
+# conflict_resolution = "a wins"
+#
+# [storage hafv_remote]
+# type = "http"
+# read_only = true
+# url = "https://calendar.google.com/calendar/ical/ma4c1kk57k9p1sirbgu114tsbo%40group.calendar.google.com/public/basic.ics"
+#
+# [storage hafv_local]
+# type = "filesystem"
+# path = "~/.calendars/hafv"
+# fileext = ".ics"
+#
+# {{{2 End
+# This is mostly here so some vim macros work
+# let @c = "zjkI# zc"
+# let @d = "zjkldzc"
 
 # vim:ft=dosini:
