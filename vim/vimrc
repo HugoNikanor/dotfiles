@@ -193,6 +193,8 @@ set hlsearch          " highlight all
 set virtualedit=block " like all but only for visual block
 set completeopt=longest,menuone " <C-n> don't autoselect
 set path+=**
+set scrolloff=5
+set nrformats-=octal
 
 set wildignore+=tags
 set tags+=tags;/
