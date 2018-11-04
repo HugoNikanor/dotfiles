@@ -1,0 +1,3 @@
+[submodule "aux-files"]
+	path = aux-files
+	url = git@git:git/secretFiles
