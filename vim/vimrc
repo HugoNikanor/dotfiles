@@ -117,6 +117,8 @@ command! ToggleCheckbox call s:toggleCheckbox()
 " given, otherwise sends arguments to date(1). Outputs on format
 " <%F %a>.
 " TODO get this working with vim-speeddating
+" TODO ':Date 10' should insert the next 10th, (current or next month)
+" TODO Way to get times, see emacs org-mode
 function! s:insert_date(...)
 	let l:fmt = join(a:000)
 
