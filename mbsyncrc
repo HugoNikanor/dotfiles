@@ -29,6 +29,7 @@ Host imap.gmail.com
 User hugo.hornquist@gmail.com
 PassCmd +"pass google.com/hugo.hornquist"
 SSLType IMAPS
+AuthMechs LOGIN
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 MaildirStore gmail-local
@@ -55,6 +56,7 @@ Host outlook.office365.com
 User hugho389@student.liu.se
 PassCmd +"pass liu/mail/hugho389"
 SSLType IMAPS
+AuthMechs LOGIN
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 MaildirStore liu-local
@@ -81,6 +83,7 @@ Host imap.gmail.com
 User guckel@vastgota.nation.liu.se
 PassCmd +"pass vastgota.nation.liu.se/mail/guckel"
 SSLType IMAPS
+AuthMechs LOGIN
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 MaildirStore guckel-local
@@ -107,6 +110,7 @@ Host imap.gmail.com
 User propaganda@vastgota.nation.liu.se
 PassCmd +"pass vastgota.nation.liu.se/mail/propaganda"
 SSLType IMAPS
+AuthMechs LOGIN
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 MaildirStore propaganda-local
@@ -132,6 +136,7 @@ Host imap.gmail.com
 User lokal@vastgota.nation.liu.se
 PassCmd +"pass vastgota.nation.liu.se/mail/lokal"
 SSLType IMAPS
+AuthMechs LOGIN
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 MaildirStore lokal-local
