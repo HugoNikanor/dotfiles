@@ -164,9 +164,6 @@ nnoremap Y y$
 nnoremap <C-p> :Files<cr>
 nnoremap <C-n> :Tags<cr>
 
-nnoremap <silent> <C-c> :ToggleCheckbox<cr>
-inoremap <silent> <C-c> <esc>:ToggleCheckbox<cr>a
-
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
