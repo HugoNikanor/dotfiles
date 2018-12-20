@@ -1,0 +1,50 @@
+-- https://github.com/jaor/xmobar
+Config
+    { bgColor          = "black"
+    -- , font             = "xft:lucy Tewi Regular:size=7"
+    , fgColor          = "white"
+    , position         = Top
+    , sepChar          = "%"
+    , alignSep         = "}{"
+    , template         = "%UnsafeStdinReader% }{ %wlp12s0wi% | %date% | %battery%"
+    , allDesktops      = True
+    , overrideRedirect = True
+    , pickBroadest     = False
+    , persistent       = True
+    , commands         =
+     [ Run Wireless "wlp12s0" [ "--template", "<qualityipat> <essid> <qualityvbar>"
+        , "--low", "darkred"
+        , "--normal", "darkorange"
+        , "--high", "darkgreen"
+        -- , "--"
+        -- , "--quality-icon-pattern", (\x y -> "")
+        ] 10
+
+        -- battery monitor
+        , Run Battery [ "--template" , "<acstatus>"
+                      , "--Low"      , "10"        -- units: %
+                      , "--High"     , "80"        -- units: %
+                      , "--low"      , "darkred"
+                      , "--normal"   , "darkorange"
+                      , "--high"     , "green"
+                      
+                      , "--" -- battery specific options
+                          -- discharging status
+                          , "-o"	, "<left>% (<timeleft>)"
+                          -- AC "on" status
+                          , "-O"	, "<fc=#dAA520>Charging</fc>"
+                          -- charged status
+                          , "-i"	, "<fc=#006000>Charged</fc>"
+                      ] 50
+
+        -- (%F = y-m-d date, %a = day of week, %T = h:m:s time)
+        , Run Date "<fc=#ABABAB>%F <fc=white>%T</fc> (%a v%V)</fc>" "date" 10
+
+        , Run UnsafeStdinReader
+
+        -- Run Com `command` [args] `key` deci-sec-update
+        , Run Com "date" [] "ls" 10
+        ]
+}
+
+-- vim:ft=haskell:
