@@ -23,6 +23,8 @@
 >     (Position (Below), Focus (Newer), insertPosition)
 > import XMonad.Hooks.ManageHelpers (isDialog)
 > import XMonad.Hooks.Place
+> import XMonad.Hooks.ManageDocks (avoidStruts, manageDocks, docks)
+> import XMonad.Hooks.DynamicLog
 
 > import XMonad.Layout.Grid (Grid (Grid, GridRatio))
 > import XMonad.Layout.PerScreen (ifWider)
@@ -30,6 +32,7 @@
 > import XMonad.Layout.Decoration (shrinkText)
 > import XMonad.Layout.DwmStyle (dwmStyle)
 > import XMonad.Layout.OneBig (OneBig (OneBig))
+> import XMonad.Layout.Spiral (spiral)
 
 IndependentScreens is the library which should allow things
 to happen at points not currently in focus.
@@ -43,6 +46,7 @@ to happen at points not currently in focus.
 
 > import XMonad.Util.Types (Direction2D (U, D, L, R))
 > import XMonad.Util.EZConfig
+> import XMonad.Util.Run (spawnPipe)
 
 > import qualified Data.Map as M
 > import qualified XMonad.StackSet as W
@@ -92,13 +96,19 @@ These should have a propper place somewhere.
 
 > myXPConfig = def
 >   { position = Top -- CenteredAt
->   , historySize = 1000
+>   , historySize = 100
 >   , autoComplete = Just 1
->   , font = myFont
+>   -- , font = myFont
+>   -- , bgColor = "black"
 >   -- , searchPredicate = isInfixOf
+>   , bgColor = bgColor'
+>   , fgColor = fgColor'
+>   , fgHLight = "yellow"
+>   , bgHLight = bgColor'
+>   , promptBorderWidth = 0
 >   }
 
-> decoration = dwmStyle shrinkText def
+> -- decoration = dwmStyle shrinkText def
 
 The window layouts are split into two parts, those for wide
 screens and those for tall screens. Currently I only check
@@ -165,8 +175,8 @@ Choose one of these, depending on the current monitor setup.
 > (d, e, f) = (3, 4, 5)
 
 > monitorKeys = bindWithAndWithoutShift
->   (\i -> (viewScreen $ P i) >> banish LowerRight)
->   (\i -> (sendToScreen $ P i))
+>   (\i -> (viewScreen def $ P i) >> banish LowerRight)
+>   (\i -> (sendToScreen def $ P i))
 >   [ (xK_ä, a)
 >   , (xK_ö, b)
 >   , (xK_p, c)
@@ -301,21 +311,51 @@ smartly after.
 
 ------------------------------------------------------------
 
+Color config borrowed from my Termite config .
+
+> foreground      = "#c5c8c6"
+> foreground_bold = "#c5c8c6"
+> cursor          = "#c5c8c6"
+> background      = "#1d1f21"
+
+> fgColor' = foreground
+> bgColor' = "black"
+
+Log hook borrowed from https://pastebin.com/Pt8LCprY.
+
+> -- colorFunc = dzenColor
+> -- funcPP = dzenPP
+> colorFunc = xmobarColor
+> funcPP = xmobarPP
+> myLogHook h = dynamicLogWithPP $ funcPP
+>   {   ppCurrent = colorFunc "yellow" bgColor'
+>   , ppTitle = shorten 100
+>   , ppWsSep = " "
+>   , ppSep = " | "
+>   , ppOutput = hPutStrLn h
+>   }
+
+------------------------------------------------------------
+
 > main = do
->     termCommand <- getTerminalCommand <$> getHostName
+>     -- termCommand <- getTerminalCommand <$> getHostName
+>     let termCommand = "termite"
 >     nScreens    <- countScreens
->     -- xmproc      <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
->     xmonad $ def { modMask = mod4Mask
->                  , clickJustFocuses  = False
->                  , focusFollowsMouse = False
->                  , keys     = myKeys
->                  , terminal = termCommand
->                  , layoutHook = decoration $ myLayouts
->                  , manageHook = myManageHook <+> insertPosition Below Newer
->                  , workspaces = ["term", "web"] ++ map show [3 .. nScreens]
->                  , normalBorderColor  = "#1d1f21"
->                  , focusedBorderColor = "#FF0000"
->                  } `additionalKeysP` ezkeys
+>     xmproc      <- spawnPipe "xmobar"
+>     xmonad $ docks def
+>         { modMask = mod4Mask
+>         , logHook = myLogHook xmproc
+>         , clickJustFocuses  = False
+>         , focusFollowsMouse = True
+>         , keys     = myKeys
+>         , terminal = termCommand
+>         -- , layoutHook = avoidStruts $ decoration $ myLayouts
+>         , layoutHook = avoidStruts $ myLayouts
+>         , manageHook = manageDocks <+> myManageHook <+> insertPosition Below Newer
+>         , workspaces = ["term", "web"] ++ map show [3 .. nScreens]
+>         , normalBorderColor  = "#1d1f21"
+>         , focusedBorderColor = "#FF0000"
+>         } `additionalKeysP` ezkeys
 
 Appendix:
 =========
