@@ -250,6 +250,14 @@
       (indent-region (+ 5 (mark))
                      (point)))))
 
+(defun geiser-eval-last-sexp ()
+  (interactive)
+  (let ((ret (geiser-eval-last-sexp nil)))
+    (popup-tip (if (equalp ret "=> ")
+                   "EVALUATION ERROR"
+                 ret))))
+
+
 (add-hook 'paredit-mode-hook #'evil-paredit-mode)
 
 (hook-envs
