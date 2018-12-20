@@ -20,15 +20,11 @@ endif
 
 call plug#begin("~/.vim/plugged")
 	Plug 'junegunn/vim-plug'              " For Documentation
-	Plug 'christoomey/vim-tmux-navigator' " Tmux & vim integration, somehow
 	Plug 'godlygeek/tabular'              " Aligning of text
 	Plug 'scrooloose/nerdtree'            " filetree
-	Plug 'Xuyuanp/nerdtree-git-plugin'    " git plugin for ^
 	Plug 'scrooloose/syntastic'           " Compiler error handler
 	Plug 'airblade/vim-gitgutter'         " git diff sign
 	Plug 'majutsushi/tagbar'              " Side buffer containing tag list
-	" Plug 'Shougo/unite.vim'
-	Plug 'vim-scripts/bnf.vim'            " Backus Naur Form highlighting
 	Plug 'drmikehenry/vim-headerguard'    " Auto place C header guards
 	Plug 'tpope/vim-speeddating'          " Make C-[ax] work with dates
 	Plug 'ryvnf/readline.vim'             " Readline in command mode
