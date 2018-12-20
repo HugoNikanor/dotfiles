@@ -16,3 +16,4 @@ custom.el
 # the list of files it contains. Some form of simple
 # script would probably do the job
 pkg/
+auto-save-list/
