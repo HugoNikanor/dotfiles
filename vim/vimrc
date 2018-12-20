@@ -35,6 +35,7 @@ call plug#begin("~/.vim/plugged")
 	Plug 'hugonikanor/vimwiki', {'branch': 'dev'}
 	Plug 'tpope/vim-fugitive'
 	Plug 'hari-rangarajan/CCTree'
+	Plug 'junegunn/goyo.vim'
 
 	" gdb breakpoint sign
 	if version >= 800 |Plug 'HugoNikanor/vim-breakpoint'
