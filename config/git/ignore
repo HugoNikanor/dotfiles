@@ -1,7 +1,7 @@
 #general
 bin/
 *.zip
-*.tar.gz
+*.tar.*
 *.log
 
 # vim / emacs
@@ -17,6 +17,9 @@ ltxpng/
 *.exe
 *.out
 *.a
+*.o
+*.so
+obj/
 
 #java
 *.class
@@ -53,7 +56,6 @@ Library/
 
 # MonoDevelop
 ExportedObj/
-obj/
 *.svd
 *.userprefs
 /*.csproj
@@ -65,9 +67,8 @@ obj/
 *.booproj
 
 # Haskell
-*hi
-*o
-*autosave
+*.hi
+*.autosave
 
 # CTags
 tags
