@@ -34,8 +34,9 @@ call plug#begin("~/.vim/plugged")
 	Plug 'junegunn/goyo.vim'
 
 	" gdb breakpoint sign
-	if version >= 800 |Plug 'HugoNikanor/vim-breakpoint'
-	else              |Plug 'HugoNikanor/vim-breakpoint', {'tag': 'v7'}
+	if     version >= 801 | Plug 'HugoNikanor/vim-breakpoint'
+	elseif version == 800 | Plug 'HugoNikanor/vim-breakpoint', {'tag': 'v8'}
+	else                  | Plug 'HugoNikanor/vim-breakpoint', {'tag': 'v7'}
 	endif
 	" Requires that fzf is installed on the system
 	"
