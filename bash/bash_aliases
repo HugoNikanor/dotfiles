@@ -16,6 +16,8 @@ alias wi="wiki"
 alias net="watch -n1 -c nmcli -c yes"
 alias nmail="watch -n1 -c newmail"
 
+vibin() { $EDITOR $(which $1); }
+
 # Creates paste. Uploads file if argument is given, STDIN otherwise.
 pb() { curl -F c="@${1:--}" https://ptpb.pw?u=1; }
 
