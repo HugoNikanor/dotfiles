@@ -13,6 +13,8 @@ alias tmp="vim +'setlocal buftype=nofile' -n"
 alias irc="env TERM=xterm ssh irc -t screen -x"
 alias clip="xclip -selection clipboard"
 alias wi="wiki"
+alias wip="wi -w public"
+alias wig="wi -w private"
 alias net="watch -n1 -c nmcli -c yes"
 alias nmail="watch -n1 -c newmail"
 
