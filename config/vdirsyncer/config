@@ -59,22 +59,22 @@ password.fetch = ["command",
 # events should be copied to a private calendar before
 # being changed.
 
-# [pair D1] # {{{2
-# a = "d1_remote"
-# b = "d1_local"
-# collections = null
-# conflict_resolution = "a wins"
-#
-# [storage d1_remote]
-# type = "http"
-# read_only = true
-# url = "https://se.timeedit.net/web/liu/db1/schema/ri687Q7QYn4ZQ1Q531650976yZZQ6205.ics"
-#
-# [storage d1_local]
-# type = "filesystem"
-# path = "~/.calendars/D1.b/"
-# fileext = ".ics"
-#
+[pair D1] # {{{2
+a = "d1_remote"
+b = "d1_local"
+collections = null
+conflict_resolution = "a wins"
+
+[storage d1_remote]
+type = "http"
+read_only = true
+url = "https://cloud.timeedit.net/liu/web/schema/ri677Q7QYn8ZQ9Q540650975yZZQ6805.ics"
+
+[storage d1_local]
+type = "filesystem"
+path = "~/.calendars/D1/"
+fileext = ".ics"
+
 # [pair D2] # {{{2
 # a = "d2_remote"
 # b = "d2_local"
@@ -123,37 +123,69 @@ fileext = ".ics"
 # path = "~/.calendars/TDDE30"
 # fileext = ".ics"
 #
-[pair TATA24] # {{{2
-a = "TATA24_remote"
-b = "TATA24_local"
-collections = null
-conflict_resolution = "a wins"
-
-[storage TATA24_remote]
-type = "http"
-read_only = true
-url = "https://cloud.timeedit.net/liu/web/schema/ri617Q7QYn6ZQ0Q531855479yZZQ6650.ics"
-
-[storage TATA24_local]
-type = "filesystem"
-path = "~/.calendars/TATA24"
-fileext = ".ics"
+# [pair TATA24] # {{{2
+# a = "TATA24_remote"
+# b = "TATA24_local"
+# collections = null
+# conflict_resolution = "a wins"
+# 
+# [storage TATA24_remote]
+# type = "http"
+# read_only = true
+# url = "https://cloud.timeedit.net/liu/web/schema/ri617Q7QYn6ZQ0Q531855479yZZQ6650.ics"
+# 
+# [storage TATA24_local]
+# type = "filesystem"
+# path = "~/.calendars/TATA24"
+# fileext = ".ics"
  
-[pair TATA41] # {{{2
-a = "TATA41_remote"
-b = "TATA41_local"
+# [pair TATA41] # {{{2
+# a = "TATA41_remote"
+# b = "TATA41_local"
+# collections = null
+# conflict_resolution = "a wins"
+# 
+# [storage TATA41_remote]
+# type = "http"
+# read_only = true
+# url = "https://cloud.timeedit.net/liu/web/schema/ri617Q7QYn7ZQ0Q533855479yZZQ6555.ics"
+# 
+# [storage TATA41_local]
+# type = "filesystem"
+# path = "~/.calendars/TATA41"
+# fileext = ".ics"
+
+[pair TDDB68] # {{{2
+a = "TDDB68_remote"
+b = "TDDB68_local"
 collections = null
 conflict_resolution = "a wins"
 
-[storage TATA41_remote]
+[storage TDDB68_remote]
 type = "http"
 read_only = true
-url = "https://cloud.timeedit.net/liu/web/schema/ri617Q7QYn7ZQ0Q533855479yZZQ6555.ics"
+url = "https://cloud.timeedit.net/liu/web/schema/ri647Q7QYn9ZQ6Q547855479yZZQ6505.ics"
 
-[storage TATA41_local]
+[storage TDDB68_local]
 type = "filesystem"
-path = "~/.calendars/TATA41"
+path = "~/.calendars/TDDB68"
 fileext = ".ics"
+
+# [pair vastgota] # {{{2
+# a = "vastgota_remote"
+# b = "vastgota_local"
+# collections = null
+# conflict_resolution = "a wins"
+# 
+# [storage vastgota_remote]
+# type = "http"
+# read_only = true
+# url = "http://localhost:8000/cgi-bin/main.py"
+# 
+# [storage vastgota_local]
+# type = "filesystem"
+# path = "~/.calendars/vastgota"
+# fileext = ".ics"
 
 # [pair nollep] # {{{2
 # a = "nollep_remote"
@@ -187,6 +219,23 @@ fileext = ".ics"
 # path = "~/.calendars/hafv"
 # fileext = ".ics"
 #
+
+[pair lithekod] # {{{2
+a = "lithekod_remote"
+b = "lithekod_local"
+collections = null
+conflict_resolution = "a wins"
+
+[storage lithekod_remote]
+type = "http"
+read_only = true
+url = "https://calendar.google.com/calendar/ical/lithekod.se_fa4msgl7qpmsdns5oc4fq48ago%40group.calendar.google.com/public/basic.ics"
+
+[storage lithekod_local]
+type = "filesystem"
+path = "~/.calendars/lithekod"
+fileext = ".ics"
+
 # {{{2 End
 # This is mostly here so some vim macros work
 # let @c = "zjkI# zc"
