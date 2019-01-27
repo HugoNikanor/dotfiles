@@ -194,6 +194,8 @@ set scrolloff=5
 set nrformats-=octal
 
 set wildignore+=tags
+set wildignore+=*.o
+set wildignore+=*.hi
 set tags+=tags;/
 
 set textwidth=70
