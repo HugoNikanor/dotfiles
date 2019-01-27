@@ -206,11 +206,31 @@ set formatoptions=croqnlj
 " Something with how Vimwiki loads requires that this is here rather
 " than in ftplugin.
 
-let g:vimwiki_list = [{
+let pub_wiki = {
+			\ 'path': '~/wiki/public',
 			\ 'auto_tags': 1,
 			\ 'list_margin': 2,
 			\ 'auto_toc': 1,
-			\ }]
+			\ 'automatic_nested_syntaxes': 1,
+			\ 'maxhi': 1,
+			\ 'template_path': '~/wiki/public/templates/',
+			\ }
+			" \ 'nested_syntaxes': { 'php': 'php',
+			" \                      'css': 'css' },
+
+let private_wiki = {
+			\ 'path': '~/wiki/private',
+			\ 'auto_tags': 1,
+			\ 'list_margin': 2,
+			\ 'auto_toc': 1,
+			\ 'automatic_nested_syntaxes': 1,
+			\ 'template_path': '~/wiki/public/templates/',
+			\ }
+
+let g:vimwiki_list = [pub_wiki, private_wiki]
+
+let g:vimwiki_hl_headers = 1
+let g:vimwiki_hl_cb_checked = 1
 
 let g:vimwiki_diary_months = {
 			\ 1: 'Januari', 2: 'Februari', 3: 'Mars',
@@ -218,4 +238,15 @@ let g:vimwiki_diary_months = {
 			\ 7: 'Juli', 8: 'Augusti',
 			\ 10: 'Oktober', 12: 'December'
 			\ }
+
+let g:tagbar_type_vimwiki = {
+			\  'ctagstype' : 'vimwiki',
+			\      'kinds' : ['h:header'],
+			\        'sro' : '&&&',
+			\ 'kind2scope' : {'h': 'header'},
+			\       'sort' : 0,
+			\   'ctagsbin' : '/home/hugo/wiki/vwtags.py',
+			\  'ctagsargs' : 'default'
+			\ }
+
 " }}}
