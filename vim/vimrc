@@ -195,6 +195,8 @@ set nrformats-=octal
 
 set wildignore+=tags
 set wildignore+=*.o
+set wildignore+=*.a
+set wildignore+=*.so
 set wildignore+=*.hi
 set tags+=tags;/
 
@@ -231,24 +233,34 @@ let private_wiki = {
 
 let g:vimwiki_list = [pub_wiki, private_wiki]
 
-let g:vimwiki_hl_headers = 1
+" let g:vimwiki_hl_headers = 1
 let g:vimwiki_hl_cb_checked = 1
 
 let g:vimwiki_diary_months = {
-			\ 1: 'Januari', 2: 'Februari', 3: 'Mars',
-			\ 5: 'Maj', 6: 'Juni',
-			\ 7: 'Juli', 8: 'Augusti',
-			\ 10: 'Oktober', 12: 'December'
+			\ 1: 'Januari',   2: 'Februari',  3: 'Mars',
+			\ 4: 'April',     5: 'Maj',       6: 'Juni',
+			\ 7: 'Juli',      8: 'Augusti',   9: 'September',
+			\ 10: 'Oktober', 11: 'November', 12: 'December'
 			\ }
 
 let g:tagbar_type_vimwiki = {
-			\  'ctagstype' : 'vimwiki',
-			\      'kinds' : ['h:header'],
-			\        'sro' : '&&&',
-			\ 'kind2scope' : {'h': 'header'},
-			\       'sort' : 0,
-			\   'ctagsbin' : '/home/hugo/wiki/vwtags.py',
-			\  'ctagsargs' : 'default'
-			\ }
+          \   'ctagstype':'vimwiki'
+          \ , 'kinds':['h:header']
+          \ , 'sro':'&&&'
+          \ , 'kind2scope':{'h':'header'}
+          \ , 'sort':0
+          \ , 'ctagsbin':'/home/hugo/wiki/.aux/vwtags.py'
+          \ , 'ctagsargs': 'default'
+          \ }
+
+" let g:tagbar_type_vimwiki = {
+" 			\    'ctagstype' : 'vimwiki'
+" 			\ ,      'kinds' : ['h:header']
+" 			\ ,        'sro' : '&&&'
+" 			\ , 'kind2scope' : {'h': 'header'}
+" 			\ ,       'sort' : 0
+" 			\ ,   'ctagsbin' : '/home/hugo/wiki/.aux/vwtags.py'
+" 			\ ,  'ctagsargs' : 'default'
+" 			\ }
 
 " }}}
