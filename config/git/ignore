@@ -7,6 +7,7 @@ bin/
 # vim / emacs
 *~
 *.swp
+*.swo
 \#**
 .breakpoints_*
 ltxpng/
