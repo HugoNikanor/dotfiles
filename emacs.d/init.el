@@ -82,11 +82,31 @@
 (evil-mode)
 
 (require 'evil-maps)                    ; Is this required?
-;;; It would be better if this was bound to split on inter-
-;;; nal buffers. Either way, it modifies evil-ex-commands
+
+(evil-ex-define-argument-type tag
+  "Handles tag names"
+  ;; This is a function that should take stuff...
+  ;; :collection complete-tag
+  )
+
+(evil-define-interactive-code "<tag>"
+  :ex-arg tag
+  (list (when (evil-ex-p) evil-ex-argument)))
+
+(evil-define-command vi-follow-tag (tag &rest rest)
+  :repeat nil
+  (interactive "<tag>")
+  (princ tagname)
+  (princ rest)
+  (tags-search tag))
+
+;; eval-expression
+
+; C-<tab> does tag completion
+
 (evil-ex-define-cmd "vsp" "vsplit")
 ;;; TODO vsb, vertical split buffer
-(evil-ex-define-cmd "ta[g]" 'tags-search)
+(evil-ex-define-cmd "ta[g]" 'vi-follow-tag)
 
 ;;; ------------------------------------------------------------
 (load-theme 'wombat)
