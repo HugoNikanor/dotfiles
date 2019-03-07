@@ -85,6 +85,7 @@
 ;;; It would be better if this was bound to split on inter-
 ;;; nal buffers. Either way, it modifies evil-ex-commands
 (evil-ex-define-cmd "vsp" "vsplit")
+;;; TODO vsb, vertical split buffer
 (evil-ex-define-cmd "ta[g]" 'tags-search)
 
 ;;; ------------------------------------------------------------
@@ -201,7 +202,8 @@
 (defun eval-sexp-print () (interactive)
        (princ "No eval-sexp-print for current mode."))
 (defun eval-sexp () (interactive)
-       (princ "No eval-sexp-print for current mode."))
+       (princ "No eval-sexp for current mode."))
+
 
 (define-key paredit-mode-map (kbd "C-j")   #'eval-sexp-print)
 (define-key paredit-mode-map (kbd "C-S-j") #'eval-sexp)
@@ -221,8 +223,16 @@
 
 ;;; ---------- Emacs Lisp --------------------------------------
 
+(defun elisp-eval-popup ()
+  (interactive)
+  (popup-tip
+   (with-output-to-string
+     (princ (eval (elisp--preceding-sexp))))))
+
 (hook-envs
- (lambda () (defalias 'eval-sexp-print #'eval-print-last-sexp))
+ (lambda ()
+   (defalias 'eval-sexp-print #'eval-print-last-sexp)
+   (defalias 'eval-sexp #'elisp-eval-popup))
  '(emacs-lisp-mode-hook
    lisp-interaction-mode-hook))
 
