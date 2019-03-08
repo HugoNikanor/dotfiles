@@ -8,6 +8,7 @@ eww-bookmarks
 eshell/
 games/
 url/
+srecode-map.el
 
 custom.el
 .org-id-locations
