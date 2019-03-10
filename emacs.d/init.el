@@ -17,7 +17,7 @@
       `(flycheck
         haskell-mode
         ivy                             ; M-x fuzzy finder
-        ;; magit
+        magit
         mmm-mode                        ; Multiple Major Modes
         paredit
         popup
@@ -432,3 +432,4 @@ file for it to work as expceted."
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
+
