@@ -301,7 +301,7 @@
       (indent-region (+ 5 (mark))
                      (point)))))
 
-(defun geiser-eval-last-sexp ()
+(defun geiser-eval-popup-last-sexp ()
   (interactive)
   (let ((ret (geiser-eval-last-sexp nil)))
     (popup-tip (if (equalp ret "=> ")
@@ -318,7 +318,7 @@
    (defalias 'eval-sexp-print #'geiser-eval-print-last-sexp)
    (defalias 'eval-sexp #'geiser-eval-last-sexp)
    (font-lock-add-keywords
-    nil `(,(regexp-opt '("mod!" "set!"))
+    nil `(,(regexp-opt '("mod!" "set!") 'symbols)
           ("\\<\\(define-\\w*\\)\\>\s*(?\\(\\sw+\\)?"
            (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face))))))
 
