@@ -120,6 +120,16 @@
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
 
+;; Highlight "bad" whitespace.
+;; Unfortunately breaks "regular" whitespace mode.
+(setq whitespace-style
+      '(face space-before-tab trailing))
+
+;; Mark lines not part of file.
+(setq-default indicate-empty-lines t)
+
+(global-whitespace-mode)
+
 (setq inhibit-startup-screen t)
 
 (define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
