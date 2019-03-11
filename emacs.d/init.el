@@ -17,7 +17,7 @@
       `(flycheck
         haskell-mode
         ivy                             ; M-x fuzzy finder
-        ;; magit
+        magit
         mmm-mode                        ; Multiple Major Modes
         paredit
         popup
@@ -119,6 +119,16 @@
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
+
+;; Highlight "bad" whitespace.
+;; Unfortunately breaks "regular" whitespace mode.
+(setq whitespace-style
+      '(face space-before-tab trailing))
+
+;; Mark lines not part of file.
+(setq-default indicate-empty-lines t)
+
+(global-whitespace-mode)
 
 (setq inhibit-startup-screen t)
 
@@ -301,7 +311,7 @@
       (indent-region (+ 5 (mark))
                      (point)))))
 
-(defun geiser-eval-last-sexp ()
+(defun geiser-eval-popup-last-sexp ()
   (interactive)
   (let ((ret (geiser-eval-last-sexp nil)))
     (popup-tip (if (equalp ret "=> ")
@@ -316,7 +326,11 @@
  (lambda ()
    (safe-load-pkg 'geiser)
    (defalias 'eval-sexp-print #'geiser-eval-print-last-sexp)
-   (defalias 'eval-sexp #'geiser-eval-last-sexp)))
+   (defalias 'eval-sexp #'geiser-eval-last-sexp)
+   (font-lock-add-keywords
+    nil `(,(regexp-opt '("mod!" "set!") 'symbols)
+          ("\\<\\(define-\\w*\\)\\>\s*(?\\(\\sw+\\)?"
+           (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face))))))
 
 ;;; TODO add optional path argument, which should be able to be given through M-x
 (defun gamesh-connect ()
@@ -418,3 +432,4 @@ file for it to work as expceted."
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
+

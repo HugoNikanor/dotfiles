@@ -24,7 +24,6 @@ HISTFILESIZE=2000
 export EDITOR="/usr/bin/vim"
 export RTV_EDITOR="/usr/bin/vim"
 export RTV_URLVIEWER="/usr/bin/urlview"
-export MPD_HOST=jukebox.lysator.liu.se
 export INFO_PRINT_COMMAND=">/tmp/info"
 export GUILE_LOAD_PATH="/home/hugo/lib/guile"
 export COWPATH=/usr/share/cows/:/usr/local/share/cows/

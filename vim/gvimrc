@@ -16,8 +16,10 @@ set novisualbell
 set noruler
 set noshowcmd
 set statusline=""
+set guifontset=Fira\ Mono\ 10
 
-colorscheme darkblue
+" colorscheme darkblue
+colorscheme delek
 
 " TODO if the window is changed to quickly after opening gvim then than window
 " might become transparent instead
