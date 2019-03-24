@@ -11,7 +11,7 @@
 ;;; speedbar-contract-line
 
 ;;; TODO
-;;; extend theme to show comments and comment markers in different colors. 
+;;; extend theme to show comments and comment markers in different colors.
 
 (setq required-packages
       `(flycheck
@@ -43,7 +43,7 @@
 
 (defun safe-load-pkg (pkg)
   (unless (package-installed-p pkg)
-    (package-install pkg))  )
+    (package-install pkg)) )
 
 ;;; -------- Local Packages ------------------------------------
 
@@ -112,7 +112,7 @@
 (load-theme 'wombat)
 
 (ivy-mode)
-(which-key-mode) ; Show possible next keys after some key presses 
+(which-key-mode) ; Show possible next keys after some key presses
 (show-paren-mode)
 (column-number-mode)
 
@@ -246,12 +246,12 @@ Version 2018-08-30"
 
 (defun prettify-scheme ()
   (setq prettify-symbols-alist
-        '(("lambda" . #x3bb)
-          ("<=" . #x2264)
-          (">=" . #x2265)
+        '(("lambda" . #x3bb)            ; λ
+          ("<=" . #x2264)               ; ≤
+          (">=" . #x2265)               ; ≥
           ("memv" . ?∈)
-          ("sum" . #x2211)
-          ("prod" . #x220f))))
+          ("sum" . #x2211)              ; ∑
+          ("prod" . #x220f))))          ; ∏
 (add-hook 'scheme-mode-hook #'prettify-scheme)
 (add-hook 'geiser-repl-mode-hook #'prettify-scheme)
 
@@ -348,8 +348,13 @@ Version 2018-08-30"
 
 ;;; ---------- Common Lisp -------------------------------------
 
+(setq inferior-lisp-program "sbcl" )
+
 (add-hook 'lisp-mode-hook
- (lambda () (safe-load-pkg 'slime)))
+ (lambda ()
+   (safe-load-pkg 'slime)
+   (defalias 'eval-sexp-print #'slime-eval-print-last-expression)
+   (defalias 'eval-sexp #'slime-eval-last-expression)))
 
 ;;; ---------- Clojure -----------------------------------------
 
@@ -371,7 +376,7 @@ Version 2018-08-30"
 
 ;;; Geiser seems to not work to well with evaling sexp's directly. I should
 ;;; however be able to create a new buffer, and eval the above there.
-          
+
 ;; =C-u C-u M-x geiser-eval-last-sexp= does this,
 ;; But without the fancy formatting!
 (defun geiser-eval-print-last-sexp ()
@@ -409,6 +414,7 @@ Version 2018-08-30"
    (defalias 'eval-sexp #'geiser-eval-last-sexp)
    (font-lock-add-keywords
     nil `(,(regexp-opt '("mod!" "set!") 'symbols)
+          ("\\<\\w+:\\>" . font-lock-constant-face)
           ("\\<\\(define-\\w*\\)\\>\s*(?\\(\\sw+\\)?"
            (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face))))))
 
@@ -419,8 +425,13 @@ Version 2018-08-30"
 
 ;; geiser-repl-mode
 
-;; Geiser only looks at these, if this list is here 
-(setq geiser-active-implementations '(guile racket))
+;; Geiser only looks at these, if this list is here
+(setq geiser-active-implementations '(guile))
+
+(setq geiser-guile-load-path '("/home/hugo/lib/guile" "."))
+;; geiser-guile-extra-keywords
+ ;; geiser-guile-init-file
+;; geiser-guile-load-init-file-p
 
 ;;; ----------- Haskell ----------------------------------------
 
@@ -499,11 +510,11 @@ file for it to work as expceted."
           (concat (getenv "HOME")
                   "/.cache/emacs")) )
 
-;;; Stores all temp files in one central locatio n
+;;; Stores all temp files in one central location
 (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
 
-(setq org-treat-insert-todo-heading-as-state-change t 
+(setq org-treat-insert-todo-heading-as-state-change t
       org-hide-leading-stars t
       org-agenda-default-appointment-duration 60)
 
@@ -513,3 +524,6 @@ file for it to work as expceted."
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
+;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(global-set-key (kbd "M-p") 'other-window)
