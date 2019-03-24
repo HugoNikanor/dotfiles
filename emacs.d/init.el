@@ -132,12 +132,27 @@
 
 (setq inhibit-startup-screen t)
 
+(defun evil-fresh-line-below (&optional count)
+  "open-below, followed by returning to normal mode."
+  (interactive "p")
+  (evil-open-below count)
+  (evil-normal-state))
+
+(defun evil-fresh-line-above (&optional count)
+  "open-above, followed by returning to normal mode."
+  (interactive "p")
+  (evil-open-above count)
+  (evil-normal-state))
+
 (define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
 (define-key evil-motion-state-map "\C-u" 'evil-scroll-up)
 ;; TODO This should only be for paredit-mode
 (define-key evil-motion-state-map "\C-k" 'kill-sexp)
-;;; <CR> should be bound to (normal "o<esc>")
-;; (define-key evil-normal-state-map (string ?\n) 'evil-open-below)
+
+(define-key evil-normal-state-map (kbd "RET") 'evil-fresh-line-below)
+(define-key evil-normal-state-map (kbd "<S-return>") 'evil-fresh-line-above)
+
+
 
 (defun insert-formfeed ()
   (interactive)
