@@ -45,7 +45,8 @@
   (unless (package-installed-p pkg)
     (package-install pkg)) )
 
-;;; -------- Local Packages ------------------------------------
+
+;;; Local Packages
 
 (add-to-list 'load-path "~/.emacs.d/pkg")
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
@@ -57,7 +58,8 @@
 
 (autoload 'lyskom "lyskom.elc" "LysKOM" t)
 
-;;; --------- Defines for making it this file better -----------
+
+;;; Defines for making it this file better
 
 
 (defmacro hook-envs (function environments)
@@ -75,7 +77,8 @@
        (,(intern (concat "evil-collection-" sname "-setup"))))))
 
 
-;;; ----------- Evil -------------------------------------------
+
+;;; Evil
 
 (mapc #'require evil-packages)
 
@@ -108,7 +111,8 @@
 ;;; TODO vsb, vertical split buffer
 (evil-ex-define-cmd "ta[g]" 'vi-follow-tag)
 
-;;; ------------------------------------------------------------
+
+
 (load-theme 'wombat)
 
 (ivy-mode)
@@ -153,12 +157,17 @@
 (define-key evil-normal-state-map (kbd "<S-return>") 'evil-fresh-line-above)
 
 
+;;; Formfeed
 
 (defun insert-formfeed ()
   (interactive)
-  (unless (= (line-beginning-position)
-             (line-end-position))
+
+  (unless (= (point) (point-at-eol))
+    (setf (point) (point-at-eol)))
+
+  (unless (= (point-at-bol) (point-at-eol))
     (newline))
+
   (insert-char ?\^L)
   (newline))
 
@@ -218,8 +227,7 @@ Version 2018-08-30"
 (formfeed-mode 1)
 
 
-
-;;; -------- Whitespace ----------------------------------------
+;;; Whitespace
 
 (setq-default indent-tabs-mode nil)
 
@@ -231,7 +239,9 @@ Version 2018-08-30"
 ;;; Mostly for `<' & `>' shifting. But it doesn't.
 (setq evil-indent-convert-tabs nil)
 
-;;; -------- Org Mode ------------------------------------------
+
+;;; Org Mode
+
 
 (defun org-mode-stuff ()
   (evil-define-key 'normal org-mode-map (kbd "z j")
@@ -242,7 +252,8 @@ Version 2018-08-30"
 (add-hook 'org-mode-hook #'evil-org-mode)
 (add-hook 'org-mode-hook #'org-mode-stuff)
 
-;;; ------- Prettify -------------------------------------------
+
+;;; Prettify
 
 (defun prettify-scheme ()
   (setq prettify-symbols-alist
@@ -283,7 +294,8 @@ Version 2018-08-30"
 
 (global-prettify-symbols-mode 1)
 
-;;; --------- TexInfo ------------------------------------------
+
+;;; TexInfo
 
 (loop for p in '("/home/hugo/info" "/usr/local/share/info")
       do (add-to-list 'Info-default-directory-list p))
@@ -295,7 +307,9 @@ Version 2018-08-30"
 (add-hook 'Info-mode-hook #'info-binds)
 
 
-;;; ----------- Paredit ----------------------------------------
+
+;;; Paredit
+
 
 (defun paredit-stuff ()
   (evil-define-key 'visual lisp-mode-map
@@ -331,7 +345,8 @@ Version 2018-08-30"
    clojure-mode-hook))
 
 
-;;; ---------- Emacs Lisp --------------------------------------
+
+;;; Emacs Lisp
 
 (defun elisp-eval-popup ()
   (interactive)
@@ -346,7 +361,8 @@ Version 2018-08-30"
  '(emacs-lisp-mode-hook
    lisp-interaction-mode-hook))
 
-;;; ---------- Common Lisp -------------------------------------
+
+;;; Common Lisp
 
 (setq inferior-lisp-program "sbcl" )
 
@@ -356,7 +372,8 @@ Version 2018-08-30"
    (defalias 'eval-sexp-print #'slime-eval-print-last-expression)
    (defalias 'eval-sexp #'slime-eval-last-expression)))
 
-;;; ---------- Clojure -----------------------------------------
+
+;;; Clojure
 
 (defun clojure-env ()
   (safe-load-pkg 'cider)
@@ -372,7 +389,8 @@ Version 2018-08-30"
 
 (add-hook 'clojure-mode-hook #'clojure-env)
 
-;;; -----------Scheme / Geiser ---------------------------------
+
+;;; Scheme / Geiser
 
 ;;; Geiser seems to not work to well with evaling sexp's directly. I should
 ;;; however be able to create a new buffer, and eval the above there.
@@ -433,7 +451,8 @@ Version 2018-08-30"
  ;; geiser-guile-init-file
 ;; geiser-guile-load-init-file-p
 
-;;; ----------- Haskell ----------------------------------------
+
+;;; Haskell
 
 (add-hook 'haskell-mode-hook 'my-mmm-mode)
 
@@ -460,10 +479,8 @@ Version 2018-08-30"
 
 (setq mmm-submode-decoration-level 0)
 
-;;; ------------------------------------------------------------
-
-
-;;; ---------- Other -------------------------------------------
+
+;;; Other
 
 ;;; Can I somehow enable this for all available modes?
 (hook-envs #'hs-minor-mode
