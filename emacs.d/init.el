@@ -139,6 +139,71 @@
 ;;; <CR> should be bound to (normal "o<esc>")
 ;; (define-key evil-normal-state-map (string ?\n) 'evil-open-below)
 
+(defun insert-formfeed ()
+  (interactive)
+  (unless (= (line-beginning-position)
+             (line-end-position))
+    (newline))
+  (insert-char ?\^L)
+  (newline))
+
+(defun xah-show-formfeed-as-line ()
+  "Display the formfeed ^L char as line.
+URL `http://ergoemacs.org/emacs/emacs_form_feed_section_paging.html'
+Version 2018-08-30"
+  (interactive)
+  ;; 2016-10-11 thanks to Steve Purcell's page-break-lines.el
+  (progn
+    (when (not buffer-display-table)
+      (setq buffer-display-table (make-display-table)))
+    (aset buffer-display-table ?\^L
+          (make-vector
+           (window-width)
+           (make-glyph-code ?─          ; 'font-lock-comment-face
+                            )))
+    (redraw-frame)))
+
+(define-minor-mode formfeed-mode
+  "Mode for handling formfeeds as content changes."
+  :lighter " ^L"
+  :global t
+  :keymap (make-sparse-keymap)
+  ;; :after-hook (redraw-frame)
+  (defvar *^L* nil "Previous value of buffer-display-table[^L]")
+  (progn
+    (when (not buffer-display-table)
+      (setq buffer-display-table (make-display-table)))
+
+    ;; TODO window-size-change-functions seem to only be triggered in the
+    ;; currently selected window
+    (if formfeed-mode
+        (progn
+          (setq *^L* (aref buffer-display-table ?\^L))
+          (add-to-list ; NOTE this is per window, making this mode hard to turn off.
+           'window-size-change-functions
+           (lambda (frame) (xah-show-formfeed-as-line)))
+
+          ;; These are never turned off, fore some reason
+          (evil-define-minor-mode-key 'normal formfeed-mode
+            "[x" 'backward-page
+            "]x" 'forward-page
+            (kbd "C--")  'insert-formfeed)
+          (evil-define-minor-mode-key 'insert formfeed-mode
+            (kbd "C--") 'insert-formfeed)
+
+          (xah-show-formfeed-as-line))
+
+      (progn
+        (aset buffer-display-table ?\^L *^L*)
+        (setq window-size-change-functions ())))))
+
+
+;; TODO this is't imidieately run for new buffers, instead first updating when
+;; the window first changes shape.
+(formfeed-mode 1)
+
+
+
 ;;; -------- Whitespace ----------------------------------------
 
 (setq-default indent-tabs-mode nil)
