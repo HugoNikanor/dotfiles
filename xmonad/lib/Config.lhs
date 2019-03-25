@@ -52,7 +52,7 @@ to happen at points not currently in focus.
 > import qualified XMonad.StackSet as W
 > import qualified XMonad.Layout.BoringWindows as B
 
-------------------------------------------------------------
+
 
 A list of all(?) X keynames are in =/usr/include/X11/XF86keysym.h=,
 these have to have their first letter downcased. For some media keys
@@ -89,7 +89,7 @@ TODO figure out how to run this from main
 >     spawn program
 >     windows $ W.greedyView workspace
 
-------------------------------------------------------------
+
 These should have a propper place somewhere.
 
 > restartXMonad = spawn "xmonad --recompile; xmonad --restart"
@@ -128,7 +128,7 @@ Workspace ID is just the name of the workspace.
 > getCurrentWorkspaceId :: X WorkspaceId
 > getCurrentWorkspaceId = gets (W.currentTag . windowset)
 
-------------------------------------------------------------
+
 
 Keys are currently bound in two sepparate places. Both here,
 where I have complete controll over Haskell, and below where
@@ -148,7 +148,7 @@ type signature as follows, and is defined in the appendix.
 >                         -> XConfig l
 >                         -> [((KeyMask, KeySym), X ())]
 
-----
+
 
 Monitors should be bound to the keys corresponding to the
 keys occupied by the middle three fingers on the left
@@ -184,7 +184,7 @@ Choose one of these, depending on the current monitor setup.
 >   , (xK_e, e)
 >   , (xK_u, f) ]
 
-----
+
 
 > movementKeys = bindWithAndWithoutShift
 >   (\d -> windowGo d False >> banish LowerRight)
@@ -218,7 +218,7 @@ part means that conf is sent as a parameter, and that
 >       , monitorKeys
 >       , movementKeys ]
 
-----
+
 
 The following keybinds are managed by EZ-config.
 
@@ -272,7 +272,7 @@ The following keybinds are managed by EZ-config.
 >   , ("M-<Space> r", renameWorkspace myXPConfig { autoComplete = Nothing })
 >   ]
 
-------------------------------------------------------------
+
 
 `placeHook' places floating windows at interesting places.
 This tries to place windows close to the center of the
@@ -309,7 +309,7 @@ smartly after.
 >         W.shift $ str
 >         W.greedyView $ str
 
-------------------------------------------------------------
+
 
 Color config borrowed from my Termite config .
 
@@ -335,7 +335,7 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 >   , ppOutput = hPutStrLn h
 >   }
 
-------------------------------------------------------------
+
 
 > main = do
 >     -- termCommand <- getTerminalCommand <$> getHostName
@@ -357,6 +357,7 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 >         , focusedBorderColor = "#FF0000"
 >         } `additionalKeysP` ezkeys
 
+
 Appendix:
 =========
 
