@@ -1,0 +1,33 @@
+;; -*- mode: scheme -*-
+
+(
+ (pair-defaults
+  (collections . ())
+  (conflict_resolution . "a wins"))
+ (remote-defaults
+  (type . "http")
+  (read_only . #t))
+ (local-defaults
+  (type . "filesystem")
+  (fileext . ".ics"))
+ (pairs
+  ("Facebook"
+   (remote (url . "https://www.facebook.com/events/ical/upcoming/?uid=100000482656459&key=AQB8kEAx-Ry0CIu2")))
+
+  ("lithekod"
+   (remote (url . "https://calendar.google.com/calendar/ical/lithekod.se_fa4msgl7qpmsdns5oc4fq48ago%40group.calendar.google.com/public/basic.ics")))
+
+  ("D1"
+   (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri677Q7QYn8ZQ9Q540650975yZZQ6805.ics" )))
+
+  #;
+  ("D2"
+   (remote (url . "https://se.timeedit.net/web/liu/db1/schema/ri687Q7QYn4ZQ1Q538650976yZZQ6305.ics")))
+
+  #;
+  ("D3"
+   (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri607Q7QYn5ZQ2Q532850976yZZQ6204.ics")))
+
+  ("TSRT04"
+   (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri647Q7QYn1ZQ6Q541855479yZZQ6507.ics"))))
+ )
