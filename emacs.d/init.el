@@ -10,9 +10,6 @@
 ;;; speedbar-expand-line
 ;;; speedbar-contract-line
 
-;;; TODO
-;;; extend theme to show comments and comment markers in different colors.
-
 (setq required-packages
       `(flycheck
         haskell-mode
@@ -23,6 +20,8 @@
         popup
         smart-tabs-mode
         which-key                       ; show possible keys
+        yasnippet
+        yasnippet-snippets
         ))
 
 (setq evil-packages `(evil evil-org evil-paredit))
@@ -43,7 +42,7 @@
 
 (defun safe-load-pkg (pkg)
   (unless (package-installed-p pkg)
-    (package-install pkg)) )
+    (package-install pkg)))
 
 
 ;;; Local Packages
@@ -60,7 +59,6 @@
 
 
 ;;; Defines for making it this file better
-
 
 (defmacro hook-envs (function environments)
   "Add function to list of hooks"
@@ -111,6 +109,30 @@
 ;;; TODO vsb, vertical split buffer
 (evil-ex-define-cmd "ta[g]" 'vi-follow-tag)
 
+(defun evil-fresh-line-below (&optional count)
+  "open-below, followed by returning to normal mode."
+  (interactive "p")
+  (evil-open-below count)
+  (evil-normal-state))
+
+(defun evil-fresh-line-above (&optional count)
+  "open-above, followed by returning to normal mode."
+  (interactive "p")
+  (evil-open-above count)
+  (evil-normal-state))
+
+(evil-define-key '(normal motion) 'global
+  (kbd "C-u") 'evil-scroll-up)
+
+(evil-define-key '(motion) paredit-mode-map
+  (kbd "C-k") 'kill-sexp)
+
+;;; [RET] is the "primitive" return code, exactly the same as ^M
+;;; <return> is a high level construct, and only available in GUI.
+(define-key evil-normal-state-map (kbd "RET") 'evil-fresh-line-below)
+(define-key evil-normal-state-map (kbd "<S-return>") 'evil-fresh-line-above)
+
+
 
 
 (load-theme 'wombat)
@@ -136,25 +158,8 @@
 
 (setq inhibit-startup-screen t)
 
-(defun evil-fresh-line-below (&optional count)
-  "open-below, followed by returning to normal mode."
-  (interactive "p")
-  (evil-open-below count)
-  (evil-normal-state))
-
-(defun evil-fresh-line-above (&optional count)
-  "open-above, followed by returning to normal mode."
-  (interactive "p")
-  (evil-open-above count)
-  (evil-normal-state))
-
-(define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
-(define-key evil-motion-state-map "\C-u" 'evil-scroll-up)
-;; TODO This should only be for paredit-mode
-(define-key evil-motion-state-map "\C-k" 'kill-sexp)
-
-(define-key evil-normal-state-map (kbd "RET") 'evil-fresh-line-below)
-(define-key evil-normal-state-map (kbd "<S-return>") 'evil-fresh-line-above)
+(setq mmm-submode-decoration-level 1)
+(setq mmm-global-mode 'maybe)
 
 
 ;;; Formfeed
@@ -175,7 +180,7 @@
   "Display the formfeed ^L char as line.
 URL `http://ergoemacs.org/emacs/emacs_form_feed_section_paging.html'
 Version 2018-08-30"
-  (interactive)
+  ;; (interactive)
   ;; 2016-10-11 thanks to Steve Purcell's page-break-lines.el
   (progn
     (when (not buffer-display-table)
@@ -208,11 +213,10 @@ Version 2018-08-30"
            (lambda (frame) (xah-show-formfeed-as-line)))
 
           ;; These are never turned off, fore some reason
-          (evil-define-minor-mode-key 'normal formfeed-mode
+          (evil-define-minor-mode-key '(normal visual) formfeed-mode
             "[x" 'backward-page
-            "]x" 'forward-page
-            (kbd "C--")  'insert-formfeed)
-          (evil-define-minor-mode-key 'insert formfeed-mode
+            "]x" 'forward-page)
+          (evil-define-minor-mode-key '(normal insert replace) formfeed-mode
             (kbd "C--") 'insert-formfeed)
 
           (xah-show-formfeed-as-line))
@@ -241,7 +245,6 @@ Version 2018-08-30"
 
 
 ;;; Org Mode
-
 
 (defun org-mode-stuff ()
   (evil-define-key 'normal org-mode-map (kbd "z j")
@@ -288,6 +291,7 @@ Version 2018-08-30"
            ;; COMBINING OVERLINE
            ("\\vec{v}" . "v̅")
            ("\\vec{u}" . "u̅")
+           ("\\lto" . ?⇒)               ; leads to
            ))))
 
 (add-hook 'tex-mode-hook #'prettify-tex)
@@ -295,21 +299,20 @@ Version 2018-08-30"
 (global-prettify-symbols-mode 1)
 
 
-;;; TexInfo
+;;; Info Mode
 
 (loop for p in '("/home/hugo/info" "/usr/local/share/info")
       do (add-to-list 'Info-default-directory-list p))
 (defun info-binds ()
-  (evil-define-key 'motion Info-mode-map "l" 'Info-last)
-  ;; Find non-conflicting binding for this
-  ;; (evil-define-key 'motion Info-mode-map "n" 'evil-search-next)
-  )
-(add-hook 'Info-mode-hook #'info-binds)
+  (evil-define-key 'motion Info-mode-map
+    "l" 'Info-last
+    "N" 'evil-search-next
+    "P" 'evil-search-previous))
 
+(add-hook 'Info-mode-hook #'info-binds)
 
 
 ;;; Paredit
-
 
 (defun paredit-stuff ()
   (evil-define-key 'visual lisp-mode-map
@@ -364,7 +367,7 @@ Version 2018-08-30"
 
 ;;; Common Lisp
 
-(setq inferior-lisp-program "sbcl" )
+(setq inferior-lisp-program "sbcl")
 
 (add-hook 'lisp-mode-hook
  (lambda ()
@@ -451,10 +454,26 @@ Version 2018-08-30"
  ;; geiser-guile-init-file
 ;; geiser-guile-load-init-file-p
 
+(evil-define-key '(normal insert) scheme-mode-map
+  (kbd "M-.") 'geiser-edit-symbol-at-point)
+
+;; extend theme to show comments and comment markers in different colors.
+
+(mmm-add-classes
+ '((lisp-texinfo-comments
+    :submode texinfo-mode
+    :front "^;+"
+    :back "^[^;]"
+    :include-front t
+    :include-back nil
+    )))
+
+(mmm-add-mode-ext-class 'scheme-mode nil 'lisp-texinfo-comments)
+
 
 ;;; Haskell
 
-(add-hook 'haskell-mode-hook 'my-mmm-mode)
+;; (add-hook 'haskell-mode-hook 'my-mmm-mode)
 
 (mmm-add-classes
  '((literate-haskell-bird
@@ -471,13 +490,6 @@ Version 2018-08-30"
     :include-back nil
     :back-offset (beginning-of-line -1)
     )))
-
-(defun my-mmm-mode ()
-  ;; go into mmm minor mode when class is given
-  (make-local-variable 'mmm-global-mode)
-  (setq mmm-global-mode 'true))
-
-(setq mmm-submode-decoration-level 0)
 
 
 ;;; Other
