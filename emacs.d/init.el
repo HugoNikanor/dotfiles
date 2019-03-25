@@ -355,12 +355,13 @@ Version 2018-08-30"
   (interactive)
   (popup-tip
    (with-output-to-string
+     (princ "⇒ ")
      (princ (eval (elisp--preceding-sexp))))))
 
 (hook-envs
  (lambda ()
    (defalias 'eval-sexp-print #'eval-print-last-sexp)
-   (defalias 'eval-sexp #'elisp-eval-popup))
+   (defalias 'eval-sexp #'elisp-eval-popup) )
  '(emacs-lisp-mode-hook
    lisp-interaction-mode-hook))
 
@@ -420,7 +421,7 @@ Version 2018-08-30"
 (defun geiser-eval-popup-last-sexp ()
   (interactive)
   (let ((ret (geiser-eval-last-sexp nil)))
-    (popup-tip (if (equalp ret "=> ")
+    (popup-tip (if (equalp ret "⇒ ")
                    "EVALUATION ERROR"
                  ret))))
 

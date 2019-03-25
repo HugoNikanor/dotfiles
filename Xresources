@@ -23,5 +23,7 @@
 ! xmessage.foreground: #ffffff;
 ! xmessage.foreground_bold: #ffffff;
 
+XTerm*termName: xterm-256color
+
 XTerm*metaSendsEscape: true
 XTerm*eightBitInput: false
