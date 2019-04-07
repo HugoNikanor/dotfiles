@@ -71,6 +71,7 @@ ExportedObj/
 # Haskell
 *.hi
 *.autosave
+*.dyn_*
 
 # CTags
 tags
