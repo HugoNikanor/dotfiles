@@ -1,14 +1,18 @@
 ;;; -*- mode: scheme -*-
 
-;; maybe install modules in /usr/lib or simmilar
-(let ((home (getenv "HOME")))
-  (for-each
-    (lambda (path-part)
-      (add-to-load-path (string-append home path-part)))
-    '("/lib/guile" "/code/guile")))
+(use-modules (ice-9 regex))
 
-(use-modules (ice-9 pretty-print)
-             (output line)
+(define (p str)
+  "Pathify string."
+  (regexp-substitute/global
+   #f "~[^/]*" str
+   'pre (lambda (_) (getenv "HOME")) 'post))
+
+(for-each (lambda (p) (add-to-load-path p))
+          (list (p "~/code/guile")
+                (p "~/.local/share/guile/")))
+
+(use-modules (output line)
              (macros arrow))
 
 (define-macro (l file)
@@ -21,22 +25,6 @@
   (syntax-rules ()
     ((_ body ...)
      (lambda () body ...))))
-
-(define (expand-filepath path)
-  "Expands a '~' at the start of a filepath into /home/<user>
-  Note that '~<otheruser>/' doesn't work"
-  (regexp-substitute #f (string-match "^~" path)
-                     (getenv "HOME") 'post))
-
-(define* (to-file expr #:optional (filename "/tmp/guile-output")
-                                  (displayfunc displayln))
-  "Write expr to a file, with an optional display func"
-  (with-output-to-file (expand-filepath filename)
-    (thunk
-      (displayfunc expr))))
-
-;;(define mac-exp (compose pretty-print tree-il->scheme macroexpand))
-;; use ,expand instead
 
 (use-modules (ice-9 readline))
 (activate-readline)
