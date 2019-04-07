@@ -33,6 +33,7 @@
 > import XMonad.Layout.DwmStyle (dwmStyle)
 > import XMonad.Layout.OneBig (OneBig (OneBig))
 > import XMonad.Layout.Spiral (spiral)
+> import XMonad.Layout.WindowNavigation (windowNavigation)
 
 IndependentScreens is the library which should allow things
 to happen at points not currently in focus.
@@ -51,6 +52,7 @@ to happen at points not currently in focus.
 > import qualified Data.Map as M
 > import qualified XMonad.StackSet as W
 > import qualified XMonad.Layout.BoringWindows as B
+> import qualified XMonad.Layout.SubLayouts as S
 
 
 
@@ -118,7 +120,7 @@ screens.
 > myLayouts = ifWider tallThreshold wideLayouts tallLayouts
 >   where tallThreshold = 1200
 >         wideLayouts = Tall 1 (3/100) (3/5)
->                   ||| OneBig (3/4) (3/4)
+>                   ||| spiral (1/2)
 >                   ||| GridRatio (4/3)
 >         tallLayouts = Dishes 1 (1/4)
 >                   ||| GridRatio (4/3)
@@ -186,6 +188,9 @@ Choose one of these, depending on the current monitor setup.
 
 
 
+This adds directional movement, instead of the default 1D movement.
+Especially good on larger screens.
+
 > movementKeys = bindWithAndWithoutShift
 >   (\d -> windowGo d False >> banish LowerRight)
 >   (\d -> windowSwap d False)
@@ -194,14 +199,13 @@ Choose one of these, depending on the current monitor setup.
 >   , (xK_k, U)
 >   , (xK_l, R) ]
 
-----
+
 
 > otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
 > otherKeys conf@(XConfig {XMonad.modMask = modm}) = 
->     [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
->     , ((modm, xK_Tab ), windows W.focusDown)
->     , ((modm .|. shiftMask, xK_Tab ), windows W.focusUp)
->     -- This doesn't work in the easy config, for some reason
+>     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
+>     , ((modm, xK_Tab ), S.onGroup W.focusDown')
+>     , ((modm .|. shiftMask, xK_Tab ), S.onGroup W.focusUp')
 >     , ((modm, xK_t), withFocused $ windows . W.sink)
 >     ]
 
@@ -234,12 +238,30 @@ The following keybinds are managed by EZ-config.
 >   , (pre 'n', spawn "gvim +'setlocal buftype=nofile' -n")
 >
 >   , ("M-S-<Return>", windows W.swapMaster)
+>   , ("M-j", B.focusDown)
+>   , ("M-k", B.focusUp)
+>   , ("M-S-j", windows W.swapDown)
+>   , ("M-S-k", windows W.swapUp)
+>   , ("M-y", spawn "passmenu")
 >   
 >   , ("M-m", sendMessage Shrink)
 >   , ("M-w", sendMessage Expand)
 >   , ("M-S-m", sendMessage $ IncMasterN    1)
 >   , ("M-S-w", sendMessage $ IncMasterN $ -1)
->   
+>   , ("M-l", S.onGroup W.focusDown')
+>   , ("M-h", S.onGroup W.focusUp')
+>
+>   , ("M-<Space> m", withFocused (sendMessage . S.MergeAll))
+>   , ("M-<Space> u", withFocused (sendMessage . S.UnMerge))
+
+  Directions are inverted to what is "normal". This since I want to think about
+  it like a lasso going out in that direction.
+
+>   , ("M-<Space> j", sendMessage $ S.pullGroup D)
+>   , ("M-<Space> k", sendMessage $ S.pullGroup U)
+>   , ("M-<Space> h", sendMessage $ S.pullGroup R)
+>   , ("M-<Space> l", sendMessage $ S.pullGroup L)
+>
 >   , ("M-s", toggleWS)
 >   
 >     -- Do I even want these?
@@ -250,7 +272,7 @@ The following keybinds are managed by EZ-config.
 >     --, ("M-S-g", shiftPrevScreen)
 >     --, ("M-S-c", shiftNextScreen)
 >   
->   , ("M-y", shellPrompt myXPConfig { autoComplete = Nothing
+>   , ("M-p", shellPrompt myXPConfig { autoComplete = Nothing
 >                                    , searchPredicate = isInfixOf } )
 >   , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })
 >   
@@ -296,7 +318,7 @@ smartly after.
 >     , className =? "Steam" --> doShift "steam"
 >     , className =? "Xmessage" --> doSmartFloat
 >     , isDialog --> doSmartFloat
-> 
+>
 >     -- Who doesn't this work!
 >     -- , className =? "Gimp" <&&> (appName =? "Toolbox" <||> title =? "Toolbox") --> doFloat ]
 >     --, className =? "Gimp" --> doFloat ]
@@ -327,12 +349,12 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 > -- funcPP = dzenPP
 > colorFunc = xmobarColor
 > funcPP = xmobarPP
-> myLogHook h = dynamicLogWithPP $ funcPP
->   {   ppCurrent = colorFunc "yellow" bgColor'
+> myLogHook handle = dynamicLogWithPP $ funcPP
+>   { ppCurrent = \str -> colorFunc "yellow" bgColor' $ "[" ++ str ++ "]"
 >   , ppTitle = shorten 100
 >   , ppWsSep = " "
 >   , ppSep = " | "
->   , ppOutput = hPutStrLn h
+>   , ppOutput = hPutStrLn handle
 >   }
 
 
@@ -349,8 +371,11 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 >         , focusFollowsMouse = True
 >         , keys     = myKeys
 >         , terminal = termCommand
->         -- , layoutHook = avoidStruts $ decoration $ myLayouts
->         , layoutHook = avoidStruts $ myLayouts
+>         , layoutHook = avoidStruts
+>                      $ windowNavigation
+>                      $ S.subTabbed
+>                      $ B.boringWindows
+>                      $ myLayouts
 >         , manageHook = manageDocks <+> myManageHook <+> insertPosition Below Newer
 >         , workspaces = ["term", "web"] ++ map show [3 .. nScreens]
 >         , normalBorderColor  = "#1d1f21"
