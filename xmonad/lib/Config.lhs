@@ -237,12 +237,13 @@ The following keybinds are managed by EZ-config.
 >   , (pre 'f', spawn "thunar")
 >   , (pre 'n', spawn "gvim +'setlocal buftype=nofile' -n")
 >
->   , ("M-S-<Return>", windows W.swapMaster)
 >   , ("M-j", B.focusDown)
 >   , ("M-k", B.focusUp)
 >   , ("M-S-j", windows W.swapDown)
 >   , ("M-S-k", windows W.swapUp)
 >   , ("M-y", spawn "passmenu")
+>
+>   , ("M-<Return>", windows W.swapMaster)
 >   
 >   , ("M-m", sendMessage Shrink)
 >   , ("M-w", sendMessage Expand)
