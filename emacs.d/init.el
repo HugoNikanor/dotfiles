@@ -474,6 +474,9 @@ TODO I should filter out obsoleted matches"
   (interactive)
   (geiser-connect-local 'guile "/tmp/guile-gamesh-repl"))
 
+(evil-define-key '(normal emacs insert) geiser-repl-mode-map
+  (kbd "C-l") 'geiser-repl-clear-buffer)
+
 ;; geiser-repl-mode
 
 ;; Geiser only looks at these, if this list is here
@@ -481,7 +484,7 @@ TODO I should filter out obsoleted matches"
 
 (setq geiser-guile-load-path '("/home/hugo/lib/guile" "."))
 ;; geiser-guile-extra-keywords
- ;; geiser-guile-init-file
+;; geiser-guile-init-file
 ;; geiser-guile-load-init-file-p
 
 (evil-define-key '(normal insert) scheme-mode-map
