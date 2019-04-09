@@ -310,6 +310,35 @@ Version 2018-08-30"
     "P" 'evil-search-previous))
 
 (add-hook 'Info-mode-hook #'info-binds)
+
+
+;; (autoload 'irfc "irfc-visit")
+;; https://www.emacswiki.org/emacs/Irfc
+(require 'irfc)
+
+(evil-define-key 'normal irfc-mode-map
+  "t" 'irfc-head-goto
+  "[[" 'irfc-head-prev
+  "]]" 'irfc-head-next
+  "]x" 'irfc-page-next
+  "[x" 'irfc-page-prev)
+
+;; (irfc-reference-goto)
+
+(defvar rfc-index-file "~/.emacs.d/RFC/rfc-index.txt" )
+(defun rfc-list ()
+  "Parees `rfc-index-file` for all RFC's.
+TODO I should filter out obsoleted matches"
+  (re-seq
+   "^[0-9]+ .*"
+   (with-current-buffer (find-file-noselect rfc-index-file)
+     (buffer-string))))
+
+(defun rfc-goto (str &rest rest)
+  "irfc-visit, with a list of all RFC's"
+  (interactive
+   (list (completing-read "Open RFC: " (rfc-list))))
+  (irfc-visit (car (read-from-string str))))
 
 
 ;;; Paredit
