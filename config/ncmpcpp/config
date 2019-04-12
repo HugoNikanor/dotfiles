@@ -1,1 +1,2 @@
 # mpd_host = jukebox.lysator.liu.se
+mpd_music_dir = /lysator/jukebox/
