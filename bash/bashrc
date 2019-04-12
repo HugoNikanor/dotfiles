@@ -37,17 +37,7 @@ export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
 #export INFOPATH="$HOME/info"
 #export INFOPATH="$HOME/info:/usr/local/share/info/:usr/share/info/"
 
-for path in \
-	"$HOME/.local/bin" \
-	"$HOME/bin" \
-	"$HOME/.gem/ruby/2.3.0/bin" \
-	"$HOME/.local/bin" \
-	"$HOME/.cabal/bin" 
-do
-	if [ -d $path ]; then
-		PATH="$path:$PATH"
-	fi
-done
+source ~/.dotfiles/setpath.sh
 
 [ -f ~/.dotfiles/bash/bash_aliases ] && source ~/.dotfiles/bash/bash_aliases
 [ -f ~/.ghiToken ] && source ~/.ghiToken
