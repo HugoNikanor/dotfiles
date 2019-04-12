@@ -1,4 +1,5 @@
 ;; -*- mode: scheme -*-
+;; vim:ft=scheme:
 
 (
  (pair-defaults
@@ -29,5 +30,11 @@
    (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri607Q7QYn5ZQ2Q532850976yZZQ6204.ics")))
 
   ("TSRT04"
-   (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri647Q7QYn1ZQ6Q541855479yZZQ6507.ics"))))
- )
+   (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri647Q7QYn1ZQ6Q541855479yZZQ6507.ics")))
+
+  ("TDDC78"
+   (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri647Q7QYn9ZQ6Q540655479yZZQ6507.ics")))
+
+  ("TFYA19" ; Kvantdatorer
+   (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri647Q7QYn8ZQ6Q547855479yZZQ6807.ics")))
+  ))
