@@ -86,6 +86,8 @@ unignore from: subject to cc date x-url user-agent x-spam-score:
 # x-mailer
 
 source `[ $(id -u) -eq 2278 ] && echo ~/.mutt/systems/lysator || echo /dev/null`
-source `[ $(hostname) = "STATENS_laptop" ] && echo ~/.mutt/systems/laptop || echo /dev/null`
+source `[ $(hostname) = "STATENSlaptop" ] && echo ~/.mutt/systems/laptop || echo /dev/null`
+
+macro index \Ck <save-message>=Lysator/Junk<return>
 
 # vim: set nowrap: set expandtab:
