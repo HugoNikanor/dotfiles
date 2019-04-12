@@ -1,17 +1,19 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+export PS1='\h [\w] \$ '
+
+source ~/.dotfiles/bash/colors
+
 case `hostname` in
 	STATENS_laptop)
 		source ~/.dotfiles/bash/STATENS_laptop.sh ;;
 	arch2012|hornquist)
-		source ~/.dotfiles/bash/arch2012.sh ;;
+		source ~/.dotfiles/bash/prompt_command.sh ;;
 esac
 
-test -f  /bin/domainname &&
-case `domainname` in
-	lysator)
-		source ~/.dotfiles/bash/arch2012.sh ;;
+case `hostname -d` in
+	lysator*) ;;
 esac
 
 shopt -s checkwinsize
@@ -26,7 +28,6 @@ export RTV_EDITOR="/usr/bin/vim"
 export RTV_URLVIEWER="/usr/bin/urlview"
 export INFO_PRINT_COMMAND=">/tmp/info"
 export GUILE_LOAD_PATH="/home/hugo/lib/guile"
-export COWPATH=/usr/share/cows/:/usr/local/share/cows/
 export XDG_DOCUMENTS_DIR="$HOME/ldoc"
 export XDG_DOWNLOAD_DIR="$HOME/down/other"
 export XDG_PICTURES_DIR="$HOME/pic"
@@ -50,15 +51,16 @@ done
 [ -f ~/.dotfiles/bash/bash_aliases ] && source ~/.dotfiles/bash/bash_aliases
 [ -f ~/.ghiToken ] && source ~/.ghiToken
 
-
-# source /usr/share/fzf/completion.bash
-# source /usr/share/fzf/key-bindings.bash
-#export FZF_TMUX=1
 FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
-[ $TERM == "xterm-termite" ] && export TERM=xterm
+if [ $TERM == "xterm-termite" ]; then
+	source /etc/profile.d/vte*sh
+fi
 
-#true
-# This shouldn't be required
-. ~/.bash_completion
-[ $TERM == "xterm-termite" ] && source /etc/profile.d/vte.sh
+if [ $(uname -s) == "Linux" ]; then
+	# This shouldn't be required
+	. ~/.bash_completion
+
+	[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+fi
+

@@ -1,7 +1,10 @@
-source ~/.dotfiles/bash/colors
-
 function __prompt_command() {
-	local EXIT="$?"
+ 	local EXIT="$?"
+# 	read PS1 <<- EOF
+# 	$([ $(hostname) != "arch2012" ] && echo "\u@")\h\
+# 	$([ $EXIT == 0 ] && echo "${Green}" || echo "${Red}
+# 	EOF
+# 
 	# I'm only interested in the hostname if I'm not at home
 	if [ $(hostname) != "arch2012" ]; then
 		PS1="\u@\h "
@@ -30,4 +33,4 @@ function __prompt_command() {
 }
 
 #PS1="\u@\h [\[${bold}\]\w\[${normal}\]]\n\$ "
-export PROMPT_COMMAND=__prompt_command
+# export PROMPT_COMMAND=__prompt_command

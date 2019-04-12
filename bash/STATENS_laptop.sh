@@ -12,5 +12,3 @@ esac
 function __prompt_command() {
 	PS1="`bat -s` [\w] \$ "
 }
-
-PS1='[\w] \$ '
