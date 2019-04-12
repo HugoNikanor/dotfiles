@@ -1,15 +1,16 @@
+;;; init.el --- Init file for emacs
+;;; Commentary:
+;;; Code:
+
+(eval-when-compile
+ (require 'cl))
 (require 'package)
-(require 'cl)
 
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ("melpa" . "https://melpa.org/packages/")))
 
-;;; ==Speedbar==
-;;; z should toggle expand|contract
-;;; speedbar-expand-line
-;;; speedbar-contract-line
-
+(defvar required-packages)
 (setq required-packages
       `(flycheck
         haskell-mode
@@ -22,6 +23,9 @@
         which-key                       ; show possible keys
         yasnippet
         yasnippet-snippets
+        ;; markdown-mode
+        frames-only-mode
+        ;; rainbow-delimiters
         ))
 
 (setq evil-packages `(evil evil-org evil-paredit))
@@ -41,6 +45,9 @@
 (mapc #'require required-packages)
 
 (defun safe-load-pkg (pkg)
+  "Test.
+
+PKG"
   (unless (package-installed-p pkg)
     (package-install pkg)))
 
@@ -53,7 +60,7 @@
 ;; (load-library "noweb-mode.el")
 (autoload 'noweb-mode "noweb-mode" "Editing noweb files." t)
 (setq auto-mode-alist (append (list (cons "\\.nw$" 'noweb-mode))
-			      auto-mode-alist))
+                              auto-mode-alist))
 
 (autoload 'lyskom "lyskom.elc" "LysKOM" t)
 
@@ -74,6 +81,14 @@
        (require (quote ,(intern (concat "evil-collection-" sname))))
        (,(intern (concat "evil-collection-" sname "-setup"))))))
 
+(defun re-seq (regexp string)
+  (save-match-data
+    (let ((pos 0)
+          matches)
+      (while (string-match regexp string pos)
+        (push (match-string 0 string) matches)
+        (setq pos (match-end 0)))
+      (reverse matches))))
 
 
 ;;; Evil
@@ -142,20 +157,27 @@
 (show-paren-mode)
 (column-number-mode)
 
+(frames-only-mode)
+
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
 
+;; (defvar og-whitespace-style whitespace-style)
 ;; Highlight "bad" whitespace.
 ;; Unfortunately breaks "regular" whitespace mode.
-(setq whitespace-style
-      '(face space-before-tab trailing))
+;; (setq whitespace-style
+;;       '(face space-before-tab trailing))
 
 ;; Mark lines not part of file.
 (setq-default indicate-empty-lines t)
+(setq-default show-trailing-whitespace t)
 
-(global-whitespace-mode)
+(add-hook 'read-only-mode-hook
+          #'(lambda () (message "Hello")
+              (setq-local show-trailing-whitespace (not buffer-read-only))))
 
+   
 (setq inhibit-startup-screen t)
 
 (setq mmm-submode-decoration-level 1)
@@ -187,7 +209,12 @@ Version 2018-08-30"
       (setq buffer-display-table (make-display-table)))
     (aset buffer-display-table ?\^L
           (make-vector
-           (window-width)
+           (round (* (window-width)
+                     (if (and (boundp 'text-scale-mode)
+                              (symbol-value 'text-scale-mode))
+                         ;; TODO this gives rather bad values
+                         (expt text-scale-mode-step (- text-scale-mode-amount))
+                       1)))
            (make-glyph-code ?─          ; 'font-lock-comment-face
                             )))
     (redraw-frame)))
@@ -292,6 +319,9 @@ Version 2018-08-30"
            ("\\vec{v}" . "v̅")
            ("\\vec{u}" . "u̅")
            ("\\lto" . ?⇒)               ; leads to
+           ("\\gaffla" . ?ψ)
+           ("\\Gaffla" . ?Ψ)
+           ("\\trassla" . ?ξ)
            ))))
 
 (add-hook 'tex-mode-hook #'prettify-tex)
@@ -397,7 +427,8 @@ TODO I should filter out obsoleted matches"
 
 ;;; Common Lisp
 
-(setq inferior-lisp-program "sbcl")
+
+(setq-default inferior-lisp-program "sbcl")
 
 (add-hook 'lisp-mode-hook
  (lambda ()
@@ -407,6 +438,8 @@ TODO I should filter out obsoleted matches"
 
 
 ;;; Clojure
+
+;; tex-latex-indent-syntax-table
 
 (defun clojure-env ()
   (safe-load-pkg 'cider)
@@ -466,7 +499,7 @@ TODO I should filter out obsoleted matches"
    (font-lock-add-keywords
     nil `(,(regexp-opt '("mod!" "set!") 'symbols)
           ("\\<\\w+:\\>" . font-lock-constant-face)
-          ("\\<\\(define-\\w*\\)\\>\s*(?\\(\\sw+\\)?"
+          ("(\\<\\(define-\\w*\\)\\>\s +(?\\(\\S +\\)?"
            (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face))))))
 
 ;;; TODO add optional path argument, which should be able to be given through M-x
@@ -495,9 +528,10 @@ TODO I should filter out obsoleted matches"
 (mmm-add-classes
  '((lisp-texinfo-comments
     :submode texinfo-mode
-    :front "^;+"
-    :back "^[^;]"
-    :include-front t
+    :front "^;; "
+    ;; :back "^[^;]"
+    :back "$"
+    :include-front nil
     :include-back nil
     )))
 
@@ -525,7 +559,22 @@ TODO I should filter out obsoleted matches"
     )))
 
 
+
+(yas-global-mode)
+
+
+
 ;;; Other
+
+;; (defun complete ()
+;;   (interactive)
+;;   (let ((abbrev (dabbrev--abbrev-at-point)))
+;;     (message abbrev)
+;;     (setq dabbrev--last-abbreviation abbrev)
+;;     (let ((lst (dabbrev--find-all-expansions abbrev t)))
+;;       (if (not lst)
+;;           (message "No completions at point")
+;;         (popup-menu* lst)))))
 
 ;;; Can I somehow enable this for all available modes?
 (hook-envs #'hs-minor-mode
