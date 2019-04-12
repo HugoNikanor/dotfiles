@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Markdown Header
+# key: h=
+# --
+${1:Heading 1}
+${1:$(make-string (string-width yas-text) ?=)}
+$0
