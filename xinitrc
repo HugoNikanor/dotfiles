@@ -4,8 +4,7 @@ resources=$HOME/.Xresources
 test -f $resources && xrdb -merge $resources
 
 case $(hostname) in
-	STATENS_laptop)
-		export BROWSER=$(which qutebrowser)
+	STATENSlaptop)
 		xbindkeys
 		;;
 	saruman)
@@ -14,4 +13,9 @@ case $(hostname) in
 		;;
 esac
 
-exec ${WM:-i3}
+compton &
+termite &
+feh --bg-fill https://wrya.net/services/wallpaper/4chan.php
+
+export WM=${WM:-xmonad}
+exec $WM

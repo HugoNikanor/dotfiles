@@ -25,6 +25,15 @@
 > import XMonad.Hooks.Place
 > import XMonad.Hooks.ManageDocks (avoidStruts, manageDocks, docks)
 > import XMonad.Hooks.DynamicLog
+>     ( xmobarColor
+>     , xmobarPP
+>     , dynamicLogWithPP
+>     , ppCurrent
+>     , ppTitle
+>     , ppWsSep
+>     , ppSep
+>     , ppOutput
+>     , shorten)
 
 > import XMonad.Layout.Grid (Grid (Grid, GridRatio))
 > import XMonad.Layout.PerScreen (ifWider)

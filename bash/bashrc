@@ -6,7 +6,7 @@ export PS1='\h [\w] \$ '
 source ~/.dotfiles/bash/colors
 
 case `hostname` in
-	STATENS_laptop)
+	STATENSlaptop)
 		source ~/.dotfiles/bash/STATENS_laptop.sh ;;
 	arch2012|hornquist)
 		source ~/.dotfiles/bash/prompt_command.sh ;;
@@ -23,6 +23,10 @@ HISTSIZE=1000
 HISTFILESIZE=2000
 
 #true ${BROWSER:="/home/hugo/bin/browser"}
+#: ${BROWSER="fallback"}
+# export BROWSER=xdg-open
+# export BROWSER=${BROWSER:-elinks}
+true ${BROWSER:="elinks"}
 export EDITOR="/usr/bin/vim"
 export RTV_EDITOR="/usr/bin/vim"
 export RTV_URLVIEWER="/usr/bin/urlview"
@@ -53,4 +57,10 @@ if [ $(uname -s) == "Linux" ]; then
 	. ~/.bash_completion
 
 	[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+fi
+
+if [ -d "$HOME/.dotfiles/aux-files" ]; then
+	for file in $HOME/.dotfiles/aux-files/*.sh; do
+		test -r "$file" && . "$file"
+	done
 fi

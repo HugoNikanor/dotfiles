@@ -32,6 +32,7 @@ call plug#begin("~/.vim/plugged")
 	Plug 'tpope/vim-fugitive'
 	Plug 'hari-rangarajan/CCTree'
 	Plug 'junegunn/goyo.vim'
+	" Plug 'lilydjwg/colorizer' " Really cool plugin, but WAY to slow for larger files
 
 	" gdb breakpoint sign
 	if     version >= 801 | Plug 'HugoNikanor/vim-breakpoint'

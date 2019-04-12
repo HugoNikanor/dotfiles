@@ -355,7 +355,8 @@ Version 2018-08-30"
 
 ;; (irfc-reference-goto)
 
-(defvar rfc-index-file "~/.emacs.d/RFC/rfc-index.txt" )
+(setq irfc-directory "~/.local/share/RFC/")
+(defvar rfc-index-file (concat rfc-directory "rfc-index.txt"))
 (defun rfc-list ()
   "Parees `rfc-index-file` for all RFC's.
 TODO I should filter out obsoleted matches"
