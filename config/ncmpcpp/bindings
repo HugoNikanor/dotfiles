@@ -12,7 +12,6 @@ def_key "t"
 # TODO figure out how to have different
 # bindings for different "windows".
 def_key "space"
-	#select_item
 	add_item_to_playlist
 
 
