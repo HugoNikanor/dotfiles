@@ -62,3 +62,5 @@ FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || t
 # This shouldn't be required
 . ~/.bash_completion
 [ $TERM == "xterm-termite" ] && source /etc/profile.d/vte.sh
+
+export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
