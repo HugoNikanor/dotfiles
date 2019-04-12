@@ -66,7 +66,7 @@ The X key names of the swedish letters is
 > xK_ä = xK_adiaeresis
 > xK_ö = xK_odiaeresis
 
-------------------------------------------------------------
+
 
 TODO
 ====
@@ -74,15 +74,6 @@ TODO
 * If only one program is in a workspace the workspace should change name to that
 
 > myFont = "Iosevka Slab-11"
-
-This function should possibly be changed to take a context string instead of
-just a hostname, this to simplify having multiple terminal types on one system
-`hostname -y` return "lysator" on some systems, "(none)" on other
-
-> getTerminalCommand :: HostName -> String
-> getTerminalCommand "arch2012"       = "termite -c ~/.config/termite/desktop.conf"
-> getTerminalCommand "STATENS_laptop" = "termite -c ~/.config/termite/laptop.conf"
-> getTerminalCommand _                = "/home/hugo/bin/termite -c ~/.config/termite/lysator.conf"
 
 TODO figure out how to run this from main
 
@@ -361,7 +352,6 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
 
 > main = do
->     -- termCommand <- getTerminalCommand <$> getHostName
 >     let termCommand = "termite"
 >     nScreens    <- countScreens
 >     xmproc      <- spawnPipe "xmobar"
