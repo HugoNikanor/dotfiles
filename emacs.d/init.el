@@ -344,6 +344,9 @@ Version 2018-08-30"
 
 ;; (autoload 'irfc "irfc-visit")
 ;; https://www.emacswiki.org/emacs/Irfc
+(unless (file-exists-p "~/.emacs.d/pkg/irfc.el")
+  (url-copy-file "https://www.emacswiki.org/emacs/download/irfc.el"
+                 "~/.emacs.d/pkg/irfc.el" nil))
 (require 'irfc)
 
 (evil-define-key 'normal irfc-mode-map
@@ -356,7 +359,7 @@ Version 2018-08-30"
 ;; (irfc-reference-goto)
 
 (setq irfc-directory "~/.local/share/RFC/")
-(defvar rfc-index-file (concat rfc-directory "rfc-index.txt"))
+(defvar rfc-index-file (concat irfc-directory "rfc-index.txt"))
 (defun rfc-list ()
   "Parees `rfc-index-file` for all RFC's.
 TODO I should filter out obsoleted matches"
