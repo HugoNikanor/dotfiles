@@ -1,7 +1,8 @@
 # This file is sourced by i3 upon logon, maybe also other window managers...
 # used for lysator, since these settings can't be set on a system level there
+# NOTE: These shells are run with plain sh, and NOT bash
 
-source ~/.dotfiles/setpath.sh
+PP=xsessionrc . $HOME/.dotfiles/setpath.sh
 
 # auto keybinds on lysators system this could probably be better solved by actually importing my planck keymap.
 # This should be changed to only trigger on lys-systems in ~, instead of everywhere except arch2012

@@ -1,3 +1,10 @@
+#
+# Helper script for setting environment variables, which should be set
+# globaly for my user.
+# Loaded by both .xsessionrc, as well as .bashrc.
+# Note that it must be sh compatible, to work with xsessionrc.
+#
+
 [ -z $HAVE_SET_PATH ] || return
 
 for path in \
@@ -11,4 +18,5 @@ do
 	fi
 done
 
-export HAVE_SET_PATH=1
+export PATH
+export HAVE_SET_PATH=${PP:- 1}

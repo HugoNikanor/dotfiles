@@ -37,7 +37,7 @@ export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
 #export INFOPATH="$HOME/info"
 #export INFOPATH="$HOME/info:/usr/local/share/info/:usr/share/info/"
 
-source ~/.dotfiles/setpath.sh
+PP=bashrc source ~/.dotfiles/setpath.sh
 
 [ -f ~/.dotfiles/bash/bash_aliases ] && source ~/.dotfiles/bash/bash_aliases
 [ -f ~/.ghiToken ] && source ~/.ghiToken
