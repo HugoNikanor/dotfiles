@@ -51,7 +51,7 @@ pre-file is included verbatim at the top of the output
     (let ((pair-def (assoc-ref f 'pair-defaults))
           (remote-def (assoc-ref f 'remote-defaults))
           (local-def (assoc-ref f 'local-defaults))
-          (pairs (cdr (assoc-ref f 'pairs))))
+          (pairs (assoc-ref f 'pairs)))
       (for-each (lambda (pair)
                   (let ((name (car pair))
                         (alist (cdr pair)))
