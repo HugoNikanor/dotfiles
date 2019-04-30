@@ -16,7 +16,7 @@ set novisualbell
 set noruler
 set noshowcmd
 set statusline=""
-set guifontset=Fira\ Mono\ 10
+set guifont=Fira\ Mono\ 10
 
 " colorscheme darkblue
 colorscheme delek
