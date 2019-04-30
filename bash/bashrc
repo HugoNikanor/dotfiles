@@ -22,10 +22,6 @@ HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-#true ${BROWSER:="/home/hugo/bin/browser"}
-#: ${BROWSER="fallback"}
-# export BROWSER=xdg-open
-# export BROWSER=${BROWSER:-elinks}
 true ${BROWSER:="elinks"}
 export EDITOR="/usr/bin/vim"
 export RTV_EDITOR="/usr/bin/vim"
