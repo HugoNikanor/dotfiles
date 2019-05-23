@@ -18,6 +18,9 @@
   ("lithekod"
    (remote (url . "https://calendar.google.com/calendar/ical/lithekod.se_fa4msgl7qpmsdns5oc4fq48ago%40group.calendar.google.com/public/basic.ics")))
 
+  ("lithekod_styrelse"
+   (remote (url .  "https://calendar.google.com/calendar/ical/lithekod.se_eos416am56q1g0nuqrtdj8ui1s%40group.calendar.google.com/public/basic.ics")))
+
   ("D1"
    (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri677Q7QYn8ZQ9Q540650975yZZQ6805.ics" )))
 
