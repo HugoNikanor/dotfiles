@@ -28,7 +28,7 @@ call plug#begin("~/.vim/plugged")
 	Plug 'drmikehenry/vim-headerguard'    " Auto place C header guards
 	Plug 'tpope/vim-speeddating'          " Make C-[ax] work with dates
 	Plug 'ryvnf/readline.vim'             " Readline in command mode
-	Plug 'hugonikanor/vimwiki', {'branch': 'dev'}
+	Plug 'vimwiki/vimwiki', {'branch': 'dev'}
 	Plug 'tpope/vim-fugitive'
 	Plug 'hari-rangarajan/CCTree'
 	Plug 'junegunn/goyo.vim'
@@ -191,7 +191,7 @@ set hlsearch          " highlight all
 set virtualedit=block " like all but only for visual block
 set completeopt=longest,menuone " <C-n> don't autoselect
 set path+=**
-set scrolloff=5
+set scrolloff=1
 set nrformats-=octal
 
 set wildignore+=tags
