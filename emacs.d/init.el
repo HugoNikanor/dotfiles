@@ -181,7 +181,7 @@ PKG"
    
 (setq inhibit-startup-screen t)
 
-(setq mmm-submode-decoration-level 1)
+(setq mmm-submode-decoration-level 0)
 (setq mmm-global-mode 'maybe)
 
 
