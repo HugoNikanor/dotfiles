@@ -77,6 +77,6 @@ url = ${(assoc-ref* a 'url remote-def)}
 [storage ${name}_local]
 type = ${(assoc-ref* a 'type local-def)}
 fileext = ${(assoc-ref* a 'fileext local-def)}
-path = \"~~/.calendars/${name}\"
+path = \"~~/.local/var/cal/${name}\"
 ")))))
                 pairs))))

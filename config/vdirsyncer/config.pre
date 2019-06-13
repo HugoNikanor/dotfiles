@@ -36,7 +36,7 @@ conflict_resolution = ["command", "vimdiff"]
 
 [storage fruux_local]
 type = "filesystem"
-path = "~/.calendars/"
+path = "~/.local/var/cal/"
 fileext = ".ics"
 
 [storage fruux_remote]

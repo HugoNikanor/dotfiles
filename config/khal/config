@@ -1,7 +1,7 @@
 [calendars]
 
 [[calendars]]
-path = ~/.calendars/*
+path = ~/.local/var/cal/*
 type = discover
 
 [default]
