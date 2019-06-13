@@ -26,6 +26,7 @@
         ;; markdown-mode
         frames-only-mode
         ;; rainbow-delimiters
+        elm-mode
         ))
 
 (setq evil-packages `(evil evil-org evil-paredit))
@@ -325,6 +326,16 @@ Version 2018-08-30"
            ))))
 
 (add-hook 'tex-mode-hook #'prettify-tex)
+
+(defun prettify-elm ()
+  (setq prettify-symbols-alist
+        (append
+         prettify-symbols-alist
+         '(("\\" . ?λ)
+           ("->" . ?→)
+           ("<-" . ?←)
+           ))))
+(add-hook 'elm-mode-hook #'prettify-elm)
 
 (global-prettify-symbols-mode 1)
 
