@@ -6,7 +6,7 @@ Config
     , position         = Top
     , sepChar          = "%"
     , alignSep         = "}{"
-    , template         = "%UnsafeStdinReader% }{ %wlp12s0wi% | %date% | %battery%"
+    , template         = "%UnsafeStdinReader% }{ %mpd% | %wlp12s0wi% | %date% | %battery%"
     , allDesktops      = True
     , overrideRedirect = True
     , pickBroadest     = False
@@ -19,6 +19,10 @@ Config
         -- , "--"
         -- , "--quality-icon-pattern", (\x y -> "")
         ] 10
+
+        , Run MPD ["--template",
+                   "<fc=#ABABAB><title></fc> <lapsed>/<length> <fc=#ABABAB><volume>%</fc>"
+                   ] 10
 
         -- battery monitor
         , Run Battery [ "--template" , "<acstatus>"
