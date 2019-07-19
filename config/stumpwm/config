@@ -1,0 +1,20 @@
+;;; -*- mode: lisp -*-
+
+(in-package :stumpwm)
+
+(defcommand termite () ()
+  "Start termite"
+  (run-shell-command "termite"))
+
+(loop for k in '("c" "C-c")
+      do (define-key *root-map* (kbd k) "termite"))
+
+(loop
+   for key across "hjkl"
+   for direction in '(:left :down :up :right)
+   do (progn (define-key *root-map* (kbd (string key))
+               (format nil "move-focus ~a" direction))
+             (define-key *root-map* (kbd (string-upcase (string key)))
+               (format nil "move-window ~a" direction))))
+
+(setq *mouse-focus-policy* :sloppy)
