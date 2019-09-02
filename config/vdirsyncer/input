@@ -21,8 +21,21 @@
   ("lithekod_styrelse"
    (remote (url .  "https://calendar.google.com/calendar/ical/lithekod.se_eos416am56q1g0nuqrtdj8ui1s%40group.calendar.google.com/public/basic.ics")))
 
+  #;
   ("D1"
    (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri677Q7QYn8ZQ9Q540650975yZZQ6805.ics" )))
+
+  ("STABEN"
+   (remote (url . "https://calendar.google.com/calendar/ical/d.lintek.liu.se_90a0j5e3r9oc6dotfbe716n8ns%40group.calendar.google.com/public/basic.ics")))
+
+  ("TDDI41_TDP031"
+   (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri65X456X46Z04Q5Z96g8Y90y5056Y51905gQY6Q53798580Y24567Q0ZnQ5473.ics")))
+
+  ("TDDE04"
+   (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri653Q85Y91Z90Q5Y7607QX9y5Zn614Z45Q2584Q687.ics")))
+
+  ("TSTE24"
+   (remote (url .  "https://cloud.timeedit.net/liu/web/schema/ri664XQn580Z55Qm77025ZZ6y9Y740QQ0Y45Y0gQ10764.ics")))
 
   #;
   ("D2"
@@ -32,12 +45,15 @@
   ("D3"
    (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri607Q7QYn5ZQ2Q532850976yZZQ6204.ics")))
 
+  #;
   ("TSRT04"
    (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri647Q7QYn1ZQ6Q541855479yZZQ6507.ics")))
 
+  #;
   ("TDDC78"
    (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri647Q7QYn9ZQ6Q540655479yZZQ6507.ics")))
 
+  #;
   ("TFYA19" ; Kvantdatorer
    (remote (url . "https://cloud.timeedit.net/liu/web/schema/ri647Q7QYn8ZQ6Q547855479yZZQ6807.ics")))
   ))
