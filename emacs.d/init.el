@@ -528,7 +528,7 @@ TODO I should filter out obsoleted matches"
 ;; geiser-repl-mode
 
 ;; Geiser only looks at these, if this list is here
-(setq geiser-active-implementations '(guile))
+(setq geiser-active-implementations '(guile chicken))
 
 (setq geiser-guile-load-path '("/home/hugo/lib/guile" "."))
 ;; geiser-guile-extra-keywords
