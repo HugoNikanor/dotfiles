@@ -1,7 +1,6 @@
 > module Config where
 
 > import System.IO (hPutStrLn)
-> import Network.HostName (HostName, getHostName)
 > import Data.List (isInfixOf)
 
 > import XMonad
