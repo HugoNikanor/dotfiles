@@ -2,8 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(eval-when-compile
- (require 'cl))
+(eval-when-compile (require 'cl))
 (require 'package)
 
 (setq package-archives
@@ -46,9 +45,6 @@
 (mapc #'require required-packages)
 
 (defun safe-load-pkg (pkg)
-  "Test.
-
-PKG"
   (unless (package-installed-p pkg)
     (package-install pkg)))
 
@@ -178,7 +174,7 @@ PKG"
           #'(lambda () (message "Hello")
               (setq-local show-trailing-whitespace (not buffer-read-only))))
 
-   
+
 (setq inhibit-startup-screen t)
 
 (setq mmm-submode-decoration-level 0)
@@ -388,10 +384,6 @@ TODO I should filter out obsoleted matches"
 
 ;;; Paredit
 
-(defun paredit-stuff ()
-  (evil-define-key 'visual lisp-mode-map
-    (kbd "SPC ;") 'paredit-comment-dwim)
-  (enable-paredit-mode))
 
 '(comment ; Something like this should be used insead,
   (use-modules (ice-9 pretty-print))
@@ -400,19 +392,24 @@ TODO I should filter out obsoleted matches"
    (compose pretty-print
             read)))
 
+
+(defvar-local *eval-sexp* 'identity)
+(defvar-local *eval-sexp-print* 'identity)
+
 (defun eval-sexp-print () (interactive)
-       (princ "No eval-sexp-print for current mode."))
+       (funcall (symbol-function *eval-sexp-print*)))
 (defun eval-sexp () (interactive)
-       (princ "No eval-sexp for current mode."))
+       (funcall (symbol-function *eval-sexp*)))
 
+(define-key paredit-mode-map (kbd "C-j")
+  'eval-sexp-print)
 
-(define-key paredit-mode-map (kbd "C-j")   #'eval-sexp-print)
-(define-key paredit-mode-map (kbd "C-S-j") #'eval-sexp)
+(define-key paredit-mode-map (kbd "C-S-j")
+  'eval-sexp)
 
 (add-hook 'paredit-mode-hook #'evil-paredit-mode)
 
-(hook-envs
- #'paredit-stuff
+(hook-envs #'enable-paredit-mode
  '(emacs-lisp-mode-hook
    eval-expression-minibuffer-setup-hook
    ielm-mode-hook
@@ -434,8 +431,8 @@ TODO I should filter out obsoleted matches"
 
 (hook-envs
  (lambda ()
-   (defalias 'eval-sexp-print #'eval-print-last-sexp)
-   (defalias 'eval-sexp #'elisp-eval-popup) )
+   (setq *eval-sexp-print* 'eval-print-last-sexp
+         *eval-sexp*       'elisp-eval-popup))
  '(emacs-lisp-mode-hook
    lisp-interaction-mode-hook))
 
@@ -448,8 +445,8 @@ TODO I should filter out obsoleted matches"
 (add-hook 'lisp-mode-hook
  (lambda ()
    (safe-load-pkg 'slime)
-   (defalias 'eval-sexp-print #'slime-eval-print-last-expression)
-   (defalias 'eval-sexp #'slime-eval-last-expression)))
+   (setq *eval-sexp-print* 'slime-eval-print-last-expression
+         *eval-sexp*       'slime-eval-last-expression)))
 
 
 ;;; Clojure
@@ -509,8 +506,9 @@ TODO I should filter out obsoleted matches"
  'scheme-mode-hook
  (lambda ()
    (safe-load-pkg 'geiser)
-   (defalias 'eval-sexp-print #'geiser-eval-print-last-sexp)
-   (defalias 'eval-sexp #'geiser-eval-last-sexp)
+   (geiser-mode)
+   (setq *eval-sexp-print* 'geiser-eval-print-last-sexp
+         *eval-sexp*       'geiser-eval-popup-last-sexp)
    (font-lock-add-keywords
     nil `(,(regexp-opt '("mod!" "set!") 'symbols)
           ("\\<\\w+:\\>" . font-lock-constant-face)
