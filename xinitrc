@@ -11,6 +11,9 @@ case $(hostname) in
 		unclutter &
 		dex /usr/share/applications/polkit-gnome-authentication-agent-1.desktop &
 		;;
+	gandalf)
+		xcape -e "Shift_L=parenleft;Shift_R=parenright"
+		;;
 esac
 
 compton &
