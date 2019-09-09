@@ -45,7 +45,7 @@
 (account default ()
          (toplevel
           (name "Hugo Hörnquist")
-          (path-base "~/mail/"))
+          (path-base ,(or (getenv "MAILDIR") "~/mail/")))
 
          (IMAPAccount
           (SSLType "IMAPS")
