@@ -12,20 +12,6 @@
           (list (p "~/code/guile")
                 (p "~/.local/share/guile/")))
 
-(use-modules (output line)
-             (macros arrow))
-
-(define-macro (l file)
-  "Macro for quicker file loading"
-  `(load ,(string-append
-            (symbol->string file)
-            ".scm")))
-
-(define-syntax thunk
-  (syntax-rules ()
-    ((_ body ...)
-     (lambda () body ...))))
-
 (when (string=? "2.2" (effective-version))
   (use-modules (ice-9 readline))
   (activate-readline))

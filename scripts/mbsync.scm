@@ -129,12 +129,30 @@
           (pass-path ,(format #f "vastgota.nation.liu.se/mail/~a" (? acc-name))))
 
          (MaildirStore
-          (Path ,(string-append (? path-base) "Vastgota." (string-titlecase (? acc-name)))))
+           (Path ,(format #f "~aVastgota.~a/"
+                          (? path-base)
+                          (string-titlecase (? acc-name)))))
 
          (IMAPAccount
           (User ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))))
 
 (account guckel (vg-base))
+
+(account liu-fs (google)
+         (toplevel
+           (pass-path "formulastudent/google/hugo.hornquist")
+           (address "hugo.hornquist@liuformulastudent.se"))
+
+         (MaildirStore
+           (Path ,(format #f "~aFormulastudent/"
+                          (? path-base))))
+
+
+         (mutt
+           (signature "Hugo Hörnquist, IT med mera.)")))
+
+
+
 
 #;
 (define (render-mutt-configs . accounts)
