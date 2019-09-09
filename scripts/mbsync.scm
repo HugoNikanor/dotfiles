@@ -129,9 +129,10 @@
           (pass-path ,(format #f "vastgota.nation.liu.se/mail/~a" (? acc-name))))
 
          (MaildirStore
-           (Path ,(format #f "~aVastgota.~a/"
-                          (? path-base)
-                          (string-titlecase (? acc-name)))))
+           (Path ,(path-append (? path-base)
+                               (string-append "Vastgota."
+                                 (string-titlecase (? acc-name)))
+                               "/")))
 
          (IMAPAccount
           (User ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))))
@@ -144,8 +145,7 @@
            (address "hugo.hornquist@liuformulastudent.se"))
 
          (MaildirStore
-           (Path ,(format #f "~aFormulastudent/"
-                          (? path-base))))
+           (Path ,(path-append (? path-base) "Formulastudent/")))
 
 
          (mutt
