@@ -17,5 +17,8 @@ compton &
 termite &
 feh --bg-fill https://wrya.net/services/wallpaper/4chan.php
 
+BROWSER=xdg-open
+export BROWSER
+
 export WM=${WM:-xmonad}
 exec $WM
