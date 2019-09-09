@@ -55,7 +55,9 @@
 
          (MaildirStore
           (AltMap yes)
-          (Path ,(string-append (? path-base) (string-titlecase (? acc-name))))
+          (Path ,(string-append (? path-base)
+                                (string-titlecase (? acc-name))
+                                "/"))
           (Inbox ,(string-append (? (MaildirStore Path))
                                  "INBOX"))
           (SubFolders Verbatim))
@@ -165,7 +167,8 @@
  lysator
  gmail
  liu
- guckel)
+ guckel
+ liu-fs)
 
 #;
 (render-mutt-configs
