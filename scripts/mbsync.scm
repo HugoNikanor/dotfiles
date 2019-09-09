@@ -55,10 +55,8 @@
 
          (MaildirStore
           (AltMap yes)
-          (Path ,(string-append (? path-base)
-                                (string-titlecase (? acc-name))
-                                "/"))
-          (Inbox ,(string-append (? (MaildirStore Path))
+          (Path ,(path-append (? path-base) (string-titlecase (? acc-name)) "/"))
+          (Inbox ,(path-append (? (MaildirStore Path))
                                  "INBOX"))
           (SubFolders Verbatim))
 
@@ -77,8 +75,8 @@
           ;; set
           (from ,(format #f "~a <~a>" (? name) (? address)))
           (folder "~/mail")
-          (record ,(string-append (? (mutt folder)) "/sent"))
-          (postponed ,(string-append (? (mutt folder)) "/postponed"))
+          (record ,(path-append (? (mutt folder)) "/sent"))
+          (postponed ,(path-append (? (mutt folder)) "/postponed"))
           (realname (? name))
 
           (my_hdr ,(format #f "Bcc: <~a>" (? address)))

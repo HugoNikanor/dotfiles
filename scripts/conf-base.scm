@@ -1,5 +1,6 @@
 (define-module (conf-base)
-  #:export (account get-field instanciate)
+  #:export (account get-field instanciate path-append
+                    string-first string-last)
   )
 
 (use-modules (srfi srfi-1)
@@ -143,3 +144,29 @@
                                  ,(lambda _ (symbol->string (procedure-name class))))))
                              args)
                 symbol<=? #:get car)))
+
+
+
+
+(define (string-last s)
+  (string-ref (string-reverse s) 0))
+
+(define (string-first s)
+  (string-ref s 0))
+
+
+(define (path-append . strings)
+  (fold (lambda (s done)
+          (string-append
+            done
+            (if (char=? #\/ (string-last done))
+                (if (char=? #\/ (string-first s))
+                    (string-drop s 1)
+                    s)
+                (if (char=? #\/ (string-first s))
+                    s
+                    (string-append "/" s)))))
+        (car strings)
+        (cdr strings)))
+
+
