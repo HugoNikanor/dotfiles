@@ -19,33 +19,35 @@
      )))
 
 (define (render-mbsync-account account)
-  (let ((alist (instanciate account)))
+  (let ((obj (instanciate account)))
     (for-each
      (lambda (category)
        (format #t "~%~a ~a~%" category (category-transformer
                                         category
-                                        (get-field alist '(toplevel acc-name))))
+                                        (get-field obj '(acc-name))))
        (for-each
         (match-lambda ((key proc)
                        (format #t "~a ~a~%"
-                               key (proc alist))))
-        (assoc-ref alist category)))
+                               key (proc obj))))
+        (car (assoc-ref obj category))
+        #; (get-field alist (list category))
+        ))
      '(IMAPAccount MaildirStore IMAPStore Channel))
-    (format #t "# ~a~%" (make-string 40 #\-))))
+    (format #t "# ~a~%" (make-string 40 #\-))
+    obj))
 
 
 (define (render-mbsync-accounts . accounts)
-  (for-each render-mbsync-account accounts)
-  (format #t "~%Group all~%")
-  (for-each (lambda (name) (format #t "Channel ~a~%" name))
-            (map procedure-name accounts)))
+  (let ((objects (map render-mbsync-account accounts)))
+    (format #t "~%Group all~%")
+    (for-each (lambda (name) (format #t "Channel ~a~%" name))
+              (map (lambda (o) (get-field o '(acc-name))) objects))))
 
 
 
 (account default ()
-         (toplevel
-          (name "Hugo Hörnquist")
-          (path-base ,(or (getenv "MAILDIR") "~/mail/")))
+         (name "Hugo Hörnquist")
+         (path-base ,(or (getenv "MAILDIR") "~/mail/"))
 
          (IMAPAccount
           (SSLType "IMAPS")
@@ -56,7 +58,7 @@
          (MaildirStore
           (AltMap yes)
           (Path ,(path-append (? path-base) (string-titlecase (? acc-name)) "/"))
-          (Inbox ,(path-append (? (MaildirStore Path))
+          (Inbox ,(path-append (? MaildirStore Path)
                                  "INBOX"))
           (SubFolders Verbatim))
 
@@ -72,14 +74,14 @@
           (Slave  ,(format #f ":~a:" (category-transformer 'MaildirStore (? acc-name)))))
 
          (mutt
-          ;; set
-          (from ,(format #f "~a <~a>" (? name) (? address)))
-          (folder "~/mail")
-          (record ,(path-append (? (mutt folder)) "/sent"))
-          (postponed ,(path-append (? (mutt folder)) "/postponed"))
-          (realname (? name))
+          (set
+           (from ,(format #f "~a <~a>" (? name) (? address)))
+           (folder "~/mail")
+           (record ,(path-append (? mutt folder) "/sent"))
+           (postponed ,(path-append (? mutt folder) "/postponed"))
+           (realname ,(? name)))
 
-          (my_hdr ,(format #f "Bcc: <~a>" (? address)))
+          (my_hdr (Bcc ,(? address)))
           (signature ,(? name))
           ))
 
@@ -94,17 +96,15 @@
 
 
 (account gmail (google)
-         (toplevel
-          (address "hugo.hornquist@gmail.com")
-          (pass-path "google.com/hugo.hornquist"))
+         (address "hugo.hornquist@gmail.com")
+         (pass-path "google.com/hugo.hornquist")
 
          (mutt
           (from "Hugo Hörnquist <hugo@hornquist.se>")))
 
 (account lysator (default)
-         (toplevel
-          (address "hugo@lysator.liu.se")
-          (pass-path "lysator/mail/hugo"))
+         (address "hugo@lysator.liu.se")
+         (pass-path "lysator/mail/hugo")
 
          (IMAPAccount
           (Host "imap.lysator.liu.se"))
@@ -113,9 +113,8 @@
           (signature "hugo Hörnquist")))
 
 (account liu (default)
-         (toplevel
-          (address "hugho389@student.liu.se")
-          (pass-path "liu/mail/hugho389"))
+         (address "hugho389@student.liu.se")
+         (pass-path "liu/mail/hugho389")
 
          (IMAPAccount
           (Host "outlook.office365.com")
@@ -125,8 +124,7 @@
           (signature "Hugo Hörnquist (hugho389)")))
 
 (account vg-base (google)
-         (toplevel
-          (pass-path ,(format #f "vastgota.nation.liu.se/mail/~a" (? acc-name))))
+         (pass-path ,(format #f "vastgota.nation.liu.se/mail/~a" (? acc-name)))
 
          (MaildirStore
            (Path ,(path-append (? path-base)
@@ -140,9 +138,8 @@
 (account guckel (vg-base))
 
 (account liu-fs (google)
-         (toplevel
-           (pass-path "formulastudent/google/hugo.hornquist")
-           (address "hugo.hornquist@liuformulastudent.se"))
+         (pass-path "formulastudent/google/hugo.hornquist")
+         (address "hugo.hornquist@liuformulastudent.se")
 
          (MaildirStore
            (Path ,(path-append (? path-base) "Formulastudent/")))
