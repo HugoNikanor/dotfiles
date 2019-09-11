@@ -76,9 +76,6 @@
          (mutt
           (set
            (from ,(format #f "~a <~a>" (? name) (? address)))
-           (folder "~/mail")
-           (record ,(path-append (? mutt folder) "/sent"))
-           (postponed ,(path-append (? mutt folder) "/postponed"))
            (realname ,(? name)))
 
           (my_hdr (Bcc ,(? address)))
@@ -100,7 +97,8 @@
          (pass-path "google.com/hugo.hornquist")
 
          (mutt
-          (from "Hugo Hörnquist <hugo@hornquist.se>")))
+          (set
+           (from "Hugo Hörnquist <hugo@hornquist.se>"))))
 
 (account lysator (default)
          (address "hugo@lysator.liu.se")
@@ -110,7 +108,8 @@
           (Host "imap.lysator.liu.se"))
 
          (mutt
-          (signature "hugo Hörnquist")))
+          (set
+           (signature "hugo Hörnquist"))))
 
 (account liu (default)
          (address "hugho389@student.liu.se")
@@ -121,19 +120,19 @@
           (AuthMechs LOGIN))
 
          (mutt
-          (signature "Hugo Hörnquist (hugho389)")))
+          (set
+           (signature "Hugo Hörnquist (hugho389)"))))
 
 (account vg-base (google)
+         (address ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))
+
          (pass-path ,(format #f "vastgota.nation.liu.se/mail/~a" (? acc-name)))
 
          (MaildirStore
            (Path ,(path-append (? path-base)
                                (string-append "Vastgota."
                                  (string-titlecase (? acc-name)))
-                               "/")))
-
-         (IMAPAccount
-          (User ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))))
+                               "/"))))
 
 (account guckel (vg-base))
 
@@ -146,18 +145,32 @@
 
 
          (mutt
-           (signature "Hugo Hörnquist, IT med mera.)")))
+          (set
+           (signature "Hugo Hörnquist, IT med mera."))))
 
+
+(account mutt-base ()
+         (mutt (set
+                (folder "~/mail")
+                (record ,(path-append (? mutt set folder) "/sent"))
+                (postponed ,(path-append (? mutt set folder) "/postponed")))))
+
+
+(define (render-mutt-set account)
+  (let ((o (instanciate account)))
+    (let ((subtree (get-field o '(mutt set))))
+      (for-each (lambda (name)
+                  (format #t "set ~a = \"~a\"~%" name (get-field o (list 'mutt 'set name))))
+                (map car subtree)))))
+
+(define (render-mutt-configs base . accounts)
+  (render-mutt-set base)
+  (format #t "~a~%" (make-string 40 #\-))
+  (for-each render-mutt-set accounts))
 
 
 
 #;
-(define (render-mutt-configs . accounts)
-  (let ((o (instanciate account)))
-    (get-field )
-    ))
-
-
 (render-mbsync-accounts
  lysator
  gmail
@@ -165,7 +178,8 @@
  guckel
  liu-fs)
 
-#;
+
+
 (render-mutt-configs
  lysator
  gmail

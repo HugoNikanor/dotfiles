@@ -74,13 +74,13 @@
   (let inner ((subtree self)
               (subfield field))
     (cond [(null? subtree)  (error "Field not in tree")]
-          [(null? subfield) (error "Found subtree")]
+          [(null? subfield) subtree]
           [else (aif (assoc-ref subtree (car subfield))
                      (let ((value (car it)))
                        (if (procedure? value)
                            (value self)
                            (inner value (cdr subfield))))
-                     (error "Field contains bad data" self field subfield))])))
+                     (error "Field contains bad data" subtree self field subfield))])))
 
 
 (define (instanciate class . args)
