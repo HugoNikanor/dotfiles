@@ -1,5 +1,7 @@
 (define-module (mutt)
   #:use-module (conf-base)
+  #:use-module (ice-9 rdelim)
+  #:use-module (ice-9 format)
   #:export (render))
 
 (define (render-mutt-account account)
@@ -33,9 +35,11 @@
                            ahook))))))
 
 
-(define (render . accounts)
+(define (render base-port . accounts)
   (with-output-to-file (path-append (getenv "HOME") "/.mutt/muttrc")
     (lambda ()
+      (display (read-string base-port))
+      (format #t "~%# ~a~%~%" (make-string 50 #\-))
       (for-each (lambda (acc)
                   (let* ((folder-hooks account-hooks (render-mutt-account acc)))
                     (for-each display folder-hooks)

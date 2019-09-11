@@ -1,3 +1,0 @@
-set from='Hugo Hörnquist <hugo@lysator.liu.se>'
-my_hdr Bcc: <hugo@lysator.liu.se>
-set signature=~/.mutt/signatures/hugo@lysator.liu.se

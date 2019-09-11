@@ -145,4 +145,5 @@
      lysator gmail liu guckel liu-fs)))
 
 (mutt:render
+ (open-input-file (path-append (dirname (dirname (current-filename))) "mutt" "muttrc"))
  lysator gmail liu guckel liu-fs)

@@ -1,5 +1,4 @@
-source ~/.mutt/vim
-source ~/.mutt/colors
+# vim: set nowrap: set expandtab:
 
 set sort     = threads
 set sort_aux = last-date-received
@@ -44,41 +43,8 @@ macro pager \cb |urlview\n
 push <last-entry>
 
 set realname = "Hugo Hörnquist"
-set from='Hugo Hörnquist <hugo@hornquist.se>'
-my_hdr Bcc: <hugo@hornquist.se>
-
-mailboxes imaps://hugo@imap.lysator.liu.se \
-          imaps://hugo.hornquist@imap.gmail.com \
-          imaps://propaganda@vastgota.nation.liu.se@imap.gmail.com \
-          imaps://guckel@vastgota.nation.liu.se@imap.gmail.com \
-          imaps://lokal@vastgota.nation.liu.se@imap.gmail.com \
-          imaps://hugho389@student.liu.se@outlook.office365.com #\
-          #imaps://hugo.horquist@imap.gmail.com \
-          #imaps://hugo.n.hornquist@imap.gmail.com \
-          #imaps://HugoNikanor@imap.gmail.com \
-          #imaps://HugoNikanor2@imap.gmail.com
-
-# These should preferably not be here on laptop,
-# since all the `pass` commands make canceling
-# GPG login tedious.
-account-hook "imaps://hugo@imap.lysator.liu.se"                         "set imap_pass='`pass lysator/mail/hugo`'"
-account-hook "imaps://hugo.hornquist@imap.gmail.com"                    "set imap_pass='`pass google.com/hugo.hornquist`'"
-account-hook "imaps://propaganda@vastgota.nation.liu.se@imap.gmail.com" "set imap_pass='`pass vastgota.nation.liu.se/mail/propaganda`'"
-account-hook "imaps://guckel@vastgota.nation.liu.se@imap.gmail.com"     "set imap_pass='`pass vastgota.nation.liu.se/mail/guckel`'"
-account-hook "imaps://lokal@vastgota.nation.liu.se@imap.gmail.com"      "set imap_pass='`pass vastgota.nation.liu.se/mail/lokal`'"
-account-hook "imaps://hugho389@student.liu.se@outlook.office365.com"    "set imap_pass='`pass liu/mail/hugho389`'"
-#account-hook "imaps://hugo.horquist@imap.gmail.com"                     "set imap_pass='`pass google.com/hugo.horquist`'" # NOTE no 'n'
-#account-hook "imaps://hugo.n.hornquist@imap.gmail.com"                  "set imap_pass='`pass google.com/hugo.n.hornquist`'"
-#account-hook "imaps://HugoNikanor@imap.gmail.com"                       "set imap_pass='`pass google.com/HugoNikanor`'"
-#account-hook "imaps://HugoNikanor2@imap.gmail.com"                      "set imap_pass='`pass google.com/HugoNikanor2`'"
-
-# These should be updated for more gmamil addresses
-folder-hook '[Ll]iu'        "source ~/.mutt/accounts/hugho389@student.liu.se"
-folder-hook '[Ll]ysator'    "source ~/.mutt/accounts/hugo@lysator.liu.se"
-folder-hook '[Gg]mail'      "source ~/.mutt/accounts/hugo.hornquist@gmail.com"
-folder-hook '[Pp]ropaganda' "source ~/.mutt/accounts/propaganda@vastgota.nation.liu.se"
-folder-hook '[Gg]uckel'     "source ~/.mutt/accounts/guckel@vastgota.nation.liu.se"
-folder-hook '[Ll]okal'      "source ~/.mutt/accounts/lokal@vastgota.nation.liu.se"
+set from='Hugo Hörnquist <hugo@lysator.liu.se>'
+my_hdr Bcc: <hugo@lysator.liu.se>
 
 set markers = no
 
@@ -87,9 +53,10 @@ ignore *
 unignore from: subject to cc date x-url user-agent x-spam-score:
 # x-mailer
 
+macro index \Ck <save-message>=Lysator/Junk<return>
+
 source `[ $(hostname -d) = "lysator.liu.se" ] && echo ~/.mutt/systems/lysator || echo /dev/null`
 source `[ $(hostname) = "STATENSlaptop" ] && echo ~/.mutt/systems/laptop || echo /dev/null`
 
-macro index \Ck <save-message>=Lysator/Junk<return>
-
-# vim: set nowrap: set expandtab:
+source ~/.mutt/vim
+source ~/.mutt/colors
