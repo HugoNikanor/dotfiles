@@ -36,6 +36,7 @@
 
 
 (define (render base-port . accounts)
+  (mkdir-p (path-append (getenv "HOME") ".mutt"))
   (with-output-to-file (path-append (getenv "HOME") "/.mutt/muttrc")
     (lambda ()
       (display (read-string base-port))
