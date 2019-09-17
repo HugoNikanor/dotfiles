@@ -56,6 +56,12 @@
 (account lithekod_styrelse (gcal)
          (url-fragment "lithekod.se_eos416am56q1g0nuqrtdj8ui1s"))
 
+(account formulastudent (gcal)
+         (url-fragment "liuformulastudent.se_0v9ert2schbh487u6hi42imdug"))
+
+(account formulastudent_management (gcal)
+         (url-fragment "liuformulastudent.se_ls8331n8jpo570ilur31ig3vq0"))
+
 (account TDDE04 (timeedit)
          (url-fragment "ri653Q85Y91Z90Q5Y7607QX9y5Zn614Z45Q2584Q687"))
 
@@ -104,6 +110,9 @@
      TDDE04
      TDDI41_TDP031
      TSTE24
+
+     formulastudent
+     formulastudent_management
 
      STABEN
      Facebook
