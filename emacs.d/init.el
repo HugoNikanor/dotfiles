@@ -527,6 +527,7 @@ TODO I should filter out obsoleted matches"
 
 ;; Geiser only looks at these, if this list is here
 (setq geiser-active-implementations '(guile chicken))
+(setq geiser-chicken-binary "chicken-csi")
 
 (setq geiser-guile-load-path '("/home/hugo/lib/guile" "."))
 ;; geiser-guile-extra-keywords
