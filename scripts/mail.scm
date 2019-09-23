@@ -102,7 +102,7 @@
          (IMAPAccount
           (Host "imap.lysator.liu.se"))
 
-         (signature "hugo Hörnquist"))
+         (mutt (set (hostname "lysator.liu.se"))))
 
 (account liu (default)
          (address "hugho389@student.liu.se")
@@ -134,9 +134,23 @@
          (MaildirStore
            (Path ,(path-append (? path-base) "Formulastudent/")))
 
-         (signature "Hugo Hörnquist, IT med mera."))
+         (mutt (set (hostname "liuformulastudent.se")))
+
+         (signature
+           ,(format #f "~a, Team leader IT & Driverless~%✆ ~a"
+                    (? name) (getenv "PHONE"))))
 
 
+
+;; check required environment:
+(define required-env '("PHONE"))
+(for-each (lambda (str)
+            (unless (getenv str)
+              (format (current-error-port)
+                      "~%Please set the env var ~a to something~%~%"
+                      str)
+              (exit 1)))
+          required-env)
 
 
 (with-output-to-file (path-append (getenv "HOME") ".mbsyncrc")
