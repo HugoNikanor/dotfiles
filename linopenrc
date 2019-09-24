@@ -41,6 +41,7 @@ text:vim
 ?'^dvd:\/\/':mplayer
 ?'^cdda:\/\/':mplayer->interm
 ?'^mailto:':mutt->interm
+?'^slack:':slack
 
 # Directory rule for directories
 # ideally you want to use file manager
