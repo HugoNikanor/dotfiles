@@ -19,4 +19,7 @@ do
 done
 
 export PATH
+
+export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
+
 export HAVE_SET_PATH=${PP:- 1}
