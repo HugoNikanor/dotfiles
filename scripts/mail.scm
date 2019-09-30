@@ -6,6 +6,8 @@
 
 
 (use-modules (conf-base)
+             (ice-9 popen)
+             (ice-9 rdelim)
              ((mutt) #:prefix mutt:)
              ((mbsync) #:prefix mbsync:))
 
@@ -13,7 +15,7 @@
 
 (account default ()
          (name "Hugo Hörnquist")
-         (path-base ,(or (getenv "MAILDIR") (path-append (getenv "HOME") "/mail/")))
+         (path-base ,(or (getenv "MAILDIR") (path-append (getenv "HOME") "/.local/var/mail")))
 
          (pass ,(string-append "pass " (? pass-path)))
 
@@ -138,11 +140,15 @@
 
 
 
-
 (with-output-to-file (path-append (getenv "HOME") ".mbsyncrc")
   (lambda ()
-    (mbsync:render
-     lysator gmail liu guckel liu-fs)))
+    (let ((domainname (read-line (open-input-pipe "hostname --domain"))))
+      (cond [(string=? domainname "lysator.liu.se")
+             (mbsync:render
+               gmail liu guckel liu-fs)]
+            [else
+              (mbsync:render
+                gmail liu lysator guckel liu-fs)]))))
 
 (mutt:render
  (open-input-file (path-append (dirname (dirname (current-filename))) "mutt" "muttrc"))
