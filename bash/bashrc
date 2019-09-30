@@ -13,7 +13,9 @@ case `hostname` in
 esac
 
 case `hostname -d` in
-	lysator*) ;;
+	lysator*)
+		export TERM=xterm
+		;;
 esac
 
 shopt -s checkwinsize
