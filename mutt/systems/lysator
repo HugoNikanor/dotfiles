@@ -3,7 +3,8 @@ my_hdr Bcc: <hugo@lysator.liu.se>
 
 set spoolfile = /mp/mail/hugo/Maildir
 set mbox      = /mp/mail/hugo/Maildir
-set folder    = /mp/mail/hugo/Maildir/
+# set folder    = /mp/mail/hugo/Maildir/
+set folder = ~/.local/var/mail/
 
 set mask = "!(dovecot|cur|tmp|new)"
 
