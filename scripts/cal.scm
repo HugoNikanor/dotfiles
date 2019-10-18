@@ -86,9 +86,11 @@
                (metadata ,'("color" "displayname"))
                (conflict_resolution ,'("command" "vimdiff")))
 
-         #;
+         ;; TODO handle creation of this directory!
+         ;; Expected directory structure is:
+         ;; calendars/fruux/{each fruux collection}
          (local
-          (path ,(? cal-base)))
+          (path ,(path-append (? cal-base) "fruux")))
 
          (remote
           (type "caldav")
