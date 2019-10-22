@@ -13,9 +13,13 @@
 
 
 
+(define $HOME (getenv "HOME"))
+
 (account default ()
          (name "Hugo Hörnquist")
-         (path-base ,(or (getenv "MAILDIR") (path-append (getenv "HOME") "/.local/var/mail")))
+         (path-base ,(case (string->symbol (gethostname))
+                       ((gandalf) (path-append "/var/mail" (getlogin)))
+                       (else (path-append $HOME "/.local/var/mail"))))
 
          (pass ,(string-append "pass " (? pass-path)))
 
@@ -51,7 +55,7 @@
            (realname ,(? name)))
 
           (file
-           (dir ,(path-append (getenv "HOME") "/.mutt/"))
+           (dir ,(path-append $HOME "/.mutt/"))
            (account-dir ,(path-append (? mutt file dir) "accounts"))
            (signature-dir ,(path-append (? mutt file dir) "signatures"))
            (account-config ,(path-append (? mutt file account-dir) (? address)))
