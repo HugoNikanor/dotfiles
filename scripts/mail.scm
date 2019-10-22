@@ -165,17 +165,16 @@
               (exit 1)))
           required-env)
 
+(define domainname (read-line (open-input-pipe "hostname --domain")))
 
-(with-output-to-file (path-append (getenv "HOME") ".mbsyncrc")
+(with-output-to-file (path-append $HOME ".mbsyncrc")
   (lambda ()
-    (let ((domainname (read-line (open-input-pipe "hostname --domain"))))
-      (cond [(string=? domainname "lysator.liu.se")
-             (mbsync:render
-               gmail liu guckel liu-fs)]
-            [else
-              (mbsync:render
-                gmail liu lysator guckel liu-fs)]))))
+    (apply mbsync:render
+     ((if (not (string=? domainname "lysator.liu.se"))
+          (lambda a (cons lysator a))
+          list)
+      gmail liu liu-work guckel liu-fs))))
 
 (mutt:render
  (open-input-file (path-append (dirname (dirname (current-filename))) "mutt" "muttrc"))
- lysator gmail liu guckel liu-fs)
+ lysator gmail liu liu-work guckel liu-fs)
