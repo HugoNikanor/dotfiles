@@ -178,8 +178,8 @@ Choose one of these, depending on the current monitor setup.
 > monitorKeys = bindWithAndWithoutShift
 >   (\i -> (viewScreen def $ P i) >> banish LowerRight)
 >   (\i -> (sendToScreen def $ P i))
->   [ (xK_ä, a)
->   , (xK_ö, b)
+>   [ (xK_ä, a), (xK_comma,  a) -- Double bindings for both swedish
+>   , (xK_ö, b), (xK_period, b) -- and american dvorak keyboards.
 >   , (xK_p, c)
 >   , (xK_o, d)
 >   , (xK_e, e)
