@@ -110,15 +110,22 @@
 
          (mutt (set (hostname "lysator.liu.se"))))
 
-(account liu (default)
+(account outlook (default)
+         (IMAPAccount
+          (Host "outlook.office365.com")
+          (AuthMechs LOGIN)))
+
+(account liu (outlook)
          (address "hugho389@student.liu.se")
          (pass-path "liu/mail/hugho389")
 
-         (IMAPAccount
-          (Host "outlook.office365.com")
-          (AuthMechs LOGIN))
-
          (signature "Hugo Hörnquist (hugho389)"))
+
+(account liu-work (outlook)
+         (address "hugo.hornquist@liu.se")
+         (pass-path "liu/hugho26")
+
+         (IMAPAccount (User "hugho26@liu.se")))
 
 (account vg-base (google)
          (address ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))
