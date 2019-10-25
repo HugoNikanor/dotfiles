@@ -119,18 +119,22 @@
          (address "hugho389@student.liu.se")
          (pass-path "liu/mail/hugho389")
 
-         (signature "Hugo Hörnquist (hugho389)"))
+         (signature "Hugo Hörnquist (hugho389)")
+         (mutt (set (hostname "liu.se"))))
 
 (account liu-work (outlook)
          (address "hugo.hornquist@liu.se")
          (pass-path "liu/hugho26")
 
-         (IMAPAccount (User "hugho26@liu.se")))
+         (IMAPAccount (User "hugho26@liu.se"))
+         (mutt (set (hostname "liu.se"))))
 
 (account vg-base (google)
          (address ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))
 
          (pass-path ,(format #f "vastgota.nation.liu.se/mail/~a" (? acc-name)))
+
+         (mutt (set (hostname "vastgota.nation.liu.se")))
 
          (MaildirStore
            (Path ,(path-append (? path-base)
