@@ -15,11 +15,14 @@
 
 (define $HOME (getenv "HOME"))
 
+(define mailfolder
+  (case (string->symbol (gethostname))
+    ((gandalf) (path-append "/var/mail" (getlogin)))
+    (else (path-append $HOME "/.local/var/mail"))))
+
 (account default ()
          (name "Hugo Hörnquist")
-         (path-base ,(case (string->symbol (gethostname))
-                       ((gandalf) (path-append "/var/mail" (getlogin)))
-                       (else (path-append $HOME "/.local/var/mail"))))
+         (path-base ,mailfolder)
 
          (pass ,(string-append "pass " (? pass-path)))
 
@@ -155,6 +158,55 @@
 
 
 
+(account mutt-global ()
+         (set (sort threads)
+              (sort_aux "last-date-received")
+              (index_format "%[%y-%m-%d  %H:%M]  %-15.15L %Z %s")
+              (status_format "%f (%s) (%?V?limited to '%V'&no limit pattern?) (%P)")
+              (menu_scroll yes)
+              (editor "vim")
+              (send_charset "utf-8")
+              (sig_on_top yes)
+              (header_cache "~/.mutt/cache")
+              (message_cachedir "~/.mutt/cache")
+              (folder ,mailfolder)
+              (record ,(path-append (? set folder) "sent"))
+              (postponed ,(path-append (? set folder) "postponed"))
+              (imap_check_subscribed yes)
+              (imap_list_subscribed yes)
+              (ssl_starttls yes)
+              (smtp_url "smtp://hugo@mail.lysator.liu.se:26")
+              (smtp_pass "`pass lysator/mail/hugo`")
+              (ssl_force_tls yes)
+
+              (realname "Hugo Hörnquist")
+              (from "Hugo Hörnquist <hugo@lysator.liu.se>")
+
+              (markers no))
+
+         (my_hdr (Bcc "hugo@lysator.liu.se"))
+
+         (macro
+             (index ,'("\\cb |urlview\n"
+                       "\\Ck <save-message>=Lysator/Junk<return>"))
+           (pager ,'("\\cb |urlview\n")))
+
+         (source ,'("`[ $(hostname -d) = \"lysator.liu.se\" ] && echo ~/.mutt/systems/lysator || echo /dev/null`"
+                    "`[ $(hostname) = \"STATENSlaptop\" ] && echo ~/.mutt/systems/laptop || echo /dev/null`"
+
+                    "~/.mutt/vim"
+                    "~/.mutt/colors"))
+
+         (other
+          (auto_view ,(string-join '("text/html" "text/calendar" "application/ics")))
+          (alternative_order ,(string-join '("text/plain" "text/enriched" "text/html")))
+          (push "<last-entry>")
+          (ignore "*")
+          (unignore ,(string-join '("from:" "subject" "to" "cc" "date" "x-url" "user-agent" "x-spam-score:"))))
+         )
+
+
+
 ;; check required environment:
 (define required-env '("PHONE"))
 (for-each (lambda (str)
@@ -175,6 +227,8 @@
           list)
       gmail liu liu-work guckel liu-fs))))
 
+
 (mutt:render
- (open-input-file (path-append (dirname (dirname (current-filename))) "mutt" "muttrc"))
+ ;; (open-input-file (path-append (dirname (dirname (current-filename))) "mutt" "muttrc"))
+ mutt-global
  lysator gmail liu liu-work guckel liu-fs)
