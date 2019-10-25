@@ -14,6 +14,12 @@
 [github]
 	user = HugoNikanor
 
+[sendemail]
+	smtpEncryption = tls
+	smtpServer = mail.lysator.liu.se
+	smtpUser = hugo
+	smtpServerPort = 26
+
 [url "https://aur.archlinux.org/"]
 	insteadOf = "aur:"
 [url "ssh+git://aur4.archlinux.org/"]
