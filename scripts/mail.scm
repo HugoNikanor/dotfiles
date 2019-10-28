@@ -111,6 +111,8 @@
          (IMAPAccount
           (Host "imap.lysator.liu.se"))
 
+         (signature "hugo")
+
          (mutt (set (hostname "lysator.liu.se"))))
 
 (account outlook (default)
