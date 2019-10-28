@@ -184,9 +184,16 @@
               (ssl_force_tls yes)
 
               (realname "Hugo Hörnquist")
+              ;; TODO switch depending on context?
               (from "Hugo Hörnquist <hugo@lysator.liu.se>")
+              (hostname "lysator.liu.se")
 
-              (markers no))
+              (markers no)
+
+              (crypt_use_gpgme yes)
+              (pgp_default_key "E376B3821453F4BE1ED6F3C1265514B158C4CA23")
+
+              )
 
          (my_hdr (Bcc "hugo@lysator.liu.se"))
 
