@@ -338,7 +338,7 @@ Version 2018-08-30"
 
 ;;; Info Mode
 
-(loop for p in '("/home/hugo/info" "/home/hugo/.local/share/info" "/usr/local/share/info")
+(loop for p in '("/home/hugo/.local/share/info" "/usr/local/share/info")
       do (add-to-list 'Info-default-directory-list p))
 (defun info-binds ()
   (evil-define-key 'motion Info-mode-map
