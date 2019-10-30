@@ -2,6 +2,10 @@ setlocal formatoptions+=t
 setlocal expandtab
 setlocal shiftwidth=2
 
+nmap <silent><buffer> <CR> <Plug>VimwikiFollowLink
+vmap <silent><buffer> <CR> <Plug>VimwikiNormalizeLinkVisualCR
+inoremap <silent><buffer> <CR> <Esc>:VimwikiReturn 1 5<CR>
+
 autocmd BufWritePre index.wiki :VimwikiGenerateTags
 
 let g:tagbar_type_vimwiki = {
