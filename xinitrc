@@ -23,5 +23,7 @@ feh --bg-fill https://wrya.net/services/wallpaper/4chan.php
 BROWSER=xdg-open
 export BROWSER
 
+PP=xinitrc . ~/.dotfiles/setpath.sh
+
 export WM=${WM:-xmonad}
 exec $WM

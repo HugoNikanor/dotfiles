@@ -13,9 +13,16 @@
 
 
 
+(define $HOME (getenv "HOME"))
+
+(define mailfolder
+  (case (string->symbol (gethostname))
+    ((gandalf) (path-append "/var/mail" (getlogin)))
+    (else (path-append $HOME "/.local/var/mail"))))
+
 (account default ()
          (name "Hugo Hörnquist")
-         (path-base ,(or (getenv "MAILDIR") (path-append (getenv "HOME") "/.local/var/mail")))
+         (path-base ,mailfolder)
 
          (pass ,(string-append "pass " (? pass-path)))
 
@@ -51,7 +58,7 @@
            (realname ,(? name)))
 
           (file
-           (dir ,(path-append (getenv "HOME") "/.mutt/"))
+           (dir ,(path-append $HOME "/.mutt/"))
            (account-dir ,(path-append (? mutt file dir) "accounts"))
            (signature-dir ,(path-append (? mutt file dir) "signatures"))
            (account-config ,(path-append (? mutt file account-dir) (? address)))
@@ -104,22 +111,35 @@
          (IMAPAccount
           (Host "imap.lysator.liu.se"))
 
+         (signature "hugo")
+
          (mutt (set (hostname "lysator.liu.se"))))
 
-(account liu (default)
+(account outlook (default)
+         (IMAPAccount
+          (Host "outlook.office365.com")
+          (AuthMechs LOGIN)))
+
+(account liu (outlook)
          (address "hugho389@student.liu.se")
          (pass-path "liu/mail/hugho389")
 
-         (IMAPAccount
-          (Host "outlook.office365.com")
-          (AuthMechs LOGIN))
+         (signature "Hugo Hörnquist (hugho389)")
+         (mutt (set (hostname "liu.se"))))
 
-         (signature "Hugo Hörnquist (hugho389)"))
+(account liu-work (outlook)
+         (address "hugo.hornquist@liu.se")
+         (pass-path "liu/hugho26")
+
+         (IMAPAccount (User "hugho26@liu.se"))
+         (mutt (set (hostname "liu.se"))))
 
 (account vg-base (google)
          (address ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))
 
          (pass-path ,(format #f "vastgota.nation.liu.se/mail/~a" (? acc-name)))
+
+         (mutt (set (hostname "vastgota.nation.liu.se")))
 
          (MaildirStore
            (Path ,(path-append (? path-base)
@@ -144,6 +164,62 @@
 
 
 
+(account mutt-global ()
+         (set (sort threads)
+              (sort_aux "last-date-received")
+              (index_format "%[%y-%m-%d  %H:%M]  %-15.15L %Z %s")
+              (status_format "%f (%s) (%?V?limited to '%V'&no limit pattern?) (%P)")
+              (menu_scroll yes)
+              (editor "vim")
+              (send_charset "utf-8")
+              (sig_on_top yes)
+              (header_cache "~/.mutt/cache")
+              (message_cachedir "~/.mutt/cache")
+              (folder ,mailfolder)
+              (record ,(path-append (? set folder) "sent"))
+              (postponed ,(path-append (? set folder) "postponed"))
+              (imap_check_subscribed yes)
+              (imap_list_subscribed yes)
+              (ssl_starttls yes)
+              (smtp_url "smtp://hugo@mail.lysator.liu.se:26")
+              (smtp_pass "`pass lysator/mail/hugo`")
+              (ssl_force_tls yes)
+
+              (realname "Hugo Hörnquist")
+              ;; TODO switch depending on context?
+              (from "Hugo Hörnquist <hugo@lysator.liu.se>")
+              (hostname "lysator.liu.se")
+
+              (markers no)
+
+              (crypt_use_gpgme yes)
+              (pgp_default_key "E376B3821453F4BE1ED6F3C1265514B158C4CA23")
+
+              )
+
+         (my_hdr (Bcc "hugo@lysator.liu.se"))
+
+         (macro
+             (index ,'("\\cb |urlview\n"
+                       "\\Ck <save-message>=Lysator/Junk<return>"))
+           (pager ,'("\\cb |urlview\n")))
+
+         (source ,'("`[ $(hostname -d) = \"lysator.liu.se\" ] && echo ~/.mutt/systems/lysator || echo /dev/null`"
+                    "`[ $(hostname) = \"STATENSlaptop\" ] && echo ~/.mutt/systems/laptop || echo /dev/null`"
+
+                    "~/.mutt/vim"
+                    "~/.mutt/colors"))
+
+         (other
+          (auto_view ,(string-join '("text/html" "text/calendar" "application/ics")))
+          (alternative_order ,(string-join '("text/plain" "text/enriched" "text/html")))
+          (push "<last-entry>")
+          (ignore "*")
+          (unignore ,(string-join '("from:" "subject" "to" "cc" "date" "x-url" "user-agent" "x-spam-score:"))))
+         )
+
+
+
 ;; check required environment:
 (define required-env '("PHONE"))
 (for-each (lambda (str)
@@ -154,17 +230,18 @@
               (exit 1)))
           required-env)
 
+(define domainname (read-line (open-input-pipe "hostname --domain")))
 
-(with-output-to-file (path-append (getenv "HOME") ".mbsyncrc")
+(with-output-to-file (path-append $HOME ".mbsyncrc")
   (lambda ()
-    (let ((domainname (read-line (open-input-pipe "hostname --domain"))))
-      (cond [(string=? domainname "lysator.liu.se")
-             (mbsync:render
-               gmail liu guckel liu-fs)]
-            [else
-              (mbsync:render
-                gmail liu lysator guckel liu-fs)]))))
+    (apply mbsync:render
+     ((if (not (string=? domainname "lysator.liu.se"))
+          (lambda a (cons lysator a))
+          list)
+      gmail liu liu-work guckel liu-fs))))
+
 
 (mutt:render
- (open-input-file (path-append (dirname (dirname (current-filename))) "mutt" "muttrc"))
- lysator gmail liu guckel liu-fs)
+ ;; (open-input-file (path-append (dirname (dirname (current-filename))) "mutt" "muttrc"))
+ mutt-global
+ lysator gmail liu liu-work guckel liu-fs)

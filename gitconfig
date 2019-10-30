@@ -7,12 +7,19 @@
 	default = current
 [diff]
 	colorMoved = dimmed_zebra
+	tool = vimdiff
 [alias]
 	gud = diff --cached HEAD
 	llist = log --all --decorate --graph
 	list = log --all --oneline --decorate --graph
 [github]
 	user = HugoNikanor
+
+[sendemail]
+	smtpEncryption = tls
+	smtpServer = mail.lysator.liu.se
+	smtpUser = hugo
+	smtpServerPort = 26
 
 [url "https://aur.archlinux.org/"]
 	insteadOf = "aur:"
