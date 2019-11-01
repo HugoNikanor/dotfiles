@@ -512,6 +512,7 @@ TODO I should filter out obsoleted matches"
    (font-lock-add-keywords
     nil `(,(regexp-opt '("mod!" "set!") 'symbols)
           ("\\<\\w+:\\>" . font-lock-constant-face)
+          ("#\\\\\\(.\\w*\\)" . (1 font-lock-string-face))
           ("(\\<\\(define-\\w*\\)\\>\s +(?\\(\\S +\\)?"
            (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face))))))
 
