@@ -1,5 +1,5 @@
 #!/usr/bin/guile \
--s
+--no-auto-compile -s
 !#
 
 (add-to-load-path (dirname (current-filename)))
