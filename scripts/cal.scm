@@ -80,6 +80,10 @@
 (account TSTE24 (timeedit)
          (url-fragment "ri664XQn580Z55Qm77025ZZ6y9Y740QQ0Y45Y0gQ10764"))
 
+(account d_sektionen (http)
+         (remote
+          (url "https://calendar.google.com/calendar/ical/webmaster%40d.lintek.liu.se/public/basic.ics")))
+
 
 (account fruux (cal)
          (pair (collections ,'("from b"))
@@ -121,4 +125,6 @@
      lithekod
      lithekod_styrelse
      fruux
+
+     d_sektionen
      )))
