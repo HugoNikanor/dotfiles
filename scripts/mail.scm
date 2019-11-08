@@ -186,29 +186,20 @@
               (ssl_force_tls yes)
 
               (realname "Hugo Hörnquist")
-              ;; TODO switch depending on context?
-              (from "Hugo Hörnquist <hugo@lysator.liu.se>")
-              (hostname "lysator.liu.se")
+              (from "Hugo Hörnquist <hugo@hornquist.se>")
 
               (markers no)
 
-              (crypt_use_gpgme yes)
-              (pgp_default_key "E376B3821453F4BE1ED6F3C1265514B158C4CA23")
-
               )
 
-         (my_hdr (Bcc "hugo@lysator.liu.se"))
+         (my_hdr (Bcc "hugo@hornquist.se"))
 
          (macro
-             (index ,'("\\cb |urlview\n"
-                       "\\Ck <save-message>=Lysator/Junk<return>"))
+           (index ,'("\\cb |urlview\n"
+                     "\\Ck <save-message>=Lysator/Junk<return>"))
            (pager ,'("\\cb |urlview\n")))
 
-         (source ,'("`[ $(hostname -d) = \"lysator.liu.se\" ] && echo ~/.mutt/systems/lysator || echo /dev/null`"
-                    "`[ $(hostname) = \"STATENSlaptop\" ] && echo ~/.mutt/systems/laptop || echo /dev/null`"
-
-                    "~/.mutt/vim"
-                    "~/.mutt/colors"))
+         (source ,'("~/.mutt/vim" "~/.mutt/colors"))
 
          (other
           (auto_view ,(string-join '("text/html" "text/calendar" "application/ics")))
@@ -217,6 +208,25 @@
           (ignore "*")
           (unignore ,(string-join '("from:" "subject" "to" "cc" "date" "x-url" "user-agent" "x-spam-score:"))))
          )
+
+(account mutt-global-lysator (mutt-global)
+         (set
+           (from "Hugo Hörnquist <hugo@lysator.liu.se>")
+           (hostname "lysator.liu.se")
+
+           (mask "!(dovecot|cur|tmp|new)")
+           (spoolfile "/mp/mail/hugo/Maildir")
+           (mbox      "/mp/mail/hugo/Maildir")
+           (folder "~/.local/var/mail/"))
+
+         (my_hdr (Bcc "hugo@lysator.liu.se")))
+
+(account mutt-global-gpg (mutt-global)
+         (set
+           (spoolfile
+           (crypt_use_gpgme yes)
+           (pgp_default_key "E376B3821453F4BE1ED6F3C1265514B158C4CA23"))))
+
 
 
 
@@ -235,13 +245,13 @@
 (with-output-to-file (path-append $HOME ".mbsyncrc")
   (lambda ()
     (apply mbsync:render
-     ((if (not (string=? domainname "lysator.liu.se"))
-          (lambda a (cons lysator a))
-          list)
+     ((cond ((string=? domainname "lysator.liu.se") (lambda args (cons lysator args)))
+            (else list))
       gmail liu liu-work guckel liu-fs))))
 
 
 (mutt:render
  ;; (open-input-file (path-append (dirname (dirname (current-filename))) "mutt" "muttrc"))
- mutt-global
+ (cond ((string=? domainname "lysator.liu.se") mutt-global-lysator)
+       (else mutt-global-gpg))
  lysator gmail liu liu-work guckel liu-fs)
