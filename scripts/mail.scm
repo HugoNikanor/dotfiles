@@ -244,10 +244,9 @@
 
 (with-output-to-file (path-append $HOME ".mbsyncrc")
   (lambda ()
-    (apply mbsync:render
-     ((cond ((string=? domainname "lysator.liu.se") (lambda args (cons lysator args)))
-            (else list))
-      gmail liu liu-work guckel liu-fs))))
+    (mbsync:render
+      (unless (string=? domainname "lysator.liu.se") lysator)
+      gmail liu liu-work guckel liu-fs)))
 
 
 (mutt:render
