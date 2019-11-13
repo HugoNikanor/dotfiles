@@ -1,5 +1,6 @@
 (define-module (mbsync)
   #:use-module (ice-9 match)
+  #:use-module (srfi srfi-1)
   #:use-module (conf-base)
   #:export (render category-transformer))
 
@@ -33,7 +34,7 @@
 
 
 (define (render . accounts)
-  (let ((objects (map render-mbsync-account accounts)))
+  (let ((objects (map render-mbsync-account (remove unspecified? accounts))))
     (format #t "~%Group all~%")
     (for-each (lambda (name) (format #t "Channel ~a~%" name))
               (map (lambda (o) (get-field o '(acc-name))) objects))))
