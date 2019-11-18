@@ -316,6 +316,7 @@ smartly after.
 >     , className =? "Floating" --> doSmartFloat
 >     , className =? "Gimp" --> doShift "gimp"
 >     , className =? "Steam" --> doShift "steam"
+>     , className =? "vlc" --> doShift "video"
 >     , className =? "Xmessage" --> doSmartFloat
 >     , isDialog --> doSmartFloat
 >
