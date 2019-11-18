@@ -311,19 +311,20 @@ smartly after.
 > -- "Steam - News (1 of 2)"
 
 > myManageHook = composeAll
->     [ className =? "Gvim" --> doSmartFloat
+>     [ isDialog                --> doSmartFloat
+>     , className =? "Gvim"     --> doSmartFloat
 >     , className =? "Pinentry" --> doSmartFloat
 >     , className =? "Floating" --> doSmartFloat
->     , className =? "Gimp" --> doShift "gimp"
->     , className =? "Steam" --> doShift "steam"
->     , className =? "vlc" --> doShift "video"
 >     , className =? "Xmessage" --> doSmartFloat
->     , isDialog --> doSmartFloat
+>     , className =? "Gimp"     --> doShift "gimp"
+>     , className =? "Steam"    --> doShift "steam"
+>     , className =? "vlc"      --> doShift "video"
 >
+>     , title     =? "Toolbox"  --> doSmartFloat -- gimp toolbox
 >     -- Who doesn't this work!
 >     -- , className =? "Gimp" <&&> (appName =? "Toolbox" <||> title =? "Toolbox") --> doFloat ]
 >     --, className =? "Gimp" --> doFloat ]
->     , title =? "Toolbox" --> doSmartFloat ]
+>     ]
 
 > shiftAndGo :: Maybe String -> X ()
 > shiftAndGo Nothing = return ()
