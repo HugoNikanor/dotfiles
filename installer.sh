@@ -1,6 +1,5 @@
 # Installs contents of this directory into user directory.
 # Items in config/ are symlinked as items in ~/.config/
-# Items in bash/ do their own thing
 # other stuff is symlinked into ~/, but with a dot added beforehand
 
 function contains() {
@@ -12,7 +11,7 @@ function contains() {
 
 set -x
 
-ignore_list="config,bash,README.md,installer.sh"
+ignore_list="config,README.md,installer.sh"
 
 for file in $(ls); do
 	contains $ignore_list $file && continue
@@ -28,7 +27,3 @@ for file in $(ls config/); do
 done
 
 popd
-
-for b in bash{rc,_completion}; do
-	ln -s $(realpath bash/$b) $HOME/.$b
-done
