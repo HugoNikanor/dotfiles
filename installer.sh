@@ -11,7 +11,7 @@ function contains() {
 
 set -x
 
-ignore_list="config,README.md,installer.sh"
+ignore_list="scripts,config,README.md,installer.sh"
 
 for file in $(ls); do
 	contains $ignore_list $file && continue
