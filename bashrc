@@ -3,21 +3,6 @@
 
 export PS1='\h [\w] \$ '
 
-source ~/.dotfiles/bash/colors
-
-case `hostname` in
-	STATENSlaptop)
-		source ~/.dotfiles/bash/STATENS_laptop.sh ;;
-	arch2012|hornquist)
-		source ~/.dotfiles/bash/prompt_command.sh ;;
-esac
-
-case `hostname -d` in
-	lysator*)
-		# export TERM=xterm
-		;;
-esac
-
 shopt -s checkwinsize
 shopt -s histappend
 HISTCONTROL=ignoreboth
@@ -38,10 +23,6 @@ export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
 # info path temporarly disabled due to emacs
 #export INFOPATH="$HOME/info"
 #export INFOPATH="$HOME/info:/usr/local/share/info/:usr/share/info/"
-
-PP=bashrc source ~/.dotfiles/setpath.sh
-
-[ -f ~/.dotfiles/bash/bash_aliases ] && source ~/.dotfiles/bash/bash_aliases
 
 # FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
