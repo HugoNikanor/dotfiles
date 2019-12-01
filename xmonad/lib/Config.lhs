@@ -315,6 +315,9 @@ smartly after.
 >     , className =? "Gvim"     --> doSmartFloat
 >     , className =? "Pinentry" --> doSmartFloat
 >     , className =? "Floating" --> doSmartFloat
+>     , className =? "VirtualBox" --> doSmartFloat
+>     , className =? "Gimp" --> doShift "gimp"
+>     , className =? "Steam" --> doShift "steam"
 >     , className =? "Xmessage" --> doSmartFloat
 >     , className =? "Gimp"     --> doShift "gimp"
 >     , className =? "Steam"    --> doShift "steam"
