@@ -14,7 +14,7 @@ esac
 
 case `hostname -d` in
 	lysator*)
-		export TERM=xterm
+		# export TERM=xterm
 		;;
 esac
 
@@ -42,23 +42,10 @@ export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
 PP=bashrc source ~/.dotfiles/setpath.sh
 
 [ -f ~/.dotfiles/bash/bash_aliases ] && source ~/.dotfiles/bash/bash_aliases
-[ -f ~/.ghiToken ] && source ~/.ghiToken
 
-FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+# FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
-if [ $TERM == "xterm-termite" ]; then
-	source /etc/profile.d/vte*sh
-fi
-
-if [ $(uname -s) == "Linux" ]; then
-	# This shouldn't be required
-	. ~/.bash_completion
-
-	[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-fi
-
-if [ -d "$HOME/.dotfiles/aux-files" ]; then
-	for file in $HOME/.dotfiles/aux-files/*.sh; do
-		test -r "$file" && . "$file"
-	done
-fi
+# if [ $TERM == "xterm-termite" ]; then
+# 	source /etc/profile.d/vte*sh
+# 	export TERM=xterm
+# fi
