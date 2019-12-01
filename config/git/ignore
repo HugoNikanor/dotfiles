@@ -74,8 +74,8 @@ ExportedObj/
 *.dyn_*
 
 # CTags
-tags
-TAGS
+/tags
+/TAGS
 
 .nfs*
 
