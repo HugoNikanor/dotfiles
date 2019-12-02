@@ -3,6 +3,13 @@
 
 export PS1='\h [\w] \$ '
 
+if [ -d "$HOME/.config/bash/" ]; then
+	for file in $HOME/.config/bash/*.sh; do
+		test -r "$file" && . "$file"
+	done
+	unset file
+fi
+
 shopt -s checkwinsize
 shopt -s histappend
 HISTCONTROL=ignoreboth
