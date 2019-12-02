@@ -1,0 +1,3 @@
+[ -z $DISPLAY ] && return
+
+setxkbmap us dvorak

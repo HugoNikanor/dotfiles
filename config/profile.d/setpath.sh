@@ -5,7 +5,7 @@
 # Note that it must be sh compatible, to work with xsessionrc.
 #
 
-[ -z $HAVE_SET_PATH ] || return
+# [ -z $HAVE_SET_PATH ] || return
 
 for path in \
 	"$HOME/.local/bin" \
@@ -22,4 +22,4 @@ export PATH
 
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 
-export HAVE_SET_PATH=${PP:- 1}
+# export HAVE_SET_PATH=${PP:- 1}
