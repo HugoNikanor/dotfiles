@@ -34,6 +34,8 @@
 >     , ppOutput
 >     , shorten)
 
+> import XMonad.Layout (Mirror (Mirror))
+
 > import XMonad.Layout.Grid (Grid (Grid, GridRatio))
 > import XMonad.Layout.PerScreen (ifWider)
 > import XMonad.Layout.Dishes (Dishes (Dishes))
@@ -42,6 +44,7 @@
 > import XMonad.Layout.OneBig (OneBig (OneBig))
 > import XMonad.Layout.Spiral (spiral)
 > import XMonad.Layout.WindowNavigation (windowNavigation)
+> import XMonad.Layout.MultiColumns (multiCol)
 
 IndependentScreens is the library which should allow things
 to happen at points not currently in focus.
@@ -116,11 +119,12 @@ screens and those for tall screens. Currently I only check
 a `tallThreshold', but this obviously fails for higher DPI
 screens.
 
-> myLayouts = ifWider tallThreshold wideLayouts tallLayouts
+> myLayouts = wideLayouts {- ifWider tallThreshold wideLayouts tallLayouts -}
 >   where tallThreshold = 1200
 >         wideLayouts = Tall 1 (3/100) (3/5)
 >                   ||| spiral (1/2)
 >                   ||| GridRatio (4/3)
+>                   ||| Mirror (multiCol [1, 1, 0] 4 0.01 0.5)
 >         tallLayouts = Dishes 1 (1/4)
 >                   ||| GridRatio (4/3)
 
