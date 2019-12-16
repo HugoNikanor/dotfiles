@@ -1,3 +1,5 @@
+test -r /etc/profile.d/bash_completion.sh && . /etc/profile.d/bash_completion.sh
+
 # Asks vim which tags it can find
 _vim_search() {
 	ex -N -u NONE -i NONE -c 'let &tags="'$2'"' -c 'echo "\\n"' -c 'for tag in taglist("^".escape("'$1'","."))|echo tag["name"]|endfor' -cq \

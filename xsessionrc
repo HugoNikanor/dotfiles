@@ -1,27 +1,17 @@
-# This file is sourced by i3 upon logon, maybe also other window managers...
-# used for lysator, since these settings can't be set on a system level there
-# NOTE: These shells are run with plain sh, and NOT bash
-
-# auto keybinds on lysators system this could probably be better solved by actually importing my planck keymap.
-# This should be changed to only trigger on lys-systems in ~, instead of everywhere except arch2012
-
-# Prentend we are /etc/profile
-if [ -d /etc/profile.d ]; then
-	for i in /etc/profile.d/*.sh; do
-		test -r $i && . $i
-	done
-	unset i
-fi
+# Loaded by dwm (display manager) on login
 
 if [ -d "$HOME/.config/profile.d/" ]; then
 	for file in $HOME/.config/profile.d/*.sh; do
 		test -r "$file" && . "$file"
 	done
+
 	for file in $HOME/.config/profile.d/*.sh.$(hostname --domain); do
 		test -r "$file" && . "$file"
 	done
+
 	for file in $HOME/.config/profile.d/*.sh.$(hostname); do
 		test -r "$file" && . "$file"
 	done
+
 	unset file
 fi

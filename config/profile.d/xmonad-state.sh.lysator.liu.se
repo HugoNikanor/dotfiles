@@ -1,0 +1,1 @@
+test -r "$HOME/.xmonad/xmonad.state" && rm "$HOME/.xmonad/xmonad.state"
