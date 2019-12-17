@@ -20,7 +20,9 @@ interm=vim
 # .mp4:mplayer
 # .txt:vim
 .pdf:zathura
-.html:chromium
+.html:firefox
+.docx:libreoffice
+.pptx:libreoffice
 
 # 2. Mime type
 # image/png:sxiv
@@ -35,9 +37,9 @@ text:vim
 
 # 4. Regexp
 # Match some protocols by default
-?'^http:\/\/':chromium
-?'^https:\/\/':chromium
-?'^www.':chromium
+?'^http:\/\/':firefox
+?'^https:\/\/':firefox
+?'^www.':firefox
 ?'^dvd:\/\/':mplayer
 ?'^cdda:\/\/':mplayer->interm
 ?'^mailto:':mutt->interm
