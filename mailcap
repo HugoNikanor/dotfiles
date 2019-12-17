@@ -4,7 +4,7 @@
 # The source of the mutt_bgrun script, which is needed in X environments
 # https://www.mattcutts.com/files/mutt_bgrun
 
-text/html; chromium '%s'; test=test -n "$DISPLAY";
+text/html; firefox '%s'; test=test -n "$DISPLAY";
 text/html; elinks -dump '%s'; nametemplates=%s.html; copiousoutput;
 
 image/*; mutt_bgrun feh --scale-down '%s'; test=test -n "$DISPLAY";

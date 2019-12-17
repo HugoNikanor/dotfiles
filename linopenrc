@@ -21,6 +21,8 @@ interm=vim
 # .txt:vim
 .pdf:zathura
 .html:firefox
+.docx:libreoffice
+.pptx:libreoffice
 
 # 2. Mime type
 # image/png:sxiv
