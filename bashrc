@@ -1,7 +1,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-export PS1='\h [\w] \$ '
+PS1='\h [\w] \$ '
 
 if [ -d "$HOME/.config/bash/" ]; then
 	for file in $HOME/.config/bash/*.sh; do
