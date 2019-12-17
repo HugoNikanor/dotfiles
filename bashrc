@@ -25,11 +25,9 @@ export GUILE_LOAD_PATH="/home/hugo/lib/guile"
 export XDG_DOCUMENTS_DIR="$HOME/ldoc"
 export XDG_DOWNLOAD_DIR="$HOME/down/other"
 export XDG_PICTURES_DIR="$HOME/pic"
-export LESSOPEN="|lesspipe.sh %s"
 export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
-# info path temporarly disabled due to emacs
-#export INFOPATH="$HOME/info"
-#export INFOPATH="$HOME/info:/usr/local/share/info/:usr/share/info/"
+
+which lesspipe >/dev/null && eval $(lesspipe)
 
 # FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
