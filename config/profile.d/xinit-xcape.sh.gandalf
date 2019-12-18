@@ -1,0 +1,3 @@
+[ -z "$DISPLAY" ] && return
+
+xcape -e "Shift_L=parenleft;Shift_R=parenright"
