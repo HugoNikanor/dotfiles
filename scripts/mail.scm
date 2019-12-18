@@ -184,6 +184,7 @@
               (smtp_url "smtp://hugo@mail.lysator.liu.se:26")
               (smtp_pass "`pass lysator/mail/hugo`")
               (ssl_force_tls yes)
+              (assumed_charset "utf-8:iso-8859-1")
 
               (realname "Hugo Hörnquist")
               (from "Hugo Hörnquist <hugo@hornquist.se>")
