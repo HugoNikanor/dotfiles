@@ -27,7 +27,7 @@ export XDG_DOWNLOAD_DIR="$HOME/down/other"
 export XDG_PICTURES_DIR="$HOME/pic"
 export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
 
-which lesspipe >/dev/null && eval $(lesspipe)
+which lesspipe >/dev/null 2>&1 && eval $(lesspipe)
 
 # FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
