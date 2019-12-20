@@ -13,8 +13,4 @@ srecode-map.el
 custom.el
 .org-id-locations
 
-# I don't want to sync pkg/, but I do want to sync
-# the list of files it contains. Some form of simple
-# script would probably do the job
-pkg/
 auto-save-list/
