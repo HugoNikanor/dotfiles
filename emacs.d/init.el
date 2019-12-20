@@ -7,46 +7,80 @@
 
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://melpa.org/packages/")))
+        ("melpa" . "https://melpa.org/packages/")
+        ("org" . "https://orgmode.org/elpa/")
+        ("emacswiki" . "https://mirrors.cloud.tencent.com/elpa/emacswiki/")
+        ))
 
 (defvar required-packages)
 (setq required-packages
-      `(flycheck
-        haskell-mode
+      `(
         ivy                             ; M-x fuzzy finder
-        magit
-        mmm-mode                        ; Multiple Major Modes
         paredit
         popup
-        smart-tabs-mode
         which-key                       ; show possible keys
+
+        smart-tabs-mode
+
+        evil evil-paredit
+))
+
+
+(defvar other-packages)
+(setq other-packages
+      '(
+        flycheck
+        haskell-mode
+        elm-mode
+        markdown-mode
+
+        magit
+        git-gutter
+        mmm-mode                            ; Multiple Major Modes
+
         yasnippet
         yasnippet-snippets
-        ;; markdown-mode
+
         frames-only-mode
+
+        evil-org
+
+        irfc-mode
+
         ;; rainbow-delimiters
-        elm-mode
+        ;; org-plus-contrib
         ))
 
-(setq evil-packages `(evil evil-org evil-paredit))
 
-(setq all-packages `(,@ required-packages ,@ evil-packages))
+(defvar *all-packages* )
+(setq *all-packages* `(,@ required-packages ,@other-packages))
+
+(defun install-all ()
+  "Install all mentioned packages."
+  (interactive)
+  (dolist (pkg *all-packages*)
+    (unless (package-installed-p pkg)
+      (package-install pkg))))
 
 (package-initialize)
 
-(setq packages-to-install
-      (seq-remove #'package-installed-p
-                  all-packages))
-
-(when packages-to-install
-  (package-refresh-contents)
-  (mapc #'package-install packages-to-install))
+(package-refresh-contents t)
 
 (mapc #'require required-packages)
 
+;; (setq packages-to-install
+;;       (seq-remove #'package-installed-p
+;;                   all-packages))
+
+;; (when packages-to-install
+;;   (mapc #'package-install packages-to-install))
+
 (defun safe-load-pkg (pkg)
+  "Require, but also downloads package?
+PKG: name of package"
   (unless (package-installed-p pkg)
-    (package-install pkg)))
+    (package-install pkg))
+  (require pkg))
 
 
 ;;; Local Packages
@@ -54,8 +88,8 @@
 (add-to-list 'load-path "~/.emacs.d/pkg")
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
 
-;; (load-library "noweb-mode.el")
 (autoload 'noweb-mode "noweb-mode" "Editing noweb files." t)
+
 (setq auto-mode-alist (append (list (cons "\\.nw$" 'noweb-mode))
                               auto-mode-alist))
 
@@ -65,32 +99,13 @@
 ;;; Defines for making it this file better
 
 (defmacro hook-envs (function environments)
-  "Add function to list of hooks"
+  "Add function to list of hooks."
   `(mapc (lambda (hook)
            (add-hook hook ,function))
          ,environments))
 
-;;; This macro expands correctly, but the require doesn't work
-;;; from inside a macro for some reason.
-(defmacro evil-collection-load (mode)
-  (let ((sname  (symbol-name mode)))
-    `(with-eval-after-load (quote ,mode)
-       (require (quote ,(intern (concat "evil-collection-" sname))))
-       (,(intern (concat "evil-collection-" sname "-setup"))))))
-
-(defun re-seq (regexp string)
-  (save-match-data
-    (let ((pos 0)
-          matches)
-      (while (string-match regexp string pos)
-        (push (match-string 0 string) matches)
-        (setq pos (match-end 0)))
-      (reverse matches))))
-
 
 ;;; Evil
-
-(mapc #'require evil-packages)
 
 (evil-mode)
 
@@ -109,7 +124,7 @@
 (evil-define-command vi-follow-tag (tag &rest rest)
   :repeat nil
   (interactive "<tag>")
-  (princ tagname)
+  (princ tag)
   (princ rest)
   (tags-search tag))
 
@@ -122,13 +137,15 @@
 (evil-ex-define-cmd "ta[g]" 'vi-follow-tag)
 
 (defun evil-fresh-line-below (&optional count)
-  "open-below, followed by returning to normal mode."
+  "Open-below, followed by returning to normal mode.
+COUNT: number of lines to add"
   (interactive "p")
   (evil-open-below count)
   (evil-normal-state))
 
 (defun evil-fresh-line-above (&optional count)
-  "open-above, followed by returning to normal mode."
+  "Open-above, followed by returning to normal mode.
+COUNT: number of lines to add"
   (interactive "p")
   (evil-open-above count)
   (evil-normal-state))
@@ -160,6 +177,9 @@
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
 
+;; TODO load this for modes I want it in
+;; (yas-global-mode)
+
 ;; (defvar og-whitespace-style whitespace-style)
 ;; Highlight "bad" whitespace.
 ;; Unfortunately breaks "regular" whitespace mode.
@@ -170,6 +190,7 @@
 (setq-default indicate-empty-lines t)
 (setq-default show-trailing-whitespace t)
 
+;; TODO this doesn't work
 (add-hook 'read-only-mode-hook
           #'(lambda () (message "Hello")
               (setq-local show-trailing-whitespace (not buffer-read-only))))
@@ -177,78 +198,12 @@
 
 (setq inhibit-startup-screen t)
 
-(setq mmm-submode-decoration-level 0)
-(setq mmm-global-mode 'maybe)
+;; (setq mmm-submode-decoration-level 0)
+;; (setq mmm-global-mode 'maybe)
 
 
-;;; Formfeed
 
-(defun insert-formfeed ()
-  (interactive)
-
-  (unless (= (point) (point-at-eol))
-    (setf (point) (point-at-eol)))
-
-  (unless (= (point-at-bol) (point-at-eol))
-    (newline))
-
-  (insert-char ?\^L)
-  (newline))
-
-(defun xah-show-formfeed-as-line ()
-  "Display the formfeed ^L char as line.
-URL `http://ergoemacs.org/emacs/emacs_form_feed_section_paging.html'
-Version 2018-08-30"
-  ;; (interactive)
-  ;; 2016-10-11 thanks to Steve Purcell's page-break-lines.el
-  (progn
-    (when (not buffer-display-table)
-      (setq buffer-display-table (make-display-table)))
-    (aset buffer-display-table ?\^L
-          (make-vector
-           (round (* (window-width)
-                     (if (and (boundp 'text-scale-mode)
-                              (symbol-value 'text-scale-mode))
-                         ;; TODO this gives rather bad values
-                         (expt text-scale-mode-step (- text-scale-mode-amount))
-                       1)))
-           (make-glyph-code ?─          ; 'font-lock-comment-face
-                            )))
-    (redraw-frame)))
-
-(define-minor-mode formfeed-mode
-  "Mode for handling formfeeds as content changes."
-  :lighter " ^L"
-  :global t
-  :keymap (make-sparse-keymap)
-  ;; :after-hook (redraw-frame)
-  (defvar *^L* nil "Previous value of buffer-display-table[^L]")
-  (progn
-    (when (not buffer-display-table)
-      (setq buffer-display-table (make-display-table)))
-
-    ;; TODO window-size-change-functions seem to only be triggered in the
-    ;; currently selected window
-    (if formfeed-mode
-        (progn
-          (setq *^L* (aref buffer-display-table ?\^L))
-          (add-to-list ; NOTE this is per window, making this mode hard to turn off.
-           'window-size-change-functions
-           (lambda (frame) (xah-show-formfeed-as-line)))
-
-          ;; These are never turned off, fore some reason
-          (evil-define-minor-mode-key '(normal visual) formfeed-mode
-            "[x" 'backward-page
-            "]x" 'forward-page)
-          (evil-define-minor-mode-key '(normal insert replace) formfeed-mode
-            (kbd "C--") 'insert-formfeed)
-
-          (xah-show-formfeed-as-line))
-
-      (progn
-        (aset buffer-display-table ?\^L *^L*)
-        (setq window-size-change-functions ())))))
-
+(require 'formfeed)
 
 ;; TODO this is't imidieately run for new buffers, instead first updating when
 ;; the window first changes shape.
@@ -274,7 +229,10 @@ Version 2018-08-30"
   (evil-define-key 'normal org-mode-map (kbd "z j")
     'org-forward-heading-same-level)
   (evil-define-key 'normal org-mode-map (kbd "z k")
-    'org-backward-heading-same-level))
+    'org-backward-heading-same-level)
+  (setq org-treat-insert-todo-heading-as-state-change t
+        org-hide-leading-stars t
+        org-agenda-default-appointment-duration 60))
 
 (add-hook 'org-mode-hook #'evil-org-mode)
 (add-hook 'org-mode-hook #'org-mode-stuff)
@@ -331,6 +289,7 @@ Version 2018-08-30"
            ("->" . ?→)
            ("<-" . ?←)
            ))))
+
 (add-hook 'elm-mode-hook #'prettify-elm)
 
 (global-prettify-symbols-mode 1)
@@ -340,6 +299,7 @@ Version 2018-08-30"
 
 (loop for p in '("/home/hugo/.local/share/info" "/usr/local/share/info")
       do (add-to-list 'Info-default-directory-list p))
+
 (defun info-binds ()
   (evil-define-key 'motion Info-mode-map
     "l" 'Info-last
@@ -349,12 +309,7 @@ Version 2018-08-30"
 (add-hook 'Info-mode-hook #'info-binds)
 
 
-;; (autoload 'irfc "irfc-visit")
-;; https://www.emacswiki.org/emacs/Irfc
-(unless (file-exists-p "~/.emacs.d/pkg/irfc.el")
-  (url-copy-file "https://www.emacswiki.org/emacs/download/irfc.el"
-                 "~/.emacs.d/pkg/irfc.el" nil))
-(require 'irfc)
+;; (require 'irfc)
 
 (evil-define-key 'normal irfc-mode-map
   "t" 'irfc-head-goto
@@ -363,20 +318,27 @@ Version 2018-08-30"
   "]x" 'irfc-page-next
   "[x" 'irfc-page-prev)
 
-;; (irfc-reference-goto)
-
-(setq irfc-directory "~/.local/share/RFC/")
+(setq irfc-directory "~/.local/doc/rfc/")
 (defvar rfc-index-file (concat irfc-directory "rfc-index.txt"))
-(defun rfc-list ()
-  "Parees `rfc-index-file` for all RFC's.
-TODO I should filter out obsoleted matches"
-  (re-seq
-   "^[0-9]+ .*"
-   (with-current-buffer (find-file-noselect rfc-index-file)
-     (buffer-string))))
 
-(defun rfc-goto (str &rest rest)
-  "irfc-visit, with a list of all RFC's"
+(defun rfc-list ()
+  "Parse `rfc-index-file` for all RFC's.
+TODO I should filter out obsoleted matches"
+  (let ((string (with-current-buffer
+                    (find-file-noselect rfc-index-file)
+                  (buffer-string))))
+    (save-match-data
+      (let ((pos 0)
+            matches)
+        (while (string-match "^[0-9]+ .*" string pos)
+          (push (match-string 0 string) matches)
+          (setq pos (match-end 0)))
+        (reverse matches)))))
+
+
+(defun irfc-goto (str)
+  "Irfc-visit, with a list of all RFC's.
+STR: target string"
   (interactive
    (list (completing-read "Open RFC: " (rfc-list))))
   (irfc-visit (car (read-from-string str))))
@@ -396,10 +358,16 @@ TODO I should filter out obsoleted matches"
 (defvar-local *eval-sexp* 'identity)
 (defvar-local *eval-sexp-print* 'identity)
 
-(defun eval-sexp-print () (interactive)
-       (funcall (symbol-function *eval-sexp-print*)))
-(defun eval-sexp () (interactive)
-       (funcall (symbol-function *eval-sexp*)))
+(defun eval-sexp-print ()
+  "Eval sexp before point and print it."
+  (interactive)
+  (funcall (symbol-function *eval-sexp-print*)))
+
+(defun eval-sexp ()
+  "Eval sexp before point, quietly."
+  (interactive)
+  (funcall (symbol-function *eval-sexp*)))
+
 
 (define-key paredit-mode-map (kbd "C-j")
   'eval-sexp-print)
@@ -423,6 +391,7 @@ TODO I should filter out obsoleted matches"
 ;;; Emacs Lisp
 
 (defun elisp-eval-popup ()
+  "Evaluate the elisp sexp before point, and display the result in a popup."
   (interactive)
   (popup-tip
    (with-output-to-string
@@ -476,6 +445,7 @@ TODO I should filter out obsoleted matches"
 ;; =C-u C-u M-x geiser-eval-last-sexp= does this,
 ;; But without the fancy formatting!
 (defun geiser-eval-print-last-sexp ()
+  "Eval scheme sexp before point, and prints it to buffer."
   (interactive)
   (let ((ret (geiser-eval-last-sexp nil))
         (cmnt
@@ -493,6 +463,7 @@ TODO I should filter out obsoleted matches"
                      (point)))))
 
 (defun geiser-eval-popup-last-sexp ()
+  "Eval scheme sexp before point, and pops up the result."
   (interactive)
   (let ((ret (geiser-eval-last-sexp nil)))
     (popup-tip (if (equalp ret "⇒ ")
@@ -500,15 +471,17 @@ TODO I should filter out obsoleted matches"
                  ret))))
 
 
-;; Let's pretend any scheme buffer is an interaction scheme buffer!
-;; geiser-eval-last-sexp doesn't like guile reader extensions ("#")
 (add-hook
  'scheme-mode-hook
  (lambda ()
    (safe-load-pkg 'geiser)
    (geiser-mode)
+
+   ;; Let's pretend any scheme buffer is an interaction scheme buffer!
+   ;; geiser-eval-last-sexp doesn't like guile reader extensions ("#")
    (setq *eval-sexp-print* 'geiser-eval-print-last-sexp
          *eval-sexp*       'geiser-eval-popup-last-sexp)
+
    (font-lock-add-keywords
     nil `(,(regexp-opt '("mod!" "set!") 'symbols)
           ("\\<\\w+:\\>" . font-lock-constant-face)
@@ -516,82 +489,72 @@ TODO I should filter out obsoleted matches"
           ("(\\<\\(define-\\w*\\)\\>\s +(?\\(\\S +\\)?"
            (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face))))))
 
-;;; TODO add optional path argument, which should be able to be given through M-x
-(defun gamesh-connect ()
-  (interactive)
-  (geiser-connect-local 'guile "/tmp/guile-gamesh-repl"))
-
 (evil-define-key '(normal emacs insert) geiser-repl-mode-map
   (kbd "C-l") 'geiser-repl-clear-buffer)
 
 ;; geiser-repl-mode
 
-;; Geiser only looks at these, if this list is here
-(setq geiser-active-implementations '(guile chicken))
-(setq geiser-chicken-binary "chicken-csi")
-(when (string= "lysator.liu.se" (string-trim-right (shell-command-to-string "hostname -d")))
-  (setq geiser-chicken-binary "csi"))
+(add-hook 'geiser-mode-hook
+          (lambda ()
+            ;; Geiser only looks at these, if this list is here
+            (setq geiser-active-implementations '(chicken guile))
 
-(setq geiser-guile-load-path '("/home/hugo/lib/guile" "."))
-;; geiser-guile-extra-keywords
-;; geiser-guile-init-file
-;; geiser-guile-load-init-file-p
+            ;; TODO this does't work
+            (eval-after-load "geiser-impl"
+              '(add-to-list 'geiser-implementations-alist
+                            '((regexp ".*/guile/.*") guile)))
 
-(evil-define-key '(normal insert) scheme-mode-map
-  (kbd "M-.") 'geiser-edit-symbol-at-point)
+            (setq geiser-chicken-binary "chicken-csi")
+            (when (string-prefix-p "lysator.liu.se" (shell-command-to-string "hostname -d"))
+              (setq geiser-chicken-binary "csi"))
 
-;; extend theme to show comments and comment markers in different colors.
+            (setq geiser-guile-load-path '("/home/hugo/lib/guile" "."))
+            ;; geiser-guile-extra-keywords
+            ;; geiser-guile-init-file
+            ;; geiser-guile-load-init-file-p
 
-(mmm-add-classes
- '((lisp-texinfo-comments
-    :submode texinfo-mode
-    :front "^;; "
-    ;; :back "^[^;]"
-    :back "$"
-    :include-front nil
-    :include-back nil
-    )))
+            (evil-define-key '(normal insert) scheme-mode-map
+              (kbd "M-.") 'geiser-edit-symbol-at-point)
 
-(mmm-add-mode-ext-class 'scheme-mode nil 'lisp-texinfo-comments)
+            ;; extend theme to show comments and comment
+            ;; markers in different colors.
+            (mmm-add-classes
+             '((lisp-texinfo-comments
+                :submode texinfo-mode
+                :front "^;; "
+                ;; :back "^[^;]"
+                :back "$"
+                :include-front nil
+                :include-back nil
+                )))
 
-
+            (mmm-add-mode-ext-class
+             'scheme-mode nil 'lisp-texinfo-comments)))
+
 ;;; Haskell
 
-;; (add-hook 'haskell-mode-hook 'my-mmm-mode)
+(add-hook
+ 'haskell-mode-hook
+ (lambda ()
+   (mmm-add-classes
+    '((literate-haskell-bird
+       :submode text-mode
+       :front "^[^>]"
+       :include-front true
+       :back "^>\\|$")
+      (literate-haskell-latex
+       :submode literate-haskell-mode
+       :front "^\\\\begin{code}"
+       :front-offset (end-of-line 1)
+       :back "^\\\\end{code}"
+       :include-back nil
+       :back-offset (beginning-of-line -1)
+       )))))
 
-(mmm-add-classes
- '((literate-haskell-bird
-    :submode text-mode
-    :front "^[^>]"
-    :include-front true
-    :back "^>\\|$"
-    )
-   (literate-haskell-latex
-    :submode literate-haskell-mode
-    :front "^\\\\begin{code}"
-    :front-offset (end-of-line 1)
-    :back "^\\\\end{code}"
-    :include-back nil
-    :back-offset (beginning-of-line -1)
-    )))
-
-
-
-(yas-global-mode)
 
 
 
 ;;; Other
-
-;; (defun complete ()
-;;   (interactive)
-;;   (let ((abbrev (dabbrev--abbrev-at-point)))
-;;     (message abbrev)
-;;     (setq dabbrev--last-abbreviation abbrev)
-;;     (let ((lst (dabbrev--find-all-expansions abbrev t)))
-;;       (if (not lst)
-;;           (message "No completions at point")
-;;         (popup-menu* lst)))))
 
 ;;; Can I somehow enable this for all available modes?
 (hook-envs #'hs-minor-mode
@@ -601,13 +564,6 @@ TODO I should filter out obsoleted matches"
              clojure-mode-hook
              c-mode-hook))
 
-
-;;; geiser should also log commands which failed
-;;; I believe that it currently only logs those
-;;; which exited successfully
-(setq geiser-repl-history-filename
-      "~/.emacs.d/geiser/history")
-
 ;; This should be bound to <RET> in shell-mode and term-mode,
 ;; but only when not in the active prompt area.
 ;;
@@ -615,7 +571,7 @@ TODO I should filter out obsoleted matches"
 ;; store their path context, allowing any file to be opened with
 ;; this.
 (defun open-file-at-point ()
-  "Opens file under cursor in a new buffer
+  "Opens file under cursor in a new buffer.
 Note that the user needs to stand in the same directory as the
 file for it to work as expceted."
   (interactive)
@@ -623,6 +579,7 @@ file for it to work as expceted."
    (thing-at-point 'filename)))
 
 (defun describe-file-at-point ()
+  "Run `file` on filename at point."
   (interactive)
   (popup-tip
    (shell-command-to-string
@@ -642,9 +599,6 @@ file for it to work as expceted."
 (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
 
-(setq org-treat-insert-todo-heading-as-state-change t
-      org-hide-leading-stars t
-      org-agenda-default-appointment-duration 60)
 
 (setq-default fill-column 80)
 (add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
@@ -652,6 +606,5 @@ file for it to work as expceted."
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
-;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(global-set-key (kbd "M-p") 'other-window)
+(provide 'init)
+;;; init.el ends here
