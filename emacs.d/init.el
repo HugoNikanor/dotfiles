@@ -45,6 +45,8 @@
 
         evil-org
 
+        ;; TODO This errors out in install-all,
+        ;; but installing it manually works fine
         irfc-mode
 
         ;; rainbow-delimiters
