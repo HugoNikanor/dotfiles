@@ -20,7 +20,7 @@ interm=vim
 # .mp4:mplayer
 # .txt:vim
 .pdf:zathura
-.html:chromium
+.html:firefox
 
 # 2. Mime type
 # image/png:sxiv
@@ -31,13 +31,14 @@ interm=vim
 image:feh
 video:mplayer
 audio:mplayer->interm # you can also specify the interm rule explictly after '->'
-text:vim
+text:gvim
+font:gnome-font-viewer
 
 # 4. Regexp
 # Match some protocols by default
-?'^http:\/\/':chromium
-?'^https:\/\/':chromium
-?'^www.':chromium
+?'^http:\/\/':firefox
+?'^https:\/\/':firefox
+?'^www.':firefox
 ?'^dvd:\/\/':mplayer
 ?'^cdda:\/\/':mplayer->interm
 ?'^mailto:':mutt->interm
