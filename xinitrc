@@ -12,21 +12,8 @@ export BROWSER
 
 # We have this last to allow overrides to the above specified
 # defaults.
-if [ -d "$HOME/.config/profile.d/" ]; then
-	for file in $HOME/.config/profile.d/*.sh; do
-		test -r "$file" && . "$file"
-	done
 
-	for file in $HOME/.config/profile.d/*.sh.$(hostname --domain); do
-		test -r "$file" && . "$file"
-	done
-
-	for file in $HOME/.config/profile.d/*.sh.$(hostname); do
-		test -r "$file" && . "$file"
-	done
-
-	unset file
-fi
+[[ -f ~/.profile ]] && . ~/.profile
 
 # Final fallback for WM, and start it.
 export WM=${WM:-xmonad}
