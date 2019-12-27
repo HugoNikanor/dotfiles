@@ -212,6 +212,22 @@ COUNT: number of lines to add"
 (formfeed-mode 1)
 
 
+
+(setq-default fill-column 80)
+(add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
+
+(defun insert-text-line (&optional width)
+  (interactive "p")
+  (insert (make-string (if (= width 1) 40 width) ?-)))
+
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (setq fill-column 70)
+            (evil-define-minor-mode-key '(normal insert replace) formfeed-mode
+              (kbd "C--") 'insert-text-line)))
+
+
 ;;; Whitespace
 
 (setq-default indent-tabs-mode nil)
@@ -602,8 +618,6 @@ file for it to work as expceted."
         `((".*" . ,temporary-file-directory)))
 
 
-(setq-default fill-column 80)
-(add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
