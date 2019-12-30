@@ -33,6 +33,7 @@
         haskell-mode
         elm-mode
         markdown-mode
+        cider
 
         magit
         git-gutter
