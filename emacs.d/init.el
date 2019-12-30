@@ -550,6 +550,26 @@ STR: target string"
             (mmm-add-mode-ext-class
              'scheme-mode nil 'lisp-texinfo-comments)))
 
+
+
+
+(setq log-mode-highlights
+      `((,(regexp-opt '("pass")) . 'success)
+        (,(regexp-opt '("fail")) . 'error))
+      )
+
+(define-derived-mode log-mode fundamental-mode "Log"
+  "Major mode for viewing srfi-64 log files from guile."
+
+  ;; M-x describe-face
+
+  (read-only-mode 1)
+  (setq font-lock-defaults '(log-mode-highlights))
+  (message "Entered Log mode"))
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.log\\'" . log-mode))
+
 ;;; Haskell
 
 (add-hook
