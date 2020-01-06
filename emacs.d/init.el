@@ -168,9 +168,12 @@ COUNT: number of lines to add"
 
 
 (load-theme 'wombat)
+(setq custom-enabled-themes '(wombat))
 
 (ivy-mode)
 (which-key-mode) ; Show possible next keys after some key presses
+(setq which-key-allow-evil-operators t
+      which-key-allow-imprecise-window-fit t)
 (show-paren-mode)
 (column-number-mode)
 
@@ -178,7 +181,7 @@ COUNT: number of lines to add"
 
 (menu-bar-mode 0)
 (tool-bar-mode 0)
-(scroll-bar-mode -1)
+(scroll-bar-mode 'right)
 
 ;; TODO load this for modes I want it in
 ;; (yas-global-mode)
