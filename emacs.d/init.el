@@ -336,7 +336,9 @@ COUNT: number of lines to add"
   "[[" 'irfc-head-prev
   "]]" 'irfc-head-next
   "]x" 'irfc-page-next
-  "[x" 'irfc-page-prev)
+  "[x" 'irfc-page-prev
+  "RET" 'irfc-follow
+  )
 
 (setq irfc-directory "~/.local/doc/rfc/")
 (defvar rfc-index-file (concat irfc-directory "rfc-index.txt"))
