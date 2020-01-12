@@ -191,6 +191,8 @@ COUNT: number of lines to add"
 
 ;; Mark lines not part of file.
 (setq-default indicate-empty-lines t)
+;;; TODO only for buffers I'm actually expected to edit!
+;;; So no read only buffers!
 (setq-default show-trailing-whitespace t)
 
 ;; TODO this doesn't work
