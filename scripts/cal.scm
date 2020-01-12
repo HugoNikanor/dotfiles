@@ -80,6 +80,9 @@
 (account TSTE24 (timeedit)
          (url-fragment "ri664XQn580Z55Qm77025ZZ6y9Y740QQ0Y45Y0gQ10764"))
 
+(account TDDE44 (timeedit)
+         (url-fragment "ri660XQn020Z56Qm77085ZZ6y9Y740QQ0Y43Y5gQ90765"))
+
 (account d_sektionen (http)
          (remote
           (url "https://calendar.google.com/calendar/ical/webmaster%40d.lintek.liu.se/public/basic.ics")))
@@ -113,14 +116,15 @@
     (vdirsyncer:render
      cal-top
 
-     TDDE04
+     ;; TDDE04
      TDDI41_TDP031
-     TSTE24
+     TDDE44
+     ;; TSTE24
 
      formulastudent
      formulastudent_management
 
-     STABEN
+     ;; STABEN
      Facebook
      lithekod
      lithekod_styrelse
