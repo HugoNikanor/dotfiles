@@ -9,7 +9,7 @@ alias l="ls"
 alias ll="cd -"
 
 alias tmp="vim +'setlocal buftype=nofile' -n"
-alias irc="env TERM=xterm ssh irc -t screen -x"
+alias irc="env TERM=xterm ssh hornquist.se -t screen -x"
 alias clip="xclip -selection clipboard"
 alias wi="wiki"
 alias wip="wi -w public"
