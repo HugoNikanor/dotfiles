@@ -55,15 +55,8 @@
         ))
 
 
-(defvar *all-packages* )
-(setq *all-packages* `(,@ required-packages ,@other-packages))
-
-(defun install-all ()
-  "Install all mentioned packages."
-  (interactive)
-  (dolist (pkg *all-packages*)
-    (unless (package-installed-p pkg)
-      (package-install pkg))))
+;;; M-x package-install-selected-packages to actually install
+(setq package-selected-packages `(,@ required-packages ,@other-packages))
 
 (package-initialize)
 
@@ -479,7 +472,7 @@ STR: target string"
   (let ((ret (geiser-eval-last-sexp nil))
         (cmnt
          (if (= (point)
-                 (line-beginning-position))
+                (line-beginning-position))
              ";; "
            " ; ")))
     (if (equalp "=> " ret)
