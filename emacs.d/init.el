@@ -519,7 +519,7 @@ STR: target string"
 (add-hook 'geiser-mode-hook
           (lambda ()
             ;; Geiser only looks at these, if this list is here
-            (setq geiser-active-implementations '(chicken guile))
+            (setq geiser-active-implementations '(guile chicken racket))
 
             ;; TODO this does't work
             (eval-after-load "geiser-impl"
