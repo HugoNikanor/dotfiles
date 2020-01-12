@@ -47,7 +47,7 @@
 
 
 (account Facebook (http)
-         (remote (url "https://www.facebook.com/events/ical/upcoming/?uid=100000482656459&key=AQB8kEAx-Ry0CIu2")))
+         (remote (url "https://www.facebook.com/events/ical/upcoming/?uid=100000482656459&key=8hYDDImKk9Uh7tRO")))
 
 
 (account lithekod (gcal)
@@ -79,6 +79,9 @@
 
 (account TSTE24 (timeedit)
          (url-fragment "ri664XQn580Z55Qm77025ZZ6y9Y740QQ0Y45Y0gQ10764"))
+
+(account TDDE44 (timeedit)
+         (url-fragment "ri660XQn020Z56Qm77085ZZ6y9Y740QQ0Y43Y5gQ90765"))
 
 (account d_sektionen (http)
          (remote
@@ -113,14 +116,15 @@
     (vdirsyncer:render
      cal-top
 
-     TDDE04
+     ;; TDDE04
      TDDI41_TDP031
-     TSTE24
+     TDDE44
+     ;; TSTE24
 
      formulastudent
      formulastudent_management
 
-     STABEN
+     ;; STABEN
      Facebook
      lithekod
      lithekod_styrelse
