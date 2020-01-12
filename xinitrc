@@ -3,7 +3,7 @@
 resources=$HOME/.Xresources
 test -f $resources && xrdb -merge $resources
 
-compton &
+picom &
 termite &
 feh --bg-fill https://wrya.net/services/wallpaper/4chan.php &
 
