@@ -215,7 +215,8 @@ COUNT: number of lines to add"
 
 
 (setq-default fill-column 80)
-(add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
+(add-hook 'text-mode-hook #'auto-fill-mode)
+;; (add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
 
 (defun insert-text-line (&optional width)
   (interactive "p")
