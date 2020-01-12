@@ -47,7 +47,7 @@
 
 
 (account Facebook (http)
-         (remote (url "https://www.facebook.com/events/ical/upcoming/?uid=100000482656459&key=AQB8kEAx-Ry0CIu2")))
+         (remote (url "https://www.facebook.com/events/ical/upcoming/?uid=100000482656459&key=8hYDDImKk9Uh7tRO")))
 
 
 (account lithekod (gcal)
