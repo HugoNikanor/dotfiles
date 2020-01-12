@@ -194,6 +194,8 @@ COUNT: number of lines to add"
 
 ;; Mark lines not part of file.
 (setq-default indicate-empty-lines t)
+;;; TODO only for buffers I'm actually expected to edit!
+;;; So no read only buffers!
 (setq-default show-trailing-whitespace t)
 
 ;; TODO this doesn't work
@@ -218,7 +220,8 @@ COUNT: number of lines to add"
 
 
 (setq-default fill-column 80)
-(add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
+(add-hook 'text-mode-hook #'auto-fill-mode)
+;; (add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
 
 (defun insert-text-line (&optional width)
   (interactive "p")
@@ -338,7 +341,9 @@ COUNT: number of lines to add"
   "[[" 'irfc-head-prev
   "]]" 'irfc-head-next
   "]x" 'irfc-page-next
-  "[x" 'irfc-page-prev)
+  "[x" 'irfc-page-prev
+  "RET" 'irfc-follow
+  )
 
 (setq irfc-directory "~/.local/doc/rfc/")
 (defvar rfc-index-file (concat irfc-directory "rfc-index.txt"))
@@ -519,7 +524,7 @@ STR: target string"
 (add-hook 'geiser-mode-hook
           (lambda ()
             ;; Geiser only looks at these, if this list is here
-            (setq geiser-active-implementations '(chicken guile))
+            (setq geiser-active-implementations '(guile chicken racket))
 
             ;; TODO this does't work
             (eval-after-load "geiser-impl"
