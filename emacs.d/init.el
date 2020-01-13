@@ -148,7 +148,6 @@ COUNT: number of lines to add"
 
 
 (load-theme 'wombat)
-(setq custom-enabled-themes '(wombat))
 
 (ivy-mode)
 (which-key-mode) ; Show possible next keys after some key presses
@@ -162,9 +161,6 @@ COUNT: number of lines to add"
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 'right)
-
-;; TODO load this for modes I want it in
-;; (yas-global-mode)
 
 ;; (defvar og-whitespace-style whitespace-style)
 ;; Highlight "bad" whitespace.
@@ -324,8 +320,7 @@ COUNT: number of lines to add"
   "]]" 'irfc-head-next
   "]x" 'irfc-page-next
   "[x" 'irfc-page-prev
-  "RET" 'irfc-follow
-  )
+  (kbd "RET") 'irfc-follow)
 
 (setq irfc-directory "~/.local/doc/rfc/")
 (defvar rfc-index-file (concat irfc-directory "rfc-index.txt"))
@@ -637,19 +632,16 @@ file for it to work as expceted."
             (thing-at-point 'filename)))))
 
 ;;; This is /tmp/ by default
-;;; TODO
-;;; This currently brakes if ~/.cache/emacs doesn't
-;;; exists, do something about that.
 (setq temporary-file-directory
-      (or (getenv "XDG_CACHE_HOME")
-          (concat (getenv "HOME")
-                  "/.cache/emacs")) )
+      (concat (or (getenv "XDG_CACHE_HOME")
+                  (concat (getenv "HOME") "/.cache"))
+              "/emacs"))
+
+(mkdir temporary-file-directory t)
 
 ;;; Stores all temp files in one central location
 (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
-
-
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
