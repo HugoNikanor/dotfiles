@@ -64,19 +64,6 @@
 
 (mapc #'require required-packages)
 
-;; (setq packages-to-install
-;;       (seq-remove #'package-installed-p
-;;                   all-packages))
-
-;; (when packages-to-install
-;;   (mapc #'package-install packages-to-install))
-
-(defun safe-load-pkg (pkg)
-  "Require, but also downloads package?
-PKG: name of package"
-  (unless (package-installed-p pkg)
-    (package-install pkg))
-  (require pkg))
 
 
 ;;; Local Packages
@@ -435,7 +422,7 @@ STR: target string"
 
 (add-hook 'lisp-mode-hook
  (lambda ()
-   (safe-load-pkg 'slime)
+   (require 'slime)
    (setq *eval-sexp-print* 'slime-eval-print-last-expression
          *eval-sexp*       'slime-eval-last-expression)))
 
@@ -445,7 +432,7 @@ STR: target string"
 ;; tex-latex-indent-syntax-table
 
 (defun clojure-env ()
-  (safe-load-pkg 'cider)
+  (require 'cider)
 
   (define-clojure-indent
     (defroutes 'defun)
@@ -496,7 +483,7 @@ STR: target string"
 (add-hook
  'scheme-mode-hook
  (lambda ()
-   (safe-load-pkg 'geiser)
+   (require 'geiser)
    (geiser-mode)
 
    ;; Let's pretend any scheme buffer is an interaction scheme buffer!
