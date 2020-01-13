@@ -170,15 +170,16 @@ COUNT: number of lines to add"
 
 ;; Mark lines not part of file.
 (setq-default indicate-empty-lines t)
-;;; TODO only for buffers I'm actually expected to edit!
-;;; So no read only buffers!
+
 (setq-default show-trailing-whitespace t)
 
-;; TODO this doesn't work
-(add-hook 'read-only-mode-hook
-          #'(lambda () (message "Hello")
-              (setq-local show-trailing-whitespace (not buffer-read-only))))
-
+(add-variable-watcher
+ 'buffer-read-only
+ (lambda (symbol newval operation where)
+   "symbol is 'buffer-read-only,
+operation is in '(set let unlet makeunbound defvaralias),
+where is a buffer or nil"
+   (setq-local show-trailing-whitespace (not newval))))
 
 (setq inhibit-startup-screen t)
 
