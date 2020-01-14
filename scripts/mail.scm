@@ -148,6 +148,7 @@
                                "/"))))
 
 (account guckel (vg-base))
+(account valberedningen (vg-base))
 
 (account liu-fs (google)
          (pass-path "formulastudent/google/hugo.hornquist")
@@ -250,6 +251,7 @@
     liu
     liu-work
     guckel
+    valberedningen
     liu-fs))
 
 
