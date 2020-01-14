@@ -33,7 +33,7 @@
     obj))
 
 
-(define (render . accounts)
+(define (render accounts)
   (let ((objects (map render-mbsync-account (remove unspecified? accounts))))
     (format #t "~%Group all~%")
     (for-each (lambda (name) (format #t "Channel ~a~%" name))
