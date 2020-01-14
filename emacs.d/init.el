@@ -33,6 +33,7 @@
         haskell-mode
         elm-mode
         markdown-mode
+        cider
 
         magit
         git-gutter
@@ -45,6 +46,8 @@
 
         evil-org
 
+        ;; TODO This errors out in install-all,
+        ;; but installing it manually works fine
         irfc-mode
 
         ;; rainbow-delimiters
@@ -52,15 +55,8 @@
         ))
 
 
-(defvar *all-packages* )
-(setq *all-packages* `(,@ required-packages ,@other-packages))
-
-(defun install-all ()
-  "Install all mentioned packages."
-  (interactive)
-  (dolist (pkg *all-packages*)
-    (unless (package-installed-p pkg)
-      (package-install pkg))))
+;;; M-x package-install-selected-packages to actually install
+(setq package-selected-packages `(,@ required-packages ,@other-packages))
 
 (package-initialize)
 
@@ -68,21 +64,8 @@
 
 (mapc #'require required-packages)
 
-;; (setq packages-to-install
-;;       (seq-remove #'package-installed-p
-;;                   all-packages))
-
-;; (when packages-to-install
-;;   (mapc #'package-install packages-to-install))
-
-(defun safe-load-pkg (pkg)
-  "Require, but also downloads package?
-PKG: name of package"
-  (unless (package-installed-p pkg)
-    (package-install pkg))
-  (require pkg))
-
 
+
 ;;; Local Packages
 
 (add-to-list 'load-path "~/.emacs.d/pkg")
@@ -168,6 +151,8 @@ COUNT: number of lines to add"
 
 (ivy-mode)
 (which-key-mode) ; Show possible next keys after some key presses
+(setq which-key-allow-evil-operators t
+      which-key-allow-imprecise-window-fit t)
 (show-paren-mode)
 (column-number-mode)
 
@@ -175,7 +160,7 @@ COUNT: number of lines to add"
 
 (menu-bar-mode 0)
 (tool-bar-mode 0)
-(scroll-bar-mode -1)
+(scroll-bar-mode 'right)
 
 ;; TODO load this for modes I want it in
 ;; (yas-global-mode)
@@ -188,13 +173,16 @@ COUNT: number of lines to add"
 
 ;; Mark lines not part of file.
 (setq-default indicate-empty-lines t)
+
 (setq-default show-trailing-whitespace t)
 
-;; TODO this doesn't work
-(add-hook 'read-only-mode-hook
-          #'(lambda () (message "Hello")
-              (setq-local show-trailing-whitespace (not buffer-read-only))))
-
+(add-variable-watcher
+ 'buffer-read-only
+ (lambda (symbol newval operation where)
+   "symbol is 'buffer-read-only,
+operation is in '(set let unlet makeunbound defvaralias),
+where is a buffer or nil"
+   (setq-local show-trailing-whitespace (not newval))))
 
 (setq inhibit-startup-screen t)
 
@@ -208,6 +196,25 @@ COUNT: number of lines to add"
 ;; TODO this is't imidieately run for new buffers, instead first updating when
 ;; the window first changes shape.
 (formfeed-mode 1)
+
+
+
+(setq-default fill-column 80)
+(add-hook 'text-mode-hook #'auto-fill-mode)
+;; (add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
+
+(add-hook 'latex-mode-hook #'yas-minor-mode-on)
+
+(defun insert-text-line (&optional width)
+  (interactive "p")
+  (insert (make-string (if (= width 1) 40 width) ?-)))
+
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (setq fill-column 70)
+            (evil-define-minor-mode-key '(normal insert replace) formfeed-mode
+              (kbd "C--") 'insert-text-line)))
 
 
 ;;; Whitespace
@@ -316,7 +323,8 @@ COUNT: number of lines to add"
   "[[" 'irfc-head-prev
   "]]" 'irfc-head-next
   "]x" 'irfc-page-next
-  "[x" 'irfc-page-prev)
+  "[x" 'irfc-page-prev
+  (kbd "RET") 'irfc-follow)
 
 (setq irfc-directory "~/.local/doc/rfc/")
 (defvar rfc-index-file (concat irfc-directory "rfc-index.txt"))
@@ -413,7 +421,7 @@ STR: target string"
 
 (add-hook 'lisp-mode-hook
  (lambda ()
-   (safe-load-pkg 'slime)
+   (require 'slime)
    (setq *eval-sexp-print* 'slime-eval-print-last-expression
          *eval-sexp*       'slime-eval-last-expression)))
 
@@ -423,7 +431,7 @@ STR: target string"
 ;; tex-latex-indent-syntax-table
 
 (defun clojure-env ()
-  (safe-load-pkg 'cider)
+  (require 'cider)
 
   (define-clojure-indent
     (defroutes 'defun)
@@ -450,7 +458,7 @@ STR: target string"
   (let ((ret (geiser-eval-last-sexp nil))
         (cmnt
          (if (= (point)
-                 (line-beginning-position))
+                (line-beginning-position))
              ";; "
            " ; ")))
     (if (equalp "=> " ret)
@@ -474,7 +482,7 @@ STR: target string"
 (add-hook
  'scheme-mode-hook
  (lambda ()
-   (safe-load-pkg 'geiser)
+   (require 'geiser)
    (geiser-mode)
 
    ;; Let's pretend any scheme buffer is an interaction scheme buffer!
@@ -497,7 +505,7 @@ STR: target string"
 (add-hook 'geiser-mode-hook
           (lambda ()
             ;; Geiser only looks at these, if this list is here
-            (setq geiser-active-implementations '(chicken guile))
+            (setq geiser-active-implementations '(guile chicken racket))
 
             ;; TODO this does't work
             (eval-after-load "geiser-impl"
@@ -531,8 +539,50 @@ STR: target string"
             (mmm-add-mode-ext-class
              'scheme-mode nil 'lisp-texinfo-comments)))
 
+
+
+
+(setq log-mode-highlights
+      `((,(regexp-opt '("pass")) . 'success)
+        (,(regexp-opt '("fail")) . 'error))
+      )
+
+  ;; M-x describe-face
+(define-derived-mode log-mode fundamental-mode "Log"
+  "Major mode for viewing srfi-64 log files from guile."
+
+  ;; fold cases
+;; Test begin:
+;;   source-file: "/home/hugo/code/calparse/tests/termios.scm"
+;;   source-line: 34
+;;   source-form: (test-equal (& ifl (~ (|| ECHO ICANON))) (lflag t))
+;; Test end:
+;;   result-kind: pass
+;;   actual-value: 0
+;;   expected-value: 0
+  ;; folds to
+  ;; PASS <name if name> <source-file : source-line> ...
+
+  ;; success ration pinned to top of screen
+  ;; parsed from end of file
+;; # of expected passes      22
+;; # of unexpected failures  4
+
+  ;; Failing values should highlight their difference
+
+  ;; Groups should be marked/indented?
+
+
+  (read-only-mode 1)
+  (setq font-lock-defaults '(log-mode-highlights))
+  (message "Entered Log mode"))
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.log\\'" . log-mode))
+
 ;;; Haskell
 
+>>>>>>> refs/remotes/origin/master
 (add-hook
  'haskell-mode-hook
  (lambda ()
@@ -587,21 +637,16 @@ file for it to work as expceted."
             (thing-at-point 'filename)))))
 
 ;;; This is /tmp/ by default
-;;; TODO
-;;; This currently brakes if ~/.cache/emacs doesn't
-;;; exists, do something about that.
 (setq temporary-file-directory
-      (or (getenv "XDG_CACHE_HOME")
-          (concat (getenv "HOME")
-                  "/.cache/emacs")) )
+      (concat (or (getenv "XDG_CACHE_HOME")
+                  (concat (getenv "HOME") "/.cache"))
+              "/emacs"))
+
+(mkdir temporary-file-directory t)
 
 ;;; Stores all temp files in one central location
 (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
-
-
-(setq-default fill-column 80)
-(add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)

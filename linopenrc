@@ -33,7 +33,8 @@ interm=vim
 image:feh
 video:mplayer
 audio:mplayer->interm # you can also specify the interm rule explictly after '->'
-text:vim
+text:gvim
+font:gnome-font-viewer
 
 # 4. Regexp
 # Match some protocols by default

@@ -224,7 +224,7 @@
 
 (account mutt-global-gpg (mutt-global)
          (set
-           ;; (spoolfile "/var/mail/hugo")
+           (spoolfile "/var/mail/hugo/Gmail/")
            (crypt_use_gpgme yes)
            (pgp_default_key "E376B3821453F4BE1ED6F3C1265514B158C4CA23")))
 
