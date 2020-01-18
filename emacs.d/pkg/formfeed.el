@@ -38,6 +38,7 @@ Version 2018-08-30"
                             )))
     (redraw-frame)))
 
+;;;###autoload
 (define-minor-mode formfeed-mode
   "Mode for handling formfeeds as content changes."
   :lighter " ^L"
