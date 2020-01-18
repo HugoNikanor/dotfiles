@@ -207,7 +207,8 @@ where is a buffer or nil"
 
 (defun insert-text-line (&optional width)
   (interactive "p")
-  (insert (make-string (if (= width 1) 40 width) ?-)))
+  (insert (make-string (if (= width 1) 40 width) ?-))
+  (newline))
 
 (add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'markdown-mode-hook
