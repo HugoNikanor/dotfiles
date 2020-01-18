@@ -582,7 +582,6 @@ STR: target string"
 
 ;;; Haskell
 
->>>>>>> refs/remotes/origin/master
 (add-hook
  'haskell-mode-hook
  (lambda ()
