@@ -64,8 +64,8 @@
 
 (mapc #'require required-packages)
 
-
 
+
 ;;; Local Packages
 
 (add-to-list 'load-path "~/.emacs.d/pkg")
@@ -161,6 +161,9 @@ COUNT: number of lines to add"
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 'right)
+
+;; TODO load this for modes I want it in
+;; (yas-global-mode)
 
 ;; (defvar og-whitespace-style whitespace-style)
 ;; Highlight "bad" whitespace.
@@ -536,8 +539,8 @@ STR: target string"
             (mmm-add-mode-ext-class
              'scheme-mode nil 'lisp-texinfo-comments)))
 
-
 
+
 
 (setq log-mode-highlights
       `((,(regexp-opt '("pass")) . 'success)
@@ -579,6 +582,7 @@ STR: target string"
 
 ;;; Haskell
 
+>>>>>>> refs/remotes/origin/master
 (add-hook
  'haskell-mode-hook
  (lambda ()

@@ -66,8 +66,7 @@
                  (format #t "~a ~a~%" key value))))
 
 
-(define (render #; base-port base-acc . accounts
-                            )
+(define (render base-acc accounts)
   (mkdir-p (path-append (getenv "HOME") ".mutt"))
   (with-output-to-file (path-append (getenv "HOME") "/.mutt/muttrc")
     (lambda ()

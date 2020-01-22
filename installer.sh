@@ -32,4 +32,3 @@ for file in $(ls); do
 	[ -x $file ] && verbose ./$file
 done
 popd
-

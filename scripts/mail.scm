@@ -148,6 +148,7 @@
                                "/"))))
 
 (account guckel (vg-base))
+(account valberedningen (vg-base))
 
 (account liu-fs (google)
          (pass-path "formulastudent/google/hugo.hornquist")
@@ -243,15 +244,27 @@
 
 (define domainname (read-line (open-input-pipe "hostname --domain")))
 
+(define account-list
+  (list
+    lysator
+    gmail
+    liu
+    liu-work
+    guckel
+    valberedningen
+    liu-fs))
+
+
 (with-output-to-file (path-append $HOME ".mbsyncrc")
   (lambda ()
     (mbsync:render
-      (unless (string=? domainname "lysator.liu.se") lysator)
-      gmail liu liu-work guckel liu-fs)))
+      (if (string=? domainname "lysator.liu.se")
+        (delete lysator account-list)
+        account-list))))
 
 
 (mutt:render
  ;; (open-input-file (path-append (dirname (dirname (current-filename))) "mutt" "muttrc"))
  (cond ((string=? domainname "lysator.liu.se") mutt-global-lysator)
        (else mutt-global-gpg))
- lysator gmail liu liu-work guckel liu-fs)
+ account-list)
