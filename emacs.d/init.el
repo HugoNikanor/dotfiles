@@ -200,7 +200,7 @@ where is a buffer or nil"
 (add-hook 'text-mode-hook #'auto-fill-mode)
 ;; (add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
 
-(add-hook 'latex-mode-hook #'yas-minor-mode-on)
+(add-hook 'tex-mode-hook #'yas-minor-mode-on)
 
 (defun insert-text-line (&optional width)
   (interactive "p")
