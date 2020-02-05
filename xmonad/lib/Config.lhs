@@ -2,6 +2,7 @@
 
 > import System.IO (hPutStrLn)
 > import Data.List (isInfixOf)
+> import Data.Function (fix)
 
 > import XMonad
 
@@ -85,6 +86,31 @@ Borrowed from darcs. Warps the mouse to the center of the current
 (physical) monitor.
 
 > warpToCentre = gets (W.screen . W.current . windowset) >>= \x -> warpToScreen x  0.5 0.5
+
+gs_navigate : TwoD a (Maybe a)
+makeXEventHandler : ((KeySym, String, KeyMask) -> TwoD a (Maybe a)) -> TwoD a (Maybe a)
+shadowWithKeymap : Map (KeyMask, KeySym) a -> ((KeySym, String, KeyMask) -> a) -> (KeySym, String, KeyMask) -> a
+
+> gsConfig = defaultGSConfig { gs_navigate = fix $ \self ->
+>     let navKeyMap = M.mapKeys ((,) 0) $ M.fromList $
+>                 [(xK_Escape, GS.cancel)
+>                 ,(xK_Return, GS.select)
+>                 ,(xK_slash , GS.substringSearch self)]
+>            ++
+>             map (\(k,a) -> (k,a >> self))
+>                 [(xK_Left  , GS.move (-1,0 ))
+>                 ,(xK_h     , GS.move (-1,0 ))
+>                 ,(xK_Right , GS.move (1,0  ))
+>                 ,(xK_l     , GS.move (1,0  ))
+>                 ,(xK_Down  , GS.move (0,1  ))
+>                 ,(xK_j     , GS.move (0,1  ))
+>                 ,(xK_Up    , GS.move (0,-1 ))
+>                 ,(xK_k     , GS.move (0,-1 ))
+>                 ,(xK_space , GS.setPos (0,0))
+>                 ]
+>     in makeXEventhandler $ shadowWithKeymap navKeyMap (const self) }
+
+
 
 TODO
 ====
