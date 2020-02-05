@@ -15,8 +15,10 @@
 >     , withWorkspace
 >     , renameWorkspace )
 > import XMonad.Actions.CycleWS (prevScreen, nextScreen, toggleWS)
-> import XMonad.Actions.Warp (banish, Corner (LowerRight))
+> import XMonad.Actions.Warp (banish, warpToScreen, Corner (LowerRight))
 > import XMonad.Actions.Navigation2D (windowGo, windowSwap)
+> import XMonad.Actions.GridSelect (defaultGSConfig, gs_navigate)
+> import XMonad.Actions.GridSelect as GS
 
 > import XMonad.Hooks.InsertPosition
 >     (Position (Below), Focus (Newer), insertPosition)
@@ -78,6 +80,11 @@ The X key names of the swedish letters is
 > xK_ö = xK_odiaeresis
 
 
+
+Borrowed from darcs. Warps the mouse to the center of the current
+(physical) monitor.
+
+> warpToCentre = gets (W.screen . W.current . windowset) >>= \x -> warpToScreen x  0.5 0.5
 
 TODO
 ====
@@ -271,11 +278,12 @@ The following keybinds are managed by EZ-config.
 >     -- Do I even want these?
 >     -- especcially if they don't work on a per-screen basis
 >     -- Possibly write some own which works together with IndependentScreens
->   , ("M-g"  , prevScreen)
->   , ("M-c"  , nextScreen)
+>   --, ("M-g"  , prevScreen)
+>   --, ("M-c"  , nextScreen)
 >     --, ("M-S-g", shiftPrevScreen)
 >     --, ("M-S-c", shiftNextScreen)
->   
+>   , ("M-g", warpToCentre >> goToSelected gsConfig) -- can this also shift the newly selected workspace here?
+>   , ("M-S-g", warpToCentre >> bringSelected gsConfig)
 >   , ("M-p", shellPrompt myXPConfig { autoComplete = Nothing
 >                                    , searchPredicate = isInfixOf } )
 >   , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })
