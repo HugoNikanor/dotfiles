@@ -83,6 +83,12 @@
 (account TDDE44 (timeedit)
          (url-fragment "ri660XQn020Z56Qm77085ZZ6y9Y740QQ0Y43Y5gQ90765"))
 
+(account TATA41 (timeedit)
+         (url-fragment "ri660XQn020Z56Qm67035ZZ6y9Y740QQ0Y43Y5gQ60765"))
+
+(account TDDB68 (timeedit)              ; pintos
+         (url-fragment "ri660XQn020Z56Qm07075ZZ6y9Y740QQ0Y43Y5gQ00765"))
+
 (account d_sektionen (http)
          (remote
           (url "https://calendar.google.com/calendar/ical/webmaster%40d.lintek.liu.se/public/basic.ics")))
@@ -129,6 +135,9 @@
      lithekod
      lithekod_styrelse
      fruux
+
+     TATA41
+     TDDB68
 
      d_sektionen
      )))
