@@ -132,6 +132,7 @@ screens.
 >                   ||| spiral (1/2)
 >                   ||| GridRatio (4/3)
 >                   ||| Mirror (multiCol [1, 1, 0] 4 0.01 0.5)
+>                   ||| (multiCol [1, 1, 0] 4 0.01 0.5)
 >         tallLayouts = Dishes 1 (1/4)
 >                   ||| GridRatio (4/3)
 
