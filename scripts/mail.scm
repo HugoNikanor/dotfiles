@@ -56,7 +56,8 @@
          (mutt
           (set
            (from ,(format #f "~a <~a>" (? name) (? address)))
-           (realname ,(? name)))
+           (realname ,(? name))
+           (record ,(format #f "=~a/INBOX" (? fancy-acc-name))))
 
           (file
            (dir ,(path-append $HOME "/.mutt/"))
@@ -81,7 +82,6 @@
                        (format #f "source ~a" (? mutt file account-config))
                        )))
 
-          (my_hdr (Bcc ,(? address)))
           ;; signature moved outside mutt for easier usage of multiple
           ;; mail clients.
           (signature ,(? signature)))
@@ -195,8 +195,6 @@
 
               )
 
-         (my_hdr (Bcc "hugo@hornquist.se"))
-
          (macro
            (index ,'("\\cb |urlview\n"
                      "\\Ck <save-message>=Lysator/Junk<return>"))
@@ -222,7 +220,7 @@
            (mbox      "/mp/mail/hugo/Maildir")
            (folder "~/.local/var/mail/"))
 
-         (my_hdr (Bcc "hugo@lysator.liu.se")))
+         )
 
 (account mutt-global-gpg (mutt-global)
          (set
