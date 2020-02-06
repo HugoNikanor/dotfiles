@@ -23,6 +23,7 @@
 (account default ()
          (name "Hugo Hörnquist")
          (path-base ,mailfolder)
+         (fancy-acc-name ,(string-titlecase (? acc-name)))
 
          (pass ,(string-append "pass " (? pass-path)))
 
@@ -34,7 +35,7 @@
 
          (MaildirStore
           (AltMap yes)
-          (Path ,(path-append (? path-base) (string-titlecase (? acc-name)) "/"))
+          (Path ,(path-append (? path-base) (? fancy-acc-name) "/"))
           (Inbox ,(path-append (? MaildirStore Path)
                                  "INBOX"))
           (SubFolders Verbatim))
@@ -144,7 +145,7 @@
          (MaildirStore
            (Path ,(path-append (? path-base)
                                (string-append "Vastgota."
-                                 (string-titlecase (? acc-name)))
+                                 (? fancy-acc-name))
                                "/"))))
 
 (account guckel (vg-base))
