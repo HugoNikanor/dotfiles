@@ -13,9 +13,10 @@
     (with-output-to-file (get-field o '(mutt file account-config))
       (lambda ()
         (format #t "set signature=~a~%" (get-field o '(mutt file account-signature)))
-        (map-subtree o '(mutt my_hdr)
-                     (lambda (name value)
-                       (format #t "my_hdr ~a: ~a~%" name value)))
+        (ignore-error
+         (map-subtree o '(mutt my_hdr)
+                      (lambda (name value)
+                        (format #t "my_hdr ~a: ~a~%" name value))))
         (map-subtree o '(mutt set)
                      (lambda (name value)
                        (format #t "set ~a = ~a~%" name
@@ -41,9 +42,10 @@
 (define (render-mutt-global account-class)
   (define account (instanciate account-class))
 
-  (map-subtree account '(my_hdr)
-               (lambda (name value)
-                 (format #t "my_hdr ~a: ~a~%" name value)))
+  (ignore-error
+   (map-subtree account '(my_hdr)
+                (lambda (name value)
+                  (format #t "my_hdr ~a: ~a~%" name value))))
 
   (map-subtree account '(set)
                (lambda (name value)
