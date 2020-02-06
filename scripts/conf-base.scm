@@ -1,7 +1,8 @@
 (define-module (conf-base)
   #:export (account get-field instanciate path-append
                     map-subtree mkdir-p
-                    string-first string-last)
+                    string-first string-last
+                    ignore-error)
   #:replace (let*))
 
 (use-modules (srfi srfi-1)
@@ -141,6 +142,12 @@
   (let* ((head tail (split-at lst len)))
     (append head (list tail))))
 
+
+
+(define-syntax-rule (ignore-error body ...)
+  (catch 'misc-error
+    (lambda () body ...)
+    (lambda _ *unspecified*)))
 
 
 
