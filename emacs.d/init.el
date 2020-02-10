@@ -3,6 +3,8 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl))
+;; https://a-nickels-worth.blogspot.com/2007/11/effective-emacs.html
+(defvar *emacs-load-start* (current-time))
 (require 'package)
 
 (setq package-archives
@@ -650,6 +652,12 @@ file for it to work as expceted."
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
+
+(message ".emacs loaded in %ds"
+         (let ((ct (current-time)))
+          (- (+ (first ct) (second ct))
+             (+ (first *emacs-load-start*)
+                (second *emacs-load-start*)))))
 
 (provide 'init)
 ;;; init.el ends here
