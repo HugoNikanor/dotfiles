@@ -5,6 +5,7 @@
 (add-to-load-path (dirname (current-filename)))
 
 (use-modules (conf-base)
+             (util)
              ((vdirsyncer) #:prefix vdirsyncer:))
 
 (account cal-top ()
@@ -95,13 +96,18 @@
 
 
 (account fruux (cal)
-         (pair (collections ,'("from b"))
+         ;; 'from a' means to discover from the server
+         ;; 'from b' means that calendars are discovered in the local
+         ;; dir.
+         ;; TODO rename 'a' & 'b' to 'remote' & 'local'?
+         (pair (collections ,'("from a"))
                (metadata ,'("color" "displayname"))
                (conflict_resolution ,'("command" "vimdiff")))
 
-         ;; TODO handle creation of this directory!
-         ;; Expected directory structure is:
-         ;; calendars/fruux/{each fruux collection}
+         ;; This creates the fruux directory, and discovered
+         ;; directories are placed directly below.
+         ;; I currently symlink those I want to observe into the base
+         ;; directory.
          (local
           (path ,(path-append (? cal-base) "fruux")))
 
@@ -113,6 +119,22 @@
                              ,(format #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a" (? remote username))))))
 
 
+;; pacman -S python-requests-oauthlib
+(account admittansen (cal)
+         (pair (collections ,'("from a"))
+               (metadata ,'("displayname"))
+               (conflict_resolution ,'("command" "vimdiff")))
+
+         ;; see comment on fruux
+         (local
+          (path ,(path-append (? cal-base) "admittansen")))
+
+         (remote
+          (type "google_calendar")
+
+          (token_file "/home/hugo/.cache/vdirsyncer-tokens")
+          (client_id ,(pass "admittansen/google/oath/client_id"))
+          (client_secret ,(pass "admittansen/google/oath/client_id"))))
 
 (define path (path-append (getenv "HOME") "/.config/vdirsyncer"))
 (mkdir-p path)
@@ -140,4 +162,5 @@
      TDDB68
 
      d_sektionen
+     admittansen
      )))
