@@ -73,6 +73,11 @@
 (add-to-list 'load-path "~/.emacs.d/pkg")
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
 
+;; Update local autoloads
+(setq generated-autoload-file "~/.emacs.d/pkg/my-autoloads.el")
+(update-directory-autoloads "~/.emacs.d/pkg")
+(require 'my-autoloads)
+
 (autoload 'noweb-mode "noweb-mode" "Editing noweb files." t)
 
 (setq auto-mode-alist (append (list (cons "\\.nw$" 'noweb-mode))
