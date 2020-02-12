@@ -225,6 +225,7 @@ where is a buffer or nil"
 ;; (add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
 
 (add-hook 'tex-mode-hook #'yas-minor-mode-on)
+(add-hook 'tex-mode-hook #'babel-lang)
 
 (defun insert-text-line (&optional width)
   (interactive "p")
