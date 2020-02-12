@@ -96,6 +96,8 @@
 
 (require 'evil-maps)                    ; Is this required?
 
+(setq evil-split-window-below t
+      evil-vsplit-window-right t)
 
 ;; TODO auto find TAGS file
 
