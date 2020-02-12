@@ -96,30 +96,34 @@
 
 (require 'evil-maps)                    ; Is this required?
 
+;; TODO auto find TAGS file
+
+;; (require 'xref)
+(require 'etags)
+
+;; TODO this needs to run on file load?
+(defalias 'read-tag-name
+  (xref-backend-identifier-completion-table (xref-find-backend)))
+
 (evil-ex-define-argument-type tag
-  "Handles tag names"
-  ;; This is a function that should take stuff...
-  ;; :collection complete-tag
-  )
+  "Handles a jump-tag argument"
+  :collection read-tag-name)
 
 (evil-define-interactive-code "<tag>"
   :ex-arg tag
   (list (when (evil-ex-p) evil-ex-argument)))
 
-(evil-define-command vi-follow-tag (tag &rest rest)
+(evil-define-command evil-open-tag (tagname)
   :repeat nil
   (interactive "<tag>")
-  (princ tag)
-  (princ rest)
-  (tags-search tag))
+  (xref-find-definitions tagname))
 
-;; eval-expression
+(evil-ex-define-cmd "ta[g]" 'evil-open-tag)
 
 ; C-<tab> does tag completion
 
 (evil-ex-define-cmd "vsp" "vsplit")
-;;; TODO vsb, vertical split buffer
-(evil-ex-define-cmd "ta[g]" 'vi-follow-tag)
+
 
 (defun evil-fresh-line-below (&optional count)
   "Open-below, followed by returning to normal mode.
