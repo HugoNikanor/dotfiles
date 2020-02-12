@@ -120,10 +120,12 @@
 
 (evil-ex-define-cmd "ta[g]" 'evil-open-tag)
 
-; C-<tab> does tag completion
 
 (evil-ex-define-cmd "vsp" "vsplit")
 
+
+
+(define-key evil-insert-state-map (kbd "C-n") #'completion-at-point)
 
 (defun evil-fresh-line-below (&optional count)
   "Open-below, followed by returning to normal mode.
