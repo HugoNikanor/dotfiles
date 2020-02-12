@@ -121,6 +121,14 @@
 (evil-ex-define-cmd "ta[g]" 'evil-open-tag)
 
 
+(evil-define-command evil-vsplit-buffer (buffer)
+  "Splits window and switches to another buffer."
+  :repeat nil
+  (interactive "<b>")
+  (evil-window-vsplit)
+  (evil-buffer buffer))
+
+(evil-ex-define-cmd "vsb[uffer]" 'evil-vsplit-buffer)
 (evil-ex-define-cmd "vsp" "vsplit")
 
 
