@@ -521,7 +521,8 @@ STR: target string"
 (add-hook 'geiser-mode-hook
           (lambda ()
             ;; Geiser only looks at these, if this list is here
-            (setq geiser-active-implementations '(guile chicken racket))
+            (setq geiser-active-implementations '(guile chicken racket)
+                  evil-lookup-func #'geiser-doc-symbol-at-point)
 
             ;; TODO this does't work
             (eval-after-load "geiser-impl"
