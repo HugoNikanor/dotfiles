@@ -538,7 +538,10 @@ STR: target string"
             ;; geiser-guile-load-init-file-p
 
             (evil-define-key '(normal insert) scheme-mode-map
-              (kbd "M-.") 'geiser-edit-symbol-at-point)
+              (kbd "M-.") 'geiser-edit-symbol-at-point
+              (kbd "C-]") 'geiser-edit-symbol-at-point)
+
+
 
             ;; extend theme to show comments and comment
             ;; markers in different colors.
