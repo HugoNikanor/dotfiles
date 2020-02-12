@@ -96,14 +96,11 @@
 
 (require 'evil-maps)                    ; Is this required?
 
+
 ;; TODO auto find TAGS file
 
-;; (require 'xref)
-(require 'etags)
-
-;; TODO this needs to run on file load?
 (defalias 'read-tag-name
-  (xref-backend-identifier-completion-table (xref-find-backend)))
+  #'(xref-backend-identifier-completion-table (xref-find-backend)))
 
 (evil-ex-define-argument-type tag
   "Handles a jump-tag argument"
