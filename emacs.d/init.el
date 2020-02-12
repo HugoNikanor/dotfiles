@@ -148,6 +148,7 @@ COUNT: number of lines to add"
   (evil-open-above count)
   (evil-normal-state))
 
+;; evil-want-C-u-scroll does exist, but only works for motion state
 (evil-define-key '(normal motion) 'global
   (kbd "C-u") 'evil-scroll-up)
 
@@ -542,6 +543,10 @@ STR: target string"
               (kbd "M-.") 'geiser-edit-symbol-at-point
               (kbd "C-]") 'geiser-edit-symbol-at-point)
 
+            ;; TODO
+            ;; /usr/share/emacs/26.3/lisp/progmodes/etags.el.gz
+            ;; Sätt upp det här som en xref-backend
+            ;; (evil-ex-define-cmd "ta[g]" 'geiser-edit-symbol)
 
 
             ;; extend theme to show comments and comment
