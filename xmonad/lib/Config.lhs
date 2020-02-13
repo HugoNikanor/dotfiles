@@ -2,6 +2,7 @@
 
 > import System.IO (hPutStrLn)
 > import Data.List (isInfixOf)
+> import Data.Function (fix)
 
 > import XMonad
 
@@ -15,8 +16,10 @@
 >     , withWorkspace
 >     , renameWorkspace )
 > import XMonad.Actions.CycleWS (prevScreen, nextScreen, toggleWS)
-> import XMonad.Actions.Warp (banish, Corner (LowerRight))
+> import XMonad.Actions.Warp (banish, warpToScreen, Corner (LowerRight))
 > import XMonad.Actions.Navigation2D (windowGo, windowSwap)
+> import XMonad.Actions.GridSelect (defaultGSConfig, gs_navigate)
+> import XMonad.Actions.GridSelect as GS
 
 > import XMonad.Hooks.InsertPosition
 >     (Position (Below), Focus (Newer), insertPosition)
@@ -79,6 +82,36 @@ The X key names of the swedish letters is
 
 
 
+Borrowed from darcs. Warps the mouse to the center of the current
+(physical) monitor.
+
+> warpToCentre = gets (W.screen . W.current . windowset) >>= \x -> warpToScreen x  0.5 0.5
+
+gs_navigate : TwoD a (Maybe a)
+makeXEventHandler : ((KeySym, String, KeyMask) -> TwoD a (Maybe a)) -> TwoD a (Maybe a)
+shadowWithKeymap : Map (KeyMask, KeySym) a -> ((KeySym, String, KeyMask) -> a) -> (KeySym, String, KeyMask) -> a
+
+> gsConfig = defaultGSConfig { gs_navigate = fix $ \self ->
+>     let navKeyMap = M.mapKeys ((,) 0) $ M.fromList $
+>                 [(xK_Escape, GS.cancel)
+>                 ,(xK_Return, GS.select)
+>                 ,(xK_slash , GS.substringSearch self)]
+>            ++
+>             map (\(k,a) -> (k,a >> self))
+>                 [(xK_Left  , GS.move (-1,0 ))
+>                 ,(xK_h     , GS.move (-1,0 ))
+>                 ,(xK_Right , GS.move (1,0  ))
+>                 ,(xK_l     , GS.move (1,0  ))
+>                 ,(xK_Down  , GS.move (0,1  ))
+>                 ,(xK_j     , GS.move (0,1  ))
+>                 ,(xK_Up    , GS.move (0,-1 ))
+>                 ,(xK_k     , GS.move (0,-1 ))
+>                 ,(xK_space , GS.setPos (0,0))
+>                 ]
+>     in makeXEventhandler $ shadowWithKeymap navKeyMap (const self) }
+
+
+
 TODO
 ====
 * Possibly add scratchpad (floating term) (I have that for gvim now!)
@@ -125,6 +158,7 @@ screens.
 >                   ||| spiral (1/2)
 >                   ||| GridRatio (4/3)
 >                   ||| Mirror (multiCol [1, 1, 0] 4 0.01 0.5)
+>                   ||| (multiCol [1, 1, 0] 4 0.01 0.5)
 >         tallLayouts = Dishes 1 (1/4)
 >                   ||| GridRatio (4/3)
 
@@ -271,11 +305,12 @@ The following keybinds are managed by EZ-config.
 >     -- Do I even want these?
 >     -- especcially if they don't work on a per-screen basis
 >     -- Possibly write some own which works together with IndependentScreens
->   , ("M-g"  , prevScreen)
->   , ("M-c"  , nextScreen)
+>   --, ("M-g"  , prevScreen)
+>   --, ("M-c"  , nextScreen)
 >     --, ("M-S-g", shiftPrevScreen)
 >     --, ("M-S-c", shiftNextScreen)
->   
+>   , ("M-g", warpToCentre >> goToSelected gsConfig) -- can this also shift the newly selected workspace here?
+>   , ("M-S-g", warpToCentre >> bringSelected gsConfig)
 >   , ("M-p", shellPrompt myXPConfig { autoComplete = Nothing
 >                                    , searchPredicate = isInfixOf } )
 >   , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })

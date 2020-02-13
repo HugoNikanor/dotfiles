@@ -3,6 +3,8 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl))
+;; https://a-nickels-worth.blogspot.com/2007/11/effective-emacs.html
+(defvar *emacs-load-start* (current-time))
 (require 'package)
 
 (setq package-archives
@@ -71,6 +73,11 @@
 (add-to-list 'load-path "~/.emacs.d/pkg")
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
 
+;; Update local autoloads
+(setq generated-autoload-file "~/.emacs.d/pkg/my-autoloads.el")
+(update-directory-autoloads "~/.emacs.d/pkg")
+(require 'my-autoloads)
+
 (autoload 'noweb-mode "noweb-mode" "Editing noweb files." t)
 
 (setq auto-mode-alist (append (list (cons "\\.nw$" 'noweb-mode))
@@ -94,30 +101,43 @@
 
 (require 'evil-maps)                    ; Is this required?
 
+(setq evil-split-window-below t
+      evil-vsplit-window-right t)
+
+;; TODO auto find TAGS file
+
+(defalias 'read-tag-name
+  #'(xref-backend-identifier-completion-table (xref-find-backend)))
+
 (evil-ex-define-argument-type tag
-  "Handles tag names"
-  ;; This is a function that should take stuff...
-  ;; :collection complete-tag
-  )
+  "Handles a jump-tag argument"
+  :collection read-tag-name)
 
 (evil-define-interactive-code "<tag>"
   :ex-arg tag
   (list (when (evil-ex-p) evil-ex-argument)))
 
-(evil-define-command vi-follow-tag (tag &rest rest)
+(evil-define-command evil-open-tag (tagname)
   :repeat nil
   (interactive "<tag>")
-  (princ tag)
-  (princ rest)
-  (tags-search tag))
+  (xref-find-definitions tagname))
 
-;; eval-expression
+(evil-ex-define-cmd "ta[g]" 'evil-open-tag)
 
-; C-<tab> does tag completion
 
+(evil-define-command evil-vsplit-buffer (buffer)
+  "Splits window and switches to another buffer."
+  :repeat nil
+  (interactive "<b>")
+  (evil-window-vsplit)
+  (evil-buffer buffer))
+
+(evil-ex-define-cmd "vsb[uffer]" 'evil-vsplit-buffer)
 (evil-ex-define-cmd "vsp" "vsplit")
-;;; TODO vsb, vertical split buffer
-(evil-ex-define-cmd "ta[g]" 'vi-follow-tag)
+
+
+
+(define-key evil-insert-state-map (kbd "C-n") #'completion-at-point)
 
 (defun evil-fresh-line-below (&optional count)
   "Open-below, followed by returning to normal mode.
@@ -133,6 +153,7 @@ COUNT: number of lines to add"
   (evil-open-above count)
   (evil-normal-state))
 
+;; evil-want-C-u-scroll does exist, but only works for motion state
 (evil-define-key '(normal motion) 'global
   (kbd "C-u") 'evil-scroll-up)
 
@@ -204,10 +225,12 @@ where is a buffer or nil"
 ;; (add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
 
 (add-hook 'tex-mode-hook #'yas-minor-mode-on)
+(add-hook 'tex-mode-hook #'babel-lang)
 
 (defun insert-text-line (&optional width)
   (interactive "p")
-  (insert (make-string (if (= width 1) 40 width) ?-)))
+  (insert (make-string (if (= width 1) 40 width) ?-))
+  (newline))
 
 (add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'markdown-mode-hook
@@ -505,7 +528,8 @@ STR: target string"
 (add-hook 'geiser-mode-hook
           (lambda ()
             ;; Geiser only looks at these, if this list is here
-            (setq geiser-active-implementations '(guile chicken racket))
+            (setq geiser-active-implementations '(guile chicken racket)
+                  evil-lookup-func #'geiser-doc-symbol-at-point)
 
             ;; TODO this does't work
             (eval-after-load "geiser-impl"
@@ -522,7 +546,14 @@ STR: target string"
             ;; geiser-guile-load-init-file-p
 
             (evil-define-key '(normal insert) scheme-mode-map
-              (kbd "M-.") 'geiser-edit-symbol-at-point)
+              (kbd "M-.") 'geiser-edit-symbol-at-point
+              (kbd "C-]") 'geiser-edit-symbol-at-point)
+
+            ;; TODO
+            ;; /usr/share/emacs/26.3/lisp/progmodes/etags.el.gz
+            ;; Sätt upp det här som en xref-backend
+            ;; (evil-ex-define-cmd "ta[g]" 'geiser-edit-symbol)
+
 
             ;; extend theme to show comments and comment
             ;; markers in different colors.
@@ -582,7 +613,6 @@ STR: target string"
 
 ;;; Haskell
 
->>>>>>> refs/remotes/origin/master
 (add-hook
  'haskell-mode-hook
  (lambda ()
@@ -650,6 +680,12 @@ file for it to work as expceted."
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
+
+(message ".emacs loaded in %ds"
+         (let ((ct (current-time)))
+          (- (+ (first ct) (second ct))
+             (+ (first *emacs-load-start*)
+                (second *emacs-load-start*)))))
 
 (provide 'init)
 ;;; init.el ends here

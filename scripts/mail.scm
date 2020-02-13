@@ -164,6 +164,12 @@
            ,(format #f "~a, Team leader IT & Driverless~%✆ ~a"
                     (? name) (getenv "PHONE"))))
 
+(account admittansen (google)
+         (pass-path "admittansen/hugo@admittansen.se")
+         (address "hugo@admittansen.se")
+
+         (signature "Hugo Hörnquist, Labchef"))
+
 
 
 (account mutt-global ()
@@ -251,7 +257,9 @@
     liu-work
     guckel
     valberedningen
-    liu-fs))
+    liu-fs
+    admittansen
+    ))
 
 
 (with-output-to-file (path-append $HOME ".mbsyncrc")
