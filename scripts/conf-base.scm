@@ -1,7 +1,8 @@
 (define-module (conf-base)
   #:export (account get-field instanciate path-append
                     map-subtree mkdir-p
-                    string-first string-last)
+                    string-first string-last
+                    ignore-error)
   #:replace (let*))
 
 (use-modules (srfi srfi-1)
@@ -141,20 +142,26 @@
   (let* ((head tail (split-at lst len)))
     (append head (list tail))))
 
+
+
+(define-syntax-rule (ignore-error body ...)
+  (catch 'misc-error
+    (lambda () body ...)
+    (lambda _ *unspecified*)))
 
 
 
 (define (get-field self field)
   (let inner ((subtree self)
               (subfield field))
-    (cond [(null? subtree)  (error "Field not in tree")]
+    (cond [(null? subtree)  (error "Empty subtree")]
           [(null? subfield) subtree]
           [else (aif (assoc-ref subtree (car subfield))
                      (let ((value (car it)))
                        (if (procedure? value)
                            (value self)
                            (inner value (cdr subfield))))
-                     (error "Field contains bad data" self field subfield))])))
+                     (error "Field not in tree" self field subfield))])))
 
 (define (map-subtree o subtreepath proc)
   (map (match-lambda [(name field-proc)

@@ -23,6 +23,7 @@
 (account default ()
          (name "Hugo Hörnquist")
          (path-base ,mailfolder)
+         (fancy-acc-name ,(string-titlecase (? acc-name)))
 
          (pass ,(string-append "pass " (? pass-path)))
 
@@ -34,7 +35,7 @@
 
          (MaildirStore
           (AltMap yes)
-          (Path ,(path-append (? path-base) (string-titlecase (? acc-name)) "/"))
+          (Path ,(path-append (? path-base) (? fancy-acc-name) "/"))
           (Inbox ,(path-append (? MaildirStore Path)
                                  "INBOX"))
           (SubFolders Verbatim))
@@ -55,7 +56,8 @@
          (mutt
           (set
            (from ,(format #f "~a <~a>" (? name) (? address)))
-           (realname ,(? name)))
+           (realname ,(? name))
+           (record ,(format #f "=~a/INBOX" (? fancy-acc-name))))
 
           (file
            (dir ,(path-append $HOME "/.mutt/"))
@@ -80,7 +82,6 @@
                        (format #f "source ~a" (? mutt file account-config))
                        )))
 
-          (my_hdr (Bcc ,(? address)))
           ;; signature moved outside mutt for easier usage of multiple
           ;; mail clients.
           (signature ,(? signature)))
@@ -144,7 +145,7 @@
          (MaildirStore
            (Path ,(path-append (? path-base)
                                (string-append "Vastgota."
-                                 (string-titlecase (? acc-name)))
+                                 (? fancy-acc-name))
                                "/"))))
 
 (account guckel (vg-base))
@@ -200,8 +201,6 @@
 
               )
 
-         (my_hdr (Bcc "hugo@hornquist.se"))
-
          (macro
            (index ,'("\\cb |urlview\n"
                      "\\Ck <save-message>=Lysator/Junk<return>"))
@@ -227,7 +226,7 @@
            (mbox      "/mp/mail/hugo/Maildir")
            (folder "~/.local/var/mail/"))
 
-         (my_hdr (Bcc "hugo@lysator.liu.se")))
+         )
 
 (account mutt-global-gpg (mutt-global)
          (set
