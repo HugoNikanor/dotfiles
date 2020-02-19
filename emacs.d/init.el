@@ -106,8 +106,19 @@
 
 ;; TODO auto find TAGS file
 
-(defalias 'read-tag-name
-  #'(xref-backend-identifier-completion-table (xref-find-backend)))
+;;; Multiple problems here.
+;;; Defalias evaluates it's arguments when run, so the major-mode
+;;; providing an xref backend must be loaded before xref-find-backend
+;;; is called. The obvious solution was to wrap xref-backend-... in a
+;;; propper function, but that doesn't work since the procedure is run
+;;; in minibuffer-inactive-mode.
+;;; A function wrapping defalias, along with some hooks is a hack.
+(defun def-read-tag-name ()
+ (defalias 'read-tag-name
+   (xref-backend-identifier-completion-table (xref-find-backend))))
+
+(add-hook 'geiser-mode-hook 'def-read-tag-name)
+(add-hook 'emacs-lisp-mode-hook 'def-read-tag-name)
 
 (evil-ex-define-argument-type tag
   "Handles a jump-tag argument"
