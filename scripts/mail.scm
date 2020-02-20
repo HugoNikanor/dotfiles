@@ -214,7 +214,8 @@
           (alternative_order ,(string-join '("text/plain" "text/enriched" "text/html")))
           (push "<last-entry>")
           (ignore "*")
-          (unignore ,(string-join '("from:" "subject" "to" "cc" "date" "x-url" "user-agent" "x-spam-score:"))))
+          (unignore ,(string-join '("from:" "subject" "to" "cc" "date" "x-url" "user-agent" "x-spam-score:"
+                                    "X-Original-To" "Delivered-To"))))
          )
 
 (account mutt-global-lysator (mutt-global)
