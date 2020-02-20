@@ -134,8 +134,8 @@
           (type "google_calendar")
 
           (token_file "/home/hugo/.cache/vdirsyncer-tokens")
-          (client_id ,(pass "admittansen/google/oath/client_id"))
-          (client_secret ,(pass "admittansen/google/oath/client_id"))))
+          (client_id ,(pass "admittansen/google/oauth/client_id"))
+          (client_secret ,(pass "admittansen/google/oauth/client_secret"))))
 
 (define path (path-append (getenv "HOME") "/.config/vdirsyncer"))
 (mkdir-p path)
