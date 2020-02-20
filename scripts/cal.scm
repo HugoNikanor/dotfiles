@@ -120,6 +120,7 @@
 
 
 ;; pacman -S python-requests-oauthlib
+;; pip3 install --user requests-oauthlib
 (account admittansen (cal)
          (pair (collections ,'("from a"))
                (metadata ,'("displayname"))
