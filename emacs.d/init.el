@@ -71,25 +71,21 @@
 ;;; Local Packages
 
 (add-to-list 'load-path "~/.emacs.d/pkg")
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
 
 ;; Update local autoloads
+(require 'autoload)
 (setq generated-autoload-file "~/.emacs.d/pkg/my-autoloads.el")
 (update-directory-autoloads "~/.emacs.d/pkg")
 (require 'my-autoloads)
 
-(autoload 'noweb-mode "noweb-mode" "Editing noweb files." t)
-
-(setq auto-mode-alist (append (list (cons "\\.nw$" 'noweb-mode))
-                              auto-mode-alist))
-
-(autoload 'lyskom "lyskom.elc" "LysKOM" t)
 
 
 ;;; Defines for making it this file better
 
 (defmacro hook-envs (function environments)
-  "Add function to list of hooks."
+  "Add function to list of hooks.
+FUNCTION: function to run for all the hooks
+ENVIRONMENTS: all hooks to bind to"
   `(mapc (lambda (hook)
            (add-hook hook ,function))
          ,environments))
@@ -197,13 +193,14 @@ COUNT: number of lines to add"
 
 (setq-default show-trailing-whitespace t)
 
-(add-variable-watcher
- 'buffer-read-only
- (lambda (symbol newval operation where)
-   "symbol is 'buffer-read-only,
+(when (functionp #'add-variable-watcher)
+  (add-variable-watcher
+   'buffer-read-only
+   (lambda (symbol newval operation where)
+     "symbol is 'buffer-read-only,
 operation is in '(set let unlet makeunbound defvaralias),
 where is a buffer or nil"
-   (setq-local show-trailing-whitespace (not newval))))
+     (setq-local show-trailing-whitespace (not newval)))))
 
 (setq inhibit-startup-screen t)
 
@@ -228,6 +225,9 @@ where is a buffer or nil"
 (add-hook 'tex-mode-hook #'babel-lang)
 
 (defun insert-text-line (&optional width)
+  "Insert a markdown <HR/> tag.
+Replaces formfeed-modes ^L
+WIDTH: number of dashes in line"
   (interactive "p")
   (insert (make-string (if (= width 1) 40 width) ?-))
   (newline))
@@ -608,7 +608,6 @@ STR: target string"
   (setq font-lock-defaults '(log-mode-highlights))
   (message "Entered Log mode"))
 
-;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.log\\'" . log-mode))
 
 ;;; Haskell
