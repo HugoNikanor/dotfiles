@@ -1,3 +1,5 @@
 # Loaded by wdm (display manager) on login
 
+test -f ~/.Xresources && xrdb -merge ~/.Xresources
+
 [ -f ~/.profile ] && . ~/.profile
