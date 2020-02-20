@@ -1,3 +1,8 @@
+;;; geiser-xref.el --- XRef for geiser
+;;; Commentary:
+;;; Code:
+
+(require 'geiser)
 
 ;;;###autoload
 (defun geiser--xref-backend () 'geiser)
@@ -7,7 +12,6 @@
 
 ;;; Return completion table
 (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql geiser)))
-  ;; NOTE          v
   geiser-completion--symbol-list-func)
 
 ;; TODO should this do (xref-push-marker-stack (point-marker))?
@@ -40,3 +44,4 @@
           (lambda () (add-hook 'xref-backend-functions #'geiser--xref-backend nil)))
 
 (provide 'geiser-xref)
+;;; geiser-xref.el ends here
