@@ -193,6 +193,7 @@
               (smtp_pass "`pass lysator/mail/hugo`")
               (ssl_force_tls yes)
               (assumed_charset "utf-8:iso-8859-1")
+              (mbox_type "Maildir")
 
               (realname "Hugo Hörnquist")
               (from "Hugo Hörnquist <hugo@hornquist.se>")
