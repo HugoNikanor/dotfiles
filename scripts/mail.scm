@@ -151,12 +151,9 @@
 (account guckel (vg-base))
 (account valberedningen (vg-base))
 
-(account liu-fs (google)
+(account formulastudent (google)
          (pass-path "formulastudent/google/hugo.hornquist")
          (address "hugo.hornquist@liuformulastudent.se")
-
-         (MaildirStore
-           (Path ,(path-append (? path-base) "Formulastudent/")))
 
          (mutt (set (hostname "liuformulastudent.se")))
 
@@ -259,7 +256,7 @@
     liu-work
     guckel
     valberedningen
-    liu-fs
+    formulastudent
     admittansen
     ))
 
