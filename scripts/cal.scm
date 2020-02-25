@@ -39,6 +39,35 @@
           (url ,(format #f "https://cloud.timeedit.net/liu/web/schema/~a.ics"
                         (? url-fragment)))))
 
+(account caldav (cal)
+         ;; 'from a' means to discover from the server
+         ;; 'from b' means that calendars are discovered in the local
+         ;; dir.
+         ;; TODO rename 'a' & 'b' to 'remote' & 'local'?
+         (pair (collections ,'("from a"))
+               (metadata ,'("color" "displayname"))
+               (conflict_resolution ,'("command" "vimdiff")))
+
+         ;; This creates the fruux directory, and discovered
+         ;; directories are placed directly below.
+         ;; I currently symlink those I want to observe into the base
+         ;; directory.
+         (local
+          (path ,(path-append (? cal-base) (? acc-name))))
+
+         (remote
+          (type "caldav"))
+
+         )
+
+;; pacman -S python-requests-oauthlib
+;; pip3 install --user requests-oauthlib
+(account google (caldav)
+         (pair (metadata ,'("displayname")))
+         (remote (type "google_calendar")
+                 (token_file "/home/hugo/.cache/vdirsyncer-tokens")))
+
+
 
 
 
@@ -94,46 +123,17 @@
          (remote
           (url "https://calendar.google.com/calendar/ical/webmaster%40d.lintek.liu.se/public/basic.ics")))
 
-
-(account fruux (cal)
-         ;; 'from a' means to discover from the server
-         ;; 'from b' means that calendars are discovered in the local
-         ;; dir.
-         ;; TODO rename 'a' & 'b' to 'remote' & 'local'?
-         (pair (collections ,'("from a"))
-               (metadata ,'("color" "displayname"))
-               (conflict_resolution ,'("command" "vimdiff")))
-
-         ;; This creates the fruux directory, and discovered
-         ;; directories are placed directly below.
-         ;; I currently symlink those I want to observe into the base
-         ;; directory.
-         (local
-          (path ,(path-append (? cal-base) "fruux")))
-
+;; TODO
+;; Make required fields for these more apparent (in their parents)
+(account fruux (caldav)
          (remote
-          (type "caldav")
           (url "https://dav.fruux.com")
           (username "b3297465009")
           (password.fetch ,`("command" "pass"
                              ,(format #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a" (? remote username))))))
 
-
-;; pacman -S python-requests-oauthlib
-;; pip3 install --user requests-oauthlib
-(account admittansen (cal)
-         (pair (collections ,'("from a"))
-               (metadata ,'("displayname"))
-               (conflict_resolution ,'("command" "vimdiff")))
-
-         ;; see comment on fruux
-         (local
-          (path ,(path-append (? cal-base) "admittansen")))
-
+(account admittansen (google)
          (remote
-          (type "google_calendar")
-
-          (token_file "/home/hugo/.cache/vdirsyncer-tokens")
           (client_id ,(pass "admittansen/google/oauth/client_id"))
           (client_secret ,(pass "admittansen/google/oauth/client_secret"))))
 
