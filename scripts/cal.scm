@@ -146,7 +146,6 @@
      cal-top
 
      ;; TDDE04
-     TDDI41_TDP031
      TDDE44
      ;; TSTE24
 
