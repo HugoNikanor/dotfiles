@@ -137,10 +137,14 @@
 
 (account vg-base (google)
          (address ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))
+         (postnamn ,(string-titlecase (format #f "~agöte" (? acc-name))))
+         (signature ,(format #f "~a, ~a" (? name) (? postnamn)))
 
          (pass-path ,(format #f "vastgota.nation.liu.se/mail/~a" (? acc-name)))
 
-         (mutt (set (hostname "vastgota.nation.liu.se")))
+         (mutt (set (hostname "vastgota.nation.liu.se")
+                    (record ,(format #f "=Vastgota.~a/INBOX" (?  fancy-acc-name)))
+                    ))
 
          (MaildirStore
            (Path ,(path-append (? path-base)
@@ -149,7 +153,12 @@
                                "/"))))
 
 (account guckel (vg-base))
-(account valberedningen (vg-base))
+(account valberedningen (vg-base)
+         (postnamn "Valberedning"))
+(account propaganda (vg-base)
+         (signature ,(format #f "~a, ~a?" 
+                             (? name)
+                             (? postnamn))))
 
 (account formulastudent (google)
          (pass-path "formulastudent/google/hugo.hornquist")
@@ -165,7 +174,8 @@
          (pass-path "admittansen/hugo@admittansen.se")
          (address "hugo@admittansen.se")
 
-         (signature "Hugo Hörnquist, Labchef"))
+         (signature "Hugo Hörnquist, Labchef")
+         (mutt (set (hostname "admittansen.se"))))
 
 
 
@@ -223,9 +233,12 @@
            (mask "!(dovecot|cur|tmp|new)")
            (spoolfile "/mp/mail/hugo/Maildir")
            (mbox      "/mp/mail/hugo/Maildir")
-           (folder "~/.local/var/mail/"))
+           (folder "~/.local/var/mail/")
 
-         )
+           ;; TODO
+           ;; (record ...)
+
+           ))
 
 (account mutt-global-gpg (mutt-global)
          (set
@@ -256,6 +269,7 @@
     liu-work
     guckel
     valberedningen
+    propaganda
     formulastudent
     admittansen
     ))
