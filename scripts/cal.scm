@@ -127,6 +127,10 @@
          (remote
           (url "https://calendar.google.com/calendar/ical/webmaster%40d.lintek.liu.se/public/basic.ics")))
 
+(account alma (http)
+         (remote
+          (url "http://www.lysator.liu.se/alma/alma.cgi?vcal_0=yes&vcal_1=yes&year=2020&vcal_nodefaults=yes&vcal_generate=Ladda+ner+vCalendar-fil")))
+
 ;; TODO
 ;; Make required fields for these more apparent (in their parents)
 (account fruux (caldav)
@@ -167,4 +171,6 @@
 
      d_sektionen
      admittansen
+
+     alma
      )))
