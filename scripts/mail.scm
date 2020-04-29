@@ -159,6 +159,8 @@
          (signature ,(format #f "~a, ~a?" 
                              (? name)
                              (? postnamn))))
+(account qurator (vg-base)
+         (postname "Qurator"))
 
 (account formulastudent (google)
          (pass-path "formulastudent/google/hugo.hornquist")
@@ -272,6 +274,7 @@
     propaganda
     formulastudent
     admittansen
+    qurator
     ))
 
 
