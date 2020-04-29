@@ -32,6 +32,6 @@ which lesspipe >/dev/null 2>&1 && eval $(lesspipe)
 # FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
 if [ $TERM == "xterm-termite" ]; then
- 	source /etc/profile.d/vte*sh
+	source /etc/profile.d/vte*.sh
 # 	export TERM=xterm
 fi
