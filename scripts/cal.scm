@@ -8,6 +8,8 @@
              (util)
              ((vdirsyncer) #:prefix vdirsyncer:))
 
+;; http://vdirsyncer.pimutils.org/en/stable/config.html
+
 (account cal-top ()
          (cal-base ,(path-append (getenv "HOME") ".local/var/cal"))
          (general (status_path
@@ -26,6 +28,8 @@
           (path ,(path-append (? cal-base) (? acc-name)))))
 
 (account http (cal)
+         (pair
+           (partial_sync "ignore"))
          (remote
           (type "http")
           (read_only true)))
