@@ -12,11 +12,9 @@ fi
 
 shopt -s checkwinsize
 shopt -s histappend
-HISTCONTROL=ignoreboth:erasedups
-HISTSIZE=10000
-HISTFILESIZE=10000
-# append instead of overwrite
-shopt -s histappend
+HISTCONTROL=ignoreboth
+HISTSIZE=1000
+HISTFILESIZE=2000
 
 true ${BROWSER:="elinks"}
 export EDITOR="/usr/bin/vim"
@@ -37,6 +35,3 @@ if [ $TERM == "xterm-termite" ]; then
 	source /etc/profile.d/vte*.sh
 # 	export TERM=xterm
 fi
-
-# https://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
