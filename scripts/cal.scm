@@ -79,6 +79,8 @@
 (account STABEN (gcal)
          (url-fragment "d.lintek.liu.se_90a0j5e3r9oc6dotfbe716n8ns"))
 
+(account lintek (gcal)
+         (url-fragment "lintek.liu.se_jcf23946cujnbq9utv89g7fhcc"))
 
 (account Facebook (http)
          (remote (url "https://www.facebook.com/events/ical/upcoming/?uid=100000482656459&key=8hYDDImKk9Uh7tRO")))
@@ -173,4 +175,5 @@
      admittansen
 
      alma
+     lintek
      )))
