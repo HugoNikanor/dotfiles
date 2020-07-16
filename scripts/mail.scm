@@ -133,8 +133,7 @@
 
 (account liu-work (outlook)
          (address "hugo.hornquist@liu.se")
-         (pass ,(format #f "~a/oauth-response && pass automation/liu-imap | jq -r .access_token"
-                        BINDIR))
+         (pass ,(format #f "~a/oauth-response liu-imap" BINDIR))
          ;; (pass-path "liu/hugho26")
 
          (IMAPAccount (User "hugho26@liu.se")
