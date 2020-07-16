@@ -1,0 +1,119 @@
+#!/bin/bash
+
+# IMAP an access tokens
+# https://docs.microsoft.com/en-us/exchange/client-developer/legacy-protocols/how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth#get-an-access-token
+
+# OAuth2 authentication flow
+# https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code
+
+# Sasl xoauth2 plugin
+# https://github.com/moriyoshi/cyrus-sasl-xoauth2
+
+AUTHURL='https://login.microsoftonline.com/913f18ec-7f26-4c5f-a816-784fe9a58edd/oauth2/v2.0/authorize'
+CLIENT_ID='6731de76-14a6-49ae-97bc-6eba6914391e'
+
+TOKENURL='https://login.microsoftonline.com/913f18ec-7f26-4c5f-a816-784fe9a58edd/oauth2/v2.0/token'
+SECRET='JqQX2PNo9bpM0uEihUPzyrh'
+
+SCOPE='offline_access%20https://outlook.office.com/IMAP.AccessAsUser.All'
+#REDIR_URI='http%3A//localhost/myapp/'
+
+
+PASSPATH=automation/liu-imap
+
+get_free_port() {
+	for p in {8080..9000}; do
+		echo > /dev/tcp/localhost/$p
+		if [ $? -ne 0 ]; then
+			echo $p
+			return
+		fi
+	done 2>/dev/null
+}
+
+PORT=$(get_free_port)
+
+REDIR_URI="http%3A//localhost:$PORT/myapp/"
+
+get_authentication_code() {
+	url="$AUTHURL?client_id=$CLIENT_ID&response_type=code&redirect_uri=$REDIR_URI&response_mode=query&scope=$SCOPE"
+	# echo $url
+	xdg-open $url
+}
+
+get_token() {
+	code=$1
+	curl -X POST "$TOKENURL" \
+		--data "client_id=$CLIENT_ID" \
+		--data "code=$code" \
+		--data "scope=$SCOPE" \
+		--data "redirect_uri=$REDIR_URI" \
+		--data 'grant_type=authorization_code' \
+		--data "client_secret=$SECRET" \
+		| pass insert --multiline --force $PASSPATH
+}
+
+get_refresh_token() {
+
+	refresh_token=$1
+
+	curl -X POST "$TOKENURL" \
+		--data "client_id=$CLIENT_ID" \
+		--data "scope=$SCOPE" \
+		--data "refresh_token=$refresh_token" \
+		--data 'grant_type=refresh_token' \
+		--data "client_secret=$SECRET" \
+		| pass insert --multiline --force $PASSPATH
+}
+
+# generate xoauth2 token (will be done by sasl)
+write_xoauth2_token() {
+	user=$1 # probably your email
+	# this way of getting the token doesn't really work
+	echo -ne "user=$userauth=Bearer $(jq -r '.access_token' token.json)" | base64 -w0
+	echo
+}
+
+# openssl s_client -connect outlook.office365.com:993 -crlf
+# 1 AUTHENTICATE XOAUTH2 ^^
+
+new_token() {
+	# echo "== Getting brand new token =="
+
+	tmpfile=$(mktemp)
+
+	nc -l $PORT | head -n1 | grep -o 'code=[^&]*' > $tmpfile &
+	pid=$!
+
+	get_authentication_code
+	wait $pid
+	. $tmpfile
+	get_token $code
+
+	# rm $tmpfile
+}
+
+main () {
+
+	if `pass $PASSPATH > /dev/null 2>&1`; then
+		refresh_token=$(pass $PASSPATH | jq -r '.refresh_token')
+
+		if [ "x$refresh_token" = 'xnull' -o "x$refresh_token" = 'x' ]; then
+			new_token
+		else
+			password_store=${PASSWORD_STORE:-$HOME/.password-store}
+			elapsed=$[ `date +%s` - `stat $password_store/$PASSPATH.gpg -c '%Y'` ]
+			# 3599 should be checked from the $PASSPATH file...
+			if [ $elapsed -gt 3599 ]; then
+				# echo "== Refreshing old token =="
+				get_refresh_token $refresh_token
+			else
+				: # echo "token still good"
+			fi
+		fi
+	else
+		new_token
+	fi
+}
+
+main

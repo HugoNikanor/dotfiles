@@ -15,6 +15,9 @@
 
 (define $HOME (getenv "HOME"))
 
+(define BINDIR (string-append (dirname (current-filename))
+                              file-name-separator-string "bin"))
+
 (define mailfolder
   (case (string->symbol (gethostname))
     ((gandalf) (path-append "/var/mail" (getlogin)))
@@ -130,9 +133,12 @@
 
 (account liu-work (outlook)
          (address "hugo.hornquist@liu.se")
-         (pass-path "liu/hugho26")
+         (pass ,(format #f "~a/oauth-response && pass automation/liu-imap | jq -r .access_token"
+                        BINDIR))
+         ;; (pass-path "liu/hugho26")
 
-         (IMAPAccount (User "hugho26@liu.se"))
+         (IMAPAccount (User "hugho26@liu.se")
+                      (AuthMechs XOAUTH2))
          (mutt (set (hostname "liu.se"))))
 
 (account vg-base (google)
