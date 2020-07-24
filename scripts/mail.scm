@@ -137,6 +137,9 @@
          ;; (pass-path "liu/hugho26")
 
          (IMAPAccount (User "hugho26@liu.se")
+                      ;; NOTE that xouath2 isn't always available.
+                      ;; Install something like the aur package
+                      ;; cyrus-sasl-xoauth2-git
                       (AuthMechs XOAUTH2))
          (mutt (set (hostname "liu.se"))))
 
