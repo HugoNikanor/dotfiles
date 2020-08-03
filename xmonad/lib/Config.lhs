@@ -1,6 +1,7 @@
 > module Config where
 
 > import System.IO (hPutStrLn)
+> import System.Environment (setEnv)
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 
@@ -410,6 +411,7 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
 > main = do
 >     let termCommand = "termite"
+>     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
 >     xmproc      <- spawnPipe "xmobar"
 >     xmonad $ docks def
