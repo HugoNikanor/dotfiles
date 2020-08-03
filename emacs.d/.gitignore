@@ -14,3 +14,4 @@ custom.el
 .org-id-locations
 
 auto-save-list/
+transient/
