@@ -64,3 +64,6 @@ bind pager L list-reply
 
 # '?' is used for search-opposite
 bind pager \Ch help
+
+bind index,pager \Cp sidebar-prev
+bind index,pager \Cn sidebar-next
