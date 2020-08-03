@@ -174,8 +174,6 @@ COUNT: number of lines to add"
 
 
 
-(load-theme 'wombat)
-
 (ivy-mode)
 (which-key-mode) ; Show possible next keys after some key presses
 (setq which-key-allow-evil-operators t
