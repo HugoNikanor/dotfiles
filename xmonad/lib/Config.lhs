@@ -361,6 +361,11 @@ smartly after.
 >     , className =? "Gimp"     --> doShift "gimp"
 >     , className =? "Steam"    --> doShift "steam"
 >     , className =? "vlc"      --> doShift "video"
+>     , className =? "lxsession-logout" --> doSmartFloat
+>     , className =? "Minecraft 1.12.2" --> doSmartFloat
+>     -- this allows the "notification popup" to be placed correctly.
+>     -- it does however still steal focus.
+>     , title =? "Microsoft Teams Notification" --> doFloat
 >
 >     , title     =? "Toolbox"  --> doSmartFloat -- gimp toolbox
 >     -- Who doesn't this work!
