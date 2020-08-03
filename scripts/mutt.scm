@@ -20,7 +20,7 @@
         (map-subtree o '(mutt set)
                      (lambda (name value)
                        (format #t "set ~a = ~a~%" name
-                               (if (string-contains value " ")
+                               (if (and (string? value) (string-contains value " "))
                                    (string-append "\"" value "\"")
                                    value))))))
 

@@ -60,7 +60,15 @@
           (set
            (from ,(format #f "~a <~a>" (? name) (? address)))
            (realname ,(? name))
-           (record ,(format #f "=~a/INBOX" (? fancy-acc-name))))
+           (record ,(format #f "=~a/INBOX" (? fancy-acc-name)))
+           (sidebar_divider_char "│")
+           (edit_headers yes)
+           ;; keep tree above message
+           ;; (pager_index_lines 10)
+
+           (mime_forward yes)
+
+           )
 
           (file
            (dir ,(path-append $HOME "/.mutt/"))
