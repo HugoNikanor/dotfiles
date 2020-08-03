@@ -35,6 +35,8 @@
 >     , ppWsSep
 >     , ppSep
 >     , ppOutput
+>     , dzenPP
+>     , dzenColor
 >     , shorten)
 
 > import XMonad.Layout (Mirror (Mirror))
@@ -389,10 +391,10 @@ Color config borrowed from my Termite config .
 
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
-> -- colorFunc = dzenColor
-> -- funcPP = dzenPP
-> colorFunc = xmobarColor
-> funcPP = xmobarPP
+> colorFunc = dzenColor
+> funcPP = dzenPP
+> -- colorFunc = xmobarColor
+> -- funcPP = xmobarPP
 > myLogHook handle = dynamicLogWithPP $ funcPP
 >   { ppCurrent = \str -> colorFunc "yellow" bgColor' $ "[" ++ str ++ "]"
 >   , ppTitle = shorten 100
@@ -406,7 +408,7 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 > main = do
 >     let termCommand = "termite"
 >     nScreens    <- countScreens
->     xmproc      <- spawnPipe "xmobar"
+>     xmproc      <- spawnPipe "dzen2 -fn 'Fira Mono:size=8' -ta l -dock"
 >     xmonad $ docks def
 >         { modMask = mod4Mask
 >         , logHook = myLogHook xmproc
