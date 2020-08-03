@@ -21,6 +21,7 @@ interm=vim
 # .txt:vim
 .pdf:zathura
 .html:firefox
+.odt:libreoffice
 .docx:libreoffice
 .pptx:libreoffice
 
@@ -49,7 +50,7 @@ font:gnome-font-viewer
 # Directory rule for directories
 # ideally you want to use file manager
 # here if you are a GUI user.
-directory:thunar
+directory:dolphin
 
 # Default rule just echoes back whatever
 # was feed. If you are using DE you could

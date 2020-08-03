@@ -1,0 +1,56 @@
+# Makes termite look like a Commodore 64.
+# Unfortunately, the colors are still slightly off.
+
+[colors]
+# special
+foreground      = #0088FF
+foreground_bold = #0088FF
+cursor          = #0088FF
+background      = #0000AA
+
+# black
+color0  = #000000
+color8  = #333333
+
+# red
+color1  = #880000
+color9  = #FF7777
+
+# green
+color2  = #00cc55
+color10 = #AAFF66
+
+# yellow
+color3  = #DD88FF
+color11 = #EEEE77
+
+# blue
+color4  = #0000AA
+color12 = #0088FF
+
+# magenta
+color5  = #CC44CC
+color13 = #664400
+
+# cyan
+color6  = #AAFFEE
+color14 = #777777
+
+# white
+color7  = #FFFFFF
+color15 = #BBBBBB
+
+[options]
+scroll_on_output = false
+scroll_on_keystroke = true
+audible_bell = false
+mouse_autohide = false
+allow_bold = true
+dynamic_title = true
+urgent_on_bell = true
+clickable_url = true
+font = C64 Pro Mono 10
+scrollback_lines = 1000
+search_wrap = true
+cursor_blink = system
+cursor_shape = block

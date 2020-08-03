@@ -16,6 +16,9 @@ alias wig="wi -w private"
 alias net="watch -n1 -c nmcli -c yes"
 alias nmail="watch -n1 -c newmail"
 
+alias weeslack="weechat -d ~/.local/share/weechat/slack"
+
+
 vibin() { $EDITOR $(which $1); }
 
 # Creates paste. Uploads file if argument is given, STDIN otherwise.

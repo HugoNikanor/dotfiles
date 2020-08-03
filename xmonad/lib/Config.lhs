@@ -1,6 +1,7 @@
 > module Config where
 
 > import System.IO (hPutStrLn)
+> import System.Environment (setEnv)
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 
@@ -35,6 +36,8 @@
 >     , ppWsSep
 >     , ppSep
 >     , ppOutput
+>     , dzenPP
+>     , dzenColor
 >     , shorten)
 
 > import XMonad.Layout (Mirror (Mirror))
@@ -361,6 +364,11 @@ smartly after.
 >     , className =? "Gimp"     --> doShift "gimp"
 >     , className =? "Steam"    --> doShift "steam"
 >     , className =? "vlc"      --> doShift "video"
+>     , className =? "lxsession-logout" --> doSmartFloat
+>     , className =? "Minecraft 1.12.2" --> doSmartFloat
+>     -- this allows the "notification popup" to be placed correctly.
+>     -- it does however still steal focus.
+>     , title =? "Microsoft Teams Notification" --> doFloat
 >
 >     , title     =? "Toolbox"  --> doSmartFloat -- gimp toolbox
 >     -- Who doesn't this work!
@@ -389,10 +397,10 @@ Color config borrowed from my Termite config .
 
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
-> -- colorFunc = dzenColor
-> -- funcPP = dzenPP
-> colorFunc = xmobarColor
-> funcPP = xmobarPP
+> colorFunc = dzenColor
+> funcPP = dzenPP
+> -- colorFunc = xmobarColor
+> -- funcPP = xmobarPP
 > myLogHook handle = dynamicLogWithPP $ funcPP
 >   { ppCurrent = \str -> colorFunc "yellow" bgColor' $ "[" ++ str ++ "]"
 >   , ppTitle = shorten 100
@@ -405,8 +413,9 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
 > main = do
 >     let termCommand = "termite"
+>     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
->     xmproc      <- spawnPipe "xmobar"
+>     xmproc      <- spawnPipe "dzen2 -fn 'Fira Mono:size=8' -ta l -dock"
 >     xmonad $ docks def
 >         { modMask = mod4Mask
 >         , logHook = myLogHook xmproc

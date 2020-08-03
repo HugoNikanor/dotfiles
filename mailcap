@@ -4,7 +4,11 @@
 # The source of the mutt_bgrun script, which is needed in X environments
 # https://www.mattcutts.com/files/mutt_bgrun
 
-text/html; firefox '%s'; test=test -n "$DISPLAY";
+# Hack to allow 'view in browser' in mutt to work. Mutt removes the
+# HTML file as soon as the child process exits, but firefox exits as
+# soon as it has connected to the local firefox server, and only then
+# tries to read the file. TODO figure out a proper way to do this.
+text/html; firefox '%s' && sleep 1; test=test -n "$DISPLAY";
 text/html; elinks -dump '%s'; nametemplates=%s.html; copiousoutput;
 
 image/*; mutt_bgrun feh --scale-down '%s'; test=test -n "$DISPLAY";
@@ -12,5 +16,3 @@ image/*; fbv '%s';
 
 application/pdf; mutt_bgrun zathura '%s' 2> /dev/null; test=test -n "$DISPLAY";
 application/pdf; pdftotext '%s' /dev/stdout; copiousoutput;
-
-application/octet-stream; hexdump -C; copiousoutput; description="Hex dump";

@@ -35,3 +35,7 @@ if [ $TERM == "xterm-termite" ]; then
 	source /etc/profile.d/vte*.sh
 # 	export TERM=xterm
 fi
+
+grep -qs '^ID=arch$' /etc/os-release \
+	&& test -e /lib/modules/`uname -r` \
+	|| echo Kernel updated, reboot computer.

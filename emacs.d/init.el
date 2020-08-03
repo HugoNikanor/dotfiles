@@ -11,7 +11,6 @@
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ("melpa" . "https://melpa.org/packages/")
         ("org" . "https://orgmode.org/elpa/")
-        ("emacswiki" . "https://mirrors.cloud.tencent.com/elpa/emacswiki/")
         ))
 
 (defvar required-packages)
@@ -174,8 +173,6 @@ COUNT: number of lines to add"
 
 
 
-
-(load-theme 'wombat)
 
 (ivy-mode)
 (which-key-mode) ; Show possible next keys after some key presses

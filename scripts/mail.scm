@@ -60,7 +60,15 @@
           (set
            (from ,(format #f "~a <~a>" (? name) (? address)))
            (realname ,(? name))
-           (record ,(format #f "=~a/INBOX" (? fancy-acc-name))))
+           (record ,(format #f "=~a/INBOX" (? fancy-acc-name)))
+           (sidebar_divider_char "│")
+           (edit_headers yes)
+           ;; keep tree above message
+           ;; (pager_index_lines 10)
+
+           (mime_forward yes)
+
+           )
 
           (file
            (dir ,(path-append $HOME "/.mutt/"))
@@ -137,6 +145,9 @@
          ;; (pass-path "liu/hugho26")
 
          (IMAPAccount (User "hugho26@liu.se")
+                      ;; NOTE that xouath2 isn't always available.
+                      ;; Install something like the aur package
+                      ;; cyrus-sasl-xoauth2-git
                       (AuthMechs XOAUTH2))
          (mutt (set (hostname "liu.se"))))
 
