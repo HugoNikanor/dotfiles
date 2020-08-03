@@ -11,7 +11,6 @@
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ("melpa" . "https://melpa.org/packages/")
         ("org" . "https://orgmode.org/elpa/")
-        ("emacswiki" . "https://mirrors.cloud.tencent.com/elpa/emacswiki/")
         ))
 
 (defvar required-packages)
