@@ -47,6 +47,7 @@ workbench.xmi
 *.keywords
 *.toc
 *.info
+*.xdv
 
 #Python
 __pycache__/
@@ -76,6 +77,7 @@ ExportedObj/
 # CTags
 tags
 TAGS
+!issues/**/tags
 !tags/
 !TAGS/
 
