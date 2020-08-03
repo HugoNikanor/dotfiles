@@ -21,6 +21,7 @@ interm=vim
 # .txt:vim
 .pdf:zathura
 .html:firefox
+.odt:libreoffice
 .docx:libreoffice
 .pptx:libreoffice
 
