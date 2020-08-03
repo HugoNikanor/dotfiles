@@ -542,11 +542,6 @@ STR: target string"
             (setq geiser-active-implementations '(guile chicken racket)
                   evil-lookup-func #'geiser-doc-symbol-at-point)
 
-            ;; TODO this does't work
-            (eval-after-load "geiser-impl"
-              '(add-to-list 'geiser-implementations-alist
-                            '((regexp ".*/guile/.*") guile)))
-
             (setq geiser-chicken-binary "chicken-csi")
             (when (string-prefix-p "lysator.liu.se" (shell-command-to-string "hostname -d"))
               (setq geiser-chicken-binary "csi"))
