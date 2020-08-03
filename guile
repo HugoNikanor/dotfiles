@@ -12,9 +12,12 @@
           (list (p "~/code/guile")
                 (p "~/.local/share/guile/")))
 
-(when (string=? "2.2" (effective-version))
-  (use-modules (ice-9 readline))
-  (activate-readline))
+(catch 'misc-error
+  (lambda ()
+    (use-modules (ice-9 readline))
+    (activate-readline))
+  (lambda args
+    (display "Failed to initialize readline\n" (current-error-port))))
 
 ;;; (repl-default-option-set print (lambda (repl value) (pretty-print value)))
 
