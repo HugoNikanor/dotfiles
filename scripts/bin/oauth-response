@@ -130,6 +130,6 @@ if [ "x$token_name" = "x" ]; then
 	echo "Missing token name!" > /dev/stderr
 	exit 1
 fi
-main $token_name |& sed "s/^/$(basename $0): /"
+main $token_name |& sed "s/^/$(basename $0): /" > /dev/stderr
 pass $PASSBASE/$token_name | jq -r '.access_token'
 exit 0
