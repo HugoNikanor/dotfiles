@@ -37,5 +37,5 @@ if [ $TERM == "xterm-termite" ]; then
 fi
 
 grep -qs '^ID=arch$' /etc/os-release \
-	&& test -e /lib/modules/`uname -r` \
-	|| echo Kernel updated, reboot computer.
+	&& { test -e /lib/modules/`uname -r` \
+	     || echo Kernel updated, reboot computer.; }
