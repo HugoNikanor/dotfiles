@@ -79,6 +79,14 @@
 (account STABEN (gcal)
          (url-fragment "d.lintek.liu.se_90a0j5e3r9oc6dotfbe716n8ns"))
 
+(account nolle_p_2020_fadder (gcal)
+         (url-fragment "ad7hu028orn8oi1me3aq52nako"))
+
+
+(account nolle_p_2020_klassfadder (gcal)
+         (url-fragment "c_fblkkscl914d3i2297f82uq00c"))
+
+
 (account lintek (gcal)
          (url-fragment "lintek.liu.se_jcf23946cujnbq9utv89g7fhcc"))
 
@@ -176,4 +184,7 @@
 
      alma
      lintek
+
+     nolle_p_2020_fadder
+     nolle_p_2020_klassfadder
      )))
