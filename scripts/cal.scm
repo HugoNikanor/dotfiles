@@ -6,7 +6,8 @@
 
 (use-modules (conf-base)
              (util)
-             ((vdirsyncer) #:prefix vdirsyncer:))
+             ((vdirsyncer) #:prefix vdirsyncer:)
+             (files))
 
 ;; http://vdirsyncer.pimutils.org/en/stable/config.html
 
@@ -14,7 +15,8 @@
          (cal-base ,(path-append (getenv "HOME") ".local/var/cal"))
          (general (status_path
                    ,(path-append (getenv "HOME")
-                                 ".local/share/vdirsyncer/status/"))))
+                                 ".local/share/vdirsyncer/status/")))
+         )
 
 (account cal (cal-top)
          (pair (a ,(format #f "~a_remote" (? acc-name)))
@@ -25,7 +27,11 @@
          (local
           (type "filesystem")
           (fileext ".ics")
-          (path ,(path-append (? cal-base) (? acc-name)))))
+          (path ,(path-append (? cal-base) (? acc-name))))
+         (files
+           (color (path ,(path-append (? local path) "color"))
+                  (content ,(string-append "#" (? color)))))
+         )
 
 (account http (cal)
          (pair
@@ -80,11 +86,13 @@
          (url-fragment "d.lintek.liu.se_90a0j5e3r9oc6dotfbe716n8ns"))
 
 (account nolle_p_2020_fadder (gcal)
-         (url-fragment "ad7hu028orn8oi1me3aq52nako"))
+         (url-fragment "ad7hu028orn8oi1me3aq52nako")
+         (color "8B0000"))
 
 
 (account nolle_p_2020_klassfadder (gcal)
-         (url-fragment "c_fblkkscl914d3i2297f82uq00c"))
+         (url-fragment "c_fblkkscl914d3i2297f82uq00c")
+         (color "ADFF2F"))
 
 
 (account lintek (gcal)
@@ -157,6 +165,12 @@
 
 (define path (path-append (getenv "HOME") "/.config/vdirsyncer"))
 (mkdir-p path)
+
+
+(ensure-files
+  nolle_p_2020_fadder
+  nolle_p_2020_klassfadder)
+  
 
 (with-output-to-file (path-append path "config")
   (lambda ()
