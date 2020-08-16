@@ -18,7 +18,11 @@ CLIENT_ID='6731de76-14a6-49ae-97bc-6eba6914391e'
 TOKENURL="https://login.microsoftonline.com/$TENANT/oauth2/v2.0/token"
 SECRET='JqQX2PNo9bpM0uEihUPzyrh'
 
-SCOPE='offline_access%20https://outlook.office.com/IMAP.AccessAsUser.All'
+# https://docs.microsoft.com/en-gb/exchange/client-developer/legacy-protocols/how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth
+offline_access='offline_access'
+imap='https://outlook.office.com/IMAP.AccessAsUser.All'
+smtp='https://outlook.office.com/SMTP.Send'
+SCOPE="$offline_access%20$imap%20$smtp"
 #REDIR_URI='http%3A//localhost/myapp/'
 
 export PASSWORD_STORE=${PASSWORD_STORE:-$HOME/.password-store}
@@ -72,14 +76,6 @@ refresh_refresh_token() {
 		| pass insert --multiline --force $PASSBASE/$token_name
 }
 
-# generate xoauth2 token (will be done by sasl)
-write_xoauth2_token() {
-	user=$1 # probably your email
-	# this way of getting the token doesn't really work
-	echo -ne "user=$userauth=Bearer $(jq -r '.access_token' token.json)" | base64 -w0
-	echo
-}
-
 # openssl s_client -connect outlook.office365.com:993 -crlf
 # 1 AUTHENTICATE XOAUTH2 ^^
 
@@ -109,7 +105,7 @@ main () {
 		refresh_token=$(pass $PASSBASE/$token_name | jq -r '.refresh_token')
 
 		if [ "x$refresh_token" = 'xnull' -o "x$refresh_token" = 'x' ]; then
-			new_token
+			new_token $token_name
 		else
 			elapsed=$[ `date +%s` - `stat "$PASSWORD_STORE/$PASSBASE/$token_name.gpg" -c '%Y'` ]
 			# 3599 should be checked from the token file...
@@ -125,11 +121,35 @@ main () {
 	fi
 }
 
+# generate xoauth2 token (will be done by sasl)
+write_xoauth2_token() {
+	user=$1 # probably your email
+	token=$2
+	# this way of getting the token doesn't really work
+	echo -ne "user=$userauth=Bearer $token" | base64 -w0
+	echo
+}
+
+
 token_name=$1
+shift
 if [ "x$token_name" = "x" ]; then
 	echo "Missing token name!" > /dev/stderr
 	exit 1
 fi
 main $token_name |& sed "s/^/$(basename $0): /" > /dev/stderr
-pass $PASSBASE/$token_name | jq -r '.access_token'
+token=$(pass $PASSBASE/$token_name | jq -r '.access_token')
+
+case $1 in
+	--token)
+		shift
+		user=$1
+		write_xoauth2_token "$user" "$token"
+		;;
+	*)
+		echo $token
+		;;
+esac
+
+
 exit 0
