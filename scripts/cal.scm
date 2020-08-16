@@ -12,9 +12,13 @@
 ;; http://vdirsyncer.pimutils.org/en/stable/config.html
 
 (account cal-top ()
-         (cal-base ,(path-append (getenv "HOME") ".local/var/cal"))
+         (prefix ,(or (getenv "PREFIX")
+                      (getenv "HOME")))
+         (static-passwords ,(getenv "PREFIX"))
+         (cal-base ,(path-append (? prefix) ".local/var/cal"))
+         (vdirsyncer-config ,(path-append (? prefix) "/.config/vdirsyncer/config"))
          (general (status_path
-                   ,(path-append (getenv "HOME")
+                   ,(path-append (? prefix)
                                  ".local/share/vdirsyncer/status/")))
          )
 
@@ -75,7 +79,9 @@
 (account google (caldav)
          (pair (metadata ,'("displayname")))
          (remote (type "google_calendar")
-                 (token_file "/home/hugo/.cache/vdirsyncer-tokens")))
+                 (token_file ,(path-append
+                                (? prefix)
+                                "/.cache/vdirsyncer-tokens"))))
 
 
 
@@ -152,19 +158,23 @@
 ;; TODO
 ;; Make required fields for these more apparent (in their parents)
 (account fruux (caldav)
+         (pass-path ,(format #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a" (? remote username)))
          (remote
           (url "https://dav.fruux.com")
           (username "b3297465009")
-          (password.fetch ,`("command" "pass"
-                             ,(format #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a" (? remote username))))))
+          (password.fetch ,(if (? static-passwords)
+                             ;; TODO conditional existance of
+                             ;; fields.
+                             `("command" "echo" ,(pass (? pass-path)))
+                             `("command" "pass" ,(? pass-path))))))
 
 (account admittansen (google)
          (remote
           (client_id ,(pass "admittansen/google/oauth/client_id"))
           (client_secret ,(pass "admittansen/google/oauth/client_secret"))))
 
-(define path (path-append (getenv "HOME") "/.config/vdirsyncer"))
-(mkdir-p path)
+(define path (get-field (instanciate cal-top) '(vdirsyncer-config)))
+(mkdir-p (dirname path))
 
 
 (ensure-files
@@ -172,7 +182,7 @@
   nolle_p_2020_klassfadder)
   
 
-(with-output-to-file (path-append path "config")
+(with-output-to-file path
   (lambda ()
     (vdirsyncer:render
      cal-top
