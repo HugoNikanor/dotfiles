@@ -173,11 +173,18 @@
           (client_id ,(pass "admittansen/google/oauth/client_id"))
           (client_secret ,(pass "admittansen/google/oauth/client_secret"))))
 
-(define path (get-field (instanciate cal-top) '(vdirsyncer-config)))
+(define destdir (or (getenv "DESTDIR") "/run"))
+
+
+(define path (path-append 
+               destdir
+               (get-field (instanciate cal-top)
+                          '(vdirsyncer-config))))
+
 (mkdir-p (dirname path))
 
 
-(ensure-files
+(ensure-files destdir
   nolle_p_2020_fadder
   nolle_p_2020_klassfadder)
   
@@ -186,6 +193,7 @@
   (lambda ()
     (vdirsyncer:render
      cal-top
+     destdir
 
      ;; TDDE04
      TDDE44

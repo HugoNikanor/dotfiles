@@ -17,9 +17,9 @@
                  (format #t "~a = ~a~%"
                          name (->str value)))))
 
-(define (render cal-top . accounts)
+(define (render cal-top destdir . accounts)
   (let ((o (instanciate cal-top)))
-    (mkdir-p (get-field o '(cal-base)))
+    (mkdir-p (path-append destdir (get-field o '(cal-base))))
     (format #t "[general]~%")
     (ini-fmt o '(general)))
 
