@@ -88,8 +88,14 @@
 
 
 
-(account STABEN (gcal)
+(account STABEN2019 (gcal)
          (url-fragment "d.lintek.liu.se_90a0j5e3r9oc6dotfbe716n8ns"))
+
+(account STABEN2020 (http)
+         (remote (url
+                   "https://backend.staben.info/info/calendar/d0c1"))
+         (color "FF0000"))
+
 
 (account nolle_p_2020_fadder (gcal)
          (url-fragment "ad7hu028orn8oi1me3aq52nako")
@@ -124,7 +130,10 @@
          (url-fragment "ri653Q85Y91Z90Q5Y7607QX9y5Zn614Z45Q2584Q687"))
 
 (account D1 (timeedit)
-         (url-fragment "ri677Q7QYn8ZQ9Q540650975yZZQ6805"))
+         (color "FFA500")
+         (url-fragment 
+           "ri687Q7QYn4ZQ1Q502860976yZZQ6203"
+           ))
 
 (account D2 (timeedit)
          (url-fragment "ri687Q7QYn4ZQ1Q538650976yZZQ6305"))
@@ -173,7 +182,7 @@
           (client_id ,(pass "admittansen/google/oauth/client_id"))
           (client_secret ,(pass "admittansen/google/oauth/client_secret"))))
 
-(define destdir (or (getenv "DESTDIR") "/run"))
+(define destdir (or (getenv "DESTDIR") "/"))
 
 
 (define path (path-append 
@@ -185,6 +194,7 @@
 
 
 (ensure-files destdir
+              D1 STABEN2020
   nolle_p_2020_fadder
   nolle_p_2020_klassfadder)
   
@@ -194,7 +204,8 @@
     (vdirsyncer:render
      cal-top
      destdir
-
+D1
+STABEN2020
      ;; TDDE04
      TDDE44
      ;; TSTE24
