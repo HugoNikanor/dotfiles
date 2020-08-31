@@ -12,9 +12,13 @@
 ;; http://vdirsyncer.pimutils.org/en/stable/config.html
 
 (account cal-top ()
-         (cal-base ,(path-append (getenv "HOME") ".local/var/cal"))
+         (prefix ,(or (getenv "PREFIX")
+                      (getenv "HOME")))
+         (static-passwords ,(getenv "PREFIX"))
+         (cal-base ,(path-append (? prefix) ".local/var/cal"))
+         (vdirsyncer-config ,(path-append (? prefix) "/.config/vdirsyncer/config"))
          (general (status_path
-                   ,(path-append (getenv "HOME")
+                   ,(path-append (? prefix)
                                  ".local/share/vdirsyncer/status/")))
          )
 
@@ -75,15 +79,23 @@
 (account google (caldav)
          (pair (metadata ,'("displayname")))
          (remote (type "google_calendar")
-                 (token_file "/home/hugo/.cache/vdirsyncer-tokens")))
+                 (token_file ,(path-append
+                                (? prefix)
+                                "/.cache/vdirsyncer-tokens"))))
 
 
 
 
 
 
-(account STABEN (gcal)
+(account STABEN2019 (gcal)
          (url-fragment "d.lintek.liu.se_90a0j5e3r9oc6dotfbe716n8ns"))
+
+(account STABEN2020 (http)
+         (remote (url
+                   "https://backend.staben.info/info/calendar/d0c1"))
+         (color "FF0000"))
+
 
 (account nolle_p_2020_fadder (gcal)
          (url-fragment "ad7hu028orn8oi1me3aq52nako")
@@ -118,7 +130,10 @@
          (url-fragment "ri653Q85Y91Z90Q5Y7607QX9y5Zn614Z45Q2584Q687"))
 
 (account D1 (timeedit)
-         (url-fragment "ri677Q7QYn8ZQ9Q540650975yZZQ6805"))
+         (color "FFA500")
+         (url-fragment 
+           "ri687Q7QYn4ZQ1Q502860976yZZQ6203"
+           ))
 
 (account D2 (timeedit)
          (url-fragment "ri687Q7QYn4ZQ1Q538650976yZZQ6305"))
@@ -152,31 +167,45 @@
 ;; TODO
 ;; Make required fields for these more apparent (in their parents)
 (account fruux (caldav)
+         (pass-path ,(format #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a" (? remote username)))
          (remote
           (url "https://dav.fruux.com")
           (username "b3297465009")
-          (password.fetch ,`("command" "pass"
-                             ,(format #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a" (? remote username))))))
+          (password.fetch ,(if (? static-passwords)
+                             ;; TODO conditional existance of
+                             ;; fields.
+                             `("command" "echo" ,(pass (? pass-path)))
+                             `("command" "pass" ,(? pass-path))))))
 
 (account admittansen (google)
          (remote
           (client_id ,(pass "admittansen/google/oauth/client_id"))
           (client_secret ,(pass "admittansen/google/oauth/client_secret"))))
 
-(define path (path-append (getenv "HOME") "/.config/vdirsyncer"))
-(mkdir-p path)
+(define destdir (or (getenv "DESTDIR") "/"))
 
 
-(ensure-files
+(define path (path-append 
+               destdir
+               (get-field (instanciate cal-top)
+                          '(vdirsyncer-config))))
+
+(mkdir-p (dirname path))
+
+
+(ensure-files destdir
+              D1 STABEN2020
   nolle_p_2020_fadder
   nolle_p_2020_klassfadder)
   
 
-(with-output-to-file (path-append path "config")
+(with-output-to-file path
   (lambda ()
     (vdirsyncer:render
      cal-top
-
+     destdir
+D1
+STABEN2020
      ;; TDDE04
      TDDE44
      ;; TSTE24

@@ -2,13 +2,15 @@
   #:use-module (conf-base)
   #:export (ensure-files))
 
-(define (ensure-files . accounts)
+(define (ensure-files destdir . accounts)
   (for-each
     (lambda (acc)
       (let ((o (instanciate acc)))
         ;; TODO map over all files. However, map-subtree seems broken
-        (mkdir-p (dirname (get-field o '(files color path))))
-        (with-output-to-file (get-field o '(files color path))
+        (define f (path-append 
+                    destdir (get-field o '(files color path))))
+        (mkdir-p (dirname f))
+        (with-output-to-file f
           (lambda () (display (get-field o '(files color content)))
             (newline)))))
     accounts))
