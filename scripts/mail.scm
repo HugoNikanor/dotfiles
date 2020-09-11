@@ -225,6 +225,8 @@
 
               (markers no)
 
+              (rfc2047_parameters yes)
+
               )
 
          (macro
