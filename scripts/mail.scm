@@ -225,6 +225,8 @@
 
               (markers no)
 
+              (rfc2047_parameters yes)
+
               )
 
          (macro
@@ -240,7 +242,7 @@
           (push "<last-entry>")
           (ignore "*")
           (unignore ,(string-join '("from:" "subject" "to" "cc" "date" "x-url" "user-agent" "x-spam-score:"
-                                    "X-Original-To" "Delivered-To"))))
+                                    "X-Original-To" "Delivered-To" "Message-ID"))))
          )
 
 (account mutt-global-lysator (mutt-global)
