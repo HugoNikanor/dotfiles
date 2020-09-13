@@ -231,7 +231,10 @@
 
          (macro
            (index ,'("\\cb |urlview\n"
-                     "\\Ck <save-message>=Lysator/Junk<return>"))
+                     "\\Ck <save-message>=Lysator/Junk<return>"
+                     ;; https://brianbuccola.com/how-to-mark-all-emails-as-read-in-mutt/
+                     "A <tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>"  ;; mark al new as read
+                     ))
            (pager ,'("\\cb |urlview\n")))
 
          (source ,'("~/.mutt/vim" "~/.mutt/colors"))
