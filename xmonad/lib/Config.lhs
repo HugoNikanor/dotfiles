@@ -368,7 +368,7 @@ smartly after.
 >     , className =? "Minecraft 1.12.2" --> doSmartFloat
 >     -- this allows the "notification popup" to be placed correctly.
 >     -- it does however still steal focus.
->     , title =? "Microsoft Teams Notification" --> doFloat
+>     , title =? "Microsoft Teams Notification" --> doIgnore
 >
 >     , title     =? "Toolbox"  --> doSmartFloat -- gimp toolbox
 >     -- Who doesn't this work!
