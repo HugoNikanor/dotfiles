@@ -636,6 +636,14 @@ STR: target string"
 
 
 
+(defun calp-connect ()
+  (interactive)
+  (geiser-connect-local 'guile (concat (getenv "XDG_RUNTIME_DIR")
+                                       "/calp")))
+
+
+
+
 ;;; Other
 
 ;;; Can I somehow enable this for all available modes?
