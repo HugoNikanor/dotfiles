@@ -1,2 +1,2 @@
-autocmd BufNewFile,BufRead *#L#.txt set filetype=denkenzetel
+autocmd BufNewFile,BufRead *#L#*.txt set filetype=denkenzetel
 
