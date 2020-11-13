@@ -6,5 +6,6 @@ add ~/.local/bin
 add ~/bin
 add ~/.gem/ruby/*/bin
 add ~/.cabal/bin
+add ~/go/bin
 
 unset add
