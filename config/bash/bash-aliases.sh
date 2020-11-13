@@ -14,7 +14,7 @@ alias wi="wiki"
 alias wip="wi -w public"
 alias wig="wi -w private"
 alias net="watch -n1 -c nmcli -c yes"
-alias nmail="watch -n1 -c newmail"
+alias nmail="newmail --watch"
 
 alias weeslack="weechat -d ~/.local/share/weechat/slack"
 
