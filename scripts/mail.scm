@@ -230,10 +230,16 @@
               )
 
          (macro
-           (index ,'("\\cb |urlview\n"
+           (index ,`("\\cb |urlview\n"
                      "\\Ck <save-message>=Lysator/Junk<return>"
                      ;; https://brianbuccola.com/how-to-mark-all-emails-as-read-in-mutt/
-                     "A <tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>"  ;; mark al new as read
+                     "A <tag-pattern>~N<enter><tag-prefix><clear-flag>N"  ;; mark al new as read
+                     ;; TODO find better bindings
+                     ,(format #f "<F8> \"<shell-escape>mu find --clearlinks --format=links --linksdir=~a/search \" \"mu find\""
+                             mailfolder)
+                     ;; TODO change this to took on =search
+                     ,(format #f "<F9> \"<change-folder-readonly>~a/search\" \"mu find results\""
+                             mailfolder)
                      ))
            (pager ,'("\\cb |urlview\n")))
 
