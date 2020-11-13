@@ -142,7 +142,7 @@
          (url-fragment "ri607Q7QYn5ZQ2Q532850976yZZQ6204"))
 
 (account TDDI41_TDP031 (timeedit)
-         (url-fragment "ri65X456X46Z04Q5Z96g8Y90y5056Y51905gQY6Q53798580Y24567Q0ZnQ5473"))
+         (url-fragment "ri634Q36Y87Z90Q5Y7887QX9y2Zn660Z45Q6524Q637"))
 
 (account TSTE24 (timeedit)
          (url-fragment "ri664XQn580Z55Qm77025ZZ6y9Y740QQ0Y45Y0gQ10764"))
@@ -204,10 +204,10 @@
     (vdirsyncer:render
      cal-top
      destdir
-D1
-STABEN2020
+     ;; D1
+     STABEN2020
      ;; TDDE04
-     TDDE44
+     ;; TDDE44
      ;; TSTE24
 
      formulastudent
@@ -216,10 +216,11 @@ STABEN2020
      ;; STABEN
      Facebook
      lithekod
-     lithekod_styrelse
+     ;; lithekod_styrelse
      fruux
 
-     TATA41
+     TDDI41_TDP031
+     ;; TATA41
      TDDB68
 
      d_sektionen
