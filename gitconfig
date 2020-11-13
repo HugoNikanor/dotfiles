@@ -38,6 +38,7 @@
 	insteadOf = "ida:"
 [advice]
 	addEmptyPathspec = false
+	addIgnoredFile = false
 [pull]
 	rebase = false
 [commit]
