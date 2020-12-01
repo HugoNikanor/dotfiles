@@ -11,6 +11,8 @@
 
 ;; http://vdirsyncer.pimutils.org/en/stable/config.html
 
+(define static-passwords #t)
+
 (account cal-top ()
          (prefix ,(or (getenv "PREFIX")
                       (getenv "HOME")))
@@ -167,15 +169,17 @@
 ;; TODO
 ;; Make required fields for these more apparent (in their parents)
 (account fruux (caldav)
-         (pass-path ,(format #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a" (? remote username)))
+         (pass-path ,(format
+                      #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a"
+                      (? remote username)))
          (remote
           (url "https://dav.fruux.com")
           (username "b3297465009")
-          (password.fetch ,(if (? static-passwords)
-                             ;; TODO conditional existance of
-                             ;; fields.
-                             `("command" "echo" ,(pass (? pass-path)))
-                             `("command" "pass" ,(? pass-path))))))
+          ,@(if static-passwords
+                ((password ,(pass (? pass-path))))
+                ((password.fetch ,`("command" "pass" ,(? pass-path))))
+              )
+          ))
 
 (account admittansen (google)
          (remote

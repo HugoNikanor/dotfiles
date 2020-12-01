@@ -172,17 +172,43 @@
 (define (instanciate class . args)
   (class (sort* args symbol<=? #:get car)))
 
+;; all top level entries should either be (key body ...) or ,@(if expr (*toplevel* ...) (*toplevel* ...))
 (define-syntax inner
-  (syntax-rules (unquote)
+  (syntax-rules (unquote unquote-splicing if when unless)
+
+    [(_ ? ,@(if cond (true ...) (false ...)) rest ...)
+     (sort* `(,@(if cond
+                    (inner ? true ...)
+                    (inner ? false ...))
+              ,@(inner ? rest ...))
+            symbol<=?  #:get car)]
+
+    ;; [(_ ? ,@(when cond true ...) rest ...)
+    ;;  (sort* `(,@(inner ? (if cond (true ...) '()))
+    ;;           ,@(inner ? rest ...)))]
+
+    ;; [(_ ? ,@(unless cond false ...) rest ...)
+    ;;  (sort* `(,@(inner ? (if cond '() (false ...)))
+    ;;           ,@(inner ? rest ...)))]
+
     [(_ ? (unquote value))
      (lambda (self)
        (let-syntax ((? (with-ellipsis
                         .. (syntax-rules ()
                              [(? path ..) (get-field self `(path ..))]))))
          value))]
-    [(_ ? (key sub ...) ...)
-     (sort* `((key ,(inner ? sub ...)) ...)
+
+    [(_ ?)
+     '()]
+
+    ;; split into two cases to allow unquote-splices instead of key-values
+    [(_ ? (key sub ...))
+     `((key ,(inner ? sub ...)))]
+
+    [(_ ? (key sub ...) rest ...)
+     (sort* `((key ,(inner ? sub ...)) ,@(inner ? rest ...))
             symbol<=? #:get car) ]
+
     [(_ _ v v* ...)
      (lambda _ (values `v `v* ...))]))
 
