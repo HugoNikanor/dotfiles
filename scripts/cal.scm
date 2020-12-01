@@ -11,7 +11,9 @@
 
 ;; http://vdirsyncer.pimutils.org/en/stable/config.html
 
-(define static-passwords #t)
+(define static-passwords
+  (getenv "STATIC_PASSWORD"))
+(define destdir (or (getenv "DESTDIR") "/"))
 
 (account cal-top ()
          (prefix ,(or (getenv "PREFIX")
@@ -186,13 +188,13 @@
           (client_id ,(pass "admittansen/google/oauth/client_id"))
           (client_secret ,(pass "admittansen/google/oauth/client_secret"))))
 
-(define destdir (or (getenv "DESTDIR") "/"))
-
-
-(define path (path-append 
+(define path (path-append
                destdir
                (get-field (instanciate cal-top)
                           '(vdirsyncer-config))))
+
+;; should be configurable, but *shrug*
+(umask #o077)
 
 (mkdir-p (dirname path))
 
@@ -201,7 +203,7 @@
               D1 STABEN2020
   nolle_p_2020_fadder
   nolle_p_2020_klassfadder)
-  
+
 
 (with-output-to-file path
   (lambda ()

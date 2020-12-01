@@ -9,9 +9,13 @@
              (ice-9 popen)
              (ice-9 rdelim)
              ((mutt) #:prefix mutt:)
-             ((mbsync) #:prefix mbsync:))
+             ((mbsync) #:prefix mbsync:)
+             ((util) #:select (pass escape)))
 
 
+
+(define static-passwords
+  (getenv "STATIC_PASSWORD"))
 
 (define $HOME (getenv "HOME"))
 
@@ -28,13 +32,15 @@
          (path-base ,mailfolder)
          (fancy-acc-name ,(string-titlecase (? acc-name)))
 
-         (pass ,(string-append "pass " (? pass-path)))
+         ;; (pass ,(string-append "pass " (? pass-path)))
 
          (IMAPAccount
           (SSLType "IMAPS")
           (CertificateFile "/etc/ssl/certs/ca-certificates.crt")
           (User ,(? address))
-          (PassCmd ,(format #f "+\"~a\"" (? pass))))
+          ,@(if static-passwords
+                ((Pass ,(format #f "\"~a\"" (escape (char-set #\") (pass (? pass-path))))))
+                ((PassCmd ,(format #f "+\"pass ~a\"" (? pass-path))))))
 
          (MaildirStore
           (AltMap yes)
@@ -77,14 +83,15 @@
            (account-config ,(path-append (? mutt file account-dir) (? address)))
            (account-signature ,(path-append (? mutt file signature-dir) (? address))))
 
-          (imap-pass ,(? pass))
+          ;; (imap-pass ,(? pass))
           (imap-addr ,(format #f "imaps://~a@~a"
                               (? IMAPAccount User)
                               (? IMAPAccount Host)))
           (account-hook
            (imap-password ,(list (? mutt imap-addr)
-                                 (format #f "set imap_pass='`~a`'"
-                                         (? pass)))))
+                                 (if static-passwords
+                                     (format #f "set imap_pass='~a'" (pass (? pass-path)))
+                                     (format #f "set imap_pass='`pass ~a`'" (? pass-path))))))
 
           (folder-hook
            (hk1 ,(list (format #f "(~a|~a)"
@@ -141,14 +148,14 @@
 
 (account liu-work (outlook)
          (address "hugo.hornquist@liu.se")
-         (pass ,(format #f "~a/oauth-response liu-imap" BINDIR))
          ;; (pass-path "liu/hugho26")
 
          (IMAPAccount (User "hugho26@liu.se")
                       ;; NOTE that xouath2 isn't always available.
                       ;; Install something like the aur package
                       ;; cyrus-sasl-xoauth2-git
-                      (AuthMechs XOAUTH2))
+                      (AuthMechs XOAUTH2)
+                      (Pass ,(format #f "~a/oauth-response liu-imap" BINDIR)))
          (mutt (set (hostname "liu.se"))))
 
 (account vg-base (google)
@@ -304,6 +311,7 @@
     qurator
     ))
 
+(umask #o077)
 
 (with-output-to-file (path-append $HOME ".mbsyncrc")
   (lambda ()

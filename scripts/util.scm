@@ -1,5 +1,5 @@
 (define-module (util)
-  #:export (pass)
+  #:export (pass escape)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
   )
@@ -10,3 +10,14 @@
       (close-pipe pipe)
       return)))
 
+
+
+(define (escape cs str)
+  (with-output-to-string
+    (lambda ()
+      (string-for-each
+       (lambda (c)
+         (if (char-set-contains? cs c)
+             (display (string #\\ c))
+             (display c)))
+       str))))
