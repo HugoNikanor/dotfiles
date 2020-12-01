@@ -40,3 +40,10 @@ excludelist='*.@(o|O|so|SO|so.!(conf)|SO.!(CONF)|a|A|rpm|RPM|deb|DEB|gif|GIF|jp?
 complete -F _vim -f -X "${excludelist}" vi vim gvim rvim view rview rgvim rgview gview
 
 # source /usr/share/bash-completion/completions/pass
+
+if [ -d "$HOME/.config/bash/completion/" ]; then
+	for file in $HOME/.config/bash/completion/*; do
+		test -r "$file" && . "$file"
+	done
+	unset file
+fi
