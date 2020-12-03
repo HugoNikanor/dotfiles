@@ -89,7 +89,7 @@
           (account-hook
            (imap-password ,(list (? mutt imap-addr)
                                  (if static-passwords
-                                     (format #f "set imap_pass='~a'" (escape (char-set #\" #\')
+                                     (format #f "set imap_pass='~a'" (escape (char-set #\" #\' #\`)
                                                                              (pass (? pass-path))))
                                      (format #f "set imap_pass='`pass ~a`'" (? pass-path))))))
 
