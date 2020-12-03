@@ -17,7 +17,8 @@
     (lambda ()
       (string-for-each
        (lambda (c)
-         (if (char-set-contains? cs c)
+         ;; Always escape the escape char
+         (if (char-set-contains? (char-set-adjoin cs #\\) c)
              (display (string #\\ c))
              (display c)))
        str))))
