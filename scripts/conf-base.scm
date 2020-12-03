@@ -186,7 +186,7 @@
 
 ;; all top level entries should either be (key body ...) or ,@(if expr (*toplevel* ...) (*toplevel* ...))
 (define-syntax inner
-  (syntax-rules (unquote unquote-splicing if when unless)
+  (syntax-rules (unquote unquote-splicing if #| when unless |# !)
 
     [(_ ? ,@(if cond (true ...) (false ...)) rest ...)
      (sort* `(,@(if cond
@@ -212,6 +212,12 @@
 
     [(_ ?)
      '()]
+
+    [(_ ? (! field) rest ...)
+     (sort* `((field ,*remove*)
+              ,@(inner ? rest ...))
+            symbol<=? #:get car)
+            ]
 
     ;; split into two cases to allow unquote-splices instead of key-values
     [(_ ? (key sub ...))
