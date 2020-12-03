@@ -90,7 +90,8 @@
           (account-hook
            (imap-password ,(list (? mutt imap-addr)
                                  (if static-passwords
-                                     (format #f "set imap_pass='~a'" (pass (? pass-path)))
+                                     (format #f "set imap_pass='~a'" (escape (char-set #\" #\')
+                                                                             (pass (? pass-path))))
                                      (format #f "set imap_pass='`pass ~a`'" (? pass-path))))))
 
           (folder-hook
@@ -155,8 +156,15 @@
                       ;; Install something like the aur package
                       ;; cyrus-sasl-xoauth2-git
                       (AuthMechs XOAUTH2)
-                      (Pass ,(format #f "~a/oauth-response liu-imap" BINDIR)))
-         (mutt (set (hostname "liu.se"))))
+                      (PassCmd ,(format #f "+\"~a/oauth-response liu-imap\"" BINDIR))
+                      (! Pass))
+
+         (mutt (set (hostname "liu.se"))
+               (account-hook
+                 (imap-password
+                   ,(list (? mutt imap-addr)
+                          (format #f "set imap_pass='`~a/oauth-response liu-imap`'"
+                                  BINDIR))))))
 
 (account vg-base (google)
          (address ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))
