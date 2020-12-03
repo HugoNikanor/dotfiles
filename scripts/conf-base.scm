@@ -15,6 +15,8 @@
     (symbol->string a)
     (symbol->string b)))
 
+(define-once *remove* (gensym "remove"))
+
 ;; new-list, old-list -> merged list
 (define alist-merge
   (match-lambda*
@@ -23,14 +25,24 @@
     [(() xs) xs]
     [(((ka va) as ...) ((kb vb) bs ...))
      (cond [(eq? ka kb)
-            (if (and (list? va) (list? vb))
-                (acons ka (list (alist-merge va vb)) (alist-merge as bs))
-                (acons ka (list va) (alist-merge as bs)))]
+            (cond [(and (list? va) (list? vb))
+                   (acons ka (list (alist-merge va vb)) (alist-merge as bs))]
+                  [(eq? *remove* va)
+                   (alist-merge as bs)]
+                  [else (acons ka (list va) (alist-merge as bs))])]
+
            [(symbol<=? ka kb)
-            (acons ka (list va) (alist-merge as (acons kb (list vb) bs)))]
+            (if (eq? va *remove*)
+                (alist-merge as (acons kb (list vb) bs))
+                (acons ka (list va) (alist-merge as (acons kb (list vb) bs))))]
            [else
-             (acons kb (list vb)
-                    (alist-merge (acons ka (list va) as) bs))])]))
+            (if (eq? vb *remove*)
+                (alist-merge (acons ka (list va) as) bs)
+                (acons kb (list vb)
+                       (alist-merge (acons ka (list va) as) bs)))])]
+    [dflt ; Error case, catch for better logging
+      (format #t "~a~%" (car dflt))
+      (throw 'match-error 'dflt dflt)]))
 
 
 (define* (sort* list < #:key (get identity))
