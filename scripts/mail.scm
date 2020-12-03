@@ -73,7 +73,6 @@
            ;; (pager_index_lines 10)
 
            (mime_forward yes)
-
            )
 
           (file
@@ -187,7 +186,7 @@
 (account valberedningen (vg-base)
          (postnamn "Valberedning"))
 (account propaganda (vg-base)
-         (signature ,(format #f "~a, ~a?" 
+         (signature ,(format #f "~a, ~a?"
                              (? name)
                              (? postnamn))))
 (account qurator (vg-base)
@@ -319,6 +318,8 @@
     qurator
     ))
 
+;; TODO this only applies to newly created files, meaning that we
+;; leak details if the file exists world readable beforehand.
 (umask #o077)
 
 (with-output-to-file (path-append $HOME ".mbsyncrc")

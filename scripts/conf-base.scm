@@ -239,6 +239,7 @@
          #'(define name
              (let ((new-data (inner ? (acc-name ,(symbol->string 'name))
                                     (key value ...) ...)))
+               ;; class constructor, mergable are subclasses of us
                (lambda (mergable)
                  (alist-merge mergable
                               (fold $ new-data
