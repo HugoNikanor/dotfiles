@@ -51,3 +51,27 @@ sl() {
 	$(which sl) $*
 	ls $*
 }
+
+__ntpq_helper() {
+	case $1 in
+		-p|--peers) echo peers ;;
+		*) ;;
+	esac
+}
+
+ntpq() {
+	if [ -t 1 ]; then
+		# output is a tty
+		case $(__ntpq_helper $(getopt --quiet --longoptions peers --options p -- "$@")) in
+			peers) $(which ntpq) "$@" | sed \
+				-e "s/^*/$BLUE*/" \
+				-e "s/^+/$GREEN+/" \
+				-e "s/^-/$RED-/" \
+				-e "s/$/$RESET/"
+				;;
+			*) $(which ntpq) "$@" ;;
+		esac
+	else
+		$(which ntpq) "$@"
+	fi
+}
