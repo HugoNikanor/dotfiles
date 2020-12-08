@@ -1,31 +1,31 @@
 # Normal Colors
-Black='\e[0;30m'        # Black
-Red='\e[0;31m'          # Red
-Green='\e[0;32m'        # Green
-Yellow='\e[0;33m'       # Yellow (orange)
-Blue='\e[0;34m'         # Blue
-Purple='\e[0;35m'       # Purple
-Cyan='\e[0;36m'         # Cyan
-White='\e[0;37m'        # White (light gray)
+BLACK='\x1b[0;30m'        # Black
+RED='\x1b[0;31m'          # Red
+GREEN='\x1b[0;32m'        # Green
+YELLOW='\x1b[0;33m'       # Yellow (orange)
+BLUE='\x1b[0;34m'         # Blue
+PURPLE='\x1b[0;35m'       # Purple
+CYAN='\x1b[0;36m'         # Cyan
+WHITE='\x1b[0;37m'        # White (light gray)
 
 # Bold (light color)
-BBlack='\e[1;30m'       # Black (dark gray)
-BRed='\e[1;31m'         # Red
-BGreen='\e[1;32m'       # Green
-BYellow='\e[1;33m'      # Yellow
-BBlue='\e[1;34m'        # Blue
-BPurple='\e[1;35m'      # Purple
-BCyan='\e[1;36m'        # Cyan
-BWhite='\e[1;37m'       # White
+BOLD_BLACK='\x1b[1;30m'       # Black (dark gray)
+BOLD_RED='\x1b[1;31m'         # Red
+BOLD_GREEN='\x1b[1;32m'       # Green
+BOLD_YELLOW='\x1b[1;33m'      # Yellow
+BOLD_BLUE='\x1b[1;34m'        # Blue
+BOLD_PURPLE='\x1b[1;35m'      # Purple
+BOLD_CYAN='\x1b[1;36m'        # Cyan
+BOLD_WHITE='\x1b[1;37m'       # White
 
 # Background
-OnBlack='\e[40m'       # Black
-OnRed='\e[41m'         # Red
-OnGreen='\e[42m'       # Green
-OnYellow='\e[43m'      # Yellow
-OnBlue='\e[44m'        # Blue
-OnPurple='\e[45m'      # Purple
-OnCyan='\e[46m'        # Cyan
-OnWhite='\e[47m'       # White
+BACKGROUND_BLACK='\x1b[40m'       # Black
+BACKGROUND_RED='\x1b[41m'         # Red
+BACKGROUND_GREEN='\x1b[42m'       # Green
+BACKGROUND_YELLOW='\x1b[43m'      # Yellow
+BACKGROUND_BLUE='\x1b[44m'        # Blue
+BACKGROUND_PURPLE='\x1b[45m'      # Purple
+BACKGROUND_CYAN='\x1b[46m'        # Cyan
+BACKGROUND_WHITE='\x1b[47m'       # White
 
-Normal="\e[m"               # Color Reset
+RESET="\x1b[m"               # Color Reset
