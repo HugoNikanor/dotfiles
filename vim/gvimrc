@@ -29,3 +29,21 @@ colorscheme delek
 autocmd GUIEnter    * silent exec "!transset-df -a 0.9"
 "autocmd FocusLost   * exec "!transset-df -n "GVIM$" 0.5"
 "autocmd FocusGained * exec "!transset-df -a 0.9"
+
+" https://new.reddit.com/r/vim/comments/k7w0gy/a_simple_function_for_zooming_in_gui_version_of/ {{{
+" Increases the font size with `amount`
+function! Zoom(amount) abort
+  call ZoomSet(matchstr(&guifont, '\d\+$') + a:amount)
+endfunc
+
+" Sets the font size to `font_size`
+function ZoomSet(font_size) abort
+  let &guifont = substitute(&guifont, '\d\+$', a:font_size, '')
+endfunc
+
+noremap <silent> <C-+> :call Zoom(v:count1)<CR>
+noremap <silent> <C--> :call Zoom(-v:count1)<CR>
+" No idea why C-- gives C-_, but eh.
+noremap <silent> <C-_> :call Zoom(-v:count1)<CR>
+noremap <silent> <C-0> :call ZoomSet(11)<CR>
+" }}}
