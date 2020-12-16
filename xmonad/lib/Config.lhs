@@ -377,8 +377,13 @@ smartly after.
 >     -- this allows the "notification popup" to be placed correctly.
 >     -- it does however still steal focus.
 >     , title =? "Microsoft Teams Notification" --> doIgnore
+>     -- , (className =? "teams") <> (title =? "") --> doIgnore
+>     , className =? "teams" --> doIgnore
+>     -- , className =? "VirtualBox Machine" --> doIgnore
 >
 >     , title     =? "Toolbox"  --> doSmartFloat -- gimp toolbox
+>     , title =? "Steam Controller Configurator" --> doFloat
+>     , title =? "Python Turtle Graphics" --> doFloat
 >     -- Who doesn't this work!
 >     -- , className =? "Gimp" <&&> (appName =? "Toolbox" <||> title =? "Toolbox") --> doFloat ]
 >     --, className =? "Gimp" --> doFloat ]
