@@ -36,7 +36,7 @@ if [ $TERM == "xterm-termite" ]; then
 # 	export TERM=xterm
 fi
 
-PS1='$(printf "%%%$((`tput cols` - 2))s\r")'"$PS1"
+# PS1='$(printf "%%%$((`tput cols` - 2))s\r")'"$PS1"
 
 grep -qs '^ID=arch$' /etc/os-release \
 	&& { test -e /lib/modules/`uname -r` \
