@@ -335,3 +335,14 @@
  (cond ((string=? domainname "lysator.liu.se") mutt-global-lysator)
        (else mutt-global-gpg))
  account-list)
+
+(with-output-to-file
+  (format #f "~a/profile.d/private-mailconf.sh.~a"
+          (or (getenv "XDG_CONFIG_HOME")
+              (path-append (getenv "HOME") "/.config"))
+          (gethostname))
+  (lambda ()
+    (display
+      (if static-passwords
+        "systemctl set-environment --user STATIC_MAILCONF=1\n"
+        "systemctl unset-environment --user STATIC_MAILCONF\n"))))
