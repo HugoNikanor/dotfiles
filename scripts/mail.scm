@@ -9,9 +9,13 @@
              (ice-9 popen)
              (ice-9 rdelim)
              ((mutt) #:prefix mutt:)
-             ((mbsync) #:prefix mbsync:))
+             ((mbsync) #:prefix mbsync:)
+             ((util) #:select (pass escape)))
 
 
+
+(define static-passwords
+  (getenv "STATIC_PASSWORD"))
 
 (define $HOME (getenv "HOME"))
 
@@ -28,13 +32,15 @@
          (path-base ,mailfolder)
          (fancy-acc-name ,(string-titlecase (? acc-name)))
 
-         (pass ,(string-append "pass " (? pass-path)))
+         ;; (pass ,(string-append "pass " (? pass-path)))
 
          (IMAPAccount
           (SSLType "IMAPS")
           (CertificateFile "/etc/ssl/certs/ca-certificates.crt")
           (User ,(? address))
-          (PassCmd ,(format #f "+\"~a\"" (? pass))))
+          ,@(if static-passwords
+                ((Pass ,(format #f "\"~a\"" (escape (char-set #\") (pass (? pass-path))))))
+                ((PassCmd ,(format #f "+\"pass ~a\"" (? pass-path))))))
 
          (MaildirStore
           (AltMap yes)
@@ -67,7 +73,6 @@
            ;; (pager_index_lines 10)
 
            (mime_forward yes)
-
            )
 
           (file
@@ -77,14 +82,16 @@
            (account-config ,(path-append (? mutt file account-dir) (? address)))
            (account-signature ,(path-append (? mutt file signature-dir) (? address))))
 
-          (imap-pass ,(? pass))
+          ;; (imap-pass ,(? pass))
           (imap-addr ,(format #f "imaps://~a@~a"
                               (? IMAPAccount User)
                               (? IMAPAccount Host)))
           (account-hook
            (imap-password ,(list (? mutt imap-addr)
-                                 (format #f "set imap_pass='`~a`'"
-                                         (? pass)))))
+                                 (if static-passwords
+                                     (format #f "set imap_pass='~a'" (escape (char-set #\" #\' #\`)
+                                                                             (pass (? pass-path))))
+                                     (format #f "set imap_pass='`pass ~a`'" (? pass-path))))))
 
           (folder-hook
            (hk1 ,(list (format #f "(~a|~a)"
@@ -141,15 +148,22 @@
 
 (account liu-work (outlook)
          (address "hugo.hornquist@liu.se")
-         (pass ,(format #f "~a/oauth-response liu-imap" BINDIR))
          ;; (pass-path "liu/hugho26")
 
          (IMAPAccount (User "hugho26@liu.se")
                       ;; NOTE that xouath2 isn't always available.
                       ;; Install something like the aur package
                       ;; cyrus-sasl-xoauth2-git
-                      (AuthMechs XOAUTH2))
-         (mutt (set (hostname "liu.se"))))
+                      (AuthMechs XOAUTH2)
+                      (PassCmd ,(format #f "+\"~a/oauth-response liu-imap\"" BINDIR))
+                      (! Pass))
+
+         (mutt (set (hostname "liu.se"))
+               (account-hook
+                 (imap-password
+                   ,(list (? mutt imap-addr)
+                          (format #f "set imap_pass='`~a/oauth-response liu-imap`'"
+                                  BINDIR))))))
 
 (account vg-base (google)
          (address ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))
@@ -172,7 +186,7 @@
 (account valberedningen (vg-base)
          (postnamn "Valberedning"))
 (account propaganda (vg-base)
-         (signature ,(format #f "~a, ~a?" 
+         (signature ,(format #f "~a, ~a?"
                              (? name)
                              (? postnamn))))
 (account qurator (vg-base)
@@ -304,6 +318,9 @@
     qurator
     ))
 
+;; TODO this only applies to newly created files, meaning that we
+;; leak details if the file exists world readable beforehand.
+(umask #o077)
 
 (with-output-to-file (path-append $HOME ".mbsyncrc")
   (lambda ()
@@ -318,3 +335,14 @@
  (cond ((string=? domainname "lysator.liu.se") mutt-global-lysator)
        (else mutt-global-gpg))
  account-list)
+
+(with-output-to-file
+  (format #f "~a/profile.d/private-mailconf.sh.~a"
+          (or (getenv "XDG_CONFIG_HOME")
+              (path-append (getenv "HOME") "/.config"))
+          (gethostname))
+  (lambda ()
+    (display
+      (if static-passwords
+        "systemctl set-environment --user STATIC_MAILCONF=1\n"
+        "systemctl unset-environment --user STATIC_MAILCONF\n"))))

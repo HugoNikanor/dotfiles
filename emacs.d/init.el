@@ -355,6 +355,8 @@ WIDTH: number of dashes in line"
   "]]" 'irfc-head-next
   "]x" 'irfc-page-next
   "[x" 'irfc-page-prev
+  "j" 'scroll-up-line
+  "k" 'scroll-down-line
   (kbd "RET") 'irfc-follow)
 
 (setq irfc-directory "~/.local/doc/rfc/")

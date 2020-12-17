@@ -20,8 +20,8 @@ bind index G last-entry
 bind index \Cd half-down
 bind index \Cu half-up
 
-bind index l collapse-thread
-bind index z collapse-all
+# bind index l collapse-thread
+# bind index z collapse-all
 
 bind index r reply
 bind index a group-reply

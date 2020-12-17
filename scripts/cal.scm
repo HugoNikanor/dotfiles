@@ -11,6 +11,10 @@
 
 ;; http://vdirsyncer.pimutils.org/en/stable/config.html
 
+(define static-passwords
+  (getenv "STATIC_PASSWORD"))
+(define destdir (or (getenv "DESTDIR") "/"))
+
 (account cal-top ()
          (prefix ,(or (getenv "PREFIX")
                       (getenv "HOME")))
@@ -167,28 +171,30 @@
 ;; TODO
 ;; Make required fields for these more apparent (in their parents)
 (account fruux (caldav)
-         (pass-path ,(format #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a" (? remote username)))
+         (pass-path ,(format
+                      #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a"
+                      (? remote username)))
          (remote
           (url "https://dav.fruux.com")
           (username "b3297465009")
-          (password.fetch ,(if (? static-passwords)
-                             ;; TODO conditional existance of
-                             ;; fields.
-                             `("command" "echo" ,(pass (? pass-path)))
-                             `("command" "pass" ,(? pass-path))))))
+          ,@(if static-passwords
+                ((password ,(pass (? pass-path))))
+                ((password.fetch ,`("command" "pass" ,(? pass-path))))
+              )
+          ))
 
 (account admittansen (google)
          (remote
           (client_id ,(pass "admittansen/google/oauth/client_id"))
           (client_secret ,(pass "admittansen/google/oauth/client_secret"))))
 
-(define destdir (or (getenv "DESTDIR") "/"))
-
-
-(define path (path-append 
+(define path (path-append
                destdir
                (get-field (instanciate cal-top)
                           '(vdirsyncer-config))))
+
+;; should be configurable, but *shrug*
+(umask #o077)
 
 (mkdir-p (dirname path))
 
@@ -197,7 +203,7 @@
               D1 STABEN2020
   nolle_p_2020_fadder
   nolle_p_2020_klassfadder)
-  
+
 
 (with-output-to-file path
   (lambda ()

@@ -39,6 +39,7 @@
 >     , dzenPP
 >     , dzenColor
 >     , shorten)
+> import XMonad.Hooks.EwmhDesktops (ewmh{-, ewmhDesktopEventHook, ActiveWindow-})
 
 > import XMonad.Layout (Mirror (Mirror))
 
@@ -94,6 +95,11 @@ gs_navigate : TwoD a (Maybe a)
 makeXEventHandler : ((KeySym, String, KeyMask) -> TwoD a (Maybe a)) -> TwoD a (Maybe a)
 shadowWithKeymap : Map (KeyMask, KeySym) a -> ((KeySym, String, KeyMask) -> a) -> (KeySym, String, KeyMask) -> a
 
+It would be really nice if these showed previews of the windows,
+for terminals displayed the last command run, and also display
+which workspace the window resides in.
+
+> gsConfig :: GSConfig Window
 > gsConfig = defaultGSConfig { gs_navigate = fix $ \self ->
 >     let navKeyMap = M.mapKeys ((,) 0) $ M.fromList $
 >                 [(xK_Escape, GS.cancel)
@@ -162,6 +168,7 @@ screens.
 >                   ||| GridRatio (4/3)
 >                   ||| Mirror (multiCol [1, 1, 0] 4 0.01 0.5)
 >                   ||| (multiCol [1, 1, 0] 4 0.01 0.5)
+>                   ||| Full
 >         tallLayouts = Dishes 1 (1/4)
 >                   ||| GridRatio (4/3)
 
@@ -312,8 +319,9 @@ The following keybinds are managed by EZ-config.
 >   --, ("M-c"  , nextScreen)
 >     --, ("M-S-g", shiftPrevScreen)
 >     --, ("M-S-c", shiftNextScreen)
->   , ("M-g", warpToCentre >> goToSelected gsConfig) -- can this also shift the newly selected workspace here?
->   , ("M-S-g", warpToCentre >> bringSelected gsConfig)
+>   -- , ("M-g", warpToCentre >> ooToSelected gsConfig) -- can this also shift the newly selected workspace here?
+>   -- , ("M-S-g", warpToCentre >> bringSelected gsConfig)
+>   , ("M-g", spawn "rofi -show window -show-icons")
 >   , ("M-p", shellPrompt myXPConfig { autoComplete = Nothing
 >                                    , searchPredicate = isInfixOf } )
 >   , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })
@@ -369,8 +377,13 @@ smartly after.
 >     -- this allows the "notification popup" to be placed correctly.
 >     -- it does however still steal focus.
 >     , title =? "Microsoft Teams Notification" --> doIgnore
+>     -- , (className =? "teams") <> (title =? "") --> doIgnore
+>     , className =? "teams" --> doIgnore
+>     -- , className =? "VirtualBox Machine" --> doIgnore
 >
 >     , title     =? "Toolbox"  --> doSmartFloat -- gimp toolbox
+>     , title =? "Steam Controller Configurator" --> doFloat
+>     , title =? "Python Turtle Graphics" --> doFloat
 >     -- Who doesn't this work!
 >     -- , className =? "Gimp" <&&> (appName =? "Toolbox" <||> title =? "Toolbox") --> doFloat ]
 >     --, className =? "Gimp" --> doFloat ]
@@ -415,8 +428,19 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 >     let termCommand = "termite"
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
->     xmproc      <- spawnPipe "dzen2 -fn 'Fira Mono:size=8' -ta l -dock"
->     xmonad $ docks def
+>     -- Setting an -y value breaks -dock, also, -dock is undocumented?
+>     xmproc      <- spawnPipe "dzen2 -fn 'Fira Mono' -w 1920 -x 1920 -ta l -dock"
+
+Config Modifiers
+================
+
+- docks
+
+- ewmh 
+Allows rofi to find windows
+
+
+>     xmonad $ docks . ewmh $ def
 >         { modMask = mod4Mask
 >         , logHook = myLogHook xmproc
 >         , clickJustFocuses  = False

@@ -15,6 +15,8 @@
     (symbol->string a)
     (symbol->string b)))
 
+(define-once *remove* (gensym "remove"))
+
 ;; new-list, old-list -> merged list
 (define alist-merge
   (match-lambda*
@@ -23,14 +25,24 @@
     [(() xs) xs]
     [(((ka va) as ...) ((kb vb) bs ...))
      (cond [(eq? ka kb)
-            (if (and (list? va) (list? vb))
-                (acons ka (list (alist-merge va vb)) (alist-merge as bs))
-                (acons ka (list va) (alist-merge as bs)))]
+            (cond [(and (list? va) (list? vb))
+                   (acons ka (list (alist-merge va vb)) (alist-merge as bs))]
+                  [(eq? *remove* va)
+                   (alist-merge as bs)]
+                  [else (acons ka (list va) (alist-merge as bs))])]
+
            [(symbol<=? ka kb)
-            (acons ka (list va) (alist-merge as (acons kb (list vb) bs)))]
+            (if (eq? va *remove*)
+                (alist-merge as (acons kb (list vb) bs))
+                (acons ka (list va) (alist-merge as (acons kb (list vb) bs))))]
            [else
-             (acons kb (list vb)
-                    (alist-merge (acons ka (list va) as) bs))])]))
+            (if (eq? vb *remove*)
+                (alist-merge (acons ka (list va) as) bs)
+                (acons kb (list vb)
+                       (alist-merge (acons ka (list va) as) bs)))])]
+    [dflt ; Error case, catch for better logging
+      (format #t "~a~%" (car dflt))
+      (throw 'match-error 'dflt dflt)]))
 
 
 (define* (sort* list < #:key (get identity))
@@ -172,17 +184,49 @@
 (define (instanciate class . args)
   (class (sort* args symbol<=? #:get car)))
 
+;; all top level entries should either be (key body ...) or ,@(if expr (*toplevel* ...) (*toplevel* ...))
 (define-syntax inner
-  (syntax-rules (unquote)
+  (syntax-rules (unquote unquote-splicing if #| when unless |# !)
+
+    [(_ ? ,@(if cond (true ...) (false ...)) rest ...)
+     (sort* `(,@(if cond
+                    (inner ? true ...)
+                    (inner ? false ...))
+              ,@(inner ? rest ...))
+            symbol<=?  #:get car)]
+
+    ;; [(_ ? ,@(when cond true ...) rest ...)
+    ;;  (sort* `(,@(inner ? (if cond (true ...) '()))
+    ;;           ,@(inner ? rest ...)))]
+
+    ;; [(_ ? ,@(unless cond false ...) rest ...)
+    ;;  (sort* `(,@(inner ? (if cond '() (false ...)))
+    ;;           ,@(inner ? rest ...)))]
+
     [(_ ? (unquote value))
      (lambda (self)
        (let-syntax ((? (with-ellipsis
                         .. (syntax-rules ()
                              [(? path ..) (get-field self `(path ..))]))))
          value))]
-    [(_ ? (key sub ...) ...)
-     (sort* `((key ,(inner ? sub ...)) ...)
+
+    [(_ ?)
+     '()]
+
+    [(_ ? (! field) rest ...)
+     (sort* `((field ,*remove*)
+              ,@(inner ? rest ...))
+            symbol<=? #:get car)
+            ]
+
+    ;; split into two cases to allow unquote-splices instead of key-values
+    [(_ ? (key sub ...))
+     `((key ,(inner ? sub ...)))]
+
+    [(_ ? (key sub ...) rest ...)
+     (sort* `((key ,(inner ? sub ...)) ,@(inner ? rest ...))
             symbol<=? #:get car) ]
+
     [(_ _ v v* ...)
      (lambda _ (values `v `v* ...))]))
 
@@ -195,6 +239,7 @@
          #'(define name
              (let ((new-data (inner ? (acc-name ,(symbol->string 'name))
                                     (key value ...) ...)))
+               ;; class constructor, mergable are subclasses of us
                (lambda (mergable)
                  (alist-merge mergable
                               (fold $ new-data
