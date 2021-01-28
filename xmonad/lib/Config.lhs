@@ -100,7 +100,7 @@ for terminals displayed the last command run, and also display
 which workspace the window resides in.
 
 > gsConfig :: GSConfig Window
-> gsConfig = defaultGSConfig { gs_navigate = fix $ \self ->
+> gsConfig = def { gs_navigate = fix $ \self ->
 >     let navKeyMap = M.mapKeys ((,) 0) $ M.fromList $
 >                 [(xK_Escape, GS.cancel)
 >                 ,(xK_Return, GS.select)
@@ -126,7 +126,7 @@ TODO
 * Possibly add scratchpad (floating term) (I have that for gvim now!)
 * If only one program is in a workspace the workspace should change name to that
 
-> myFont = "Iosevka Slab-11"
+> myFont = "Fira Mono"
 
 TODO figure out how to run this from main
 
