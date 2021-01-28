@@ -249,7 +249,7 @@ Especially good on larger screens.
 
 
 > otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
-> otherKeys conf@(XConfig {XMonad.modMask = modm}) = 
+> otherKeys conf@(XConfig {XMonad.modMask = modm}) =
 >     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 >     , ((modm, xK_Tab ), S.onGroup W.focusDown')
 >     , ((modm .|. shiftMask, xK_Tab ), S.onGroup W.focusUp')
@@ -291,7 +291,7 @@ The following keybinds are managed by EZ-config.
 >   , ("M-y", spawn "passmenu")
 >
 >   , ("M-<Return>", windows W.swapMaster)
->   
+>
 >   , ("M-m", sendMessage Shrink)
 >   , ("M-w", sendMessage Expand)
 >   , ("M-S-m", sendMessage $ IncMasterN    1)
@@ -311,7 +311,7 @@ The following keybinds are managed by EZ-config.
 >   , ("M-<Space> l", sendMessage $ S.pullGroup L)
 >
 >   , ("M-s", toggleWS)
->   
+>
 >     -- Do I even want these?
 >     -- especcially if they don't work on a per-screen basis
 >     -- Possibly write some own which works together with IndependentScreens
@@ -325,22 +325,22 @@ The following keybinds are managed by EZ-config.
 >   , ("M-p", shellPrompt myXPConfig { autoComplete = Nothing
 >                                    , searchPredicate = isInfixOf } )
 >   , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })
->   
+>
 >   , ("M-q", restartXMonad)
 >   , ("M-t", withFocused $ windows . W.sink)
->   
+>
 >   , ("M-S-c", kill)
 >   , ("M-n", sendMessage NextLayout)
->   
+>
 >   , ("M-<Space> M-<Space>", selectWorkspace myXPConfig)
 >   , ("M-<Space> <Space>", selectWorkspace myXPConfig)
->   
+>
 >   , ("M-<Space> d", removeWorkspace)
 >   , ("M-<Space> M-d", removeEmptyWorkspace)
 >   , ("M-<Space> a", addWorkspacePrompt myXPConfig)
 >   , ("M-<Space> s", withWorkspace myXPConfig (windows . W.shift))
 >   -- , ("M-<Space> S-s", inputPromptWithCompl myXPConfig "Shift and go" >>= shiftAndGo)
->   
+>
 >   , ("M-<Space> r", renameWorkspace myXPConfig { autoComplete = Nothing })
 >   ]
 
@@ -436,7 +436,7 @@ Config Modifiers
 
 - docks
 
-- ewmh 
+- ewmh
 Allows rofi to find windows
 
 
