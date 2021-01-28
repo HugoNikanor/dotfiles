@@ -36,6 +36,7 @@
 >     , ppWsSep
 >     , ppSep
 >     , ppOutput
+>     , ppExtras
 >     , dzenPP
 >     , dzenColor
 >     , shorten)
@@ -66,11 +67,17 @@ to happen at points not currently in focus.
 > import XMonad.Util.Types (Direction2D (U, D, L, R))
 > import XMonad.Util.EZConfig
 > import XMonad.Util.Run (spawnPipe)
+> import qualified XMonad.Util.Loggers as Logger
 
 > import qualified Data.Map as M
 > import qualified XMonad.StackSet as W
 > import qualified XMonad.Layout.BoringWindows as B
 > import qualified XMonad.Layout.SubLayouts as S
+
+
+
+> dropRight n = reverse . drop n . reverse
+> join = foldl (++) ""
 
 
 
@@ -408,19 +415,52 @@ Color config borrowed from my Termite config .
 > fgColor' = foreground
 > bgColor' = "black"
 
+> dzenIcon :: FilePath -> String
+> dzenIcon icon = "^i(/home/hugo/.local/share/dzen2/" ++ icon ++ ".xbm)"
+
+> dzenFg :: String -> String
+> dzenFg c = "^fg(" ++ c ++ ")"
+
+> formatBatteryDzen :: Int -> String
+> formatBatteryDzen n = join [ color n, dzenIcon "battery", " " , show n, "%" ]
+>   where
+>     color n
+>         | n < 10    = dzenFg "red"
+>         | n < 60    = dzenFg "yellow"
+>         | otherwise = dzenFg "green"
+
+> battery :: Logger.Logger
+> battery = do
+>     contents <- dropRight 1 <$> liftIO (readFile "/sys/class/power_supply/BAT0/capacity")
+>     return . Just . formatBatteryDzen $ read contents
+
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
 > colorFunc = dzenColor
 > funcPP = dzenPP
 > -- colorFunc = xmobarColor
 > -- funcPP = xmobarPP
+
+https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-DynamicLog.html
+
 > myLogHook handle = dynamicLogWithPP $ funcPP
 >   { ppCurrent = \str -> colorFunc "yellow" bgColor' $ "[" ++ str ++ "]"
 >   , ppTitle = shorten 100
 >   , ppWsSep = " "
+>
 >   , ppSep = " | "
 >   , ppOutput = hPutStrLn handle
+
+https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers.html
+
+>   , ppExtras =
+>      [ return $ Just "^p(_RIGHT)^p(-500)"
+>      , Logger.date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
+>      , battery
+>      ]
 >   }
+
+
 
 
 
