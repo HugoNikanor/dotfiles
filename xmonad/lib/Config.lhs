@@ -2,6 +2,8 @@
 
 > import System.IO (hPutStrLn)
 > import System.Environment (setEnv)
+> import System.Locale (defaultTimeLocale, TimeLocale(wDays))
+> import System.Time (getClockTime, toCalendarTime, formatCalendarTime)
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 
@@ -482,6 +484,28 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 > -- colorFunc = xmobarColor
 > -- funcPP = xmobarPP
 
+Sets names of week days to Swedish, for output, should ideally also
+set month names.
+
+> timeLocale = defaultTimeLocale {
+>   wDays = [ ("Söndag", "Sön")
+>           , ("Måndag", "Mån")
+>           , ("Tisdag", "Tis")
+>           , ("Onsdag", "Ons")
+>           , ("Torsag", "Tor")
+>           , ("Fredag", "Fre")
+>           , ("Lördag", "Lör") ]
+> }
+
+Date logger taken from default example loggens, only changed to take
+my timeLocale, so I can *finally* get Swedish names!
+https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/src/XMonad.Util.Loggers.html#date
+
+> date :: String -> Logger.Logger
+> date fmt = io $ do cal <- (getClockTime >>= toCalendarTime)
+>                    return . Just $ formatCalendarTime timeLocale fmt cal
+
+
 https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-DynamicLog.html
 
 > myLogHook handle = dynamicLogWithPP $ funcPP
@@ -492,11 +516,12 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-Dynami
 >   , ppSep = "^fg() | "
 >   , ppOutput = hPutStrLn handle
 
+
 https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers.html
 
 >   , ppExtras =
 >      [ return $ Just "^p(_RIGHT)^p(-560)"-- "^ba(1920,_RIGHT)" -- 
->      , Logger.date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
+>      , date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
 >      , battery
 >      , brightness
 >      ]
