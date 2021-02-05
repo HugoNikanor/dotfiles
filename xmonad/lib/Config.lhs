@@ -5,6 +5,13 @@
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 
+Provides symbol names for all weird X keycodes. So most things
+starting with xF86 in this file.
+
+This is the analoge of =/usr/include/X11/XF86keysym.h=.
+
+> import Graphics.X11.ExtraTypes.XF86
+
 > import XMonad
 
 > import XMonad.Actions.PhysicalScreens
@@ -74,16 +81,14 @@ to happen at points not currently in focus.
 > import qualified XMonad.Layout.BoringWindows as B
 > import qualified XMonad.Layout.SubLayouts as S
 
+> import Brightness
+
 
 
 > dropRight n = reverse . drop n . reverse
 > join = foldl (++) ""
 
 
-
-A list of all(?) X keynames are in =/usr/include/X11/XF86keysym.h=,
-these have to have their first letter downcased. For some media keys
-extra imports have to be done here.
 
 The X key names of the swedish letters is
 
@@ -255,12 +260,17 @@ Especially good on larger screens.
 
 
 
+> data Redraw = Redraw deriving Typeable
+> instance Message Redraw
+
 > otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
 > otherKeys conf@(XConfig {XMonad.modMask = modm}) =
 >     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 >     , ((modm, xK_Tab ), S.onGroup W.focusDown')
 >     , ((modm .|. shiftMask, xK_Tab ), S.onGroup W.focusUp')
 >     , ((modm, xK_t), withFocused $ windows . W.sink)
+>     , ((0, xF86XK_MonBrightnessDown), io (updateBrightness $ -1000) >> refresh)
+>     , ((0, xF86XK_MonBrightnessUp),   io (updateBrightness $  1000) >> refresh)
 >     ]
 
 Finnaly add all the parts together
