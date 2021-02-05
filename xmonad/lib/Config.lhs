@@ -269,6 +269,10 @@ Especially good on larger screens.
 >     , ((modm, xK_Tab ), S.onGroup W.focusDown')
 >     , ((modm .|. shiftMask, xK_Tab ), S.onGroup W.focusUp')
 >     , ((modm, xK_t), withFocused $ windows . W.sink)
+
+The refresh's here is to force a redraw of the status bar, otherwise
+my brightness indicator doesn't update when the keys are pressed.
+
 >     , ((0, xF86XK_MonBrightnessDown), io (updateBrightness $ -1000) >> refresh)
 >     , ((0, xF86XK_MonBrightnessUp),   io (updateBrightness $  1000) >> refresh)
 >     ]
@@ -444,6 +448,26 @@ Color config borrowed from my Termite config .
 >     contents <- dropRight 1 <$> liftIO (readFile "/sys/class/power_supply/BAT0/capacity")
 >     return . Just . formatBatteryDzen $ read contents
 
+> dzenSlider :: (RealFrac a) => Integer -> Integer -> String -> a -> String
+> dzenSlider width radius icon value =
+>   let w = fromIntegral width
+>       half_radi = fromIntegral . floor $ (fromIntegral radius) / 2
+>       percentage = floor $ value * w - half_radi
+>       -- slide_base = printf "^r(%i)^p(-%i)^p(%i)" width width percentage
+>   in "^r("  ++ show width ++ "x1)"
+>   ++ "^p(-" ++ show width ++ ")"
+>   ++ "^p("  ++ show percentage ++ ")"
+>   ++ icon
+
+> slider = dzenSlider 100 16
+
+> brightness :: Logger.Logger
+> brightness = do
+>   let path = "/sys/class/backlight/intel_backlight/"
+>   current <- read . dropRight 1 <$> liftIO (readFile $ path ++ "actual_brightness")
+>   max     <- read . dropRight 1 <$> liftIO (readFile $ path ++ "max_brightness")
+>   return . Just $ slider (dzenIcon "brightness") (current / max)
+
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
 > colorFunc = dzenColor
@@ -458,15 +482,16 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-Dynami
 >   , ppTitle = shorten 100
 >   , ppWsSep = " "
 >
->   , ppSep = " | "
+>   , ppSep = "^fg() | "
 >   , ppOutput = hPutStrLn handle
 
 https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers.html
 
 >   , ppExtras =
->      [ return $ Just "^p(_RIGHT)^p(-500)"
+>      [ return $ Just "^p(_RIGHT)^p(-1000)"
 >      , Logger.date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
 >      , battery
+>      , brightness
 >      ]
 >   }
 
