@@ -435,6 +435,12 @@ Color config borrowed from my Termite config .
 > dzenFg :: String -> String
 > dzenFg c = "^fg(" ++ c ++ ")"
 
+> dzenPos :: (Show a, Integral a) => a -> String
+> dzenPos p = "^p(" ++ show p ++ ")"
+
+> dzenRect :: (Show a, Integral a) => a -> a -> String
+> dzenRect width height = "^r(" ++ show width ++ "x" ++ show height ++ ")"
+
 > formatBatteryDzen :: Int -> String
 > formatBatteryDzen n = join [ color n, dzenIcon "battery", " " , show n, "%" ]
 >   where
@@ -445,7 +451,7 @@ Color config borrowed from my Termite config .
 
 > battery :: Logger.Logger
 > battery = do
->     contents <- dropRight 1 <$> liftIO (readFile "/sys/class/power_supply/BAT0/capacity")
+>     contents <- dropRight 1 <$> io (readFile "/sys/class/power_supply/BAT0/capacity")
 >     return . Just . formatBatteryDzen $ read contents
 
 > dzenSlider :: (RealFrac a) => Integer -> Integer -> String -> a -> String
@@ -454,9 +460,9 @@ Color config borrowed from my Termite config .
 >       half_radi = fromIntegral . floor $ (fromIntegral radius) / 2
 >       percentage = floor $ value * w - half_radi
 >       -- slide_base = printf "^r(%i)^p(-%i)^p(%i)" width width percentage
->   in "^r("  ++ show width ++ "x1)"
->   ++ "^p(-" ++ show width ++ ")"
->   ++ "^p("  ++ show percentage ++ ")"
+>   in dzenRect width 1
+>   ++ (dzenPos $ - width)
+>   ++ dzenPos percentage
 >   ++ icon
 
 > slider = dzenSlider 100 16
@@ -464,8 +470,9 @@ Color config borrowed from my Termite config .
 > brightness :: Logger.Logger
 > brightness = do
 >   let path = "/sys/class/backlight/intel_backlight/"
->   current <- read . dropRight 1 <$> liftIO (readFile $ path ++ "actual_brightness")
->   max     <- read . dropRight 1 <$> liftIO (readFile $ path ++ "max_brightness")
+>   current <- read . dropRight 1 <$> io (readFile $ path ++ "actual_brightness")
+>   max     <- read . dropRight 1 <$> io (readFile $ path ++ "max_brightness")
+>   -- TODO put a ^fg(red) before the slider when redshift is activated
 >   return . Just $ slider (dzenIcon "brightness") (current / max)
 
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
@@ -488,7 +495,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-Dynami
 https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers.html
 
 >   , ppExtras =
->      [ return $ Just "^p(_RIGHT)^p(-1000)"
+>      [ return $ Just "^p(_RIGHT)^p(-560)"-- "^ba(1920,_RIGHT)" -- 
 >      , Logger.date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
 >      , battery
 >      , brightness
