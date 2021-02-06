@@ -73,6 +73,9 @@
            ;; (pager_index_lines 10)
 
            (mime_forward yes)
+
+           ;; (forward_format "[%a: %s]")
+           (forward_format "FWD: %s")
            )
 
           (file
