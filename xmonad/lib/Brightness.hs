@@ -15,6 +15,8 @@ getBrightness = do
    max     <- read . dropRight 1 <$> (readFile $ path ++ "max_brightness")
    return $ current / max
 
+
+-- explicit file handles to force write.
 updateBrightness :: Int -> IO ()
 updateBrightness change = do
     let bfile = "/sys/class/backlight/intel_backlight/brightness"

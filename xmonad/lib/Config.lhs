@@ -4,6 +4,7 @@
 > import System.Environment (setEnv)
 > import System.Locale (defaultTimeLocale, TimeLocale(wDays))
 > import System.Time (getClockTime, toCalendarTime, formatCalendarTime)
+> import System.Directory (doesPathExist)
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 
@@ -451,10 +452,19 @@ Color config borrowed from my Termite config .
 >         | n < 60    = dzenFg "yellow"
 >         | otherwise = dzenFg "green"
 
-> battery :: Logger.Logger
-> battery = do
->     contents <- dropRight 1 <$> io (readFile "/sys/class/power_supply/BAT0/capacity")
->     return . Just . formatBatteryDzen $ read contents
+
+> loggerIfFile :: FilePath -> Logger.Logger -> Logger.Logger
+> loggerIfFile path logger = do
+>     exists <- io (doesPathExist path)
+>     if exists then logger
+>     else return Nothing
+
+> battery :: FilePath -> Logger.Logger
+> battery supply = do
+>     let path = "/sys/class/power_supply/" ++ supply ++ "/capacity"
+>     loggerIfFile path $ do
+>        contents <- dropRight 1 <$> io (readFile path)
+>        return . Just . formatBatteryDzen $ read contents
 
 > dzenSlider :: (RealFrac a) => Integer -> Integer -> String -> a -> String
 > dzenSlider width radius icon value =
@@ -519,11 +529,10 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 >   , ppExtras =
 >      [ return $ Just "^p(_RIGHT)^p(-560)"-- "^ba(1920,_RIGHT)" -- 
 >      , date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
->      , battery
+>      , battery "BAT0"
 >      , brightness
 >      ]
 >   }
-
 
 
 
