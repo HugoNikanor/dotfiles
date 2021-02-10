@@ -152,10 +152,14 @@
          (url-fragment "ri664XQn580Z55Qm77025ZZ6y9Y740QQ0Y45Y0gQ10764"))
 
 (account TDDE44 (timeedit)
-         (url-fragment "ri660XQn020Z56Qm77085ZZ6y9Y740QQ0Y43Y5gQ90765"))
+         (url-fragment "ri697Q7QYn6ZQ6Q552865471yZZQ6805"))
 
 (account TATA41 (timeedit)
          (url-fragment "ri660XQn020Z56Qm67035ZZ6y9Y740QQ0Y43Y5gQ60765"))
+
+; flervariabel
+(account TATA76 (timeedit)
+         (url-fragment "ri687Q7QYn3ZQ6Q551865471yZZQ6805"))
 
 (account TDDB68 (timeedit)              ; pintos
          (url-fragment "ri660XQn020Z56Qm07075ZZ6y9Y740QQ0Y43Y5gQ00765"))
@@ -213,7 +217,7 @@
      ;; D1
      STABEN2020
      ;; TDDE04
-     ;; TDDE44
+     TDDE44
      ;; TSTE24
 
      formulastudent
@@ -227,7 +231,8 @@
 
      TDDI41_TDP031
      ;; TATA41
-     TDDB68
+     ;; TDDB68
+     TATA76
 
      d_sektionen
      admittansen

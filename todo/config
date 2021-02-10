@@ -1,8 +1,3 @@
-# === EDIT FILE LOCATIONS BELOW ===
-
-# Your todo.txt directory (this should be an absolute path)
-#export TODO_DIR="/Users/gina/Documents/todo"
-#export TODO_DIR=$(dirname "$0")
 export TODO_DIR=$HOME/.todo/todo
 
 # Your todo/done/report.txt locations
@@ -13,8 +8,5 @@ export REPORT_FILE="$TODO_DIR/report.txt"
 # You can customize your actions directory location
 export TODO_ACTIONS_DIR="$HOME/.todo/actions.d"
 
-# == EDIT FILE LOCATIONS ABOVE ===
-
-# === COLOR MAP ===
-
+# For effitask
 export GTK_THEME=Adwaita:dark
