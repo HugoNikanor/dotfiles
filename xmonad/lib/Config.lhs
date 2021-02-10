@@ -52,6 +52,7 @@
 > import XMonad.Layout.Spiral (spiral)
 > import XMonad.Layout.WindowNavigation (windowNavigation)
 > import XMonad.Layout.MultiColumns (multiCol)
+> import XMonad.Layout.ThreeColumns (ThreeCol (ThreeCol))
 
 IndependentScreens is the library which should allow things
 to happen at points not currently in focus.
@@ -163,11 +164,10 @@ screens.
 
 > myLayouts = wideLayouts {- ifWider tallThreshold wideLayouts tallLayouts -}
 >   where tallThreshold = 1200
->         wideLayouts = Tall 1 (3/100) (3/5)
->                   ||| spiral (1/2)
->                   ||| GridRatio (4/3)
+>         wideLayouts
+>                     = Tall 1 (3/100) (3/5)
+>                   ||| ThreeCol 1 (3/100) (1/3)
 >                   ||| Mirror (multiCol [1, 1, 0] 4 0.01 0.5)
->                   ||| (multiCol [1, 1, 0] 4 0.01 0.5)
 >                   ||| Full
 >         tallLayouts = Dishes 1 (1/4)
 >                   ||| GridRatio (4/3)
