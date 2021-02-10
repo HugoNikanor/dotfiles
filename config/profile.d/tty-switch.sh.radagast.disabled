@@ -1,6 +1,6 @@
 case `tty` in
 	/dev/tty1)
-		exec tmux new-session -A -s tty1 ;;
+		exec tmux new-session -A -s `tty` ;;
 	/dev/tty2)
 		exec ssh -t slartibartfast "tmux new-session -A -s lys" ;;
 	/dev/tty3)
