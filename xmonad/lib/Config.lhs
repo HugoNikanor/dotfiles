@@ -537,12 +537,17 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 
 
 
+> xmproc :: String -> String
+>     -- Setting an -y value breaks -dock, also, -dock is undocumented?
+> xmproc "gandalf" = "dzen2 -fn 'Fira Mono' -w 1920 -x 1920 -ta l -dock"
+> xmproc _         = "dzen2 -fn 'Fira Mono' -ta l -dock"
+
 > main = do
+>     hostname <- head . lines <$> readFile "/etc/hostname"
 >     let termCommand = "termite"
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
->     -- Setting an -y value breaks -dock, also, -dock is undocumented?
->     xmproc      <- spawnPipe "dzen2 -fn 'Fira Mono' -w 1920 -x 1920 -ta l -dock"
+>     xmproc      <- spawnPipe $ xmproc hostname
 
 Config Modifiers
 ================
