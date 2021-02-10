@@ -429,7 +429,7 @@ Log hook borrowed from https://pastebin.com/Pt8LCprY.
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
 >     -- Setting an -y value breaks -dock, also, -dock is undocumented?
->     xmproc      <- spawnPipe "dzen2 -fn 'Fira Mono' -w 1920 -x 1920 -ta l -dock"
+>     xmproc      <- spawnPipe "dzen2 -fn 'Roboto' -w 1920 -x 1920 -ta l -dock"
 
 Config Modifiers
 ================
