@@ -469,13 +469,10 @@ Color config borrowed from my Termite config .
 
 > slider = dzenSlider 100 16
 
+TODO put a ^fg(red) before the slider when redshift is activated
+
 > brightness :: Logger.Logger
-> brightness = do
->   let path = "/sys/class/backlight/intel_backlight/"
->   current <- read . dropRight 1 <$> io (readFile $ path ++ "actual_brightness")
->   max     <- read . dropRight 1 <$> io (readFile $ path ++ "max_brightness")
->   -- TODO put a ^fg(red) before the slider when redshift is activated
->   return . Just $ slider (dzenIcon "brightness") (current / max)
+> brightness = fmap Just (return . slider (dzenIcon "brightness") =<< io getBrightness)
 
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
