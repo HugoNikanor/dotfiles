@@ -64,6 +64,8 @@ This is the analoge of =/usr/include/X11/XF86keysym.h=.
 > import XMonad.Layout.WindowNavigation (windowNavigation)
 > import XMonad.Layout.MultiColumns (multiCol)
 > import XMonad.Layout.ThreeColumns (ThreeCol (ThreeCol))
+> import XMonad.Layout.MultiToggle (Toggle (Toggle), mkToggle1)
+> import XMonad.Layout.MultiToggle.Instances (StdTransformers (FULL))
 
 IndependentScreens is the library which should allow things
 to happen at points not currently in focus.
@@ -177,13 +179,12 @@ screens and those for tall screens. Currently I only check
 a `tallThreshold', but this obviously fails for higher DPI
 screens.
 
-> myLayouts = wideLayouts {- ifWider tallThreshold wideLayouts tallLayouts -}
+> myLayouts = mkToggle1 FULL wideLayouts {- ifWider tallThreshold wideLayouts tallLayouts -}
 >   where tallThreshold = 1200
 >         wideLayouts
 >                     = Tall 1 (3/100) (3/5)
 >                   ||| ThreeCol 1 (3/100) (1/3)
 >                   ||| Mirror (multiCol [1, 1, 0] 4 0.01 0.5)
->                   ||| Full
 >         tallLayouts = Dishes 1 (1/4)
 >                   ||| GridRatio (4/3)
 
@@ -300,14 +301,7 @@ The following keybinds are managed by EZ-config.
 > pre = \a -> "M-f " ++ [a]
 
 > ezkeys =
->   [ (pre 'b', spawn "google-chrome")
->   , (pre 'e', spawn "emacsclient -c")
->   , (pre 'p', spawn "passmenu")
->   , (pre 'i', spawn "xterm -e ssh irc -t screen -x")
->   , (pre 's', spawn "pavucontrol")
->   , (pre 'f', spawn "thunar")
->   , (pre 'n', spawn "gvim +'setlocal buftype=nofile' -n")
->
+>   [ ("M-f", sendMessage $ Toggle FULL)
 >   , ("M-j", B.focusDown)
 >   , ("M-k", B.focusUp)
 >   , ("M-S-j", windows W.swapDown)
