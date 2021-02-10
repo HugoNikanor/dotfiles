@@ -322,13 +322,14 @@
 ;; leak details if the file exists world readable beforehand.
 (umask #o077)
 
+(chmod (path-append $HOME ".mbsyncrc") #o600)
 (with-output-to-file (path-append $HOME ".mbsyncrc")
   (lambda ()
     (mbsync:render
       (if (string=? domainname "lysator.liu.se")
         (delete lysator account-list)
         account-list))))
-
+(chmod (path-append $HOME ".mbsyncrc") #o400)
 
 (mutt:render
  ;; (open-input-file (path-append (dirname (dirname (current-filename))) "mutt" "muttrc"))
