@@ -3,9 +3,21 @@
 # other stuff is symlinked into ~/, but with a dot added beforehand
 
 verbose () {
-	set -x
+	# set -x
+	echo $@
 	"$@"
-	set +x
+	# set +x
+}
+
+link_contents () {
+	confdir="$1"
+	dir=$(realpath $confdir)
+	pushd "$HOME/.$confdir/" > /dev/null
+	for file in $(ls $dir); do
+		[ -h $file ] || verbose ln -s $dir/$file
+	done
+	popd > /dev/null
+
 }
 
 for file in $(ls \
@@ -14,21 +26,16 @@ for file in $(ls \
 	-I installer.sh \
 	-I README.md \
 	-I mutt \
-	-I elinks
+	-I elinks \
 	-I scripts)
 do
 	[ -h $HOME/.$file ] || verbose ln -s $(realpath $file) $HOME/.$file
 done
 
-dir=$(realpath config)
-pushd $HOME/.config/
-for file in $(ls $dir); do
-	[ -h $file ] || verbose ln -s $dir/$file
-done
-popd
+link_contents config
+link_contents mutt
 
-pushd scripts
-for file in $(ls); do
-	[ -x $file ] && verbose ./$file
+for file in $(ls -I bin scripts); do
+	f=scripts/$file
+	[ -x $f ] && verbose $f
 done
-popd

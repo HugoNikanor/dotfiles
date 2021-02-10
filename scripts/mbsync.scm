@@ -18,6 +18,7 @@
 
 (define (render-mbsync-account account)
   (let ((obj (instanciate account)))
+    (mkdir-p (get-field obj '(MaildirStore Path)))
     (for-each
      (lambda (category)
        (format #t "~%~a ~a~%" category (category-transformer

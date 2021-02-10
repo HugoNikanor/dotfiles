@@ -2,8 +2,18 @@
 
 > import System.IO (hPutStrLn)
 > import System.Environment (setEnv)
+> import System.Locale (defaultTimeLocale, TimeLocale(wDays))
+> import System.Time (getClockTime, toCalendarTime, formatCalendarTime)
+> import System.Directory (doesPathExist)
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
+
+Provides symbol names for all weird X keycodes. So most things
+starting with xF86 in this file.
+
+This is the analoge of =/usr/include/X11/XF86keysym.h=.
+
+> import Graphics.X11.ExtraTypes.XF86
 
 > import XMonad
 
@@ -36,6 +46,7 @@
 >     , ppWsSep
 >     , ppSep
 >     , ppOutput
+>     , ppExtras
 >     , dzenPP
 >     , dzenColor
 >     , shorten)
@@ -67,17 +78,21 @@ to happen at points not currently in focus.
 > import XMonad.Util.Types (Direction2D (U, D, L, R))
 > import XMonad.Util.EZConfig
 > import XMonad.Util.Run (spawnPipe)
+> import qualified XMonad.Util.Loggers as Logger
 
 > import qualified Data.Map as M
 > import qualified XMonad.StackSet as W
 > import qualified XMonad.Layout.BoringWindows as B
 > import qualified XMonad.Layout.SubLayouts as S
 
+> import Brightness
+
 
 
-A list of all(?) X keynames are in =/usr/include/X11/XF86keysym.h=,
-these have to have their first letter downcased. For some media keys
-extra imports have to be done here.
+> dropRight n = reverse . drop n . reverse
+> join = foldl (++) ""
+
+
 
 The X key names of the swedish letters is
 
@@ -101,7 +116,7 @@ for terminals displayed the last command run, and also display
 which workspace the window resides in.
 
 > gsConfig :: GSConfig Window
-> gsConfig = defaultGSConfig { gs_navigate = fix $ \self ->
+> gsConfig = def { gs_navigate = fix $ \self ->
 >     let navKeyMap = M.mapKeys ((,) 0) $ M.fromList $
 >                 [(xK_Escape, GS.cancel)
 >                 ,(xK_Return, GS.select)
@@ -127,7 +142,7 @@ TODO
 * Possibly add scratchpad (floating term) (I have that for gvim now!)
 * If only one program is in a workspace the workspace should change name to that
 
-> myFont = "Iosevka Slab-11"
+> myFont = "Fira Mono"
 
 TODO figure out how to run this from main
 
@@ -248,12 +263,21 @@ Especially good on larger screens.
 
 
 
+> data Redraw = Redraw deriving Typeable
+> instance Message Redraw
+
 > otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
-> otherKeys conf@(XConfig {XMonad.modMask = modm}) = 
+> otherKeys conf@(XConfig {XMonad.modMask = modm}) =
 >     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 >     , ((modm, xK_Tab ), S.onGroup W.focusDown')
 >     , ((modm .|. shiftMask, xK_Tab ), S.onGroup W.focusUp')
 >     , ((modm, xK_t), withFocused $ windows . W.sink)
+
+The refresh's here is to force a redraw of the status bar, otherwise
+my brightness indicator doesn't update when the keys are pressed.
+
+>     , ((0, xF86XK_MonBrightnessDown), io (updateBrightness $ -1000) >> refresh)
+>     , ((0, xF86XK_MonBrightnessUp),   io (updateBrightness $  1000) >> refresh)
 >     ]
 
 Finnaly add all the parts together
@@ -291,7 +315,7 @@ The following keybinds are managed by EZ-config.
 >   , ("M-y", spawn "passmenu")
 >
 >   , ("M-<Return>", windows W.swapMaster)
->   
+>
 >   , ("M-m", sendMessage Shrink)
 >   , ("M-w", sendMessage Expand)
 >   , ("M-S-m", sendMessage $ IncMasterN    1)
@@ -311,7 +335,7 @@ The following keybinds are managed by EZ-config.
 >   , ("M-<Space> l", sendMessage $ S.pullGroup L)
 >
 >   , ("M-s", toggleWS)
->   
+>
 >     -- Do I even want these?
 >     -- especcially if they don't work on a per-screen basis
 >     -- Possibly write some own which works together with IndependentScreens
@@ -325,22 +349,22 @@ The following keybinds are managed by EZ-config.
 >   , ("M-p", shellPrompt myXPConfig { autoComplete = Nothing
 >                                    , searchPredicate = isInfixOf } )
 >   , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })
->   
+>
 >   , ("M-q", restartXMonad)
 >   , ("M-t", withFocused $ windows . W.sink)
->   
+>
 >   , ("M-S-c", kill)
 >   , ("M-n", sendMessage NextLayout)
->   
+>
 >   , ("M-<Space> M-<Space>", selectWorkspace myXPConfig)
 >   , ("M-<Space> <Space>", selectWorkspace myXPConfig)
->   
+>
 >   , ("M-<Space> d", removeWorkspace)
 >   , ("M-<Space> M-d", removeEmptyWorkspace)
 >   , ("M-<Space> a", addWorkspacePrompt myXPConfig)
 >   , ("M-<Space> s", withWorkspace myXPConfig (windows . W.shift))
 >   -- , ("M-<Space> S-s", inputPromptWithCompl myXPConfig "Shift and go" >>= shiftAndGo)
->   
+>
 >   , ("M-<Space> r", renameWorkspace myXPConfig { autoComplete = Nothing })
 >   ]
 
@@ -408,35 +432,129 @@ Color config borrowed from my Termite config .
 > fgColor' = foreground
 > bgColor' = "black"
 
+> dzenIcon :: FilePath -> String
+> dzenIcon icon = "^i(/home/hugo/.local/share/dzen2/" ++ icon ++ ".xbm)"
+
+> dzenFg :: String -> String
+> dzenFg c = "^fg(" ++ c ++ ")"
+
+> dzenPos :: (Show a, Integral a) => a -> String
+> dzenPos p = "^p(" ++ show p ++ ")"
+
+> dzenRect :: (Show a, Integral a) => a -> a -> String
+> dzenRect width height = "^r(" ++ show width ++ "x" ++ show height ++ ")"
+
+> formatBatteryDzen :: Int -> String
+> formatBatteryDzen n = join [ color n, dzenIcon "battery", " " , show n, "%" ]
+>   where
+>     color n
+>         | n < 10    = dzenFg "red"
+>         | n < 60    = dzenFg "yellow"
+>         | otherwise = dzenFg "green"
+
+
+> loggerIfFile :: FilePath -> Logger.Logger -> Logger.Logger
+> loggerIfFile path logger = do
+>     exists <- io (doesPathExist path)
+>     if exists then logger
+>     else return Nothing
+
+> battery :: FilePath -> Logger.Logger
+> battery supply = do
+>     let path = "/sys/class/power_supply/" ++ supply ++ "/capacity"
+>     loggerIfFile path $ do
+>        contents <- dropRight 1 <$> io (readFile path)
+>        return . Just . formatBatteryDzen $ read contents
+
+> dzenSlider :: (RealFrac a) => Integer -> Integer -> String -> a -> String
+> dzenSlider width radius icon value =
+>   let w = fromIntegral width
+>       half_radi = fromIntegral . floor $ (fromIntegral radius) / 2
+>       percentage = floor $ value * w - half_radi
+>       -- slide_base = printf "^r(%i)^p(-%i)^p(%i)" width width percentage
+>   in dzenRect width 1
+>   ++ (dzenPos $ - width)
+>   ++ dzenPos percentage
+>   ++ icon
+
+> slider = dzenSlider 100 16
+
+TODO put a ^fg(red) before the slider when redshift is activated
+
+> brightness :: Logger.Logger
+> brightness = fmap Just (return . slider (dzenIcon "brightness") =<< io getBrightness)
+
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
 > colorFunc = dzenColor
 > funcPP = dzenPP
 > -- colorFunc = xmobarColor
 > -- funcPP = xmobarPP
+
+Sets names of week days to Swedish, for output, should ideally also
+set month names.
+
+> timeLocale = defaultTimeLocale {
+>   wDays = [ ("Söndag", "Sön")
+>           , ("Måndag", "Mån")
+>           , ("Tisdag", "Tis")
+>           , ("Onsdag", "Ons")
+>           , ("Torsag", "Tor")
+>           , ("Fredag", "Fre")
+>           , ("Lördag", "Lör") ]
+> }
+
+Date logger taken from default example loggens, only changed to take
+my timeLocale, so I can *finally* get Swedish names!
+https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/src/XMonad.Util.Loggers.html#date
+
+> date :: String -> Logger.Logger
+> date fmt = io $ do cal <- (getClockTime >>= toCalendarTime)
+>                    return . Just $ formatCalendarTime timeLocale fmt cal
+
+
+https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-DynamicLog.html
+
 > myLogHook handle = dynamicLogWithPP $ funcPP
 >   { ppCurrent = \str -> colorFunc "yellow" bgColor' $ "[" ++ str ++ "]"
 >   , ppTitle = shorten 100
 >   , ppWsSep = " "
->   , ppSep = " | "
+>
+>   , ppSep = "^fg() | "
 >   , ppOutput = hPutStrLn handle
+
+
+https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers.html
+
+>   , ppExtras =
+>      [ return $ Just "^p(_RIGHT)^p(-560)"-- "^ba(1920,_RIGHT)" -- 
+>      , date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
+>      , battery "BAT0"
+>      , brightness
+>      ]
 >   }
+
 
 
 
+> xmproc :: String -> String
+>     -- Setting an -y value breaks -dock, also, -dock is undocumented?
+> xmproc "gandalf" = "dzen2 -fn 'Roboto' -w 1920 -x 1920 -ta l -dock"
+> xmproc _         = "dzen2 -fn 'Fira Mono' -ta l -dock"
+
 > main = do
+>     hostname <- head . lines <$> readFile "/etc/hostname"
 >     let termCommand = "termite"
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
->     -- Setting an -y value breaks -dock, also, -dock is undocumented?
->     xmproc      <- spawnPipe "dzen2 -fn 'Roboto' -w 1920 -x 1920 -ta l -dock"
+>     xmproc      <- spawnPipe $ xmproc hostname
 
 Config Modifiers
 ================
 
 - docks
 
-- ewmh 
+- ewmh
 Allows rofi to find windows
 
 
