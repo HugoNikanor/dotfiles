@@ -71,6 +71,7 @@
            (edit_headers yes)
            ;; keep tree above message
            ;; (pager_index_lines 10)
+           (muttlisp_inline_eval yes)
 
            (mime_forward yes)
 
@@ -258,7 +259,11 @@
                      ,(format #f "<F9> \"<change-folder-readonly>~a/search\" \"mu find results\""
                              mailfolder)
                      ))
-           (pager ,'("\\cb |urlview\n")))
+           (pager ,`("\\cb |urlview\n"
+                     ,(format #f "i '<enter-command>set pager_index_lines = ~s<enter>'"
+                              '(if (equal $pager_index_lines 0) 10 0))
+                  ))
+           )
 
          (source ,'("~/.mutt/vim" "~/.mutt/colors"))
 
