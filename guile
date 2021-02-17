@@ -19,10 +19,45 @@
   (lambda args
     (display "Failed to initialize readline\n" (current-error-port))))
 
-;;; (repl-default-option-set print (lambda (repl value) (pretty-print value)))
+(use-modules ((system repl common)
+             :select (repl-default-option-set!
+                       repl-welcome
+                       repl-options))
+             ((ice-9 pretty-print)
+              :select (pretty-print)))
 
-(module-set! (resolve-module '(system repl common))
-             'repl-welcome
-             (const #t))
+(repl-default-option-set!
+  'print (lambda (repl value)
+           (define width  (read ((@ (ice-9 popen) open-input-pipe) "tput cols")))
+
+           ;; hack to find width of current prompt...
+           (define prompt-width 0)
+           (when (car (assoc-ref (repl-options repl) 'value-history))
+             (catch 'misc-error
+                    (lambda ()
+                      ;; find first undefined of $1, $10, $100, ...
+                      (let loop ((exp 0))
+                        (set! prompt-width (+ exp (string-length "$ = ")))
+                        (module-ref (current-module)
+                                    (string->symbol (string-append "$" (number->string (expt 10 exp)))))
+                        (loop (1+ exp))))
+
+                    ;; ignore error
+                    list))
+
+           (display
+             ;; add width of current prompt to all lines
+             ;; except the first (since the actual prompt is there).
+             (substring
+               (with-output-to-string
+                 (lambda ()
+                   (pretty-print
+                     value
+                     #:width (- width prompt-width)
+                     #:max-expr-width (- width prompt-width)
+                     #:per-line-prefix (make-string prompt-width #\space))))
+               prompt-width))))
+
+(set! repl-welcome (const #t))
 
 ;;; vim: filetype=scheme
