@@ -210,7 +210,7 @@
          (pass-path "admittansen/hugo@admittansen.se")
          (address "hugo@admittansen.se")
 
-         (signature "Hugo Hörnquist, Labchef")
+         (signature "Hugo Hörnquist\nLedamot Admittansen")
          (mutt (set (hostname "admittansen.se"))))
 
 
