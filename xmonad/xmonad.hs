@@ -1,3 +1,10 @@
-{-# OPTIONS_GHC -W -fwarn-unused-imports #-}
+{-# OPTIONS_GHC -W -fwarn-unused-imports -Werror -Weverything
+ -Wno-missing-safe-haskell-mode
+ -Wno-implicit-prelude
+ -Wno-unsafe
+ #-}
 
-import Config
+import Config (xmain)
+
+main :: IO ()
+main = xmain

@@ -1,4 +1,6 @@
-> module Config where
+> module Config
+> ( xmain
+> ) where
 
 > import System.IO (hPutStrLn)
 > import System.Environment (setEnv)
@@ -536,7 +538,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 > xmproc "gandalf" = "dzen2 -fn 'Roboto' -w 1920 -x 1920 -ta l -dock"
 > xmproc _         = "dzen2 -fn 'Fira Mono' -ta l -dock"
 
-> main = do
+> xmain = do
 >     hostname <- head . lines <$> readFile "/etc/hostname"
 >     let termCommand = "termite"
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
