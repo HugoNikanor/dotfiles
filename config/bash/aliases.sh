@@ -30,6 +30,7 @@ pb() { curl -F 'f:1=<-' ix.io; }
 [ -x /usr/bin/perl-rename ] && alias rename="perl-rename"
 alias eclim="eclim -command"
 alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
+alias ecat='elinks -dump'
 
 # joke aliases
 alias kitty="cat"
