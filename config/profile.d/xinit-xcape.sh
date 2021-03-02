@@ -1,4 +1,5 @@
 [ -z "$DISPLAY" ] && return
+[ -n "$SSH_CLIENT" ] && return
 
 command -v xcape > /dev/null || return
 
