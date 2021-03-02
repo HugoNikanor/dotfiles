@@ -345,6 +345,12 @@
        (else mutt-global-gpg))
  account-list)
 
+(display
+  (if static-passwords
+    "Embedding passwords in file"
+    "Leaving passwords in manager"))
+(newline)
+
 (with-output-to-file
   (format #f "~a/profile.d/private-mailconf.sh.~a"
           (or (getenv "XDG_CONFIG_HOME")
