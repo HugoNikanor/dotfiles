@@ -74,6 +74,8 @@
            (muttlisp_inline_eval yes)
 
            (mime_forward yes)
+           (autoedit yes) ;; skips `To:' and `Subject:' prompts when composing mail
+           (include yes)  ;; skips `include-copy' prompt
 
            ;; (forward_format "[%a: %s]")
            (forward_format "FWD: %s")
