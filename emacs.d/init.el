@@ -648,6 +648,14 @@ STR: target string"
 
 ;;; Other
 
+;; inhibit bidirectional parentheses algorith
+;; might break rendering of RTL languages, but should speed up general rendering.
+(setq bidi-inhibit-bpa t)
+
+;; See M-x so-long-commentary
+(when (version<= "27.1" emacs-version)
+  (global-so-long-mode 1))
+
 ;;; Can I somehow enable this for all available modes?
 (hook-envs #'hs-minor-mode
            '(emacs-lisp-mode-hook
