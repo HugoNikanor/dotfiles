@@ -249,9 +249,11 @@
 
               )
 
+
+
          (macro
            (index ,`("\\cb |urlview\n"
-                     "\\Ck <save-message>=Lysator/Junk<return>"
+                     "\\Ck <tag-prefix><clear-flag>o<tag-prefix><save-message>=Lysator/Junk<return><return>"
                      ;; https://brianbuccola.com/how-to-mark-all-emails-as-read-in-mutt/
                      "A <tag-pattern>~N<enter><tag-prefix><clear-flag>N"  ;; mark al new as read
                      ;; TODO find better bindings
