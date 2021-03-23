@@ -473,13 +473,16 @@ Color config borrowed from my Termite config .
 >   ++ (dzenPos $ - width)
 >   ++ dzenPos percentage
 >   ++ icon
+>   ++ dzenPos (width - percentage - 16) -- 16 == width of icon (approx.)
 
 > slider = dzenSlider 100 16
 
 TODO put a ^fg(red) before the slider when redshift is activated
 
 > brightness :: Logger.Logger
-> brightness = fmap Just (return . slider (dzenIcon "brightness") =<< io getBrightness)
+> brightness = do
+>   bright <- io getBrightness
+>   return . Just $ slider (dzenIcon "brightness") bright
 
 #ifdef MIN_VERSION_dbus
 > volume :: ObjectPath -> DBus.Client -> Logger.Logger
