@@ -648,6 +648,8 @@ STR: target string"
 
 ;;; Other
 
+(load-theme 'adwaita t t)
+
 ;; inhibit bidirectional parentheses algorith
 ;; might break rendering of RTL languages, but should speed up general rendering.
 (setq bidi-inhibit-bpa t)
