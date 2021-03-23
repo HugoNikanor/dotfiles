@@ -1,0 +1,8 @@
+#!/bin/bash
+
+. $(dirname $(realpath $0))/common
+
+relink_termite $day_theme
+pgrep termite | xargs kill -s sigusr1
+
+emacsclient -e "(enable-theme 'adwaita)"
