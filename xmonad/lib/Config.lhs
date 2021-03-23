@@ -1,3 +1,5 @@
+> {-# LANGUAGE CPP #-}
+>
 > module Config
 > ( xmain
 > ) where
@@ -91,9 +93,11 @@ to happen at points not currently in focus.
 > import qualified XMonad.Layout.SubLayouts as S
 
 > import Brightness
+#ifdef MIN_VERSION_dbus
 > import Volume
 > import DBus (ObjectPath)
 > import qualified DBus.Client as DBus
+#endif
 
 
 
@@ -485,11 +489,13 @@ TODO put a ^fg(red) before the slider when redshift is activated
 > -- brightness :: Logger.Logger
 > -- brightness = fmap Just (return . slider (dzenIcon "brightness") =<< io getBrightness)
 
+#ifdef MIN_VERSION_dbus
 > volume :: ObjectPath -> DBus.Client -> Logger.Logger
 > volume p c = do
 >   volume <- io (getVolume p c)
 >   let volume' = fromIntegral (maximum volume) / 2^16
 >   return . Just . slider (dzenCircle 10) $ volume'
+#endif
 
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
@@ -522,7 +528,11 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/src/XMonad.Util.Log
 
 https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-DynamicLog.html
 
+#ifdef MIN_VERSION_dbus
 > myLogHook handle objectPath pulseClient = dynamicLogWithPP $ funcPP
+#else
+> myLogHook handle = dynamicLogWithPP $ funcPP
+#endif
 >   { ppCurrent = \str -> colorFunc "yellow" bgColor' $ "[" ++ str ++ "]"
 >   , ppTitle = shorten 100
 >   , ppWsSep = " "
@@ -538,7 +548,9 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 >      , date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
 >      , battery "BAT0"
 >      -- , brightness
+#ifdef MIN_VERSION_dbus
 >      , volume objectPath pulseClient
+#endif
 >      ]
 >   }
 
@@ -556,8 +568,10 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 >     nScreens    <- countScreens
 >     xmproc      <- spawnPipe $ xmproc hostname
 >
+#ifdef MIN_VERSION_dbus
 >     pulseClient <- fromJust <$> connectPulseDBus
 >     pulseObj    <- getSinkByName "alsa_output.pci-0000_2a_00.4.analog-stereo" pulseClient
+#endif
 >
 
 Config Modifiers
@@ -571,7 +585,11 @@ Allows rofi to find windows
 
 >     xmonad $ docks . ewmh $ def
 >         { modMask = mod4Mask
+#ifdef MIN_VERSION_dbus
 >         , logHook = myLogHook xmproc pulseObj pulseClient
+#else
+>         , logHook = myLogHook xmproc
+#endif
 >         , clickJustFocuses  = False
 >         , focusFollowsMouse = True
 >         , keys     = myKeys

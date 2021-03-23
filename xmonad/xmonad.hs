@@ -2,6 +2,7 @@
  -Wno-missing-safe-haskell-mode
  -Wno-implicit-prelude
  -Wno-unsafe
+ -cpp
  #-}
 
 import Config (xmain)
