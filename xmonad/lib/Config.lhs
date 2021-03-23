@@ -493,8 +493,11 @@ TODO put a ^fg(red) before the slider when redshift is activated
 > volume :: ObjectPath -> DBus.Client -> Logger.Logger
 > volume p c = do
 >   volume <- io (getVolume p c)
+>   muted  <- io (getMute p c)
 >   let volume' = fromIntegral (maximum volume) / 2^16
->   return . Just . slider (dzenCircle 10) $ volume'
+>   let slid = slider (dzenCircle 10) $ volume'
+>   let mut = if muted then dzenFg "#2f4f4f" else ""
+>   return . Just $ mut ++ slid
 #endif
 
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
