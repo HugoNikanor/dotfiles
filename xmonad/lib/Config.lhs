@@ -9,6 +9,7 @@
 > import System.Directory (doesPathExist)
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
+> import Data.Maybe (fromJust)
 
 Provides symbol names for all weird X keycodes. So most things
 starting with xF86 in this file.
@@ -90,6 +91,9 @@ to happen at points not currently in focus.
 > import qualified XMonad.Layout.SubLayouts as S
 
 > import Brightness
+> import Volume
+> import DBus (ObjectPath)
+> import qualified DBus.Client as DBus
 
 
 
@@ -435,6 +439,12 @@ Color config borrowed from my Termite config .
 > dzenRect :: (Show a, Integral a) => a -> a -> String
 > dzenRect width height = "^r(" ++ show width ++ "x" ++ show height ++ ")"
 
+> dzenCircle :: (Show a, Integral a) => a -> String
+> dzenCircle r = "^c(" ++ show r ++ ")"
+>
+> dzenCircle' :: (Show a, Integral a) => a -> String
+> dzenCircle' r = "^co(" ++ show r ++ ")"
+
 > formatBatteryDzen :: Int -> String
 > formatBatteryDzen n = join [ color n, dzenIcon "battery", " " , show n, "%" ]
 >   where
@@ -472,8 +482,14 @@ Color config borrowed from my Termite config .
 
 TODO put a ^fg(red) before the slider when redshift is activated
 
-> brightness :: Logger.Logger
-> brightness = fmap Just (return . slider (dzenIcon "brightness") =<< io getBrightness)
+> -- brightness :: Logger.Logger
+> -- brightness = fmap Just (return . slider (dzenIcon "brightness") =<< io getBrightness)
+
+> volume :: ObjectPath -> DBus.Client -> Logger.Logger
+> volume p c = do
+>   volume <- io (getVolume p c)
+>   let volume' = fromIntegral (maximum volume) / 2^16
+>   return . Just . slider (dzenCircle 10) $ volume'
 
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
@@ -506,7 +522,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/src/XMonad.Util.Log
 
 https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-DynamicLog.html
 
-> myLogHook handle = dynamicLogWithPP $ funcPP
+> myLogHook handle objectPath pulseClient = dynamicLogWithPP $ funcPP
 >   { ppCurrent = \str -> colorFunc "yellow" bgColor' $ "[" ++ str ++ "]"
 >   , ppTitle = shorten 100
 >   , ppWsSep = " "
@@ -521,10 +537,10 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 >      [ return $ Just "^p(_RIGHT)^p(-560)"-- "^ba(1920,_RIGHT)" -- 
 >      , date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
 >      , battery "BAT0"
->      , brightness
+>      -- , brightness
+>      , volume objectPath pulseClient
 >      ]
 >   }
-
 
 
 
@@ -539,6 +555,10 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
 >     xmproc      <- spawnPipe $ xmproc hostname
+>
+>     pulseClient <- fromJust <$> connectPulseDBus
+>     pulseObj    <- getSinkByName "alsa_output.pci-0000_2a_00.4.analog-stereo" pulseClient
+>
 
 Config Modifiers
 ================
@@ -551,7 +571,7 @@ Allows rofi to find windows
 
 >     xmonad $ docks . ewmh $ def
 >         { modMask = mod4Mask
->         , logHook = myLogHook xmproc
+>         , logHook = myLogHook xmproc pulseObj pulseClient
 >         , clickJustFocuses  = False
 >         , focusFollowsMouse = True
 >         , keys     = myKeys
