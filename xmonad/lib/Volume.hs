@@ -77,6 +77,10 @@ changeVolume f p c = do
     setVolume v' p c
     return v'
 
+-- The fromIntegral's are to ensure we don't get a negative overflow
+modVolume :: Integral a => a -> ObjectPath -> Client -> IO Word32
+modVolume change = changeVolume (fromIntegral . max 0 . min (2^16) . (+ change) . fromIntegral)
+
 getSinks :: Client -> IO [ObjectPath]
 getSinks client = do
     sinks <- getProperty client $ methodCall "/org/pulseaudio/core1" "org.PulseAudio.Core1" "Sinks"

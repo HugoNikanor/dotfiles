@@ -291,14 +291,6 @@ my brightness indicator doesn't update when the keys are pressed.
 >     , ((0, xF86XK_MonBrightnessUp),   io (updateBrightness $  1000) >> refresh)
 >     ]
 
-Finnaly add all the parts together
-
-> myKeys conf =
->   M.fromList . mconcat . fmap ($ conf)
->     $ [ otherKeys
->       , monitorKeys
->       , movementKeys ]
-
 
 
 The following keybinds are managed by EZ-config.
@@ -552,6 +544,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 > xmproc "gandalf" = "dzen2 -fn 'Roboto' -w 1920 -x 1920 -ta l -dock"
 > xmproc _         = "dzen2 -fn 'Fira Mono' -ta l -dock"
 
+
 > xmain = do
 >     hostname <- head . lines <$> readFile "/etc/hostname"
 >     let termCommand = "termite"
@@ -568,8 +561,14 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 >       Nothing -> return Nothing
 >
 >     let volumeHook = toList $ volume <$> mPulsePath <*> mPulseClient
+>     let volumeKeys _ = concat . toList $ (\p c ->
+>           [ ((0, xF86XK_AudioRaiseVolume), io (unmute p c >> modVolume    5000  p c) >> refresh)
+>           , ((0, xF86XK_AudioLowerVolume), io (unmute p c >> modVolume (- 5000) p c) >> refresh)
+>           , ((0, xF86XK_AudioMute)       , io (mute p c) >> refresh)
+>           ]) <$> mPulsePath <*> mPulseClient
 #else
 >     let volumeHook = []
+>     let volumeKeys _ = []
 #endif
 >     let loghookExtras = [ return $ Just "^p(_RIGHT)^p(-760)"-- "^ba(1920,_RIGHT)" --
 >                         , date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
@@ -592,7 +591,12 @@ Allows rofi to find windows
 >         , logHook = myLogHook xmproc loghookExtras
 >         , clickJustFocuses  = False
 >         , focusFollowsMouse = True
->         , keys     = myKeys
+>         , keys = \conf -> M.fromList . mconcat . fmap ($ conf) $
+>               [ otherKeys
+>               , monitorKeys
+>               , movementKeys
+>               , volumeKeys
+>               ]
 >         , terminal = termCommand
 >         , layoutHook = avoidStruts
 >                      $ windowNavigation
