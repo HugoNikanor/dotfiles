@@ -242,8 +242,8 @@ Choose one of these, depending on the current monitor setup.
 > (d, e, f) = (3, 4, 5)
 
 > monitorKeys = bindWithAndWithoutShift
->   (\i -> (viewScreen def $ P i) >> banish LowerRight)
->   (\i -> (sendToScreen def $ P i))
+>   (\i -> viewScreen def (P i) >> banish LowerRight)
+>   (\i -> sendToScreen def $ P i)
 >   [ (xK_ä, a), (xK_comma,  a) -- Double bindings for both swedish
 >   , (xK_ö, b), (xK_period, b) -- and american dvorak keyboards.
 >   , (xK_p, c)
@@ -271,10 +271,10 @@ Especially good on larger screens.
 
 > otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
 > otherKeys conf@(XConfig {XMonad.modMask = modm}) =
->     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
->     , ((modm, xK_Tab ), S.onGroup W.focusDown')
->     , ((modm .|. shiftMask, xK_Tab ), S.onGroup W.focusUp')
->     , ((modm, xK_t), withFocused $ windows . W.sink)
+>     [ ((modm .|. shiftMask, xK_Return ), spawn $ XMonad.terminal conf)
+>     , ((modm,               xK_Tab    ), S.onGroup W.focusDown')
+>     , ((modm .|. shiftMask, xK_Tab    ), S.onGroup W.focusUp')
+>     , ((modm,               xK_t      ), withFocused $ windows . W.sink)
 
 The refresh's here is to force a redraw of the status bar, otherwise
 my brightness indicator doesn't update when the keys are pressed.
@@ -285,12 +285,7 @@ my brightness indicator doesn't update when the keys are pressed.
 
 Finnaly add all the parts together
 
-footnote:
-The =conf@(XConfig {XMonad.modMask = modm})=
-part means that conf is sent as a parameter, and that
-=modm= is bound as if sent by pattern matching!
-
-> myKeys conf@(XConfig {XMonad.modMask = modm}) =
+> myKeys conf =
 >   M.fromList . mconcat . fmap ($ conf)
 >     $ [ otherKeys
 >       , monitorKeys
@@ -413,8 +408,8 @@ smartly after.
 > shiftAndGo Nothing = return ()
 > shiftAndGo (Just str) =
 >     windows $ do
->         W.shift $ str
->         W.greedyView $ str
+>         W.shift str
+>         W.greedyView str
 
 
 
