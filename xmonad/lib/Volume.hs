@@ -88,8 +88,11 @@ getDeviceName path client = do
     sinks <- getProperty client $ methodCall path "org.PulseAudio.Core1.Device" "Name"
     fromJust . fromVariant <$> throwIfLeft sinks
 
-getSinkByName :: String -> Client -> IO ObjectPath
+getSinkByName :: String -> Client -> IO (Maybe ObjectPath)
 getSinkByName name client = do
-    prop <- call client $ (methodCall "/org/pulseaudio/core1" "org.PulseAudio.Core1" "GetSinkByName")
+    eth <- call client $ (methodCall "/org/pulseaudio/core1" "org.PulseAudio.Core1" "GetSinkByName")
                              { methodCallBody = [toVariant name] }
-    fromJust . fromVariant . head . methodReturnBody <$> throwIfLeft prop
+    case eth of
+        Right ret -> return . fromVariant . head . methodReturnBody $ ret
+        Left  err -> do putStrLn . show $ err
+                        return Nothing

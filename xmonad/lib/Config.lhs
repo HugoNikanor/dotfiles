@@ -11,7 +11,7 @@
 > import System.Directory (doesPathExist)
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
-> import Data.Maybe (fromJust)
+> import Data.Foldable (toList)
 
 Provides symbol names for all weird X keycodes. So most things
 starting with xF86 in this file.
@@ -486,8 +486,8 @@ Color config borrowed from my Termite config .
 
 TODO put a ^fg(red) before the slider when redshift is activated
 
-> -- brightness :: Logger.Logger
-> -- brightness = fmap Just (return . slider (dzenIcon "brightness") =<< io getBrightness)
+> brightness :: Logger.Logger
+> brightness = fmap Just (return . slider (dzenIcon "brightness") =<< io getBrightness)
 
 #ifdef MIN_VERSION_dbus
 > volume :: ObjectPath -> DBus.Client -> Logger.Logger
@@ -528,11 +528,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/src/XMonad.Util.Log
 
 https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-DynamicLog.html
 
-#ifdef MIN_VERSION_dbus
-> myLogHook handle objectPath pulseClient = dynamicLogWithPP $ funcPP
-#else
-> myLogHook handle = dynamicLogWithPP $ funcPP
-#endif
+> myLogHook handle extras = dynamicLogWithPP $ funcPP
 >   { ppCurrent = \str -> colorFunc "yellow" bgColor' $ "[" ++ str ++ "]"
 >   , ppTitle = shorten 100
 >   , ppWsSep = " "
@@ -543,15 +539,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-Dynami
 
 https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers.html
 
->   , ppExtras =
->      [ return $ Just "^p(_RIGHT)^p(-560)"-- "^ba(1920,_RIGHT)" -- 
->      , date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
->      , battery "BAT0"
->      -- , brightness
-#ifdef MIN_VERSION_dbus
->      , volume objectPath pulseClient
-#endif
->      ]
+>   , ppExtras = extras
 >   }
 
 
@@ -569,9 +557,22 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 >     xmproc      <- spawnPipe $ xmproc hostname
 >
 #ifdef MIN_VERSION_dbus
->     pulseClient <- fromJust <$> connectPulseDBus
->     pulseObj    <- getSinkByName "alsa_output.pci-0000_2a_00.4.analog-stereo" pulseClient
+>     mPulseClient <- connectPulseDBus
+>     -- let sinkName = "alsa_output.pci-0000_2a_00.4.analog-stereo" 
+>     let sinkName = "alsa_output.pci-0000_00_1f.3.analog-stereo"
+>     mPulsePath <- case mPulseClient of
+>       Just pc -> getSinkByName sinkName pc
+>       Nothing -> return Nothing
+>
+>     let volumeHook = toList $ volume <$> mPulsePath <*> mPulseClient
+#else
+>     let volumeHook = []
 #endif
+>     let loghookExtras = [ return $ Just "^p(_RIGHT)^p(-760)"-- "^ba(1920,_RIGHT)" --
+>                         , date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
+>                         , battery "BAT0"
+>                         , brightness
+>                         ] ++ volumeHook
 >
 
 Config Modifiers
@@ -585,11 +586,7 @@ Allows rofi to find windows
 
 >     xmonad $ docks . ewmh $ def
 >         { modMask = mod4Mask
-#ifdef MIN_VERSION_dbus
->         , logHook = myLogHook xmproc pulseObj pulseClient
-#else
->         , logHook = myLogHook xmproc
-#endif
+>         , logHook = myLogHook xmproc loghookExtras
 >         , clickJustFocuses  = False
 >         , focusFollowsMouse = True
 >         , keys     = myKeys
