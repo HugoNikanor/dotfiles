@@ -250,14 +250,22 @@ Choose one of these, depending on the current monitor setup.
 > (d, e, f) = (3, 4, 5)
 
 > monitorKeys = bindWithAndWithoutShift
->   (\i -> viewScreen def (P i) >> banish LowerRight)
->   (\i -> sendToScreen def $ P i)
+>   (\i -> (view . P $ i) >> banish LowerRight)
+>   (send . P)
 >   [ (xK_ä, a), (xK_comma,  a) -- Double bindings for both swedish
 >   , (xK_ö, b), (xK_period, b) -- and american dvorak keyboards.
 >   , (xK_p, c)
 >   , (xK_o, d)
 >   , (xK_e, e)
 >   , (xK_u, f) ]
+>   where
+#if MIN_VERSION_xmonad_contrib(0,14,0)
+>     view = viewScreen def
+>     send = sendToScreen def
+#else
+>     view = viewScreen
+>     send = sendToScreen
+#endif
 
 
 
