@@ -284,8 +284,9 @@ WIDTH: number of dashes in line"
           ("<=" . #x2264)               ; ≤
           (">=" . #x2265)               ; ≥
           ("memv" . ?∈)
-          ("sum" . #x2211)              ; ∑
-          ("prod" . #x220f))))          ; ∏
+          ;; ("sum" . #x2211)              ; ∑
+          ;; ("prod" . #x220f)             ; ∏
+          )))
 (add-hook 'scheme-mode-hook #'prettify-scheme)
 (add-hook 'geiser-repl-mode-hook #'prettify-scheme)
 
