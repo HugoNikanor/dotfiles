@@ -41,7 +41,16 @@ function! VimwikiLinkHandler(link)
 			return 1
 		elseif scheme =~# "mail"
 			let mailfile = system("mu find -u 'i:" . matchstr(data, "[^#]*") . "' -f l")
-			exe "sp " . mailfile
+			let cmd = "new +read!mu\\ view\\ " . shellescape(trim(mailfile))
+			exe cmd
+			exe "setlocal buftype=nofile"
+			exe "setf mail"
+			exe "setlocal nonu"
+			exe "setlocal nospell"
+			exe "setlocal readonly"
+			exe "goto 1"
+			exe "delete"
+			" exe "sp " . mailfile
 		else
 			return 0
 		endif

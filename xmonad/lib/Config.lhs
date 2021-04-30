@@ -27,15 +27,15 @@ This is the analoge of =/usr/include/X11/XF86keysym.h=.
 > import XMonad.Actions.DynamicWorkspaces
 >     ( selectWorkspace
 >     , removeWorkspace
->     , removeEmptyWorkspace
 >     , addWorkspacePrompt
 >     , withWorkspace
 >     , renameWorkspace )
-> import XMonad.Actions.CycleWS (prevScreen, nextScreen, toggleWS)
+> import XMonad.Actions.CycleWS (toggleWS)
 > import XMonad.Actions.Warp (banish, warpToScreen, Corner (LowerRight))
 > import XMonad.Actions.Navigation2D (windowGo, windowSwap)
-> import XMonad.Actions.GridSelect (defaultGSConfig, gs_navigate)
+> import XMonad.Actions.GridSelect (gs_navigate)
 > import XMonad.Actions.GridSelect as GS
+> import XMonad.Actions.Submap (submap)
 
 > import XMonad.Hooks.InsertPosition
 >     (Position (Below), Focus (Newer), insertPosition)
@@ -57,7 +57,7 @@ This is the analoge of =/usr/include/X11/XF86keysym.h=.
 >     , shorten)
 > import XMonad.Hooks.EwmhDesktops (ewmh{-, ewmhDesktopEventHook, ActiveWindow-})
 
-> import XMonad.Layout (Mirror (Mirror))
+> import XMonad.Layout(Mirror (Mirror))
 
 > import XMonad.Layout.Grid (Grid (Grid, GridRatio))
 > import XMonad.Layout.PerScreen (ifWider)
@@ -83,7 +83,6 @@ to happen at points not currently in focus.
 > import XMonad.Prompt.XMonad (xmonadPrompt)
 
 > import XMonad.Util.Types (Direction2D (U, D, L, R))
-> import XMonad.Util.EZConfig
 > import XMonad.Util.Run (spawnPipe)
 > import qualified XMonad.Util.Loggers as Logger
 
@@ -250,14 +249,22 @@ Choose one of these, depending on the current monitor setup.
 > (d, e, f) = (3, 4, 5)
 
 > monitorKeys = bindWithAndWithoutShift
->   (\i -> viewScreen def (P i) >> banish LowerRight)
->   (\i -> sendToScreen def $ P i)
+>   (\i -> (view . P $ i) >> banish LowerRight)
+>   (send . P)
 >   [ (xK_ä, a), (xK_comma,  a) -- Double bindings for both swedish
 >   , (xK_ö, b), (xK_period, b) -- and american dvorak keyboards.
->   , (xK_p, c)
+>   -- , (xK_p, c)
 >   , (xK_o, d)
 >   , (xK_e, e)
 >   , (xK_u, f) ]
+>   where
+#if MIN_VERSION_xmonad_contrib(0,14,0)
+>     view = viewScreen def
+>     send = sendToScreen def
+#else
+>     view = viewScreen
+>     send = sendToScreen
+#endif
 
 
 
@@ -277,87 +284,77 @@ Especially good on larger screens.
 > data Redraw = Redraw deriving Typeable
 > instance Message Redraw
 
+> spaceSubmap :: XConfig a -> M.Map (KeyMask, KeySym) (X ())
+> spaceSubmap conf@XConfig {XMonad.modMask = modm} = M.fromList $
+
+Directions are inverted to what is "normal". This since I want to think about
+it like a lasso going out in that direction.
+
+>       [ ((0, k), sendMessage $ S.pullGroup d) 
+>       | (k, d) <- [ (xK_j, D)
+>                   , (xK_k, U)
+>                   , (xK_h, R)
+>                   , (xK_l, L) ] ]
+>       ++ 
+>       [ ((0, k), action)
+>       | (k, action) 
+>           <- [ (xK_m    , withFocused $ sendMessage . S.MergeAll)
+>              , (xK_u    , withFocused $ sendMessage . S.UnMerge)
+>              , (xK_space, selectWorkspace myXPConfig)
+>              , (xK_d    , removeWorkspace)
+>              , (xK_a    , addWorkspacePrompt myXPConfig)
+>              , (xK_s    , withWorkspace myXPConfig $ windows . W.shift)
+>              , (xK_r    , renameWorkspace myXPConfig { autoComplete = Nothing })
+>           ]
+>       ]
+>       ++
+>       [ ((modm, xK_space), selectWorkspace myXPConfig)
+>   -- , ("M-<Space> S-s", inputPromptWithCompl myXPConfig "Shift and go" >>= shiftAndGo)
+>   -- , ("M-<Space> M-d", removeEmptyWorkspace)
+>       ]
+
 > otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
 > otherKeys conf@(XConfig {XMonad.modMask = modm}) =
->     [ ((modm .|. shiftMask, xK_Return ), spawn $ XMonad.terminal conf)
->     , ((modm,               xK_Tab    ), S.onGroup W.focusDown')
->     , ((modm .|. shiftMask, xK_Tab    ), S.onGroup W.focusUp')
->     , ((modm,               xK_t      ), withFocused $ windows . W.sink)
+>     [ f (ms xK_Return)  $ spawn $ XMonad.terminal conf
+>     , f (m  xK_Return)  $ windows W.swapMaster
+>     , f (m  xK_Tab)     $ S.onGroup W.focusDown'
+>     , f (ms xK_Tab)     $ S.onGroup W.focusUp'
+>     , f (m  xK_t)       $ withFocused $ windows . W.sink
+>     , f (m  xK_f)       $ sendMessage $ Toggle FULL
+>     , f (m  xK_n)       $ sendMessage NextLayout
+>
+>     , f (m  xK_j)       $ B.focusDown
+>     , f (m  xK_k)       $ B.focusUp
+>     , f (ms xK_j)       $ windows W.swapDown
+>     , f (ms xK_k)       $ windows W.swapUp
+>
+>     , f (m  xK_m)       $ sendMessage Shrink
+>     , f (m  xK_w)       $ sendMessage Expand
+>     , f (ms xK_m)       $ sendMessage $ IncMasterN    1
+>     , f (ms xK_w)       $ sendMessage $ IncMasterN $ -1
+>
+>     , f (m  xK_l)       $ S.onGroup W.focusDown'
+>     , f (m  xK_h)       $ S.onGroup W.focusUp'
+>
+>     , f (ms xK_c)       $ kill
+>
+>     , f (m  xK_s)       $ toggleWS
+>     , f (m  xK_g)       $ spawn "rofi -show window -show-icons"
+>     , f (m  xK_p)       $ shellPrompt myXPConfig { autoComplete = Nothing
+>                                                  , searchPredicate = isInfixOf }
+>     , f (m  xK_x)       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
+>     , f (m  xK_q)       $ restartXMonad
+>
+>     , f (m  xK_space)   $ submap $ spaceSubmap conf
 
 The refresh's here is to force a redraw of the status bar, otherwise
 my brightness indicator doesn't update when the keys are pressed.
 
 >     , ((0, xF86XK_MonBrightnessDown), io (updateBrightness $ -1000) >> refresh)
 >     , ((0, xF86XK_MonBrightnessUp),   io (updateBrightness $  1000) >> refresh)
->     ]
-
-
-
-The following keybinds are managed by EZ-config.
-
-> pre = \a -> "M-f " ++ [a]
-
-> ezkeys =
->   [ ("M-f", sendMessage $ Toggle FULL)
->   , ("M-j", B.focusDown)
->   , ("M-k", B.focusUp)
->   , ("M-S-j", windows W.swapDown)
->   , ("M-S-k", windows W.swapUp)
->   , ("M-y", spawn "passmenu")
->
->   , ("M-<Return>", windows W.swapMaster)
->
->   , ("M-m", sendMessage Shrink)
->   , ("M-w", sendMessage Expand)
->   , ("M-S-m", sendMessage $ IncMasterN    1)
->   , ("M-S-w", sendMessage $ IncMasterN $ -1)
->   , ("M-l", S.onGroup W.focusDown')
->   , ("M-h", S.onGroup W.focusUp')
->
->   , ("M-<Space> m", withFocused (sendMessage . S.MergeAll))
->   , ("M-<Space> u", withFocused (sendMessage . S.UnMerge))
-
-  Directions are inverted to what is "normal". This since I want to think about
-  it like a lasso going out in that direction.
-
->   , ("M-<Space> j", sendMessage $ S.pullGroup D)
->   , ("M-<Space> k", sendMessage $ S.pullGroup U)
->   , ("M-<Space> h", sendMessage $ S.pullGroup R)
->   , ("M-<Space> l", sendMessage $ S.pullGroup L)
->
->   , ("M-s", toggleWS)
->
->     -- Do I even want these?
->     -- especcially if they don't work on a per-screen basis
->     -- Possibly write some own which works together with IndependentScreens
->   --, ("M-g"  , prevScreen)
->   --, ("M-c"  , nextScreen)
->     --, ("M-S-g", shiftPrevScreen)
->     --, ("M-S-c", shiftNextScreen)
->   -- , ("M-g", warpToCentre >> ooToSelected gsConfig) -- can this also shift the newly selected workspace here?
->   -- , ("M-S-g", warpToCentre >> bringSelected gsConfig)
->   , ("M-g", spawn "rofi -show window -show-icons")
->   , ("M-p", shellPrompt myXPConfig { autoComplete = Nothing
->                                    , searchPredicate = isInfixOf } )
->   , ("M-x", xmonadPrompt myXPConfig { autoComplete = Nothing })
->
->   , ("M-q", restartXMonad)
->   , ("M-t", withFocused $ windows . W.sink)
->
->   , ("M-S-c", kill)
->   , ("M-n", sendMessage NextLayout)
->
->   , ("M-<Space> M-<Space>", selectWorkspace myXPConfig)
->   , ("M-<Space> <Space>", selectWorkspace myXPConfig)
->
->   , ("M-<Space> d", removeWorkspace)
->   , ("M-<Space> M-d", removeEmptyWorkspace)
->   , ("M-<Space> a", addWorkspacePrompt myXPConfig)
->   , ("M-<Space> s", withWorkspace myXPConfig (windows . W.shift))
->   -- , ("M-<Space> S-s", inputPromptWithCompl myXPConfig "Shift and go" >>= shiftAndGo)
->
->   , ("M-<Space> r", renameWorkspace myXPConfig { autoComplete = Nothing })
->   ]
+>     ] where f a b = (a, b)
+>             m x = (modm, x)
+>             ms x = (modm .|. shiftMask, x)
 
 
 
@@ -597,7 +594,7 @@ Allows rofi to find windows
 >         , keys = \conf -> M.fromList . mconcat . fmap ($ conf) $
 >               [ otherKeys
 >               , monitorKeys
->               , movementKeys
+>               -- , movementKeys
 >               , volumeKeys
 >               ]
 >         , terminal = termCommand
@@ -610,7 +607,7 @@ Allows rofi to find windows
 >         , workspaces = ["term", "web"] ++ map show [3 .. nScreens]
 >         , normalBorderColor  = "#1d1f21"
 >         , focusedBorderColor = "#FF0000"
->         } `additionalKeysP` ezkeys
+>         }
 
 
 Appendix:

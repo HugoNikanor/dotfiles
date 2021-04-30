@@ -2,7 +2,7 @@
 
 . $(dirname $(realpath $0))/common
 
-relink $night_theme
+relink_termite $night_theme
 pgrep termite | xargs kill -s sigusr1
 
 emacsclient -e "(disable-theme 'adwaita)"
