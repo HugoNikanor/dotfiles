@@ -215,7 +215,7 @@
      cal-top
      destdir
      ;; D1
-     STABEN2020
+     ;; STABEN2020
      ;; TDDE04
      TDDE44
      ;; TSTE24
@@ -232,7 +232,7 @@
      TDDI41_TDP031
      ;; TATA41
      ;; TDDB68
-     TATA76
+     ;; TATA76
 
      d_sektionen
      admittansen
