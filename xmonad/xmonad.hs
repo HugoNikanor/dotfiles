@@ -1,9 +1,4 @@
-{-# OPTIONS_GHC -W -fwarn-unused-imports -Werror -Weverything
- -Wno-missing-safe-haskell-mode
- -Wno-implicit-prelude
- -Wno-unsafe
- -cpp
- #-}
+{-# OPTIONS_GHC -W -fwarn-unused-imports -Werror -Wall -cpp #-}
 
 import Config (xmain)
 
