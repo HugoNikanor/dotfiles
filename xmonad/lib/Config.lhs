@@ -350,6 +350,7 @@ numpad enter...
 >     , f (m  xK_p)       $ shellPrompt myXPConfig { autoComplete = Nothing
 >                                                  , searchPredicate = isInfixOf }
 >     , f (m  xK_x)       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
+>     , f (m  xK_y)       $ spawn "passmenu"
 >     , f (m  xK_q)       $ restartXMonad
 >
 >     , f (m  xK_space)   $ submap $ spaceSubmap conf
