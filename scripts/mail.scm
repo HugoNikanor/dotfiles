@@ -324,7 +324,7 @@
     liu-work
     guckel
     valberedningen
-    propaganda
+    ;; propaganda
     formulastudent
     admittansen
     qurator
