@@ -317,6 +317,13 @@ it like a lasso going out in that direction.
 > otherKeys conf@(XConfig {XMonad.modMask = modm}) =
 >     [ f (ms xK_Return)  $ spawn $ XMonad.terminal conf
 >     , f (m  xK_Return)  $ windows W.swapMaster
+
+Same bindings again, since my laptop' enter key is apparently (?) the
+numpad enter...
+
+>     , f (ms xK_KP_Enter)  $ spawn $ XMonad.terminal conf
+>     , f (m  xK_KP_Enter)  $ windows W.swapMaster
+
 >     , f (m  xK_Tab)     $ S.onGroup W.focusDown'
 >     , f (ms xK_Tab)     $ S.onGroup W.focusUp'
 >     , f (m  xK_t)       $ withFocused $ windows . W.sink
