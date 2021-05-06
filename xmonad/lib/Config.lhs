@@ -313,56 +313,84 @@ it like a lasso going out in that direction.
 >   -- , ("M-<Space> M-d", removeEmptyWorkspace)
 >       ]
 
+> parse :: Bool -> String -> KeySym
+> parse True ('K':'P':'_':name) = 0
+>
+> parse True name = m ! name
+>     where m =
+>       M.fromList $ [ ("Return", xK_Return)
+>                    , ("Tab", xK_Tab)
+>                    , ("Space", xK_Space)
+>                    , ("AudioMute", xF86_AudioMute)
+>                    , ("AudioRaiseVolume", xF86_AudioRaiseVolume)
+>                    , ("AudioLowerVolume", xF86_AudioLowerVolume)
+>                    , ("BrightnessDown", xf86XK_MonBrightnessDown)
+>                    , ("BrightnessUp", xf86XK_MonBrightnessUp)
+>                    ]
+>
+> parse False symb = fromEnum (head symb)
+>
+> inner :: KeyMask -> String -> String -> Bool -> XConfig -> (KeyMask, KeySym)
+> inner mask key s ('M':'-':xs) = inner (mask .|. modm)        key s xs
+> inner mask key s ('S':'-':xs) = inner (mask .|. shiftMask)   key s xs
+> inner mask key s ('C':'-':xs) = inner (mask .|. controlMask) key s xs
+> inner mask key s ('<':xs) = inner mask ""            True xs
+> inner mask key s ('>':xs) = inner mask (reverse key) s    xs
+> inner mask key s (a:xs)   = inner mask (a:key)       s    xs
+> inner mask key s [] = (mask, parse s key)
+>
+> key :: String -> XConfig -> (KeyMask, KeySym)
+> key str conf@(XConfig {XMonad.modMask = modm}) =
+> where
+>     inner 0 str
+
 > otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
 > otherKeys conf@(XConfig {XMonad.modMask = modm}) =
->     [ f (ms xK_Return)  $ spawn $ XMonad.terminal conf
->     , f (m  xK_Return)  $ windows W.swapMaster
+>     [ f "M-<Return>"    $ spawn $ XMonad.terminal conf
+>     , f "M-S-<Return>"  $ windows W.swapMaster
 
 Same bindings again, since my laptop' enter key is apparently (?) the
 numpad enter...
 
->     , f (ms xK_KP_Enter)  $ spawn $ XMonad.terminal conf
->     , f (m  xK_KP_Enter)  $ windows W.swapMaster
+>     , f "M-S-<KP_Enter>" $ spawn $ XMonad.terminal conf
+>     , f "M-S-<KP_Enter>" $ windows W.swapMaster
 
->     , f (m  xK_Tab)     $ S.onGroup W.focusDown'
->     , f (ms xK_Tab)     $ S.onGroup W.focusUp'
->     , f (m  xK_t)       $ withFocused $ windows . W.sink
->     , f (m  xK_f)       $ sendMessage $ Toggle FULL
->     , f (m  xK_n)       $ sendMessage NextLayout
->
->     , f (m  xK_j)       $ B.focusDown
->     , f (m  xK_k)       $ B.focusUp
->     , f (ms xK_j)       $ windows W.swapDown
->     , f (ms xK_k)       $ windows W.swapUp
->
->     , f (m  xK_m)       $ sendMessage Shrink
->     , f (m  xK_w)       $ sendMessage Expand
->     , f (ms xK_m)       $ sendMessage $ IncMasterN    1
->     , f (ms xK_w)       $ sendMessage $ IncMasterN $ -1
->
->     , f (m  xK_l)       $ S.onGroup W.focusDown'
->     , f (m  xK_h)       $ S.onGroup W.focusUp'
->
->     , f (ms xK_c)       $ kill
->
->     , f (m  xK_s)       $ toggleWS
->     , f (m  xK_g)       $ spawn "rofi -show window -show-icons"
->     , f (m  xK_p)       $ shellPrompt myXPConfig { autoComplete = Nothing
->                                                  , searchPredicate = isInfixOf }
->     , f (m  xK_x)       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
->     , f (m  xK_y)       $ spawn "passmenu"
->     , f (m  xK_q)       $ restartXMonad
->
->     , f (m  xK_space)   $ submap $ spaceSubmap conf
+>     , f "M-S-<Tab>"      $ S.onGroup W.focusDown'
+>     , f "M-S-<Tab>"      $ S.onGroup W.focusUp'
+>     , f "M-t"            $ withFocused $ windows . W.sink
+>     , f "M-f"            $ sendMessage $ Toggle FULL
+>     , f "M-n"            $ sendMessage NextLayout
+
+>     , f "M-j"            $ B.focusDown
+>     , f "M-k"            $ B.focusUp
+>     , f "M-S-j"          $ windows W.swapDown
+>     , f "M-S-k"          $ windows W.swapUp
+
+>     , f "M-m"            $ sendMessage Shrink
+>     , f "M-w"            $ sendMessage Expand
+>     , f "M-S-m"          $ sendMessage $ IncMasterN    1
+>     , f "M-S-w"          $ sendMessage $ IncMasterN $ -1
+
+>     , f "M-l"            $ S.onGroup W.focusDown'
+>     , f "M-h"            $ S.onGroup W.focusUp'
+
+>     , f "M-S-c"          $ kill
+
+>     , f "M-s"            $ toggleWS
+>     , f "M-g"            $ spawn "rofi -show window -show-icons"
+>     , f "M-p"            $ shellPrompt myXPConfig { autoComplete = Nothing, searchPredicate = isInfixOf }
+>     , f "M-x"            $ xmonadPrompt myXPConfig { autoComplete = Nothing }
+>     , f "M-y"            $ spawn "passmenu"
+>     , f "M-q"            $ restartXMonad
+
+>     , f "M-<Space>"      $ submap $ spaceSubmap conf
 
 The refresh's here is to force a redraw of the status bar, otherwise
 my brightness indicator doesn't update when the keys are pressed.
 
->     , ((0, xF86XK_MonBrightnessDown), io (updateBrightness $ -1000) >> refresh)
->     , ((0, xF86XK_MonBrightnessUp),   io (updateBrightness $  1000) >> refresh)
+>     , f "<BrightnessDown>" $ io (updateBrightness $ -1000) >> refresh)
+>     , f "<BrightnessUp>"   $ io (updateBrightness $  1000) >> refresh)
 >     ] where f a b = (a, b)
->             m x = (modm, x)
->             ms x = (modm .|. shiftMask, x)
 
 
 
