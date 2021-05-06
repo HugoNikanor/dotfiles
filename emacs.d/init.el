@@ -2,7 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(eval-when-compile (require 'cl))
 ;; https://a-nickels-worth.blogspot.com/2007/11/effective-emacs.html
 (defvar *emacs-load-start* (time-convert (current-time) t))
 (require 'package)
@@ -12,8 +11,6 @@
         ("melpa" . "https://melpa.org/packages/")
         ("org" . "https://orgmode.org/elpa/")
         ))
-
-
 
 ;;; M-x package-install-selected-packages to actually install
 (setq package-selected-packages
@@ -352,8 +349,8 @@ WIDTH: number of dashes in line"
 
 ;;; Info Mode
 
-(loop for p in '("/home/hugo/.local/share/info" "/usr/local/share/info")
-      do (add-to-list 'Info-default-directory-list p))
+(dolist (p '("/home/hugo/.local/share/info" "/usr/local/share/info"))
+  (add-to-list 'Info-default-directory-list p))
 
 (with-eval-after-load 'info
   (evil-define-key 'motion Info-mode-map
