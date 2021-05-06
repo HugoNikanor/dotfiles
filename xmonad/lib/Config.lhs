@@ -500,6 +500,15 @@ TODO put a ^fg(red) before the slider when redshift is activated
 >   return . Just $ mut ++ slid
 #endif
 
+> swap :: Logger.Logger
+> swap = do
+>   alist <- io $ fmap words <$> lines <$> readFile "/proc/meminfo"
+>   let [_, total', totalSuff] = head $ filter ((== "SwapTotal:") . head) alist
+>   let [_, free', freeSuff]   = head $ filter ((== "SwapFree:")  . head) alist
+>   let used = read total' / read free'
+>   let unused = 1.0 - used
+>   return . Just $ show (unused * 100) ++ "%"
+
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
 > colorFunc = dzenColor
@@ -584,6 +593,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 >                         , date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
 >                         , battery "BAT0"
 >                         , brightness
+>                         , swap
 >                         ] ++ volumeHook
 >
 
