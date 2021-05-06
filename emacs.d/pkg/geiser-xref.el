@@ -12,7 +12,9 @@
 
 ;;; Return completion table
 (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql geiser)))
-  geiser-completion--symbol-list-func)
+  ;; geiser-completion--symbol-list-func
+  geiser-completion-symbol-list-func
+  )
 
 ;; TODO should this do (xref-push-marker-stack (point-marker))?
 (cl-defmethod xref-backend-definitions ((_backend (eql geiser)) symbol)

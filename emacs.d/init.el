@@ -24,7 +24,10 @@
         smart-tabs-mode
 
         evil evil-paredit
+        ,@ (when (version< emacs-version "28")
+             '(undo-fu))
 ))
+
 
 
 (defvar other-packages)
@@ -35,6 +38,7 @@
         elm-mode
         markdown-mode
         cider
+        slime
 
         magit
         git-gutter
@@ -62,6 +66,13 @@
 (package-initialize)
 
 (package-refresh-contents t)
+(package-install-selected-packages )
+
+;; must be set BEFORE (require 'evil)
+(setq-default
+ evil-undo-system
+ (if (version<= "28" emacs-version)
+     'undo-redo 'undo-fu))
 
 (mapc #'require required-packages)
 
@@ -74,7 +85,7 @@
 ;; Update local autoloads
 (require 'autoload)
 (setq generated-autoload-file "~/.emacs.d/pkg/my-autoloads.el")
-(update-directory-autoloads "~/.emacs.d/pkg")
+;; (update-directory-autoloads "~/.emacs.d/pkg")
 (require 'my-autoloads)
 
 
@@ -92,12 +103,18 @@ ENVIRONMENTS: all hooks to bind to"
 
 ;;; Evil
 
+(setq-default
+ evil-undo-system
+ (if (version<= "28" emacs-version)
+     'undo-fu 'undo-redo))
+
 (evil-mode)
 
 (require 'evil-maps)                    ; Is this required?
 
 (setq evil-split-window-below t
-      evil-vsplit-window-right t)
+      evil-vsplit-window-right t
+      )
 
 ;; TODO auto find TAGS file
 
@@ -163,8 +180,9 @@ COUNT: number of lines to add"
 (evil-define-key '(normal motion) 'global
   (kbd "C-u") 'evil-scroll-up)
 
-(evil-define-key '(motion) paredit-mode-map
-  (kbd "C-k") 'kill-sexp)
+(with-eval-after-load 'paredit
+  (evil-define-key '(motion) paredit-mode-map
+    (kbd "C-k") 'kill-sexp))
 
 ;;; [RET] is the "primitive" return code, exactly the same as ^M
 ;;; <return> is a high level construct, and only available in GUI.
@@ -263,21 +281,23 @@ WIDTH: number of dashes in line"
 
 ;;; Org Mode
 
-(defun org-mode-stuff ()
+
+
+(with-eval-after-load 'org-mode
   (evil-define-key 'normal org-mode-map (kbd "z j")
     'org-forward-heading-same-level)
   (evil-define-key 'normal org-mode-map (kbd "z k")
     'org-backward-heading-same-level)
   (setq org-treat-insert-todo-heading-as-state-change t
         org-hide-leading-stars t
-        org-agenda-default-appointment-duration 60))
+        org-agenda-default-appointment-duration 60)
+  )
 
 (add-hook 'org-mode-hook #'evil-org-mode)
-(add-hook 'org-mode-hook #'org-mode-stuff)
+;; (add-hook 'org-mode-hook #'org-mode-stuff)
 
 
 ;;; Prettify
-
 (defun prettify-scheme ()
   (setq prettify-symbols-alist
         '(("lambda" . #x3bb)            ; λ
@@ -287,6 +307,8 @@ WIDTH: number of dashes in line"
           ;; ("sum" . #x2211)              ; ∑
           ;; ("prod" . #x220f)             ; ∏
           )))
+
+;; TODO with-eval-after-load
 (add-hook 'scheme-mode-hook #'prettify-scheme)
 (add-hook 'geiser-repl-mode-hook #'prettify-scheme)
 
@@ -339,29 +361,30 @@ WIDTH: number of dashes in line"
 (loop for p in '("/home/hugo/.local/share/info" "/usr/local/share/info")
       do (add-to-list 'Info-default-directory-list p))
 
-(defun info-binds ()
+(with-eval-after-load 'info
   (evil-define-key 'motion Info-mode-map
     "l" 'Info-last
     "N" 'evil-search-next
     "P" 'evil-search-previous))
 
-(add-hook 'Info-mode-hook #'info-binds)
 
 
-;; (require 'irfc)
+(with-eval-after-load 'irfc
+ (evil-define-key 'normal irfc-mode-map
+   "t" 'irfc-head-goto
+   "[[" 'irfc-head-prev
+   "]]" 'irfc-head-next
+   "]x" 'irfc-page-next
+   "[x" 'irfc-page-prev
+   "j" 'scroll-up-line
+   "k" 'scroll-down-line
+   (kbd "RET") 'irfc-follow)
 
-(evil-define-key 'normal irfc-mode-map
-  "t" 'irfc-head-goto
-  "[[" 'irfc-head-prev
-  "]]" 'irfc-head-next
-  "]x" 'irfc-page-next
-  "[x" 'irfc-page-prev
-  "j" 'scroll-up-line
-  "k" 'scroll-down-line
-  (kbd "RET") 'irfc-follow)
+ (setq irfc-directory "~/.local/doc/rfc/")
+ (defvar rfc-index-file (concat irfc-directory "rfc-index.txt")))
 
-(setq irfc-directory "~/.local/doc/rfc/")
-(defvar rfc-index-file (concat irfc-directory "rfc-index.txt"))
+;; TODO download rfc-index.txt from
+;; https://www.ietf.org/download/rfc-index.txt
 
 (defun rfc-list ()
   "Parse `rfc-index-file` for all RFC's.
@@ -376,7 +399,6 @@ TODO I should filter out obsoleted matches"
           (push (match-string 0 string) matches)
           (setq pos (match-end 0)))
         (reverse matches)))))
-
 
 (defun irfc-goto (str)
   "Irfc-visit, with a list of all RFC's.
@@ -411,22 +433,23 @@ STR: target string"
   (funcall (symbol-function *eval-sexp*)))
 
 
-(define-key paredit-mode-map (kbd "C-j")
-  'eval-sexp-print)
+(with-eval-after-load 'paredit
+  (define-key paredit-mode-map (kbd "C-j")
+    'eval-sexp-print)
 
-(define-key paredit-mode-map (kbd "C-S-j")
-  'eval-sexp)
+  (define-key paredit-mode-map (kbd "C-S-j")
+    'eval-sexp)
 
-(add-hook 'paredit-mode-hook #'evil-paredit-mode)
+  (add-hook 'paredit-mode-hook #'evil-paredit-mode)
 
-(hook-envs #'enable-paredit-mode
- '(emacs-lisp-mode-hook
-   eval-expression-minibuffer-setup-hook
-   ielm-mode-hook
-   lisp-mode-hook
-   lisp-interaction-mode-hook
-   scheme-mode-hook
-   clojure-mode-hook))
+  (hook-envs #'enable-paredit-mode
+             '(emacs-lisp-mode-hook
+               eval-expression-minibuffer-setup-hook
+               ielm-mode-hook
+               lisp-mode-hook
+               lisp-interaction-mode-hook
+               scheme-mode-hook
+               clojure-mode-hook)))
 
 
 
@@ -512,48 +535,59 @@ STR: target string"
                    "EVALUATION ERROR"
                  ret))))
 
+(with-eval-after-load 'scheme
+   (require 'geiser)
+
+   (font-lock-add-keywords
+    'scheme-mode
+    `(,(regexp-opt '("mod!" "set!") 'symbols)
+      ("\\<\\w+:\\>" . font-lock-constant-face)
+      ("#\\\\\\(.\\w*\\)" . (1 font-lock-string-face))
+      ("(\\<\\(define-\\w*\\)\\>\s +(?\\(\\S +\\)?"
+       (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face)))))
+
 
 (add-hook
  'scheme-mode-hook
  (lambda ()
-   (require 'geiser)
    (geiser-mode)
 
    ;; Let's pretend any scheme buffer is an interaction scheme buffer!
    ;; geiser-eval-last-sexp doesn't like guile reader extensions ("#")
    (setq *eval-sexp-print* 'geiser-eval-print-last-sexp
-         *eval-sexp*       'geiser-eval-popup-last-sexp)
-
-   (font-lock-add-keywords
-    nil `(,(regexp-opt '("mod!" "set!") 'symbols)
-          ("\\<\\w+:\\>" . font-lock-constant-face)
-          ("#\\\\\\(.\\w*\\)" . (1 font-lock-string-face))
-          ("(\\<\\(define-\\w*\\)\\>\s +(?\\(\\S +\\)?"
-           (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face))))))
+         *eval-sexp*       'geiser-eval-popup-last-sexp)))
 
 (evil-define-key '(normal emacs insert) geiser-repl-mode-map
   (kbd "C-l") 'geiser-repl-clear-buffer)
 
 ;; geiser-repl-mode
 
+(with-eval-after-load 'geiser
+  (setq-default
+   ;; Geiser only looks at these, if this list is here
+   geiser-active-implementations '(guile chicken racket)
+   evil-lookup-func #'geiser-doc-symbol-at-point
+
+   geiser-guile-load-path '("/home/hugo/lib/guile" ".")
+   )
+
+  (evil-define-key '(normal insert) scheme-mode-map
+    (kbd "M-.") 'geiser-edit-symbol-at-point
+    (kbd "C-]") 'geiser-edit-symbol-at-point)
+  )
+
 (add-hook 'geiser-mode-hook
           (lambda ()
-            ;; Geiser only looks at these, if this list is here
-            (setq geiser-active-implementations '(guile chicken racket)
-                  evil-lookup-func #'geiser-doc-symbol-at-point)
 
             (setq geiser-chicken-binary "chicken-csi")
+            ;; "grep ID /etc/os-release"
             (when (string-prefix-p "lysator.liu.se" (shell-command-to-string "hostname -d"))
               (setq geiser-chicken-binary "csi"))
 
-            (setq geiser-guile-load-path '("/home/hugo/lib/guile" "."))
             ;; geiser-guile-extra-keywords
             ;; geiser-guile-init-file
             ;; geiser-guile-load-init-file-p
 
-            (evil-define-key '(normal insert) scheme-mode-map
-              (kbd "M-.") 'geiser-edit-symbol-at-point
-              (kbd "C-]") 'geiser-edit-symbol-at-point)
 
             ;; TODO
             ;; /usr/share/emacs/26.3/lisp/progmodes/etags.el.gz
