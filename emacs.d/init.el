@@ -4,7 +4,7 @@
 
 (eval-when-compile (require 'cl))
 ;; https://a-nickels-worth.blogspot.com/2007/11/effective-emacs.html
-(defvar *emacs-load-start* (current-time))
+(defvar *emacs-load-start* (time-convert (current-time) t))
 (require 'package)
 
 (setq package-archives
@@ -13,26 +13,22 @@
         ("org" . "https://orgmode.org/elpa/")
         ))
 
-(defvar required-packages)
-(setq required-packages
+
+
+;;; M-x package-install-selected-packages to actually install
+(setq package-selected-packages
       `(
-        ivy                             ; M-x fuzzy finder
+        ivy                      ; M-x fuzzy finder
         paredit
         popup
-        which-key                       ; show possible keys
+        which-key                ; show possible keys
 
         smart-tabs-mode
 
         evil evil-paredit
         ,@ (when (version< emacs-version "28")
              '(undo-fu))
-))
 
-
-
-(defvar other-packages)
-(setq other-packages
-      '(
         flycheck
         haskell-mode
         elm-mode
@@ -42,7 +38,7 @@
 
         magit
         git-gutter
-        mmm-mode                            ; Multiple Major Modes
+        mmm-mode           ; Multiple Major Modes
 
         yasnippet
         yasnippet-snippets
@@ -53,28 +49,17 @@
 
         ;; TODO This errors out in install-all,
         ;; but installing it manually works fine
-        irfc-mode
+        ;; irfc-mode
 
         ;; rainbow-delimiters
         ;; org-plus-contrib
         ))
 
-
-;;; M-x package-install-selected-packages to actually install
-(setq package-selected-packages `(,@ required-packages ,@other-packages))
-
 (package-initialize)
 
 (package-refresh-contents t)
-(package-install-selected-packages )
+(package-install-selected-packages)
 
-;; must be set BEFORE (require 'evil)
-(setq-default
- evil-undo-system
- (if (version<= "28" emacs-version)
-     'undo-redo 'undo-fu))
-
-(mapc #'require required-packages)
 
 
 
@@ -101,12 +86,17 @@ ENVIRONMENTS: all hooks to bind to"
          ,environments))
 
 
+
+(require 'popup)
+
+
 ;;; Evil
 
+;; must be set BEFORE (require 'evil)
 (setq-default
  evil-undo-system
  (if (version<= "28" emacs-version)
-     'undo-fu 'undo-redo))
+     'undo-redo 'undo-fu))
 
 (evil-mode)
 
@@ -233,9 +223,6 @@ where is a buffer or nil"
 ;; (setq mmm-submode-decoration-level 0)
 ;; (setq mmm-global-mode 'maybe)
 
-
-
-(require 'formfeed)
 
 ;; TODO this is't imidieately run for new buffers, instead first updating when
 ;; the window first changes shape.
@@ -262,6 +249,7 @@ WIDTH: number of dashes in line"
 (add-hook 'markdown-mode-hook
           (lambda ()
             (setq fill-column 70)
+            ;; TODO this overrides the global bindings
             (evil-define-minor-mode-key '(normal insert replace) formfeed-mode
               (kbd "C--") 'insert-text-line)))
 
@@ -288,27 +276,33 @@ WIDTH: number of dashes in line"
     'org-forward-heading-same-level)
   (evil-define-key 'normal org-mode-map (kbd "z k")
     'org-backward-heading-same-level)
-  (setq org-treat-insert-todo-heading-as-state-change t
-        org-hide-leading-stars t
-        org-agenda-default-appointment-duration 60)
+  (setq-default
+   org-treat-insert-todo-heading-as-state-change t
+   org-hide-leading-stars t
+   org-agenda-default-appointment-duration 60)
   )
 
 (add-hook 'org-mode-hook #'evil-org-mode)
-;; (add-hook 'org-mode-hook #'org-mode-stuff)
 
 
 ;;; Prettify
+
+;;; Setq's updates prettify-symbols-alist localy for that buffer in that mode
+;;; (or something like that), which is exactly what we want, but means that we
+;;; need to set it in a hook (instead of with an with-eval-after-load).
+
 (defun prettify-scheme ()
   (setq prettify-symbols-alist
-        '(("lambda" . #x3bb)            ; λ
-          ("<=" . #x2264)               ; ≤
-          (">=" . #x2265)               ; ≥
-          ("memv" . ?∈)
-          ;; ("sum" . #x2211)              ; ∑
-          ;; ("prod" . #x220f)             ; ∏
-          )))
+        (append
+         prettify-symbols-alist
+         '(("lambda" . #x3bb)           ; λ
+           ("<=" . #x2264)              ; ≤
+           (">=" . #x2265)              ; ≥
+           ("memv" . ?∈)
+           ;; ("sum" . #x2211)              ; ∑
+           ;; ("prod" . #x220f)             ; ∏
+           ))))
 
-;; TODO with-eval-after-load
 (add-hook 'scheme-mode-hook #'prettify-scheme)
 (add-hook 'geiser-repl-mode-hook #'prettify-scheme)
 
@@ -369,6 +363,9 @@ WIDTH: number of dashes in line"
 
 
 
+
+(add-to-list 'auto-mode-alist '("rfc[0-9]+\\.txt\\'" . irfc-mode))
+
 (with-eval-after-load 'irfc
  (evil-define-key 'normal irfc-mode-map
    "t" 'irfc-head-goto
@@ -378,10 +375,12 @@ WIDTH: number of dashes in line"
    "[x" 'irfc-page-prev
    "j" 'scroll-up-line
    "k" 'scroll-down-line
-   (kbd "RET") 'irfc-follow)
+   (kbd "RET") 'irfc-follow))
 
- (setq irfc-directory "~/.local/doc/rfc/")
- (defvar rfc-index-file (concat irfc-directory "rfc-index.txt")))
+(setq irfc-directory "~/.local/doc/rfc/")
+(defvar rfc-index-file (concat irfc-directory "rfc-index.txt"))
+
+;; TODO supress flyspell for rfc.* files
 
 ;; TODO download rfc-index.txt from
 ;; https://www.ietf.org/download/rfc-index.txt
@@ -473,7 +472,6 @@ STR: target string"
 
 ;;; Common Lisp
 
-
 (setq-default inferior-lisp-program "sbcl")
 
 (add-hook 'lisp-mode-hook
@@ -490,6 +488,7 @@ STR: target string"
 (defun clojure-env ()
   (require 'cider)
 
+  ;; TODO With eval after load?
   (define-clojure-indent
     (defroutes 'defun)
     (GET 2) (POST 2) (PUT 2)
@@ -538,6 +537,8 @@ STR: target string"
 (with-eval-after-load 'scheme
    (require 'geiser)
 
+   ;; TODO figure out indentation rules, and change stuff
+
    (font-lock-add-keywords
     'scheme-mode
     `(,(regexp-opt '("mod!" "set!") 'symbols)
@@ -557,98 +558,67 @@ STR: target string"
    (setq *eval-sexp-print* 'geiser-eval-print-last-sexp
          *eval-sexp*       'geiser-eval-popup-last-sexp)))
 
-(evil-define-key '(normal emacs insert) geiser-repl-mode-map
-  (kbd "C-l") 'geiser-repl-clear-buffer)
 
 ;; geiser-repl-mode
 
 (with-eval-after-load 'geiser
+  (defvar os-id (shell-command-to-string
+                 "awk -F= -v ORS='' '/^ID=/ { print $2 }' /etc/os-release"))
+
   (setq-default
    ;; Geiser only looks at these, if this list is here
    geiser-active-implementations '(guile chicken racket)
    evil-lookup-func #'geiser-doc-symbol-at-point
 
    geiser-guile-load-path '("/home/hugo/lib/guile" ".")
+
+   geiser-chicken-binary (pcase os-id
+                           ("arch" "chicken-csi")
+                           ("ubuntu" "csi")
+                           (_ "csi")
+                           )
    )
+
+  (evil-define-key '(normal emacs insert) geiser-repl-mode-map
+    (kbd "C-l") 'geiser-repl-clear-buffer)
 
   (evil-define-key '(normal insert) scheme-mode-map
     (kbd "M-.") 'geiser-edit-symbol-at-point
     (kbd "C-]") 'geiser-edit-symbol-at-point)
+
+
+  ;; extend theme to show comments and comment
+  ;; markers in different colors.
+  (mmm-add-classes
+   '((lisp-texinfo-comments
+      :submode texinfo-mode
+      :front "^;; "
+      ;; :back "^[^;]"
+      :back "$"
+      :include-front nil
+      :include-back nil
+      )))
+
+  (mmm-add-mode-ext-class
+   'scheme-mode nil 'lisp-texinfo-comments)
+
+
+  ;; geiser-guile-extra-keywords
+  ;; geiser-guile-init-file
+  ;; geiser-guile-load-init-file-p
+
+
+  ;; TODO
+  ;; /usr/share/emacs/26.3/lisp/progmodes/etags.el.gz
+  ;; Sätt upp det här som en xref-backend
+  ;; (evil-ex-define-cmd "ta[g]" 'geiser-edit-symbol)
   )
 
-(add-hook 'geiser-mode-hook
-          (lambda ()
-
-            (setq geiser-chicken-binary "chicken-csi")
-            ;; "grep ID /etc/os-release"
-            (when (string-prefix-p "lysator.liu.se" (shell-command-to-string "hostname -d"))
-              (setq geiser-chicken-binary "csi"))
-
-            ;; geiser-guile-extra-keywords
-            ;; geiser-guile-init-file
-            ;; geiser-guile-load-init-file-p
-
-
-            ;; TODO
-            ;; /usr/share/emacs/26.3/lisp/progmodes/etags.el.gz
-            ;; Sätt upp det här som en xref-backend
-            ;; (evil-ex-define-cmd "ta[g]" 'geiser-edit-symbol)
-
-
-            ;; extend theme to show comments and comment
-            ;; markers in different colors.
-            (mmm-add-classes
-             '((lisp-texinfo-comments
-                :submode texinfo-mode
-                :front "^;; "
-                ;; :back "^[^;]"
-                :back "$"
-                :include-front nil
-                :include-back nil
-                )))
-
-            (mmm-add-mode-ext-class
-             'scheme-mode nil 'lisp-texinfo-comments)))
+(add-to-list 'auto-mode-alist '("\\.log\\'" . srfi-64-log-mode))
 
 
 
 
-(setq log-mode-highlights
-      `((,(regexp-opt '("pass")) . 'success)
-        (,(regexp-opt '("fail")) . 'error))
-      )
-
-  ;; M-x describe-face
-(define-derived-mode log-mode fundamental-mode "Log"
-  "Major mode for viewing srfi-64 log files from guile."
-
-  ;; fold cases
-;; Test begin:
-;;   source-file: "/home/hugo/code/calparse/tests/termios.scm"
-;;   source-line: 34
-;;   source-form: (test-equal (& ifl (~ (|| ECHO ICANON))) (lflag t))
-;; Test end:
-;;   result-kind: pass
-;;   actual-value: 0
-;;   expected-value: 0
-  ;; folds to
-  ;; PASS <name if name> <source-file : source-line> ...
-
-  ;; success ration pinned to top of screen
-  ;; parsed from end of file
-;; # of expected passes      22
-;; # of unexpected failures  4
-
-  ;; Failing values should highlight their difference
-
-  ;; Groups should be marked/indented?
-
-
-  (read-only-mode 1)
-  (setq font-lock-defaults '(log-mode-highlights))
-  (message "Entered Log mode"))
-
-(add-to-list 'auto-mode-alist '("\\.log\\'" . log-mode))
 
 ;;; Haskell
 
@@ -738,11 +708,10 @@ file for it to work as expceted."
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
-(message ".emacs loaded in %ds"
-         (let ((ct (current-time)))
-          (- (+ (first ct) (second ct))
-             (+ (first *emacs-load-start*)
-                (second *emacs-load-start*)))))
+(message ".emacs loaded in %fs"
+         (let ((ct (time-convert (current-time) t)))
+           (/ (- (car ct) (car *emacs-load-start*))
+              (* 1.0 (cdr ct)))))
 
 (provide 'init)
 ;;; init.el ends here
