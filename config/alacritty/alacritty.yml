@@ -61,7 +61,7 @@ colors:
   # but coincidentally almost my exact bright colors
   # (excluding black)
   bright:
-    black:   '#555753'
+    black:   '#959992'
     red:     '#cc6666'
     green:   '#b5bd68'
     yellow:  '#f0c674'
