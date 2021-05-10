@@ -2,7 +2,11 @@
 
 . $(dirname $(realpath $0))/common
 
-relink_termite $day_theme
+relink_termite baskerville-ivorylight
 pgrep termite | xargs kill -s sigusr1
+
+alacritty="$CONF/daynight/alacritty.yml"
+rm $alacritty
+ln -s "$CONF/alacritty/light.yml" $alacritty
 
 emacsclient -e "(enable-theme 'adwaita)"
