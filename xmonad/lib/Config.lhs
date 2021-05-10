@@ -290,14 +290,14 @@ Especially good on larger screens.
 Directions are inverted to what is "normal". This since I want to think about
 it like a lasso going out in that direction.
 
->       [ ((0, k), sendMessage $ S.pullGroup d) 
+>       [ ((0, k), sendMessage $ S.pullGroup d)
 >       | (k, d) <- [ (xK_j, D)
 >                   , (xK_k, U)
 >                   , (xK_h, R)
 >                   , (xK_l, L) ] ]
->       ++ 
+>       ++
 >       [ ((0, k), action)
->       | (k, action) 
+>       | (k, action)
 >           <- [ (xK_m    , withFocused $ sendMessage . S.MergeAll)
 >              , (xK_u    , withFocused $ sendMessage . S.UnMerge)
 >              , (xK_space, selectWorkspace myXPConfig)
@@ -571,7 +571,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 >
 #ifdef MIN_VERSION_dbus
 >     mPulseClient <- connectPulseDBus
->     -- let sinkName = "alsa_output.pci-0000_2a_00.4.analog-stereo" 
+>     -- let sinkName = "alsa_output.pci-0000_2a_00.4.analog-stereo"
 >     let sinkName = "alsa_output.pci-0000_00_1f.3.analog-stereo"
 >     mPulsePath <- case mPulseClient of
 >       Just pc -> getSinkByName sinkName pc
