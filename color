@@ -1,0 +1,10 @@
+regular	[0;31m Red [0;32m Green [0;33m Yellow [0;34m Blue [0;35m Magenta [0;36m Cyan [0;30m Black [m
+	[0;41m Red [0;42m Green [0;43m Yellow [0;44m Blue [0;45m Magenta [0;46m Cyan [0;40m Black [m
+[1;38mbold	[1;31m Red [1;32m Green [1;33m Yellow [1;34m Blue [1;35m Magenta [1;36m Cyan [1;30m Black [m
+	[1;41m Red [1;42m Green [1;43m Yellow [1;44m Blue [1;45m Magenta [1;46m Cyan [1;40m Black [m
+[2;39mdim	[2;31m Red [2;32m Green [2;33m Yellow [2;34m Blue [2;35m Magenta [2;36m Cyan [2;30m Black [m
+	[2;41m Red [2;42m Green [2;43m Yellow [2;44m Blue [2;45m Magenta [2;46m Cyan [2;40m Black [m
+[3;38mitalic	[3;31m Red [3;32m Green [3;33m Yellow [3;34m Blue [3;35m Magenta [3;36m Cyan [3;30m Black [m
+	[3;41m Red [3;42m Green [3;43m Yellow [3;44m Blue [3;45m Magenta [3;46m Cyan [3;40m Black [3;m
+[4;38mu.line	[4;31m Red [4;32m Green [4;33m Yellow [4;34m Blue [4;35m Magenta [4;36m Cyan [4;30m Black [m
+	[4;41m Red [4;42m Green [4;43m Yellow [4;44m Blue [4;45m Magenta [4;46m Cyan [4;40m Black [4;m
