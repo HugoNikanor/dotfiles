@@ -8,10 +8,11 @@
 > import System.Environment (setEnv)
 > import System.Locale (defaultTimeLocale, TimeLocale(wDays))
 > import System.Time (getClockTime, toCalendarTime, formatCalendarTime)
-> import System.Directory (doesPathExist)
+> import System.Directory (doesPathExist, findExecutable)
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 > import Data.Foldable (toList)
+> import Data.Maybe (fromJust)
 
 Provides symbol names for all weird X keycodes. So most things
 starting with xF86 in this file.
@@ -561,13 +562,20 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 > xmproc "gandalf" = "dzen2 -fn 'Roboto' -w 1920 -x 1920 -ta l -dock"
 > xmproc _         = "dzen2 -fn 'Fira Mono' -ta l -dock"
 
-
 > xmain = do
 >     hostname <- head . lines <$> readFile "/etc/hostname"
->     let termCommand = "termite"
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
->     xmproc      <- spawnPipe $ xmproc hostname
+
+set fallback sequnece for terminal emulators
+
+>     termCommand <- fromJust . head <$> mapM findExecutable
+>           [ "alacritty"
+>           , "termite"
+>           , "xterm"
+>           ]
+
+>     xmproc <- spawnPipe $ xmproc hostname
 >
 #ifdef MIN_VERSION_dbus
 >     mPulseClient <- connectPulseDBus
