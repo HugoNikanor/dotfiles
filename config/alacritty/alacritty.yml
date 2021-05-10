@@ -1,0 +1,71 @@
+live_config_reload: true
+
+window:
+  dynamic_padding: false
+  dynamic_title: true
+  padding:
+    y: 2
+    x: 2
+
+
+font:
+  # No idea what's the deal with font size
+  size: 5.0
+  normal:
+    family: Fira Mono
+  offset:
+    x: 0
+
+
+cursor:
+  style:
+    shape: block
+    blinking: on
+    unfocussed_hollow: true
+
+mouse:
+  url:
+    launcher:
+      program: xdg-open
+
+
+# Run "$ alacritty --print-events | grep Key"
+# to find Jscancodes if a name is missing.
+key_bindings:
+  - { key: Escape,                mode: Vi|~Search, action: ToggleViMode }
+  - { key: G,      mods: Control, mode: Vi|~Search, action: ToggleViMode }
+  - { key: G,      mods: Control, mode: Search,     action: SearchCancel }
+  - { key: 22,                    mode: Vi|~Search, action: SearchBackward }
+
+
+colors:
+  primary:
+    background: '#1d1f21'
+    foreground: '#c5c8c6'
+
+  normal:
+    black:         '#1d1f21'
+    red:           '#a54242'
+    green:         '#8c9440'
+    yellow:        '#de935f'
+    # shifted saturation from 39 to 70
+    #blue:         '#5f819d'
+    blue:          '#2f6c9e'
+    magenta:       '#85678f'
+    cyan:          '#5e8d87'
+    white:         '#c5c8c6'
+
+  # dim left unset to get automatically dimmed normal colors
+
+  # Alacrittys default normal colors
+  # but coincidentally almost my exact bright colors
+  # (excluding black)
+  bright:
+    black:   '#555753'
+    red:     '#cc6666'
+    green:   '#b5bd68'
+    yellow:  '#f0c674'
+    blue:    '#81a2be'
+    magenta: '#b294bb'
+    cyan:    '#8abeb7'
+    white:   '#c5c8c6'
