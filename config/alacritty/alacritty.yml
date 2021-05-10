@@ -31,11 +31,17 @@ mouse:
 
 # Run "$ alacritty --print-events | grep Key"
 # to find Jscancodes if a name is missing.
+#
+# for names of (some) of them
+# https://docs.rs/glutin/0.26.0/glutin/event/enum.VirtualKeyCode.html
 key_bindings:
   - { key: Escape,                mode: Vi|~Search, action: ToggleViMode }
   - { key: G,      mods: Control, mode: Vi|~Search, action: ToggleViMode }
+  - { key: Q,                     mode: Vi|~Search, action: ToggleViMode }
   - { key: G,      mods: Control, mode: Search,     action: SearchCancel }
-  - { key: 22,                    mode: Vi|~Search, action: SearchBackward }
+  - { key: 22,                    mode: Vi|~Search, action: SearchBackward } # ?
+  - { key: 36,                    mode: Vi|~Search, action: First } # ^
+  - { key: 20,                    mode: Vi|~Search, action: Last  } # $
 
 
 colors:
