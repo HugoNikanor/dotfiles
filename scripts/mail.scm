@@ -27,6 +27,11 @@
     ((gandalf) (path-append "/var/mail" (getlogin)))
     (else (path-append $HOME "/.local/var/mail"))))
 
+(define mbsync-version
+  (let ((p (open-input-pipe "mbsync --version")))
+    (cadr (string-split (read-line p) #\space))))
+
+
 (account default ()
          (name "Hugo Hörnquist")
          (path-base ,mailfolder)
@@ -57,8 +62,13 @@
           (Sync All)
           (Patterns "*")
           (SyncState "*")
-          (Master ,(format #f ":~a:" (mbsync:category-transformer 'IMAPStore (? acc-name))))
-          (Slave  ,(format #f ":~a:" (mbsync:category-transformer 'MaildirStore (? acc-name)))))
+          ,@(if (version<= "1.4" mbsync-version)
+              ((Far    ,(format #f ":~a:" (mbsync:category-transformer 'IMAPStore (? acc-name))))
+               (Near   ,(format #f ":~a:" (mbsync:category-transformer 'MaildirStore (? acc-name)))))
+              ((Master ,(format #f ":~a:" (mbsync:category-transformer 'IMAPStore (? acc-name))))
+               (Slave  ,(format #f ":~a:" (mbsync:category-transformer 'MaildirStore (? acc-name))))))
+          )
+
 
          (signature ,(? name))
 

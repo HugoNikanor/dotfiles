@@ -1,6 +1,6 @@
 (define-module (conf-base)
   #:export (account get-field instanciate path-append
-                    map-subtree mkdir-p
+                    map-subtree mkdir-p version<=
                     string-first string-last
                     ignore-error)
   #:replace (let*))
@@ -93,6 +93,22 @@
                   (mkdir path))
               path))
         "" (string-split path #\/)))
+
+
+(define (version<= a b)
+  (let loop ((as (map string->number (string-split a #\.)))
+             (bs (map string->number (string-split b #\.))))
+    (cond
+      ;; 1.4 ≤ 1.4.1 folds to '' ≤ .1
+      ((null? as) #t)
+      ;; 1.4.1 ≤ 1.4 folds to '.1' ≤ '' (which is assumed 0)
+      ((null? bs) #f)
+      ((< (car as) (car bs)) #t)
+      ((> (car as) (car bs)) #f)
+      ((= (car as) (car bs))
+       (loop (cdr as)
+             (cdr bs))))))
+
 
 ;; Replace let* with a version that can bind from lists.
 ;; Also supports SRFI-71 (extended let-syntax for multiple values)
