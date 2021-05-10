@@ -77,9 +77,10 @@ elseif $TERM =~ "xterm"
 elseif $TERM =~ "screen"
 	" Both Screen and Tmux terminals are here
 	exec "set listchars=tab:>-,eol:\u00b6,nbsp:\u2423,trail:~"
+elseif $TERM =~ "alacritty"
 else
 	" Other terminal types, set safe fallback
-	colorscheme delek
+	colorscheme default
 endif
 
 "}}}
