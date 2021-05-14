@@ -12,7 +12,7 @@
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 > import Data.Foldable (toList)
-> import Data.Maybe (fromJust)
+> import Data.Maybe (catMaybes)
 
 Provides symbol names for all weird X keycodes. So most things
 starting with xF86 in this file.
@@ -569,7 +569,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 
 set fallback sequnece for terminal emulators
 
->     termCommand <- fromJust . head <$> mapM findExecutable
+>     termCommand <- head . catMaybes <$> mapM findExecutable
 >           [ "alacritty"
 >           , "termite"
 >           , "xterm"
