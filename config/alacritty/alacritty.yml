@@ -42,6 +42,8 @@ key_bindings:
   - { key: 22,                    mode: Vi|~Search, action: SearchBackward } # ?
   - { key: 36,                    mode: Vi|~Search, action: First } # ^
   - { key: 20,                    mode: Vi|~Search, action: Last  } # $
+  - { key: Up,   mods: Shift|Control, mode: ~Vi, action: ScrollLineUp }
+  - { key: Down, mods: Shift|Control, mode: ~Vi, action: ScrollLineDown }
 
 
 import:
