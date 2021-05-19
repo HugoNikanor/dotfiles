@@ -3,7 +3,11 @@
 ;;; Code:
 
 ;; https://a-nickels-worth.blogspot.com/2007/11/effective-emacs.html
-(defvar *emacs-load-start* (time-convert (current-time) t))
+(defvar *emacs-load-start*
+  (if (boundp 'time-convert)
+    (time-convert (current-time) t)
+    (current-time)))
+
 (require 'package)
 
 (setq package-archives
@@ -705,10 +709,15 @@ file for it to work as expceted."
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
-(message ".emacs loaded in %fs"
-         (let ((ct (time-convert (current-time) t)))
-           (/ (- (car ct) (car *emacs-load-start*))
-              (* 1.0 (cdr ct)))))
+(message ".emacs loaded in %ds"
+         (if (boundp 'time-convert)
+           (let ((ct (time-convert (current-time) t)))
+             (/ (- (car ct) (car *emacs-load-start*))
+                (* 1.0 (cdr ct))))
+           (let ((ct (current-time)))
+             (- (+ (car ct) (cadr ct))
+                (+ (car *emacs-load-start*)
+                   (cadr *emacs-load-start*))))))
 
 (provide 'init)
 ;;; init.el ends here
