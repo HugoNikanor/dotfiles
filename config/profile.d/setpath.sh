@@ -4,6 +4,7 @@ add () {
 
 add ~/.local/bin
 add ~/bin
+add ~/.local/$(uname -s)/bin
 add ~/.gem/ruby/*/bin
 add ~/.cabal/bin
 add ~/go/bin
