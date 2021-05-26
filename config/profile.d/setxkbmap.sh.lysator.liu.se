@@ -1,4 +1,4 @@
 [ -z "$DISPLAY" ] && return
-[ -n "SSH_CLIENT" ] && return
+[ -n "$SSH_CLIENT" ] && return
 
 setxkbmap se dvorak_a5 caps:escape
