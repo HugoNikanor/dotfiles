@@ -650,6 +650,11 @@ STR: target string"
 
 ;;; Other
 
+(add-hook 'Buffer-menu-mode-hook #'hl-line-mode)
+(evil-define-key '(motion) Buffer-menu-mode-map
+  (kbd "C-d") 'evil-scroll-down)
+
+
 (load-theme 'adwaita t t)
 
 ;; inhibit bidirectional parentheses algorith
