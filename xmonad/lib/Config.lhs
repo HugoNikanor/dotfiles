@@ -12,7 +12,7 @@
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 > import Data.Foldable (toList)
-> import Data.Maybe (fromJust)
+> import Data.Maybe (catMaybes)
 
 Provides symbol names for all weird X keycodes. So most things
 starting with xF86 in this file.
@@ -496,7 +496,7 @@ TODO put a ^fg(red) before the slider when redshift is activated
 >   volume <- io (getVolume p c)
 >   muted  <- io (getMute p c)
 >   let volume' = fromIntegral (maximum volume) / 2^16
->   let slid = slider (dzenCircle 10) $ volume'
+>   let slid = slider (dzenIcon "music") $ volume'
 >   let mut = if muted then dzenFg "#2f4f4f" else ""
 >   return . Just $ mut ++ slid
 #endif
@@ -569,7 +569,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 
 set fallback sequnece for terminal emulators
 
->     termCommand <- fromJust . head <$> mapM findExecutable
+>     termCommand <- head . catMaybes <$> mapM findExecutable
 >           [ "alacritty"
 >           , "termite"
 >           , "xterm"
