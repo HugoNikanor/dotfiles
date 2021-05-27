@@ -27,9 +27,14 @@ for file in $(ls \
 	-I README.md \
 	-I mutt \
 	-I elinks \
+	-I bin \
 	-I scripts)
 do
 	[ -h $HOME/.$file ] || verbose ln -s $(realpath $file) $HOME/.$file
+done
+
+for file in $(ls bin); do
+	verbose ln -s $(realpath bin/$file) $HOME/.local/bin/
 done
 
 link_contents config

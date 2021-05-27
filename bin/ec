@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Open a new emacsclient frame and show the file in it. 
+
+if [ ! -z $DISPLAY ]; then
+	emacsclient -c "$@" &
+else
+	emacsclient -c "$@"
+fi

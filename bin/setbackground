@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -x
+
+get_images() {
+	for x in { 0..$monitor_count }; do
+		tmp=$(mktemp --suffix .png)
+		echo $tmp
+		curl --silent -L -o $tmp https://wrya.net/services/wallpaper/4chan.php
+	done
+}
+
+monitor_count=`xrandr --listmonitors | awk -F' ' '/^Monitors:/ { print }'`
+
+feh --bg-fill $(get_images)
+

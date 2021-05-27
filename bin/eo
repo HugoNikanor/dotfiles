@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Open file in existing emacsclient frame
+# Works well from inside emacs in shell-mode
+
+emacsclient -e "(find-file \"$1\")"
