@@ -5,8 +5,10 @@
 relink_termite fira-mono-8
 pgrep termite | xargs kill -s sigusr1
 
-alacritty="$CONF/daynight/alacritty.yml"
+alacritty="$CONF/alacritty/daynight.yml"
 rm $alacritty
 ln -s "$CONF/alacritty/dark.yml" $alacritty
+# force reload
+touch "$(dirname $alacritty)/alacritty.yml"
 
 emacsclient -e "(disable-theme 'adwaita)"

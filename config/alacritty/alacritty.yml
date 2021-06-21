@@ -60,4 +60,4 @@ import:
   # Sets default colors
   - ~/.config/alacritty/color.yml
   # override them with day/night specific if present
-  - ~/.config/daynight/alacritty.yml
+  - ~/.config/alacritty/daynight.yml
