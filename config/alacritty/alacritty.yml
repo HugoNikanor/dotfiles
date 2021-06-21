@@ -7,10 +7,12 @@ window:
     y: 2
     x: 2
 
+env:
+  TERM: xterm-256color
 
 font:
   # No idea what's the deal with font size
-  size: 5.0
+  size: 8.0
   normal:
     family: Fira Mono
   offset:
@@ -23,10 +25,10 @@ cursor:
     blinking: on
     unfocussed_hollow: true
 
-mouse:
-  url:
-    launcher:
-      program: xdg-open
+# mouse:
+#   url:
+#     launcher:
+#       program: xdg-open
 
 
 # Run "$ alacritty --print-events | grep Key"
@@ -44,6 +46,14 @@ key_bindings:
   - { key: 20,                    mode: Vi|~Search, action: Last  } # $
   - { key: Up,   mods: Shift|Control, mode: ~Vi, action: ScrollLineUp }
   - { key: Down, mods: Shift|Control, mode: ~Vi, action: ScrollLineDown }
+  # Spawns a new terminal in the shells current working directory
+  - key: T
+    mods: Control|Shift
+    command:
+      program: '/bin/sh'
+      args:
+        - '-c'
+        - 'alacritty --working-directory "$(readlink -e /proc/$(pgrep -oP $(xdo pid))/cwd)"'
 
 
 import:
