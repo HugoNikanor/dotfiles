@@ -6,7 +6,6 @@
 "
 " TODO make it easy to change colour of groups.
 
-set background=dark
 highlight clear
 if exists("syntax_on")
     syntax reset
