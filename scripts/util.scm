@@ -1,5 +1,5 @@
 (define-module (util)
-  #:export (pass escape)
+  #:export (pass escape pass/escape)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
   )
@@ -22,3 +22,6 @@
              (display (string #\\ c))
              (display c)))
        str))))
+
+(define* (pass/escape path #:optional (charset (char-set #\")))
+  (format #f "\"~a\"" (escape charset (pass path))))
