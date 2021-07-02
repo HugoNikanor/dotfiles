@@ -71,7 +71,10 @@
 ;; Update local autoloads
 (require 'autoload)
 (setq generated-autoload-file "~/.emacs.d/pkg/my-autoloads.el")
-;; (update-directory-autoloads "~/.emacs.d/pkg")
+;; Generate autoload file if none exist.
+;; Note that this doesn't update it, so that still has to be done manually
+(unless (file-exists-p generated-autoload-file)
+  (update-directory-autoloads "~/.emacs.d/pkg"))
 (require 'my-autoloads)
 
 
