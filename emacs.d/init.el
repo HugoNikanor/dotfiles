@@ -444,16 +444,16 @@ STR: target string"
   (define-key paredit-mode-map (kbd "C-S-j")
     'eval-sexp)
 
-  (add-hook 'paredit-mode-hook #'evil-paredit-mode)
+  (add-hook 'paredit-mode-hook #'evil-paredit-mode))
 
-  (hook-envs #'enable-paredit-mode
-             '(emacs-lisp-mode-hook
-               eval-expression-minibuffer-setup-hook
-               ielm-mode-hook
-               lisp-mode-hook
-               lisp-interaction-mode-hook
-               scheme-mode-hook
-               clojure-mode-hook)))
+(hook-envs #'enable-paredit-mode
+           '(emacs-lisp-mode-hook
+             eval-expression-minibuffer-setup-hook
+             ielm-mode-hook
+             lisp-mode-hook
+             lisp-interaction-mode-hook
+             scheme-mode-hook
+             clojure-mode-hook))
 
 
 
