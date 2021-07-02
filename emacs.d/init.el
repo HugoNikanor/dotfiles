@@ -283,8 +283,9 @@ WIDTH: number of dashes in line"
   (setq-default
    org-treat-insert-todo-heading-as-state-change t
    org-hide-leading-stars t
-   org-agenda-default-appointment-duration 60)
-  )
+   org-agenda-default-appointment-duration 60
+   org-todo-keyword-faces '(("TEST" . "orange"))
+   ))
 
 (add-hook 'org-mode-hook #'evil-org-mode)
 
