@@ -660,7 +660,24 @@ STR: target string"
 
 (add-hook 'Buffer-menu-mode-hook #'hl-line-mode)
 (evil-define-key '(motion) Buffer-menu-mode-map
-  (kbd "C-d") 'evil-scroll-down)
+  (kbd "C-d") 'evil-scroll-down
+  (kbd "$") (lambda () (interactive)
+              (when (y-or-n-p "Kill selected buffers?")
+                       (Buffer-menu-execute))))
+
+
+;;; Dired
+
+(with-eval-after-load 'dired
+  (add-hook 'dired-mode-hook #'hl-line-mode)
+
+  (evil-define-key '(normal) dired-mode-map
+    (kbd "G") 'evil-goto-line
+    (kbd "g g") 'evil-goto-first-line
+    ;; delete all entries flagged for deletion
+    ;; prompts beforehand
+    (kbd "$") 'dired-do-flagged-delete
+    ))
 
 
 (load-theme 'adwaita t t)
