@@ -217,7 +217,7 @@
      ;; D1
      ;; STABEN2020
      ;; TDDE04
-     TDDE44
+     ;; TDDE44
      ;; TSTE24
 
      formulastudent

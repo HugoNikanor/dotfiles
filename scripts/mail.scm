@@ -10,7 +10,7 @@
              (ice-9 rdelim)
              ((mutt) #:prefix mutt:)
              ((mbsync) #:prefix mbsync:)
-             ((util) #:select (pass escape)))
+             ((util) #:select (pass escape pass/escape)))
 
 
 
@@ -44,7 +44,7 @@
           (CertificateFile "/etc/ssl/certs/ca-certificates.crt")
           (User ,(? address))
           ,@(if static-passwords
-                ((Pass ,(format #f "\"~a\"" (escape (char-set #\") (pass (? pass-path))))))
+                ((Pass ,(pass/escape (? pass-path))))
                 ((PassCmd ,(format #f "+\"pass ~a\"" (? pass-path))))))
 
          (MaildirStore
@@ -245,7 +245,10 @@
               (imap_list_subscribed yes)
               (ssl_starttls yes)
               (smtp_url "smtp://hugo@mail.lysator.liu.se:26")
-              (smtp_pass "`pass lysator/mail/hugo`")
+              (smtp_pass ,(if static-passwords
+                              (pass/escape "lysator/mail/hugo"
+                                           (char-set #\" #\' #\`))
+                              "`pass lysator/mail/hugo`"))
               (ssl_force_tls yes)
               (assumed_charset "utf-8:iso-8859-1")
               (mbox_type "Maildir")

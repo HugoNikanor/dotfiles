@@ -183,6 +183,14 @@ COUNT: number of lines to add"
 (define-key evil-normal-state-map (kbd "RET") 'evil-fresh-line-below)
 (define-key evil-normal-state-map (kbd "<S-return>") 'evil-fresh-line-above)
 
+;; (evil-define-key '(normal insert) evil-org-mode-map
+;;   (kbd "RET") 'evil-org-open-below)
+
+(evil-define-key '(normal) evil-org-mode-map
+  (kbd "g l l") 'org-indent-item)
+
+(evil-define-key '(normal) evil-org-mode-map
+  (kbd "g l h") 'org-outdent-item)
 
 
 
