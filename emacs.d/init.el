@@ -48,6 +48,20 @@
 
         evil-org
 
+        geiser
+
+        ;; geiser-chez
+        ;; geiser-chibi
+        geiser-chicken
+        ;; geiser-gambit
+        ;; geiser-gauche
+        geiser-guile
+        ;; geiser-kawa
+        ;; geiser-mit
+        geiser-racket
+        ;; geiser-stklos
+
+
         ;; TODO This errors out in install-all,
         ;; but installing it manually works fine
         ;; irfc-mode
