@@ -544,7 +544,7 @@ STR: target string"
                 (line-beginning-position))
              ";; "
            " ; ")))
-    (if (equalp "=> " ret)
+    (if (equal "=> " ret)
         ;; TODO better error handling
         (insert cmnt "EVALUATION ERROR")
       ;; Mark should be returned after
@@ -557,7 +557,7 @@ STR: target string"
   "Eval scheme sexp before point, and pops up the result."
   (interactive)
   (let ((ret (geiser-eval-last-sexp nil)))
-    (popup-tip (if (equalp ret "⇒ ")
+    (popup-tip (if (equal ret "⇒ ")
                    "EVALUATION ERROR"
                  ret))))
 
