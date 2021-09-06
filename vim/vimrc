@@ -214,6 +214,7 @@ set formatoptions=croqnlj
 " than in ftplugin.
 
 let pub_wiki = {
+			\ 'name': 'public',
 			\ 'path': '~/wiki/public',
 			\ 'auto_tags': 1,
 			\ 'list_margin': 2,
@@ -226,6 +227,7 @@ let pub_wiki = {
 			" \                      'css': 'css' },
 
 let private_wiki = {
+			\ 'name': 'private',
 			\ 'path': '~/wiki/private',
 			\ 'auto_tags': 1,
 			\ 'list_margin': 2,
