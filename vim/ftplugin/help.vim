@@ -1,7 +1,7 @@
 set nospell
 set nonumber
 
-" Colorscheme deffinition {{{1
+" Colorscheme definition {{{1
 " This is the delek colorscheme, but with `delek_` prefixed to everything
 
 " Normal should come first

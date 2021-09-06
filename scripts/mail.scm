@@ -285,7 +285,9 @@
          (source ,'("~/.mutt/vim" "~/.mutt/colors"))
 
          (other
-          (auto_view ,(string-join '("text/html" "text/calendar" "application/ics")))
+          (auto_view ,(string-join '("text/html"
+                                     "text/calendar"
+                                     "application/ics")))
           (alternative_order ,(string-join '("text/plain" "text/enriched" "text/html")))
           (push "<last-entry>")
           (ignore "*")
