@@ -16,3 +16,8 @@ image/*; fbv '%s';
 
 application/pdf; mutt_bgrun zathura '%s' 2> /dev/null; test=test -n "$DISPLAY";
 application/pdf; pdftotext '%s' /dev/stdout; copiousoutput;
+
+# These require that mutt-ics is installed.
+# TOOD add a test for this.
+text/calendar; mutt-ics '%s'; copiousoutput;
+application/ics; mutt-ics '%s'; copiousoutput;
