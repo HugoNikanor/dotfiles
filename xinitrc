@@ -14,6 +14,9 @@ bgset=$HOME/.local/bin/setbackground
 BROWSER=xdg-open
 export BROWSER
 
+export XCURSOR_THEME=breeze_cursor
+export XCURSOR_SIZE=48
+
 # We have this last to allow overrides to the above specified
 # defaults.
 
