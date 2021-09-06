@@ -1,5 +1,10 @@
 live_config_reload: true
 
+colors:
+  normal:
+    # cyan: H 174, S 55, V 45
+    cyan: '#33726c'
+
 window:
   dynamic_padding: false
   dynamic_title: true
