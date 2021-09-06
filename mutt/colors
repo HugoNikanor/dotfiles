@@ -6,6 +6,8 @@
 # on the screen.
 #color index red default '=b deadline'
 
-color quoted green black
-color signature cyan black
-color hdrdefault cyan black
+color quoted green default
+color signature cyan default
+color hdrdefault cyan default
+
+color normal default default
