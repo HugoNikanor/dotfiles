@@ -35,6 +35,9 @@ cursor:
 #     launcher:
 #       program: xdg-open
 
+scrolling:
+  multiplier: 5
+
 
 # Run "$ alacritty --print-events | grep Key"
 # to find scancodes if a name is missing.
