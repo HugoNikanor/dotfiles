@@ -12,7 +12,8 @@
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 > import Data.Foldable (toList)
-> import Data.Maybe (catMaybes)
+> import Data.Maybe (catMaybes, fromMaybe)
+> import Data.Functor ((<&>))
 
 Provides symbol names for all weird X keycodes. So most things
 starting with xF86 in this file.
@@ -355,11 +356,6 @@ numpad enter...
 >
 >     , f (m  xK_space)   $ submap $ spaceSubmap conf
 
-The refresh's here is to force a redraw of the status bar, otherwise
-my brightness indicator doesn't update when the keys are pressed.
-
->     , ((0, xF86XK_MonBrightnessDown), io (updateBrightness $ -1000) >> refresh)
->     , ((0, xF86XK_MonBrightnessUp),   io (updateBrightness $  1000) >> refresh)
 >     ] where f a b = (a, b)
 >             m x = (modm, x)
 >             ms x = (modm .|. shiftMask, x)
@@ -483,9 +479,9 @@ Color config borrowed from my Termite config .
 
 TODO put a ^fg(red) before the slider when redshift is activated
 
-> brightness :: Logger.Logger
-> brightness = do
->   bright <- io getBrightness
+> brightness :: Backlight -> Logger.Logger
+> brightness backlight = do
+>   bright <- io (getBrightness backlight)
 >   return . Just $ slider (dzenIcon "brightness") bright
 
 #ifdef MIN_VERSION_dbus
@@ -593,12 +589,32 @@ set fallback sequnece for terminal emulators
 >     let volumeHook = []
 >     let volumeKeys _ = []
 #endif
->     let loghookExtras = [ return $ Just "^p(_RIGHT)^p(-760)"-- "^ba(1920,_RIGHT)" --
->                         , date "^fg(#ABABAB)%Y-%m-%d ^fg(white)%T^fg(#ABABAB) (%a v%V)"
+
+Set up brightness stuff
+
+>     mBacklight <- hasBacklight "intel_backlight"
+>     let brightnessHook = maybe [] (pure . brightness) mBacklight
+
+>     let brightnessKeys _ = fromMaybe [] $ mBacklight <&> \bl ->
+
+        The refresh's here is to force a redraw of the status bar, otherwise
+        my brightness indicator doesn't update when the keys are pressed.
+
+>           [ ( (0, xF86XK_MonBrightnessDown),
+>               io (updateBrightness bl $ -1000) >> refresh)
+>           , ( (0, xF86XK_MonBrightnessUp),
+>               io (updateBrightness bl  1000) >> refresh)
+>           ]
+
+>     let gray x  = dzenFg "#ABABAB" ++ x
+>     let white x = dzenFg "white" ++ x
+>     let loghookExtras = [ return $ Just "^p(_RIGHT)^p(-360)"-- "^ba(1920,_RIGHT)" --
+>                         , date $ gray "%Y-%m-%d" ++ white " %T " ++ gray "(%a v%V)"
 >                         , battery "BAT0"
->                         , brightness
->                         , swap
->                         ] ++ volumeHook
+>                         -- , swap
+>                         ]
+>                         ++ brightnessHook
+>                         ++ volumeHook
 >
 
 Config Modifiers
@@ -620,6 +636,7 @@ Allows rofi to find windows
 >               , monitorKeys
 >               -- , movementKeys
 >               , volumeKeys
+>               , brightnessKeys
 >               ]
 >         , terminal = termCommand
 >         , layoutHook = avoidStruts
