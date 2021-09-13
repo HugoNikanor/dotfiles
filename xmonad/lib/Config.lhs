@@ -102,7 +102,6 @@ to happen at points not currently in focus.
 
 
 > dropRight n = reverse . drop n . reverse
-> join = foldl (++) ""
 
 
 
@@ -274,7 +273,7 @@ Especially good on larger screens.
 
 > movementKeys = bindWithAndWithoutShift
 >   (\d -> windowGo d False >> banish LowerRight)
->   (\d -> windowSwap d False)
+>   (`windowSwap` False)
 >   [ (xK_h, L)
 >   , (xK_j, D)
 >   , (xK_k, U)
@@ -315,7 +314,7 @@ it like a lasso going out in that direction.
 >       ]
 
 > otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
-> otherKeys conf@(XConfig {XMonad.modMask = modm}) =
+> otherKeys conf@XConfig {XMonad.modMask = modm} =
 >     [ f (ms xK_Return)  $ spawn $ XMonad.terminal conf
 >     , f (m  xK_Return)  $ windows W.swapMaster
 
@@ -331,8 +330,8 @@ numpad enter...
 >     , f (m  xK_f)       $ sendMessage $ Toggle FULL
 >     , f (m  xK_n)       $ sendMessage NextLayout
 >
->     , f (m  xK_j)       $ B.focusDown
->     , f (m  xK_k)       $ B.focusUp
+>     , f (m  xK_j)         B.focusDown
+>     , f (m  xK_k)         B.focusUp
 >     , f (ms xK_j)       $ windows W.swapDown
 >     , f (ms xK_k)       $ windows W.swapUp
 >
@@ -344,15 +343,15 @@ numpad enter...
 >     , f (m  xK_l)       $ S.onGroup W.focusDown'
 >     , f (m  xK_h)       $ S.onGroup W.focusUp'
 >
->     , f (ms xK_c)       $ kill
+>     , f (ms xK_c)         kill
 >
->     , f (m  xK_s)       $ toggleWS
+>     , f (m  xK_s)         toggleWS
 >     , f (m  xK_g)       $ spawn "rofi -show window -show-icons"
 >     , f (m  xK_p)       $ shellPrompt myXPConfig { autoComplete = Nothing
 >                                                  , searchPredicate = isInfixOf }
 >     , f (m  xK_x)       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
 >     , f (m  xK_y)       $ spawn "passmenu"
->     , f (m  xK_q)       $ restartXMonad
+>     , f (m  xK_q)         restartXMonad
 >
 >     , f (m  xK_space)   $ submap $ spaceSubmap conf
 
@@ -448,7 +447,7 @@ Color config borrowed from my Termite config .
 > dzenCircle' r = "^co(" ++ show r ++ ")"
 
 > formatBatteryDzen :: Int -> String
-> formatBatteryDzen n = join [ color n, dzenIcon "battery", " " , show n, "%" ]
+> formatBatteryDzen n = concat [ color n, dzenIcon "battery", " " , show n, "%" ]
 >   where
 >     color n
 >         | n < 10    = dzenFg "red"
@@ -465,14 +464,13 @@ Color config borrowed from my Termite config .
 > battery :: FilePath -> Logger.Logger
 > battery supply = do
 >     let path = "/sys/class/power_supply/" ++ supply ++ "/capacity"
->     loggerIfFile path $ do
->        contents <- dropRight 1 <$> io (readFile path)
->        return . Just . formatBatteryDzen $ read contents
+>     loggerIfFile path $
+>        Just . formatBatteryDzen . read . dropRight 1 <$> io (readFile path)
 
 > dzenSlider :: (RealFrac a) => Integer -> Integer -> String -> a -> String
 > dzenSlider width radius icon value =
 >   let w = fromIntegral width
->       half_radi = fromIntegral . floor $ (fromIntegral radius) / 2
+>       half_radi = fromIntegral . floor $ fromIntegral radius / 2
 >       percentage = floor $ value * w - half_radi
 >       -- slide_base = printf "^r(%i)^p(-%i)^p(%i)" width width percentage
 >   in dzenRect width 1
@@ -535,7 +533,7 @@ my timeLocale, so I can *finally* get Swedish names!
 https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/src/XMonad.Util.Loggers.html#date
 
 > date :: String -> Logger.Logger
-> date fmt = io $ do cal <- (getClockTime >>= toCalendarTime)
+> date fmt = io $ do cal <- toCalendarTime =<< getClockTime
 >                    return . Just $ formatCalendarTime timeLocale fmt cal
 
 
@@ -644,7 +642,7 @@ It should be self explanitory enough (...). Here
 it's used to lower the amount of boilerplate needed.
 
 > bindWithAndWithoutShift noShift withShift binds
->   conf@(XConfig {XMonad.modMask = modm}) =
+>   conf@XConfig {XMonad.modMask = modm} =
 >   [ ((modm .|. m, k), f d)
 >   | (k, d) <- binds
 >   , (m, f) <- [ (0,         noShift)
