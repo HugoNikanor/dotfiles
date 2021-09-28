@@ -1,6 +1,10 @@
+" autocmd BufWritePost *.wiki execute '! cd %:h && git add %:t && git commit -m "% - auto"'
+
 setlocal formatoptions+=t
 setlocal expandtab
-setlocal shiftwidth=2
+setlocal shiftwidth=4
+
+setlocal nowrap
 
 nmap <silent><buffer> <CR> <Plug>VimwikiFollowLink
 vmap <silent><buffer> <CR> <Plug>VimwikiNormalizeLinkVisualCR
