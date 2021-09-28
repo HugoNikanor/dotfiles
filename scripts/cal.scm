@@ -50,7 +50,9 @@
 
 (account gcal (http)
          (remote
-          (url ,(format #f "https://calendar.google.com/calendar/ical/~a%40group.calendar.google.com/public/basic.ics" (? url-fragment)))))
+          (url ,(format #f "https://calendar.google.com/calendar/ical/~a%40group.calendar.google.com/public/basic.ics"
+                        ;; TODO rename this to `calendar-id'?
+                        (? url-fragment)))))
 
 (account timeedit (http)
          (remote
@@ -100,6 +102,10 @@
                    "https://backend.staben.info/info/calendar/d0c1"))
          (color "FF0000"))
 
+(account STABEN2021 (gcal)
+         (url-fragment "c_83pc34unvpq53cdm9coui8iunc")
+         (color "8B0000"))
+
 
 (account nolle_p_2020_fadder (gcal)
          (url-fragment "ad7hu028orn8oi1me3aq52nako")
@@ -109,6 +115,10 @@
 (account nolle_p_2020_klassfadder (gcal)
          (url-fragment "c_fblkkscl914d3i2297f82uq00c")
          (color "ADFF2F"))
+
+(account nolle_p_2021_fadder (gcal)
+         (url-fragment "c_hlc989be6glfs0k1tleaojirrs")
+         (color "70BD44"))
 
 
 (account lintek (gcal)
@@ -131,13 +141,30 @@
          (url-fragment "liuformulastudent.se_ls8331n8jpo570ilur31ig3vq0"))
 
 (account TDDE04 (timeedit)
-         (url-fragment "ri653Q85Y91Z90Q5Y7607QX9y5Zn614Z45Q2584Q687"))
+         (color "EE0000")
+         (url-fragment
+           "ri667XQ5686Z53Qm5Z0656Z6y1YQ700n6Y45Y6gQ10"
+           ))
+
+;; Signaler och System
+(account TSDT84 (timeedit)
+         (url-fragment
+           "ri667QQQY57Zn8Q5098354Z1y6Z06"))
+
+;; Kombinatorisk optimering
+(account TAOP33 (timeedit)
+         (url-fragment
+           "ri667QQQY57Zn8Q5478354Z1y6Z06"))
 
 (account D1 (timeedit)
          (color "FFA500")
-         (url-fragment 
+         (url-fragment
            "ri687Q7QYn4ZQ1Q502860976yZZQ6203"
            ))
+
+(account IP1 (timeedit)
+         (color "808000")
+         (url-fragment "ri667XQ5696Z53Qm2Z0806Z6y5YQ700n6Y95Y7gQ80"))
 
 (account D2 (timeedit)
          (url-fragment "ri687Q7QYn4ZQ1Q538650976yZZQ6305"))
@@ -146,7 +173,11 @@
          (url-fragment "ri607Q7QYn5ZQ2Q532850976yZZQ6204"))
 
 (account TDDI41_TDP031 (timeedit)
-         (url-fragment "ri634Q36Y87Z90Q5Y7887QX9y2Zn660Z45Q6524Q637"))
+         (url-fragment
+           "ri66ZXQ7686Z53Qm5X065606y6Y87081nY45Y6gQ907651QZ3"
+                       )
+         (color "BA55D3")
+         )
 
 (account TSTE24 (timeedit)
          (url-fragment "ri664XQn580Z55Qm77025ZZ6y9Y740QQ0Y45Y0gQ10764"))
@@ -166,7 +197,7 @@
 
 (account d_sektionen (http)
          (remote
-          (url "https://calendar.google.com/calendar/ical/webmaster%40d.lintek.liu.se/public/basic.ics")))
+           (url "http://kalender.d-sektionen.se")))
 
 (account alma (http)
          (remote
@@ -204,9 +235,13 @@
 
 
 (ensure-files destdir
-              D1 STABEN2020
+              IP1 STABEN2020
+              ;; STABEN2021
+              TDDE04
+     TDDI41_TDP031
   nolle_p_2020_fadder
-  nolle_p_2020_klassfadder)
+  nolle_p_2020_klassfadder
+  nolle_p_2021_fadder)
 
 
 (with-output-to-file path
@@ -215,10 +250,13 @@
      cal-top
      destdir
      ;; D1
+     ;; IP1
      ;; STABEN2020
-     ;; TDDE04
+     ;; STABEN2021
+     TDDE04
      ;; TDDE44
      ;; TSTE24
+     TAOP33 TSDT84
 
      formulastudent
      formulastudent_management
@@ -240,6 +278,7 @@
      alma
      lintek
 
-     nolle_p_2020_fadder
-     nolle_p_2020_klassfadder
+     ;; nolle_p_2020_fadder
+     ;; nolle_p_2020_klassfadder
+     nolle_p_2021_fadder
      )))
