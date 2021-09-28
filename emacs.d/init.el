@@ -588,8 +588,8 @@ STR: target string"
    ;; Let's pretend any scheme buffer is an interaction scheme buffer!
    ;; geiser-eval-last-sexp doesn't like guile reader extensions ("#")
    (setq *eval-sexp-print* 'geiser-eval-print-last-sexp
-         *eval-sexp*       'geiser-eval-popup-last-sexp)))
-
+         *eval-sexp*       'geiser-eval-popup-last-sexp)
+   (setq-local evil-lookup-func  #'geiser-doc-symbol-at-point)))
 
 ;; geiser-repl-mode
 
@@ -600,7 +600,6 @@ STR: target string"
   (setq-default
    ;; Geiser only looks at these, if this list is here
    geiser-active-implementations '(guile chicken racket)
-   evil-lookup-func #'geiser-doc-symbol-at-point
 
    geiser-guile-load-path '("/home/hugo/lib/guile" ".")
 
