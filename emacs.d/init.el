@@ -409,10 +409,10 @@ WIDTH: number of dashes in line"
    "k" 'scroll-down-line
    (kbd "RET") 'irfc-follow))
 
+(add-hook 'irfc-mode-hook #'flyspell-mode-off)
+
 (setq irfc-directory "~/.local/doc/rfc/")
 (defvar rfc-index-file (concat irfc-directory "rfc-index.txt"))
-
-;; TODO supress flyspell for rfc.* files
 
 ;; TODO download rfc-index.txt from
 ;; https://www.ietf.org/download/rfc-index.txt
