@@ -21,7 +21,7 @@ hasBacklight str = do
     let path = "/sys/class/backlight/" ++ str
     exists <- doesDirectoryExist path
     if exists
-        then return . Just . Backlight $ str
+        then return . Just . Backlight $ path
         else return Nothing
 
 getBrightness :: Backlight -> IO Double
