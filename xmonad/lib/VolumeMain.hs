@@ -1,21 +1,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import DBus (formatObjectPath)
-import Data.Maybe (fromJust)
+import Data.Maybe (fromJust, listToMaybe)
 
 import Volume
 
 import DBus
 import DBus.Client
 
-listSinks :: Client -> IO ()
-listSinks client = do
-    sinks <- getSinks client
+listSinks' :: Client -> IO ()
+listSinks' client = do
     putStrLn "Available sinks:"
-    mapM_ (\p -> do
-            name <- getDeviceName p client
-            let path = formatObjectPath p
-            putStrLn ("• " ++ path ++ " - " ++ name))
+    sinks <- listSinks client
+    mapM_ (\(path, name) -> let p = formatObjectPath path
+                            in putStrLn $ "• " ++ p ++ " - " ++ name)
         sinks
 
 listenForChanges :: Client -> IO ()
@@ -42,7 +40,7 @@ main :: IO ()
 main = do
     client <- fromJust <$> connectPulseDBus
 
-    listSinks client
+    listSinks' client
 
     return ()
 

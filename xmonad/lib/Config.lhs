@@ -12,7 +12,7 @@
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 > import Data.Foldable (toList)
-> import Data.Maybe (catMaybes, fromMaybe)
+> import Data.Maybe (catMaybes, fromMaybe, listToMaybe)
 > import Data.Functor ((<&>))
 
 Provides symbol names for all weird X keycodes. So most things
@@ -556,6 +556,14 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 > xmproc "gandalf" = "dzen2 -fn 'Roboto' -w 1920 -x 1920 -ta l -dock"
 > xmproc _         = "dzen2 -fn 'Fira Mono' -ta l -dock"
 
+nameMatches is used when finding proper PulseAudio sinks for the volume slider.
+However, since the current first alternative currently works for all
+my machines (and since regex libraries are "interesting" in Haskell)
+we just return a constant True here.
+
+> nameMatches :: String -> String -> Bool
+> nameMatches pattern str = True
+
 > xmain = do
 >     hostname <- head . lines <$> readFile "/etc/hostname"
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
@@ -573,10 +581,14 @@ set fallback sequnece for terminal emulators
 >
 #ifdef MIN_VERSION_dbus
 >     mPulseClient <- connectPulseDBus
->     -- let sinkName = "alsa_output.pci-0000_2a_00.4.analog-stereo"
->     let sinkName = "alsa_output.pci-0000_00_1f.3.analog-stereo"
 >     mPulsePath <- case mPulseClient of
->       Just pc -> getSinkByName sinkName pc
+
+We get the first path of the first sink which matches our pattern.
+
+>       Just pc -> listToMaybe
+>                   . (fmap fst)
+>                   . filter (nameMatches "alsa_autput.*analog-stereo" . snd)
+>                  <$> listSinks pc
 >       Nothing -> return Nothing
 >
 >     let volumeHook = toList $ volume <$> mPulsePath <*> mPulseClient

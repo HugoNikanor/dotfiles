@@ -100,3 +100,11 @@ getSinkByName name client = do
         Right ret -> return . fromVariant . head . methodReturnBody $ ret
         Left  err -> do putStrLn . show $ err
                         return Nothing
+
+listSinks :: Client -> IO [(ObjectPath, String)]
+listSinks client = do
+    sinks <- getSinks client
+    mapM (\path -> do
+            name <- getDeviceName path client
+            return (path, name))
+        sinks
