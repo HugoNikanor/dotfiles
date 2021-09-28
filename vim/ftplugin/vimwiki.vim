@@ -25,7 +25,7 @@ let g:tagbar_type_vimwiki = {
 " echomsg link_infos.anchor " [empty?]
 function! VimwikiLinkHandler(link)
 	let link = a:link
-	if link =~# '^\(help\|mail\):'
+	if link =~# '^\(help\|mail\|man\):'
 		let [scheme, data] = split(link, ":")
 	else " Default handler
 		return 0
@@ -38,6 +38,17 @@ function! VimwikiLinkHandler(link)
 	else
 		if scheme =~# "help"
 			exe "help " .  matchstr(data, "[^/]*$")
+			return 1
+		elseif scheme =~# "man"
+			let parts = split(data, "#")
+			echo parts
+			if len(parts) >= 2
+				let [name, section] = parts
+				exe printf("!man %s %s", section, name)
+			else
+				let name = data
+				exe printf("!man %s", name)
+			endif
 			return 1
 		elseif scheme =~# "mail"
 			let mailfile = system("mu find -u 'i:" . matchstr(data, "[^#]*") . "' -f l")
