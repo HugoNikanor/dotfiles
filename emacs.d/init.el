@@ -328,6 +328,11 @@ WIDTH: number of dashes in line"
            ("memv" . ?∈)
            ;; ("sum" . #x2211)              ; ∑
            ;; ("prod" . #x220f)             ; ∏
+           ;; These are nice, but my font doesn't render them
+           ;; correctly monospaced
+           ;; ("'()" . ?∅)
+           ;; ("or" . ?⋁)
+           ;; ("and" . ?⋀)
            ))))
 
 (add-hook 'scheme-mode-hook #'prettify-scheme)
