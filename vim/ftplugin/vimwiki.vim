@@ -6,7 +6,7 @@ nmap <silent><buffer> <CR> <Plug>VimwikiFollowLink
 vmap <silent><buffer> <CR> <Plug>VimwikiNormalizeLinkVisualCR
 inoremap <silent><buffer> <CR> <Esc>:VimwikiReturn 1 5<CR>
 
-autocmd BufWritePre index.wiki :VimwikiGenerateTags
+autocmd BufWritePre index.wiki :VimwikiGenerateTagLinks
 
 let g:tagbar_type_vimwiki = {
 			\   'ctagstype':'vimwiki'
