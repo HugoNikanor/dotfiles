@@ -88,3 +88,6 @@ TAGS
 
 # SQLite
 *.db
+
+# npm
+node_modules/
