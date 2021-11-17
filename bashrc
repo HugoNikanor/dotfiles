@@ -25,7 +25,19 @@ export GUILE_LOAD_PATH="/home/hugo/lib/guile"
 export XDG_DOCUMENTS_DIR="$HOME/ldoc"
 export XDG_DOWNLOAD_DIR="$HOME/down/other"
 export XDG_PICTURES_DIR="$HOME/pic"
-export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
+
+case $(uname) in
+	Linux)
+		export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
+		;;
+	FreeBSD)
+		SSH_AUTH_SOCK=/tmp/$(whoami)-ssh-agent.socket
+		if [ -S $SSH_AUTH_SOCK ]; then
+			export SSH_AUTH_SOCK
+		else
+			eval `ssh-agent -a $SSH_AUTH_SOCK`
+		fi
+esac
 
 which lesspipe >/dev/null 2>&1 && eval $(lesspipe)
 
