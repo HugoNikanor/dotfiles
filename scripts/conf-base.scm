@@ -60,7 +60,7 @@
 
 
 (define (string-last s)
-  (string-ref (string-reverse s) 0))
+  (string-ref s (1- (string-length s))))
 
 (define (string-first s)
   (string-ref s 0))

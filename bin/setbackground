@@ -3,7 +3,7 @@
 set -x
 
 get_images() {
-	for x in { 0..$monitor_count }; do
+	for x in { 1..$monitor_count }; do
 		tmp=$(mktemp --suffix .png)
 		echo $tmp
 		curl --silent -L -o $tmp https://wrya.net/services/wallpaper/4chan.php

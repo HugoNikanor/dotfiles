@@ -30,8 +30,7 @@ PASSBASE=automation/
 
 get_free_port() {
 	for p in {8080..9000}; do
-		echo > /dev/tcp/localhost/$p
-		if [ $? -ne 0 ]; then
+		if echo > /dev/tcp/localhost/$p; then
 			echo $p
 			return
 		fi
@@ -101,13 +100,13 @@ new_token() {
 main () {
 	token_name=$1
 
-	if `pass $PASSBASE/$token_name > /dev/null 2>&1`; then
+	if pass $PASSBASE/$token_name > /dev/null 2>&1; then
 		refresh_token=$(pass $PASSBASE/$token_name | jq -r '.refresh_token')
 
-		if [ "x$refresh_token" = 'xnull' -o "x$refresh_token" = 'x' ]; then
+		if [ "$refresh_token" = 'null' ] || [ "$refresh_token" = '' ]; then
 			new_token $token_name
 		else
-			elapsed=$[ `date +%s` - `stat "$PASSWORD_STORE/$PASSBASE/$token_name.gpg" -c '%Y'` ]
+			elapsed=$(( $(date +%s) - $(stat "$PASSWORD_STORE/$PASSBASE/$token_name.gpg" -c '%Y') ))
 			# 3599 should be checked from the token file...
 			if [ $elapsed -gt 3599 ]; then
 				echo "Refreshing token '$token_name'" 1>&2
@@ -133,7 +132,7 @@ write_xoauth2_token() {
 
 token_name=$1
 shift
-if [ "x$token_name" = "x" ]; then
+if [ "$token_name" = "" ]; then
 	echo "Missing token name!" 1>&2
 	exit 1
 fi
