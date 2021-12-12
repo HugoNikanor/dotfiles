@@ -159,6 +159,10 @@
          (url-fragment
            "ri667QQQY57Zn8Q5478354Z1y6Z06"))
 
+;; Inledande Matematisk Analys
+(account TATB04 (timeedit)
+         (url-fragment "ri667QQQY58Zn8Q5268054Z1y6Z56"))
+
 (account D1 (timeedit)
          (color "FFA500")
          (url-fragment
@@ -249,7 +253,9 @@
      TDDE04
      ;; TDDE44
      ;; TSTE24
-     TAOP33 TSDT84
+     ;; TAOP33
+     ;; TSDT84
+     TATB04
 
      formulastudent
      formulastudent_management
