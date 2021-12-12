@@ -7,10 +7,14 @@
     (lambda (acc)
       (let ((o (instanciate acc)))
         ;; TODO map over all files. However, map-subtree seems broken
-        (define f (path-append 
-                    destdir (get-field o '(files color path))))
-        (mkdir-p (dirname f))
-        (with-output-to-file f
-          (lambda () (display (get-field o '(files color content)))
-            (newline)))))
+        (catch 'misc-error
+               (lambda ()
+                 (define f (path-append
+                             destdir (get-field o '(files color path))))
+                 (define content (get-field o '(files color content)))
+                 (mkdir-p (dirname f))
+                 (with-output-to-file f
+                   (lambda () (display content) (newline))))
+               (lambda args
+                 (format #t "Something went wrong ~s~%" args)))))
     accounts))

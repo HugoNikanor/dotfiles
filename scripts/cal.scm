@@ -234,21 +234,8 @@
 (mkdir-p (dirname path))
 
 
-(ensure-files destdir
-              IP1 STABEN2020
-              ;; STABEN2021
-              TDDE04
-     TDDI41_TDP031
-  nolle_p_2020_fadder
-  nolle_p_2020_klassfadder
-  nolle_p_2021_fadder)
-
-
-(with-output-to-file path
-  (lambda ()
-    (vdirsyncer:render
-     cal-top
-     destdir
+(define calendars
+  (list
      ;; D1
      ;; IP1
      ;; STABEN2020
@@ -281,4 +268,18 @@
      ;; nolle_p_2020_fadder
      ;; nolle_p_2020_klassfadder
      nolle_p_2021_fadder
-     )))
+     ))
+
+
+(apply ensure-files destdir calendars)
+
+(with-output-to-file path
+  (lambda ()
+    (apply  vdirsyncer:render
+     cal-top destdir
+     calendars)))
+
+#;
+(for-each (lambda (cal)
+            (format #t "~a~%" (get-field (instanciate cal) '(acc-name))))
+          calendars)
