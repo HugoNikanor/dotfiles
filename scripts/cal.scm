@@ -122,13 +122,16 @@
 
 
 (account lintek (gcal)
+         (color "E1007A")
          (url-fragment "lintek.liu.se_jcf23946cujnbq9utv89g7fhcc"))
 
 (account Facebook (http)
+         (color "4267B2")
          (remote (url "https://www.facebook.com/events/ical/upcoming/?uid=100000482656459&key=8hYDDImKk9Uh7tRO")))
 
 
 (account lithekod (gcal)
+         (color "1ec6ba")
          (url-fragment "lithekod.se_fa4msgl7qpmsdns5oc4fq48ago"))
 
 (account lithekod_styrelse (gcal)
@@ -196,6 +199,7 @@
          (url-fragment "ri660XQn020Z56Qm07075ZZ6y9Y740QQ0Y43Y5gQ00765"))
 
 (account d_sektionen (http)
+         (color "754022")
          (remote
            (url "http://kalender.d-sektionen.se")))
 
@@ -206,6 +210,7 @@
 ;; TODO
 ;; Make required fields for these more apparent (in their parents)
 (account fruux (caldav)
+         (color "1E90FF")
          (pass-path ,(format
                       #f "fruux.com/hugo.hornquist@gmail.com/vdirsyncer/~a"
                       (? remote username)))
@@ -219,6 +224,7 @@
           ))
 
 (account admittansen (google)
+         (color "ffc0cb")
          (remote
           (client_id ,(pass "admittansen/google/oauth/client_id"))
           (client_secret ,(pass "admittansen/google/oauth/client_secret"))))
