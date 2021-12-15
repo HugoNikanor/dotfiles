@@ -30,7 +30,10 @@ PASSBASE=automation/
 
 get_free_port() {
 	for p in {8080..9000}; do
-		if echo > /dev/tcp/localhost/$p; then
+		# A direct if on the echo doen't work correctly, leading to us
+		# allocating an already used port
+		echo > /dev/tcp/localhost/$p
+		if [ $? -ne 0 ]; then
 			echo $p
 			return
 		fi
