@@ -3,8 +3,15 @@
 resources=$HOME/.Xresources
 test -f $resources && xrdb -merge $resources
 
-picom &
-termite &
+case "$WM" in
+	# Having picom started prevents Plasma from starting its compositor
+	startplasma-x11) ;;
+	*)
+		picom &
+		;;
+esac
+
+# termite &
 # feh --bg-fill https://wrya.net/services/wallpaper/4chan.php &
 # xrandr --listmonitors | awk -F' ' '/^Monitors:/ { print  }' 
 
