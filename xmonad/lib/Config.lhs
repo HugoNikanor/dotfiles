@@ -356,6 +356,9 @@ numpad enter...
 >
 >     , f (m  xK_space)   $ submap $ spaceSubmap conf
 
+>     , f (m  xK_Up)      $ spawn "xrandr -o inverted"
+>     , f (m  xK_Down)    $ spawn "xrandr -o normal"
+>
 >     ] where f a b = (a, b)
 >             m x = (modm, x)
 >             ms x = (modm .|. shiftMask, x)
