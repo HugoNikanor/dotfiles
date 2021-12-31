@@ -380,6 +380,7 @@ smartly after.
 >     [ isDialog                --> doSmartFloat
 >     , className =? "Gvim"     --> doSmartFloat
 >     , className =? "Pinentry" --> doSmartFloat
+>     , className =? "pinentry-qt" --> doSmartFloat
 >     , className =? "Floating" --> doSmartFloat
 >     , className =? "VirtualBox" --> doSmartFloat
 >     , className =? "Gimp" --> doShift "gimp"
