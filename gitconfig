@@ -3,6 +3,7 @@
 [user]
 	email = hugo@lysator.liu.se
 	name = Hugo Hörnquist
+	signingkey = E376B3821453F4BE1ED6F3C1265514B158C4CA23
 [push]
 	default = current
 [diff]
