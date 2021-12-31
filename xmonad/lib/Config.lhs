@@ -52,6 +52,8 @@ This is the analoge of =/usr/include/X11/XF86keysym.h=.
 >     , dynamicLogWithPP
 >     , ppCurrent
 >     , ppTitle
+>     , ppVisible
+>     , ppHidden
 >     , ppWsSep
 >     , ppSep
 >     , ppOutput
@@ -542,7 +544,9 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/src/XMonad.Util.Log
 https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-DynamicLog.html
 
 > myLogHook handle extras = dynamicLogWithPP $ funcPP
->   { ppCurrent = \str -> colorFunc "yellow" bgColor' $ "[" ++ str ++ "]"
+>   { ppCurrent = \str -> colorFunc bgColor' "yellow" $ " " ++ str ++ " "
+>   , ppVisible = \name -> colorFunc bgColor' "white" $ " " ++ name ++ " "
+>   , ppHidden = \name -> colorFunc bgColor' "grey" $ " " ++ name ++ " "
 >   , ppTitle = shorten 100
 >   , ppWsSep = " "
 >
