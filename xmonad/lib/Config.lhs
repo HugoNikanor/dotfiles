@@ -546,7 +546,7 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Hooks-Dynami
 >   , ppTitle = shorten 100
 >   , ppWsSep = " "
 >
->   , ppSep = "^fg() | "
+>   , ppSep = dzenFg "" ++ " | "
 >   , ppOutput = hPutStrLn handle
 
 
@@ -606,7 +606,7 @@ We get the first path of the first sink which matches our pattern.
 #else
 >     let volumeHook = []
 >     let volumeKeys _ = []
-#endif
+#endif /* MIN_VERSION_dbus */
 
 Set up brightness stuff
 
