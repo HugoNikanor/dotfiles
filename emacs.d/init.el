@@ -776,3 +776,4 @@ file for it to work as expceted."
 
 (provide 'init)
 ;;; init.el ends here
+(put 'narrow-to-page 'disabled nil)
