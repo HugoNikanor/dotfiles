@@ -15,6 +15,8 @@
 > import Data.Maybe (catMaybes, fromMaybe, listToMaybe)
 > import Data.Functor ((<&>))
 
+> import Text.Printf (printf)
+
 Provides symbol names for all weird X keycodes. So most things
 starting with xF86 in this file.
 
@@ -504,9 +506,9 @@ TODO put a ^fg(red) before the slider when redshift is activated
 >   alist <- io $ fmap words <$> lines <$> readFile "/proc/meminfo"
 >   let [_, total', totalSuff] = head $ filter ((== "SwapTotal:") . head) alist
 >   let [_, free', freeSuff]   = head $ filter ((== "SwapFree:")  . head) alist
->   let used = read total' / read free'
->   let unused = 1.0 - used
->   return . Just $ show (unused * 100) ++ "%"
+>   let unused = read free' / read total'
+>   let used = (1.0 :: Float) - used
+>   return . Just $ printf "%.1f%%" (used * 100)
 
 Log hook borrowed from https://pastebin.com/Pt8LCprY.
 
