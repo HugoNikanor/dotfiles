@@ -1,0 +1,187 @@
+#!/usr/bin/env python3
+
+"""
+Procedures for scrambling and unscrambling TimeEdits obfuscated strings
+"""
+
+import math
+import sys
+from optparse import OptionParser
+
+tabledata = [
+    ["h=t&sid=", "6="],
+    ["objects=", "1="],
+    ["sid=", "2="],
+    ["&ox=0&types=0&fe=0", "3=3"],
+    ["&types=0&fe=0", "5=5"],
+    ["&h=t&p=", "4="],
+]
+
+tabledataspecial = [
+    ["=", "ZZZX1"],
+    ["&", "ZZZX2"],
+    [",", "ZZZX3"],
+    [".", "ZZZX4"],
+    [" ", "ZZZX5"],
+    ["-", "ZZZX6"],
+    ["/", "ZZZX7"],
+    ["%", "ZZZX8"],
+]
+
+pairs = [
+    ["=", "Q"],
+    ["&", "Z"],
+    [",", "X"],
+    [".", "Y"],
+    [" ", "V"],
+    ["-", "W"],
+]
+
+pattern = [4, 22, 5, 37, 26, 17, 33, 15, 39, 11, 45, 20, 2, 40, 19, 36, 28, 38, 30, 41, 44, 42, 7, 24, 14, 27, 35, 25, 12, 1, 43, 23, 6, 16, 3, 9, 47, 46, 48, 50, 21, 10, 49, 32, 18, 31, 29, 34, 13, 8]
+
+
+
+def tableshort(result):
+    for key in tabledata:
+        result = result.replace(key[0], key[1], 1)
+    return result
+
+def untableshort(result):
+    for key in tabledata:
+        result = result.replace(key[1], key[0])
+    return result
+
+
+
+def modKey(c):
+    if 97 <= c <= 122:
+        return 97 + ((c - 88) % 26)
+    if 49 <= c <= 57:
+        return 49 + ((c - 45) % 9)
+    return c
+
+
+def unmodKey(c):
+    ch = ord(c)
+    if ord('1') <= ch <= ord('9'):
+        return chr(ord('1') + [(ord(x) - 45) % 9 
+            for x in "123456789"].index(ch - ord('1')))
+    elif ord('a') <= ch <= ord('z'):
+        return chr(ord('a') + [(x - 88) % 26 
+            for x in range(ord('a'), ord('z') + 1)].index(ch - ord('a')))
+    return c
+
+
+
+def scrambleChar(c):
+    for pair in pairs:
+        if (c == pair[0]): return pair[1]
+        if (c == pair[1]): return pair[0]
+    return chr(modKey(ord(c)))
+
+def unscrambleChar(c):
+    for pair in pairs:
+        if c == pair[0]:
+            return pair[1]
+        if c == pair[1]:
+            return pair[0]
+    return unmodKey(c)
+
+
+
+def swap(result, f, t):
+    if not 0 <= f < len(result):
+        return
+    if not 0 <= t < len(result):
+        return
+    result[f], result[t] = result[t], result[f]
+
+
+
+
+def swapPattern(result):
+    steps = len(result)
+    for step in range(steps):
+        for index in range(1, len(pattern), 2):
+            f = pattern[index] + step * len(pattern)
+            t = pattern[index - 1] + step * len(pattern)
+            swap(result, f, t)
+    return result
+
+
+def unswapPattern(result):
+    steps = math.ceil(len(result))
+    for step in range(steps):
+        for index in range(1, len(pattern), 2):
+            swap(result, 
+                    pattern[index] + step * len(pattern),
+                    pattern[index - 1] + step * len(pattern))
+
+
+
+def swapChar(result):
+    split = list(result)
+    split = [scrambleChar(c) for c in split]
+    split = swapPattern(split)
+    return ''.join(split)
+
+
+def unswapchar(result):
+    result = [unscrambleChar(c) for c in result]
+    unswapPattern(result)
+    return ''.join(result)
+
+
+
+
+def tablespecial(result):
+    for i in range(100):
+        for key in tabledataspecial:
+            result = result.replace(key[0], key[1], 1)
+    return result
+
+
+def untablespecial(result):
+    result = result[::-1]
+    for i in range(100):
+        for key in tabledataspecial:
+            result = result.replace(key[1][::-1], key[0], 1)
+    result = result[::-1]
+    return result
+
+
+
+def scramble(query):
+    # TODO result = decodeURIComponent(query)
+    result = query
+    result = tableshort(result)
+    result = swapChar(result)
+    result = tablespecial(result)
+    # TODO result = encodeURIComponent(result)
+    return result
+
+def unscramble(query):
+    # TODO URI Encoding
+    result = untablespecial(query)
+    result = unswapchar(result)
+    result = untableshort(result)
+    return result
+
+if __name__ == '__main__':
+
+    parser = OptionParser()
+    parser.add_option('-s', '--scramble',  action='store_true',  dest='scramble')
+    parser.add_option('-u', '--unscramble', action='store_false', dest='scramble')
+
+    (options, args) = parser.parse_args()
+    query = args[0]
+
+    if options.scramble:
+        print('ri' + scramble(query))
+    # unscramble
+    else:
+        if query[:2] == 'ri':
+            result = query[2:]
+        else:
+            result = query
+        print(unscramble(result))
