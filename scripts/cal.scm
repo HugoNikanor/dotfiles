@@ -2,18 +2,27 @@
 --no-auto-compile -s
 !#
 
-(add-to-load-path (dirname (current-filename)))
+(define here (dirname (current-filename)))
+
+(add-to-load-path here)
+(add-to-load-path "/home/hugo/code/calp/module")
+
+(chdir here)
 
 (use-modules (conf-base)
              (util)
              ((vdirsyncer) #:prefix vdirsyncer:)
-             (files))
+             ((timeedit) #:prefix timeedit:)
+             (files)
+             (datetime)
+             ((calp util) #:select (->)))
 
 ;; http://vdirsyncer.pimutils.org/en/stable/config.html
 
 (define static-passwords
   (getenv "STATIC_PASSWORD"))
 (define destdir (or (getenv "DESTDIR") "/"))
+
 
 (account cal-top ()
          (prefix ,(or (getenv "PREFIX")
@@ -55,9 +64,25 @@
                         (? url-fragment)))))
 
 (account timeedit (http)
+         (search ,(? acc-name))
+         (period ,(list (start-of-year (current-date))
+                        (-> (current-date)
+                            start-of-year
+                            (date+ (date #:year 1))
+                            (date- (date #:day 1)))))
+
          (remote
-          (url ,(format #f "https://cloud.timeedit.net/liu/web/schema/~a.ics"
-                        (? url-fragment)))))
+          (url ,(format #f "~a/~a.ics"
+                        timeedit:urlbase
+                        (timeedit:scramble
+                          (timeedit:encode-query-parameters
+                          `((sid . 3)
+                            (p . ,(timeedit:parse-period (? period)))
+                            (objects . ,(let ((s (? search)))
+                                          (if (list? s)
+                                            (string-join (map timeedit:getIdent s) ",")
+                                            (timeedit:getIdent s))))
+                             )))))))
 
 (account caldav (cal)
          ;; 'from a' means to discover from the server
@@ -143,64 +168,21 @@
 (account formulastudent_management (gcal)
          (url-fragment "liuformulastudent.se_ls8331n8jpo570ilur31ig3vq0"))
 
-(account TDDE04 (timeedit)
-         (color "EE0000")
-         (url-fragment
-           "ri667XQ5686Z53Qm5Z0656Z6y1YQ700n6Y45Y6gQ10"
-           ))
-
-;; Signaler och System
-(account TSDT84 (timeedit)
-         (url-fragment
-           "ri667QQQY57Zn8Q5098354Z1y6Z06"))
-
-;; Kombinatorisk optimering
-(account TAOP33 (timeedit)
-         (url-fragment
-           "ri667QQQY57Zn8Q5478354Z1y6Z06"))
-
-;; Inledande Matematisk Analys
-(account TATB04 (timeedit)
-         (url-fragment "ri667QQQY58Zn8Q5268054Z1y6Z56"))
-
-(account D1 (timeedit)
-         (color "FFA500")
-         (url-fragment
-           "ri687Q7QYn4ZQ1Q502860976yZZQ6203"
-           ))
-
-(account IP1 (timeedit)
-         (color "808000")
-         (url-fragment "ri667XQ5696Z53Qm2Z0806Z6y5YQ700n6Y95Y7gQ80"))
-
-(account D2 (timeedit)
-         (url-fragment "ri687Q7QYn4ZQ1Q538650976yZZQ6305"))
-
-(account D3 (timeedit)
-         (url-fragment "ri607Q7QYn5ZQ2Q532850976yZZQ6204"))
 
 (account TDDI41_TDP031 (timeedit)
-         (url-fragment
-           "ri66ZXQ7686Z53Qm5X065606y6Y87081nY45Y6gQ907651QZ3"
-                       )
+         (period 4)
+         (search ,'("TDDI41" "TDP031"))
          (color "BA55D3")
          )
 
-(account TSTE24 (timeedit)
-         (url-fragment "ri664XQn580Z55Qm77025ZZ6y9Y740QQ0Y45Y0gQ10764"))
-
-(account TDDE44 (timeedit)
-         (url-fragment "ri697Q7QYn6ZQ6Q552865471yZZQ6805"))
-
-(account TATA41 (timeedit)
-         (url-fragment "ri660XQn020Z56Qm67035ZZ6y9Y740QQ0Y43Y5gQ60765"))
-
 ; flervariabel
-(account TATA76 (timeedit)
-         (url-fragment "ri687Q7QYn3ZQ6Q551865471yZZQ6805"))
+(account TATA76 (timeedit))
 
-(account TDDB68 (timeedit)              ; pintos
-         (url-fragment "ri660XQn020Z56Qm07075ZZ6y9Y740QQ0Y43Y5gQ00765"))
+(account TDDD20 (timeedit))
+
+(account TDDD98 (timeedit))
+
+(account TDDD14 (timeedit))
 
 (account d_sektionen (http)
          (color "754022")
@@ -246,16 +228,8 @@
 
 (define calendars
   (list
-     ;; D1
-     ;; IP1
      ;; STABEN2020
      ;; STABEN2021
-     TDDE04
-     ;; TDDE44
-     ;; TSTE24
-     ;; TAOP33
-     ;; TSDT84
-     TATB04
 
      formulastudent
      formulastudent_management
@@ -266,10 +240,11 @@
      ;; lithekod_styrelse
      fruux
 
-     TDDI41_TDP031
-     ;; TATA41
-     ;; TDDB68
-     ;; TATA76
+     ;; TDDI41_TDP031
+     TATA76
+     TDDD20
+     TDDD98
+     TDDD14
 
      d_sektionen
      admittansen
