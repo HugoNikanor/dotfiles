@@ -266,7 +266,10 @@
      cal-top destdir
      calendars)))
 
-#;
-(for-each (lambda (cal)
-            (format #t "~a~%" (get-field (instanciate cal) '(acc-name))))
-          calendars)
+
+(with-output-to-file
+  (path-append destdir "/home/hugo/.config/vdirsyncer/calendars")
+  (lambda ()
+    (for-each (lambda (cal)
+                (format #t "~a~%" (get-field (instanciate cal) '(acc-name))))
+              calendars)))
