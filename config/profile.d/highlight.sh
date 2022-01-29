@@ -1,0 +1,1 @@
+export HIGHLIGHT_OPTIONS=-Oansi
