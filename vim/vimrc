@@ -213,30 +213,15 @@ set formatoptions=croqnlj
 " Something with how Vimwiki loads requires that this is here rather
 " than in ftplugin.
 
-let pub_wiki = {
-			\ 'name': 'public',
-			\ 'path': '~/wiki/public',
-			\ 'auto_tags': 1,
-			\ 'list_margin': 2,
-			\ 'auto_toc': 1,
-			\ 'automatic_nested_syntaxes': 1,
-			\ 'maxhi': 1,
-			\ 'template_path': '~/wiki/public/templates/',
-			\ }
-			" \ 'nested_syntaxes': { 'php': 'php',
-			" \                      'css': 'css' },
+let g:vimwiki_list = []
 
-let private_wiki = {
-			\ 'name': 'private',
-			\ 'path': '~/wiki/private',
-			\ 'auto_tags': 1,
-			\ 'list_margin': 2,
-			\ 'auto_toc': 1,
-			\ 'automatic_nested_syntaxes': 1,
-			\ 'template_path': '~/wiki/public/templates/',
-			\ }
-
-let g:vimwiki_list = [pub_wiki, private_wiki]
+" Dynamically load wikis from disk, instead of hardcoding them here
+" We might want something to define an order here, instead of taking
+" whatever glob gives us.
+for script in glob("~/wiki/*/.wiki.vim")->split('\n')
+	exec ":source " . script
+	let g:vimwiki_list += [wiki]
+endfor
 
 " let g:vimwiki_hl_headers = 1
 let g:vimwiki_hl_cb_checked = 1
