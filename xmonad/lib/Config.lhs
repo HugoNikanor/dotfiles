@@ -354,6 +354,7 @@ numpad enter...
 >     , f (m  xK_g)       $ spawn "rofi -show window -show-icons"
 >     , f (m  xK_p)       $ shellPrompt myXPConfig { autoComplete = Nothing
 >                                                  , searchPredicate = isInfixOf }
+>     , f (ms xK_p)       $ spawn "rofi -show drun -show-icons"
 >     , f (m  xK_x)       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
 >     , f (m  xK_y)       $ spawn "passmenu"
 >     , f (m  xK_q)         restartXMonad
