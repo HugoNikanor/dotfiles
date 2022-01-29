@@ -402,6 +402,11 @@ smartly after.
 >     -- this allows the "notification popup" to be placed correctly.
 >     -- it does however still steal focus.
 >     , title =? "Microsoft Teams Notification" --> doIgnore
+
+WM_NAME(STRING) =
+_NET_WM_NAME(UTF8_STRING) = "zoom"
+
+>     , title =? "zoom" --> doFloat
 >     -- , (className =? "teams") <> (title =? "") --> doIgnore
 >     , className =? "teams" --> doIgnore
 >     -- , className =? "VirtualBox Machine" --> doIgnore
