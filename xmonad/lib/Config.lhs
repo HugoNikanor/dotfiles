@@ -91,6 +91,10 @@ to happen at points not currently in focus.
 > import XMonad.Util.Types (Direction2D (U, D, L, R))
 > import XMonad.Util.Run (spawnPipe)
 > import qualified XMonad.Util.Loggers as Logger
+> import XMonad.Util.Scratchpad
+>   ( scratchpadManageHook
+>   , scratchpadSpawnActionCustom
+>   )
 
 > import qualified Data.Map as M
 > import qualified XMonad.StackSet as W
@@ -358,6 +362,8 @@ numpad enter...
 >     , f (m  xK_x)       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
 >     , f (m  xK_y)       $ spawn "passmenu"
 >     , f (m  xK_q)         restartXMonad
+>
+>     , f (ms xK_f)       $ scratchpadSpawnActionCustom "dolphin --name scratchpad"
 >
 >     , f (m  xK_space)   $ submap $ spaceSubmap conf
 
@@ -674,6 +680,11 @@ Allows rofi to find windows
 >                      $ myLayouts
 >         , manageHook
 >                =  manageDocks
+>               <+> scratchpadManageHook (W.RationalRect
+>                                           0.25  -- left
+>                                           0.25  -- right
+>                                           0.5   -- width
+>                                           0.5)  -- height
 >               <+> myManageHook
 >               <+> insertPosition Below Newer
 >         , workspaces = ["term", "web"] ++ map show [3 .. nScreens]
