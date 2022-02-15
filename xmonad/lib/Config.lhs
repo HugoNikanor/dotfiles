@@ -672,7 +672,10 @@ Allows rofi to find windows
 >                      $ S.subTabbed
 >                      $ B.boringWindows
 >                      $ myLayouts
->         , manageHook = manageDocks <+> myManageHook <+> insertPosition Below Newer
+>         , manageHook
+>                =  manageDocks
+>               <+> myManageHook
+>               <+> insertPosition Below Newer
 >         , workspaces = ["term", "web"] ++ map show [3 .. nScreens]
 >         , normalBorderColor  = "#1d1f21"
 >         , focusedBorderColor = "#FF0000"
