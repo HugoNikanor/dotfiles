@@ -1,0 +1,4 @@
+enable-mouse = yes
+set-xterm-title = yes
+xterm-title-format = ncmpc - [%title%|%file%]
+enable-colors = no
