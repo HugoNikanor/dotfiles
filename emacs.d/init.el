@@ -674,6 +674,13 @@ STR: target string"
 
 
 
+;; Python
+
+(with-eval-after-load 'python
+  (evil-define-key '(visual) python-mode-map
+    (kbd "C-j") 'python-shell-send-region))
+
+
 
 (defun calp-connect ()
   (interactive)
