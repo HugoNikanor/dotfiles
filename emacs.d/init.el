@@ -138,6 +138,7 @@ ENVIRONMENTS: all hooks to bind to"
    (xref-backend-identifier-completion-table (xref-find-backend))))
 
 (add-hook 'geiser-mode-hook 'def-read-tag-name)
+(add-hook 'geiser-repl-mode-hook 'def-read-tag-name)
 (add-hook 'emacs-lisp-mode-hook 'def-read-tag-name)
 
 (evil-ex-define-argument-type tag
