@@ -16,7 +16,7 @@ HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-true ${BROWSER:="elinks"}
+test "$BROWSER" = elinks || export BROWSER=elinks
 export EDITOR="/usr/bin/vim"
 export RTV_EDITOR="/usr/bin/vim"
 export RTV_URLVIEWER="/usr/bin/urlview"
@@ -28,22 +28,21 @@ export XDG_PICTURES_DIR="$HOME/pic"
 
 case $(uname) in
 	Linux)
-		export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
+		SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
 		;;
 	FreeBSD)
 		SSH_AUTH_SOCK=/tmp/$(whoami)-ssh-agent.socket
-		if [ -S $SSH_AUTH_SOCK ]; then
-			export SSH_AUTH_SOCK
-		else
-			eval `ssh-agent -a $SSH_AUTH_SOCK`
+		if [ ! -S "$SSH_AUTH_SOCK" ]; then
+			eval "$(ssh-agent -a "$SSH_AUTH_SOCK")"
 		fi
 esac
+export SSH_AUTH_SOCK
 
-which lesspipe >/dev/null 2>&1 && eval $(lesspipe)
+command -v lesspipe >/dev/null && eval "$(lesspipe)"
 
 # FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
-if [ $TERM == "xterm-termite" ]; then
+if [ "$TERM" == xterm-termite ]; then
 	test -f /etc/profile.d/vte*.sh && . /etc/profile.d/vte*.sh
 # 	export TERM=xterm
 fi
