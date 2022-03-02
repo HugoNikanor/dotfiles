@@ -16,8 +16,6 @@ env:
   TERM: xterm-256color
 
 font:
-  # No idea what's the deal with font size
-  size: 8.0
   normal:
     family: Fira Mono
   offset:
@@ -69,3 +67,4 @@ import:
   - ~/.config/alacritty/color.yml
   # override them with day/night specific if present
   - ~/.config/alacritty/daynight.yml
+  - ~/.config/alacritty/host.yml
