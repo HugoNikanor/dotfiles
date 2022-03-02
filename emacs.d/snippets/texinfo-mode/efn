@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: efn
+# key: efn
+# --
+@deffn {Scheme Procedure} $1
+$0
+@end deffn

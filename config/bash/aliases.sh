@@ -26,7 +26,7 @@ vibin() { $EDITOR $(which $1); }
 # pb() { curl -F c="@${1:--}" https://ptpb.pw?u=1; }
 pb() { curl -F 'f:1=<-' ix.io; }
 
-# aliases of questionable quality 
+# aliases of questionable quality
 
 [ -x /usr/bin/perl-rename ] && alias rename="perl-rename"
 alias eclim="eclim -command"
@@ -37,7 +37,7 @@ alias ecat='elinks -dump'
 alias kitty="cat"
 alias nano="echo \"Seriously? Why don't you just use Notepade.exe? Or MS Paint?\""
 
-if [ $(uname -s) == "Linux" ]; then 
+if [ $(uname -s) == "Linux" ]; then
 	# enable colors if available
 	if [ -x /usr/bin/dircolors ]; then
 		test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"

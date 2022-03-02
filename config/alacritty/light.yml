@@ -12,7 +12,8 @@ colors:
     black:    '#090300'
     red:      '#db2d20'
     green:    '#01a252'
-    yellow:   '#fded02'
+    # The actual yellow of this colorscheme is #fded02, but it's unreadable. 
+    yellow:   '#f59700'
     blue:     '#01a0e4'
     magenta:  '#a16a94'
     cyan:     '#b5e4f4'

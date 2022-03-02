@@ -138,6 +138,7 @@ ENVIRONMENTS: all hooks to bind to"
    (xref-backend-identifier-completion-table (xref-find-backend))))
 
 (add-hook 'geiser-mode-hook 'def-read-tag-name)
+(add-hook 'geiser-repl-mode-hook 'def-read-tag-name)
 (add-hook 'emacs-lisp-mode-hook 'def-read-tag-name)
 
 (evil-ex-define-argument-type tag
@@ -671,6 +672,21 @@ STR: target string"
        :back-offset (beginning-of-line -1)
        )))))
 
+
+
+;; Python
+
+(with-eval-after-load 'python
+  (evil-define-key '(visual) python-mode-map
+    (kbd "C-j") 'python-shell-send-region))
+
+
+
+(defun setup-cmake-mode ()
+  (require 'cmake-mode)
+  (cmake-mode))
+
+(add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . setup-cmake-mode))
 
 
 

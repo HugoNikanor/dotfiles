@@ -43,7 +43,10 @@
   (geiser-eval--send/result `(:eval (:ge completions ,prefix-str))))
 
 (add-hook 'geiser-mode-hook
-          (lambda () (add-hook 'xref-backend-functions #'geiser--xref-backend nil)))
+          (lambda () (add-hook 'xref-backend-functions #'geiser--xref-backend
+                          0          ; depth (us anywhere, we default to before the default etags--xref-backend)
+                          t          ; local (only bind us for this buffer, to not polute the global hook-space)
+                          )))
 
 (provide 'geiser-xref)
 ;;; geiser-xref.el ends here
