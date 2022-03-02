@@ -21,15 +21,6 @@ set guifont=Fira\ Mono\ 10
 " colorscheme darkblue
 colorscheme delek
 
-" TODO if the window is changed to quickly after opening gvim then than window
-" might become transparent instead
-"
-" Make the Gui Window semi transparent.
-" This should preferably be changed so it's set in the wm settings
-autocmd GUIEnter    * silent exec "!transset-df -a 0.9"
-"autocmd FocusLost   * exec "!transset-df -n "GVIM$" 0.5"
-"autocmd FocusGained * exec "!transset-df -a 0.9"
-
 " https://new.reddit.com/r/vim/comments/k7w0gy/a_simple_function_for_zooming_in_gui_version_of/ {{{
 " Increases the font size with `amount`
 function! Zoom(amount) abort
