@@ -4,6 +4,7 @@ module Volume where
 
 import DBus
 import DBus.Client
+import DBus.Socket (SocketError)
 import Data.Maybe (fromJust)
 import Data.Either (either)
 
@@ -13,6 +14,7 @@ import Data.Word
 
 -- https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/Developer/Clients/DBus/
 
+getPath :: DBus.Client.Client -> IO (Either MethodError String)
 getPath client =
     getPropertyValue client $ (methodCall "/org/pulseaudio/server_lookup1"
                                 "org.PulseAudio.ServerLookup1"
@@ -20,15 +22,26 @@ getPath client =
                              { methodCallDestination = Just "org.PulseAudio1" }
 -- Right (Variant "unix:path=/run/user/1000/pulse/dbus-socket")
 
+toMaybe :: Either a b -> Maybe b
+toMaybe (Left _)  = Nothing
+toMaybe (Right a) = Just a
+
+getAddress :: DBus.Client.Client -> IO (Maybe DBus.Address)
+getAddress client = do
+    e <- toMaybe <$> getPath client
+    return $ parseAddress =<< e
+
 connectPulseDBus :: IO (Maybe Client)
 connectPulseDBus = do
     sessionClient <- connectSession
-    e <- getPath sessionClient
+    e <- getAddress sessionClient
     case e of
-        Left _ -> return Nothing
-        Right v -> case parseAddress v of
-            Nothing -> return Nothing
-            Just v -> Just <$> connect v
+        Nothing -> return Nothing
+        Just addr -> do
+            eConnection <- try (connect addr) :: IO (Either SocketError Client)
+            case eConnection of
+                Left _           -> return Nothing
+                Right connection -> return . Just $ connection
 
 instance Exception MethodError
 

@@ -38,9 +38,10 @@ listenForChanges client = do
 
 main :: IO ()
 main = do
-    client <- fromJust <$> connectPulseDBus
-
-    listSinks' client
+    mClient <- connectPulseDBus
+    case mClient of
+        Nothing -> putStrLn "Failed to connect to dbus"
+        Just client -> listSinks' client
 
     return ()
 
