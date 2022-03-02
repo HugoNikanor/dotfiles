@@ -39,6 +39,7 @@ esac
 export SSH_AUTH_SOCK
 
 command -v lesspipe >/dev/null && eval "$(lesspipe)"
+command -v direnv   >/dev/null && eval "$(direnv hook bash)"
 
 # FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
