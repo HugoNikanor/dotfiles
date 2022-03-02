@@ -682,6 +682,14 @@ STR: target string"
 
 
 
+(defun setup-cmake-mode ()
+  (require 'cmake-mode)
+  (cmake-mode))
+
+(add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . setup-cmake-mode))
+
+
+
 (defun calp-connect ()
   (interactive)
   (geiser-connect-local 'guile (concat (getenv "XDG_RUNTIME_DIR")
