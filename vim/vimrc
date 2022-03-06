@@ -220,6 +220,10 @@ let g:vimwiki_list = []
 " whatever glob gives us.
 for script in glob("~/wiki/*/.wiki.vim")->split('\n')
 	exec ":source " . script
+	let wiki['path'] = script->fnamemodify(":h")
+	if ! has_key(wiki, 'name')
+		let wiki['name'] = script->fnamemodify(":h")->fnamemodify(":t")
+	endif
 	let g:vimwiki_list += [wiki]
 endfor
 
