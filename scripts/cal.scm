@@ -184,6 +184,9 @@
 
 (account TDDD14 (timeedit))
 
+;; statistik
+(account TAMS42 (timeedit))
+
 (account d_sektionen (http)
          (color "754022")
          (remote
@@ -245,6 +248,7 @@
      TDDD20
      TDDD98
      TDDD14
+     TAMS42
 
      d_sektionen
      admittansen
