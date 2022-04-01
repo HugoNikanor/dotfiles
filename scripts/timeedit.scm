@@ -3,7 +3,7 @@
 (add-to-load-path "/home/hugo/code/calp/module")
 (use-modules 
              (web client)
-             ((calp util) :select (->))
+             ((hnh util) :select (->))
              (json)
              (ice-9 optargs)
              (ice-9 rdelim)

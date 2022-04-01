@@ -15,7 +15,7 @@
              ((timeedit) #:prefix timeedit:)
              (files)
              (datetime)
-             ((calp util) #:select (->)))
+             ((hnh util) #:select (->)))
 
 ;; http://vdirsyncer.pimutils.org/en/stable/config.html
 
