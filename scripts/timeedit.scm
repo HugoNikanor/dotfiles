@@ -35,8 +35,14 @@
                         `((l . "sv_SE")
                           (search_text . ,search)
                           (types . ,type)))))
-  (define-values (headers port)
-    (http-get url #:streaming? #t))
+  (define-values (_ port)
+    (catch 'gnutls-not-available
+           (lambda () (http-get url #:streaming? #t))
+           (lambda (err msg)
+             (format (current-error-port)
+                     "~a~%Falling back to curl~%"
+                     msg)
+             (values #f (open-pipe* OPEN_READ "curl" url)))))
   (-> (json->scm port)
       (assoc-ref "records")
       (array-ref 0)
