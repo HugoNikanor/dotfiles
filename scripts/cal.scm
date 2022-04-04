@@ -63,8 +63,19 @@
                         ;; TODO rename this to `calendar-id'?
                         (? url-fragment)))))
 
+
 (account timeedit (http)
          (search ,(? acc-name))
+         (timeedit-objects ,(let ((s (? search)))
+                              (if (list? s)
+                                (string-join (map timeedit:getIdent s) ",")
+                                (timeedit:getIdent s))))
+         (timeedit-parameters
+           ,`((sid . 3)
+              (p . ,(timeedit:parse-period (? period)))
+              (objects . ,(? timeedit-objects))
+              ))
+
          (period ,(list (start-of-year (current-date))
                         (-> (current-date)
                             start-of-year
@@ -72,17 +83,12 @@
                             (date- (date #:day 1)))))
 
          (remote
-          (url ,(format #f "~a/~a.ics"
-                        timeedit:urlbase
-                        (timeedit:scramble
-                          (timeedit:encode-query-parameters
-                          `((sid . 3)
-                            (p . ,(timeedit:parse-period (? period)))
-                            (objects . ,(let ((s (? search)))
-                                          (if (list? s)
-                                            (string-join (map timeedit:getIdent s) ",")
-                                            (timeedit:getIdent s))))
-                             )))))))
+           (url ,(format #f "~a/~a.ics"
+                         timeedit:urlbase
+                         (timeedit:scramble
+                           (timeedit:encode-query-parameters
+                             (? timeedit-parameters)
+                             ))))))
 
 (account caldav (cal)
          ;; 'from a' means to discover from the server
