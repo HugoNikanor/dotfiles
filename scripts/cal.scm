@@ -193,6 +193,11 @@
 ;; statistik
 (account TAMS42 (timeedit))
 
+(account TATA42 (timeedit)
+         ;; explicit object (instead of search result) since I need
+         ;; exact instance
+         (timeedit-objects "677801.219"))
+
 (account d_sektionen (http)
          (color "754022")
          (remote
@@ -255,6 +260,7 @@
      TDDD98
      TDDD14
      TAMS42
+     TATA42
 
      d_sektionen
      admittansen
