@@ -188,7 +188,8 @@
 
 (account TDDD98 (timeedit))
 
-(account TDDD14 (timeedit))
+(account TDDD14 (timeedit)
+         (color "5500FF"))
 
 ;; statistik
 (account TAMS42 (timeedit))
@@ -196,7 +197,8 @@
 (account TATA42 (timeedit)
          ;; explicit object (instead of search result) since I need
          ;; exact instance
-         (timeedit-objects "677801.219"))
+         (timeedit-objects "677801.219")
+         (color "FF4D00"))
 
 (account d_sektionen (http)
          (color "754022")
