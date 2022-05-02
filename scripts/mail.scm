@@ -201,12 +201,9 @@
 (account guckel (vg-base))
 (account valberedningen (vg-base)
          (postnamn "Valberedning"))
-(account propaganda (vg-base)
-         (signature ,(format #f "~a, ~a?"
-                             (? name)
-                             (? postnamn))))
-(account qurator (vg-base)
-         (postname "Qurator"))
+(account pq (vg-base)
+         (postname "Proqurator")
+         (signature "Hugo Hörnquist, Proqurator"))
 
 (account formulastudent (google)
          (pass-path "formulastudent/google/hugo.hornquist")
@@ -342,7 +339,7 @@
     ;; propaganda
     formulastudent
     admittansen
-    qurator
+    pq
     ))
 
 ;; TODO this only applies to newly created files, meaning that we
