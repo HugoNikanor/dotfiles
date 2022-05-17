@@ -27,6 +27,7 @@ for file in $(ls \
 	-I README.md \
 	-I mutt \
 	-I elinks \
+	-I color \
 	-I bin \
 	-I scripts)
 do
