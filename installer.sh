@@ -4,44 +4,52 @@
 
 verbose () {
 	# set -x
-	echo $@
+	echo "$@"
 	"$@"
 	# set +x
 }
 
 link_contents () {
 	confdir="$1"
-	dir=$(realpath $confdir)
-	pushd "$HOME/.$confdir/" > /dev/null
-	for file in $(ls $dir); do
-		[ -h $file ] || verbose ln -s $dir/$file
+	dir=$(realpath "$confdir")
+	pushd "$HOME/.$confdir/" > /dev/null || exit 1
+	for file in "$dir"/*; do
+		[ -h "$file" ] || verbose ln -s "$dir/$file"
 	done
-	popd > /dev/null
+	popd > /dev/null || return
 
 }
 
-for file in $(ls \
-	-I config \
-	-I dosbox* \
-	-I installer.sh \
-	-I README.md \
-	-I mutt \
-	-I elinks \
-	-I color \
-	-I bin \
-	-I scripts)
-do
-	[ -h $HOME/.$file ] || verbose ln -s $(realpath $file) $HOME/.$file
+cd "$(dirname "$(realpath "$0")")" || {
+	echo CD to dotfiles directory failed
+	echo Giving Up
+	exit 1
+}
+
+for file in *; do
+	case "$file" in
+		LICENSE) continue ;;
+		README.md) continue ;;
+		bin) continue ;;
+		color) continue ;;
+		config)  continue ;;
+		dosbox*) continue ;;
+		elinks) continue ;;
+		installer.sh) continue ;;
+		mutt) continue ;;
+		scripts) continue ;;
+	esac
+	[ -h "$HOME/.$file" ] || verbose ln -s "$(realpath "$file")" "$HOME/.$file"
 done
 
-for file in $(ls bin); do
-	verbose ln -s $(realpath bin/$file) $HOME/.local/bin/
+for file in bin/*; do
+	verbose ln -s "$(realpath "bin/$file")" "$HOME/.local/bin/"
 done
 
 link_contents config
 link_contents mutt
 
-for file in $(ls -I bin scripts); do
-	f=scripts/$file
-	[ -x $f ] && verbose $f
+for f in scripts/*; do
+	[ -d "$f" ] && continue
+	[ -x "$f" ] && verbose "$f"
 done
