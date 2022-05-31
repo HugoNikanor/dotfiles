@@ -1,14 +1,3 @@
 #!/bin/bash
 
 CONF="${XDG_CONFIG_HOME:-$HOME/.config}"
-TERMITE_CONF="${CONF}/termite"
-
-relink_termite() {
-	theme="$1"
-	path="$TERMITE_CONF/config"
-	# file exists and is symlink
-	if [ -h $path ]; then
-		rm $path
-	fi
-	ln -s "$TERMITE_CONF/$theme.conf" "$TERMITE_CONF/config"
-}

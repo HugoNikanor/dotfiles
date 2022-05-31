@@ -1,0 +1,6 @@
+#!/bin/bash
+
+case $1 in
+	dawn) emacsclient -e "(enable-theme 'adwaita)" ;;
+	dusk) emacsclient -e "(disable-theme 'adwaita)" ;;
+esac

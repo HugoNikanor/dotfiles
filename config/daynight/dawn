@@ -1,14 +1,1 @@
-#!/bin/bash
-
-. $(dirname $(realpath $0))/common
-
-relink_termite baskerville-ivorylight
-pgrep termite | xargs kill -s sigusr1
-
-alacritty="$CONF/alacritty/daynight.yml"
-rm $alacritty
-ln -s "$CONF/alacritty/light.yml" $alacritty
-# force reload
-touch "$(dirname $alacritty)/alacritty.yml"
-
-emacsclient -e "(enable-theme 'adwaita)"
+dusk

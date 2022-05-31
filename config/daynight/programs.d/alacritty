@@ -1,0 +1,14 @@
+#!/bin/bash
+
+. $(dirname $(dirname $(realpath $0)))/common
+
+case $1 in
+	dawn) theme=light ;;
+	dusk) theme=dark ;;
+esac
+
+alacritty="$CONF/alacritty/daynight.yml"
+rm $alacritty
+ln -s "$CONF/alacritty/${theme}.yml" $alacritty
+# force reload
+touch "$(dirname $alacritty)/alacritty.yml"

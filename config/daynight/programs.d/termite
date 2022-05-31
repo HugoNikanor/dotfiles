@@ -1,0 +1,22 @@
+#!/bin/bash
+
+. $(dirname $(dirname $(realpath $0)))/common
+
+TERMITE_CONF="${CONF}/termite"
+
+relink_termite() {
+	theme="$1"
+	path="$TERMITE_CONF/config"
+	# file exists and is symlink
+	if [ -h $path ]; then
+		rm $path
+	fi
+	ln -s "$TERMITE_CONF/$theme.conf" "$TERMITE_CONF/config"
+}
+
+case $1 in
+	dusk) relink_termite fira-mono-8 ;;
+	dawn) relink_termite baskerville-ivorylight ;;
+esac
+
+pgrep termite | xargs kill -s sigusr1

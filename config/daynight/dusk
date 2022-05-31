@@ -1,14 +1,5 @@
 #!/bin/bash
 
-. $(dirname $(realpath $0))/common
-
-relink_termite fira-mono-8
-pgrep termite | xargs kill -s sigusr1
-
-alacritty="$CONF/alacritty/daynight.yml"
-rm $alacritty
-ln -s "$CONF/alacritty/dark.yml" $alacritty
-# force reload
-touch "$(dirname $alacritty)/alacritty.yml"
-
-emacsclient -e "(disable-theme 'adwaita)"
+for f in $(dirname $(realpath $0))/programs.d/*; do
+	test -x "$f" && "$f" $(basename $0)
+done
