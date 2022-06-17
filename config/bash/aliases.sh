@@ -8,6 +8,11 @@ alias uuuu="cd ../../../.."
 alias l="ls"
 alias ll="cd -"
 
+# Mostly for Fedora
+if command -v vimx >/dev/null; then
+	alias vim=vimx
+fi
+
 alias tmp="vim +'setlocal buftype=nofile' -n"
 alias clip="xclip -selection clipboard"
 alias wi="wiki"
@@ -18,7 +23,6 @@ alias nmail="newmail --watch"
 alias ip="ip -c"
 
 alias weeslack="weechat -d ~/.local/share/weechat/slack"
-
 
 vibin() { $EDITOR $(which $1); }
 
