@@ -26,18 +26,6 @@ export XDG_DOCUMENTS_DIR="$HOME/ldoc"
 export XDG_DOWNLOAD_DIR="$HOME/down/other"
 export XDG_PICTURES_DIR="$HOME/pic"
 
-case $(uname) in
-	Linux)
-		SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent.socket
-		;;
-	FreeBSD)
-		SSH_AUTH_SOCK=/tmp/$(whoami)-ssh-agent.socket
-		if [ ! -S "$SSH_AUTH_SOCK" ]; then
-			eval "$(ssh-agent -a "$SSH_AUTH_SOCK")"
-		fi
-esac
-export SSH_AUTH_SOCK
-
 command -v lesspipe >/dev/null && eval "$(lesspipe)"
 command -v direnv   >/dev/null && eval "$(direnv hook bash)"
 
