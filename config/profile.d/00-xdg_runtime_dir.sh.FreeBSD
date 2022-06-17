@@ -1,0 +1,4 @@
+# A random directory is needed, otherwise someone could guess what the
+# name is going to be, and create that directory beforehand, with
+# other permissions, allowing them to extract the data.
+export XDG_RUNTIME_DIR=$(mktemp -d -q /tmp/hugo-runtime-XXXXXXX)
