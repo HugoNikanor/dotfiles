@@ -1,0 +1,15 @@
+# https://www.cyberciti.biz/tips/freebsd-how-to-enable-colorized-ls-output.html
+# fg bg
+dir=Ex
+sym=Gx
+soc=Fx
+pip=dx
+exe=Cx
+bsp=Dx
+csp=Dx
+suid=HB
+guid=HB
+stk=HE
+sdir=ex
+export LSCOLORS="${dir}${sym}${soc}${pip}${exe}${bsp}${csp}${suid}${guid}${stk}${sdir}"
+unset dir sym soc pip exe bsp csp suid guid stk sdir
