@@ -48,3 +48,5 @@
 	defaultBranch = master
 [rebase]
 	autoSquash = true
+[safe]
+	directory = /mp/www/roxen
