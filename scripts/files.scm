@@ -15,6 +15,6 @@
                  (mkdir-p (dirname f))
                  (with-output-to-file f
                    (lambda () (display content) (newline))))
-               (lambda args
-                 (format #t "Something went wrong ~s~%" args)))))
+               (lambda (err proc fmt args data)
+                 (format #t "~a in ~a (when processing ~s):~%~?~%" err proc (procedure-name acc) fmt args)))))
     accounts))

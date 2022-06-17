@@ -182,14 +182,14 @@
 (define (get-field self field)
   (let inner ((subtree self)
               (subfield field))
-    (cond [(null? subtree)  (error "Empty subtree")]
+    (cond [(null? subtree)  (scm-error 'misc-error "get-field" "Empty subtree" #f #f)]
           [(null? subfield) subtree]
           [else (aif (assoc-ref subtree (car subfield))
                      (let ((value (car it)))
                        (if (procedure? value)
                            (value self)
                            (inner value (cdr subfield))))
-                     (error "Field not in tree" self field subfield))])))
+                     (scm-error 'misc-error "get-field" "Field not in tree: ~s, trace = ~s~%~y" (list field subfield self) #f))])))
 
 (define (map-subtree o subtreepath proc)
   (map (match-lambda [(name field-proc)

@@ -15,7 +15,7 @@
              ((timeedit) #:prefix timeedit:)
              (files)
              (datetime)
-             ((calp util) #:select (->)))
+             ((hnh util) #:select (->)))
 
 ;; http://vdirsyncer.pimutils.org/en/stable/config.html
 
@@ -63,8 +63,19 @@
                         ;; TODO rename this to `calendar-id'?
                         (? url-fragment)))))
 
+
 (account timeedit (http)
          (search ,(? acc-name))
+         (timeedit-objects ,(let ((s (? search)))
+                              (if (list? s)
+                                (string-join (map timeedit:getIdent s) ",")
+                                (timeedit:getIdent s))))
+         (timeedit-parameters
+           ,`((sid . 3)
+              (p . ,(timeedit:parse-period (? period)))
+              (objects . ,(? timeedit-objects))
+              ))
+
          (period ,(list (start-of-year (current-date))
                         (-> (current-date)
                             start-of-year
@@ -72,17 +83,12 @@
                             (date- (date #:day 1)))))
 
          (remote
-          (url ,(format #f "~a/~a.ics"
-                        timeedit:urlbase
-                        (timeedit:scramble
-                          (timeedit:encode-query-parameters
-                          `((sid . 3)
-                            (p . ,(timeedit:parse-period (? period)))
-                            (objects . ,(let ((s (? search)))
-                                          (if (list? s)
-                                            (string-join (map timeedit:getIdent s) ",")
-                                            (timeedit:getIdent s))))
-                             )))))))
+           (url ,(format #f "~a/~a.ics"
+                         timeedit:urlbase
+                         (timeedit:scramble
+                           (timeedit:encode-query-parameters
+                             (? timeedit-parameters)
+                             ))))))
 
 (account caldav (cal)
          ;; 'from a' means to discover from the server
@@ -182,7 +188,17 @@
 
 (account TDDD98 (timeedit))
 
-(account TDDD14 (timeedit))
+(account TDDD14 (timeedit)
+         (color "5500FF"))
+
+;; statistik
+(account TAMS42 (timeedit))
+
+(account TATA42 (timeedit)
+         ;; explicit object (instead of search result) since I need
+         ;; exact instance
+         (timeedit-objects "677801.219")
+         (color "FF4D00"))
 
 (account d_sektionen (http)
          (color "754022")
@@ -245,6 +261,8 @@
      TDDD20
      TDDD98
      TDDD14
+     TAMS42
+     TATA42
 
      d_sektionen
      admittansen
