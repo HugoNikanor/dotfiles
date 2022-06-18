@@ -588,10 +588,15 @@ STR: target string"
    (font-lock-add-keywords
     'scheme-mode
     `(,(regexp-opt '("mod!" "set!") 'symbols)
+      ;; suffix keywords (srfi-71)
       ("\\<\\w+:\\>" . font-lock-constant-face)
+      ;; Character literals
       ("#\\\\\\(.\\w*\\)" . (1 font-lock-string-face))
+      ;; Everithyng starting with `define-' is a form of define
       ("(\\<\\(define-\\w*\\)\\>\s +(?\\(\\S +\\)?"
-       (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face)))))
+       (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face))
+      ("\\<with-\\w*\\>" . font-lock-keyword-face)
+      )))
 
 
 (add-hook
