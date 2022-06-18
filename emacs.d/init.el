@@ -619,6 +619,7 @@ STR: target string"
   (setq-default
    ;; Geiser only looks at these, if this list is here
    geiser-active-implementations '(guile chicken racket)
+   geiser-default-implementation 'guile
 
    geiser-guile-load-path '("/home/hugo/lib/guile" ".")
 
