@@ -798,6 +798,11 @@ STR: target string"
 (evil-define-key '(normal) 'global
   (kbd "C-p") 'project-find-file)
 
+;; https://stackoverflow.com/questions/6083496/how-do-you-specify-a-fallback-font-in-emacs
+;; pacman -S bdf-unifont
+(set-fontset-font t nil (font-spec :size 20 :name "Unifont"))
+
+
 ;; This should be bound to <RET> in shell-mode and term-mode,
 ;; but only when not in the active prompt area.
 ;;
