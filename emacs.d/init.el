@@ -599,16 +599,46 @@ STR: target string"
       )))
 
 
+(require 'mmm-auto)
+
+(with-eval-after-load 'mmm-mode
+ ;; extend theme to show comments and comment
+ ;; markers in different colors.
+ (mmm-add-classes
+  '((lisp-texinfo-comments
+     :submode texinfo-mode
+     :front "^;; "
+     ;; :back "^[^;]"
+     :back "$"
+     :include-front nil
+     :include-back nil
+     )
+    (scheme-bash-shebang
+     :submode shell-script-mode
+     :front "^#!"
+     :back "^!#"
+     :include-front t
+     :include-back nil)))
+
+ (mmm-add-mode-ext-class 'scheme-mode nil 'lisp-texinfo-comments)
+ (mmm-add-mode-ext-class 'scheme-mode nil 'scheme-bash-shebang)
+ )
+
 (add-hook
  'scheme-mode-hook
  (lambda ()
    (geiser-mode)
+   ;;; mmm-mode apparently requires scheme-version to be set
+   ;; but it does ask if it doesn't know
+   (mmm-mode)
 
    ;; Let's pretend any scheme buffer is an interaction scheme buffer!
    ;; geiser-eval-last-sexp doesn't like guile reader extensions ("#")
    (setq *eval-sexp-print* 'geiser-eval-print-last-sexp
          *eval-sexp*       'geiser-eval-popup-last-sexp)
-   (setq-local evil-lookup-func  #'geiser-doc-symbol-at-point)))
+   (setq-local evil-lookup-func  #'geiser-doc-symbol-at-point)
+
+   ))
 
 ;; geiser-repl-mode
 
@@ -636,23 +666,6 @@ STR: target string"
   (evil-define-key '(normal insert) scheme-mode-map
     (kbd "M-.") 'geiser-edit-symbol-at-point
     (kbd "C-]") 'geiser-edit-symbol-at-point)
-
-
-  ;; extend theme to show comments and comment
-  ;; markers in different colors.
-  (mmm-add-classes
-   '((lisp-texinfo-comments
-      :submode texinfo-mode
-      :front "^;; "
-      ;; :back "^[^;]"
-      :back "$"
-      :include-front nil
-      :include-back nil
-      )))
-
-  (mmm-add-mode-ext-class
-   'scheme-mode nil 'lisp-texinfo-comments)
-
 
   ;; geiser-guile-extra-keywords
   ;; geiser-guile-init-file
