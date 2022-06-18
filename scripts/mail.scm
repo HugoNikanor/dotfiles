@@ -133,7 +133,7 @@
 
 (account gmail (google)
          (address "hugo.hornquist@gmail.com")
-         (pass-path "google.com/hugo.hornquist")
+         (pass-path "google.com/hugo.hornquist/mutt")
 
          (mutt
           (set
