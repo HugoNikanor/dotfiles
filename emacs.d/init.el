@@ -573,7 +573,17 @@ STR: target string"
 (with-eval-after-load 'scheme
    (require 'geiser)
 
-   ;; TODO figure out indentation rules, and change stuff
+   ;; Indents test-group similar to defines
+   (put 'test-group              'scheme-indent-function 1)
+   (put 'test-group-with-cleanup 'scheme-indent-function 1)
+   (put 'test-eqv                'scheme-indent-function 1)
+   (put 'test-eq                 'scheme-indent-function 1)
+   (put 'test-equal              'scheme-indent-function 1)
+   (put 'test-approximate        'scheme-indent-function 1)
+   (put 'test-error              'scheme-indent-function 1)
+   (put 'test-assert             'scheme-indent-function 1)
+   (put 'with-atomic-output-to-file 'scheme-indent-function
+        (get 'with-output-to-file 'scheme-indent-function))
 
    (font-lock-add-keywords
     'scheme-mode
