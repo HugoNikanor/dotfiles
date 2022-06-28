@@ -218,7 +218,7 @@ let g:vimwiki_list = []
 " Dynamically load wikis from disk, instead of hardcoding them here
 " We might want something to define an order here, instead of taking
 " whatever glob gives us.
-for script in glob("~/wiki/*/.wiki.vim")->split('\n')
+for script in split(glob("~/wiki/*/.wiki.vim"), '\n')
 	exec ":source " . script
 	let wiki['path'] = script->fnamemodify(":h")
 	if ! has_key(wiki, 'name')
