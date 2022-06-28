@@ -145,11 +145,19 @@
          (pass-path "lysator/mail/hugo")
 
          (IMAPAccount
-          (Host "imap.lysator.liu.se"))
+           (Host "imap.lysator.liu.se"))
 
          (signature "hugo")
 
-         (mutt (set (hostname "lysator.liu.se"))))
+         ;; if domain == lysator.liu.se
+         ;; set record "=Lysator"
+
+         (mutt (set (hostname "lysator.liu.se")
+                    (record ,(if (string=? domainname "lysator.liu.se")
+                               "=Lysator"
+                               "=Lysator/INBOX"))
+
+                    )))
 
 (account outlook (default)
          (IMAPAccount
@@ -303,8 +311,7 @@
            (mbox      "/mp/mail/hugo/Maildir")
            (folder "~/.local/var/mail/")
 
-           ;; TODO
-           ;; (record ...)
+           (record "=Lysator")
 
            ))
 
