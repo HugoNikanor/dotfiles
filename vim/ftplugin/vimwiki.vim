@@ -13,13 +13,13 @@ inoremap <silent><buffer> <CR> <Esc>:VimwikiReturn 1 5<CR>
 autocmd BufWritePre index.wiki :VimwikiGenerateTagLinks
 
 let g:tagbar_type_vimwiki = {
-			\   'ctagstype':'vimwiki'
-			\ , 'kinds':['h:header']
-			\ , 'sro':'&&&'
-			\ , 'kind2scope':{'h':'header'}
-			\ , 'sort':0
-			\ , 'ctagsbin':'~/vimwiki/vimwiki-utils/vwtags.py'
-			\ , 'ctagsargs': 'default'
+			\    'ctagstype' : 'vimwiki'
+			\ ,      'kinds' : ['h:header']
+			\ ,        'sro' : '&&&'
+			\ , 'kind2scope' : {'h': 'header'}
+			\ ,       'sort' : 0
+			\ ,   'ctagsbin' : g:vimwiki_ctags_bin
+			\ ,  'ctagsargs' : 'default'
 			\ }
 
 " !xdg-open ...
