@@ -12,5 +12,5 @@ get_images() {
 
 monitor_count=`xrandr --listmonitors | awk -F' ' '/^Monitors:/ { print }'`
 
-feh --bg-fill $(get_images)
+feh --no-fehbg --bg-fill $(get_images)
 
