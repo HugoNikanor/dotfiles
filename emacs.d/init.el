@@ -483,6 +483,7 @@ STR: target string"
              ielm-mode-hook
              lisp-mode-hook
              lisp-interaction-mode-hook
+             lisp-data-mode-hook
              scheme-mode-hook
              clojure-mode-hook))
 
