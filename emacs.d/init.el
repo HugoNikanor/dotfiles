@@ -663,7 +663,9 @@ STR: target string"
    geiser-active-implementations '(guile chicken racket)
    geiser-default-implementation 'guile
 
-   geiser-guile-load-path '("/home/hugo/lib/guile" ".")
+   geiser-repl-per-project-p t
+
+   geiser-guile-init-file "~/.config/geiser/guile.scm"
 
    geiser-chicken-binary (pcase os-id
                            ("arch" "chicken-csi")
