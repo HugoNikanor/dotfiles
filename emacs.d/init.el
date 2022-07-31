@@ -395,7 +395,18 @@ WIDTH: number of dashes in line"
   (evil-define-key 'motion Info-mode-map
     "l" 'Info-last
     "N" 'evil-search-next
-    "P" 'evil-search-previous))
+    "P" 'evil-search-previous
+    "[" 'Info-backward-node
+    "]" 'Info-forward-node
+    "n" 'Info-next
+    "p" 'Info-prev
+    (kbd "<tab>") 'Info-next-reference
+    "f" 'Info-follow-reference
+    "g" 'Info-goto-node
+    ))
+
+(evil-define-key 'motion help-mode-map
+  (kbd "<tab>") 'forward-button)
 
 
 
