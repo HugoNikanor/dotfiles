@@ -29,35 +29,35 @@
 
 (repl-default-option-set!
   'print (lambda (repl value)
-           (define width  (read ((@ (ice-9 popen) open-input-pipe) "tput cols")))
+           (define terminal-width (read ((@ (ice-9 popen) open-input-pipe) "tput cols")))
 
            ;; hack to find width of current prompt...
-           (define prompt-width 0)
-           (when (car (assoc-ref (repl-options repl) 'value-history))
-             (catch 'misc-error
-                    (lambda ()
-                      ;; find first undefined of $1, $10, $100, ...
-                      (let loop ((exp 0))
-                        (set! prompt-width (+ exp (string-length "$ = ")))
-                        (module-ref (current-module)
-                                    (string->symbol (string-append "$" (number->string (expt 10 exp)))))
-                        (loop (1+ exp))))
+           (define prompt-width
+             (if (not (car (assoc-ref (repl-options repl) 'value-history)))
+                 0
+                 ;; find first undefined of $1, $10, $100, ...
+                 (let loop ((exp 0))
+                   (catch 'misc-error
+                     (lambda ()
+                       (define str (string-append "$" (number->string (expt 10 exp))))
+                       (module-ref (current-module)
+                                   (string->symbol str))
+                       (+ (string-length str) (string-length " = ")))
+                     (lambda _ (loop (1+ exp)))))))
 
-                    ;; ignore error
-                    list))
+           (define pretty-string
+             (with-output-to-string
+               (lambda ()
+                 (pretty-print
+                  value
+                  #:width (- terminal-width prompt-width)
+                  #:max-expr-width (- terminal-width prompt-width)
+                  #:per-line-prefix (make-string prompt-width #\space)))))
 
            (display
              ;; add width of current prompt to all lines
              ;; except the first (since the actual prompt is there).
-             (substring
-               (with-output-to-string
-                 (lambda ()
-                   (pretty-print
-                     value
-                     #:width (- width prompt-width)
-                     #:max-expr-width (- width prompt-width)
-                     #:per-line-prefix (make-string prompt-width #\space))))
-               prompt-width))))
+             (string-drop pretty-string prompt-width))))
 
 (set! repl-welcome (const #t))
 
