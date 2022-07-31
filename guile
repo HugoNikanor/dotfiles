@@ -1,17 +1,6 @@
 ;;; -*- mode: scheme -*-
 
-(use-modules (ice-9 regex)
-             (srfi srfi-1))
-
-(define (p str)
-  "Pathify string."
-  (regexp-substitute/global
-   #f "~[^/]*" str
-   'pre (lambda (_) (getenv "HOME")) 'post))
-
-(for-each (lambda (p) (add-to-load-path p))
-          (list (p "~/code/guile")
-                (p "~/.local/share/guile/")))
+(use-modules (srfi srfi-1))
 
 (catch 'misc-error
   (lambda ()
