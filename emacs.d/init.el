@@ -123,6 +123,10 @@ ENVIRONMENTS: all hooks to bind to"
 
 (require 'evil-maps)                    ; Is this required?
 
+;; (key "J") runs join-line, which uses the fill prefix,
+;; which is set by (key "C-x .") (`set-fill-line`).
+;; TODO do this automatically somehow?
+
 (setq evil-split-window-below t
       evil-vsplit-window-right t
       )
