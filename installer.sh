@@ -2,6 +2,9 @@
 # Items in config/ are symlinked as items in ~/.config/
 # other stuff is symlinked into ~/, but with a dot added beforehand
 
+DATA_HOME=${XDG_DATA_HOME:-~/.local/share}
+CACHE_HOME=${XDG_CACHE_HOME:-~/.cache}
+
 verbose () {
 	# set -x
 	echo "$@"
@@ -53,3 +56,6 @@ for f in scripts/*; do
 	[ -d "$f" ] && continue
 	[ -x "$f" ] && verbose "$f"
 done
+
+
+mkdir -p $DATA_HOME/xmonad $CACHE_HOME/xmonad
