@@ -52,6 +52,7 @@ call plug#begin("~/.vim/plugged")
 		Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 	endif
 	Plug 'junegunn/fzf.vim'
+	Plug 'wellle/context.vim'
 
 call plug#end()
 
