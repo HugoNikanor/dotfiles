@@ -190,16 +190,20 @@
                           (format #f "set imap_pass='`~a/oauth-response liu-imap`'"
                                   BINDIR))))))
 
-(account vg-base (google)
+
+(account vg-base (default)
          (address ,(format #f "~a@vastgota.nation.liu.se" (? acc-name)))
          (postnamn ,(string-titlecase (format #f "~agöte" (? acc-name))))
          (signature ,(format #f "~a, ~a" (? name) (? postnamn)))
+         (pass-path ,(format #f "vastgota.nation.liu.se/~a" (?  acc-name)))
 
-         (pass-path ,(format #f "vastgota.nation.liu.se/mail/~a" (? acc-name)))
+         (IMAPAccount
+           (Host "vastgota.nation.liu.se")
+           (AuthMechs "LOGIN")
+           (User ,(? acc-name)))
 
          (mutt (set (hostname "vastgota.nation.liu.se")
-                    (record ,(format #f "=Vastgota.~a/INBOX" (?  fancy-acc-name)))
-                    ))
+                    (record ,(format #f "=Vastgota.~a/INBOX" (?  fancy-acc-name)))))
 
          (MaildirStore
            (Path ,(path-append (? path-base)
@@ -342,12 +346,27 @@
     gmail
     liu
     liu-work
-    guckel
-    valberedningen
+    ;; guckel
+    ;; valberedningen
     ;; propaganda
     formulastudent
     admittansen
-    pq
+
+   ;; guckel
+   ;; valberedningen
+   pq
+   ;; qurator
+   ;; aktivitet
+   ;; info
+   ;; kassor
+   ;; admin
+   ;; intendent
+   ;; medlem
+   ;; it
+   ;; sekreterare
+   ;; lokal
+   ;; propaganda
+
     ))
 
 ;; TODO this only applies to newly created files, meaning that we
