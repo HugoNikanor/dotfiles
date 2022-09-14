@@ -4,6 +4,9 @@ module Volume where
 
 import DBus
 import DBus.Client
+    ( getProperty
+    , getPropertyValue
+    )
 import DBus.Socket (SocketError)
 import Data.Maybe (fromJust)
 import Data.Either (either)
