@@ -33,6 +33,14 @@
                       urlbase
                       (encode-query-parameters
                         `((l . "sv_SE")
+                          (max . 100)
+                          (fr . t)
+                          (partajax . t)
+                          (im . f)
+                          (sid . 3)
+                          (fe . "132.0")
+                          (fe . "115.20221,20222")
+                          (objects . "695845.219")
                           (search_text . ,search)
                           (types . ,type)))))
   (define-values (_ port)
