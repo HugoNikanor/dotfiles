@@ -6,3 +6,8 @@ symlinks in `~/` and `~/.config`.
 
 The `scripts/` directory is the most interesting one.
 
+Dependencies
+------------
+### For mbsync xoauth2
+- netcat
+- cyrus-sasl-xoauth2
