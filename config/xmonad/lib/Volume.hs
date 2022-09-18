@@ -3,9 +3,14 @@
 module Volume where
 
 import DBus
+import qualified DBus.Client as DBus.Client
 import DBus.Client
     ( getProperty
     , getPropertyValue
+    , call
+    , setProperty
+    , connect
+    , connectSession
     )
 import DBus.Socket (SocketError)
 import Data.Maybe (fromJust)
@@ -34,14 +39,14 @@ getAddress client = do
     e <- toMaybe <$> getPath client
     return $ parseAddress =<< e
 
-connectPulseDBus :: IO (Maybe Client)
+connectPulseDBus :: IO (Maybe DBus.Client.Client)
 connectPulseDBus = do
     sessionClient <- connectSession
     e <- getAddress sessionClient
     case e of
         Nothing -> return Nothing
         Just addr -> do
-            eConnection <- try (connect addr) :: IO (Either SocketError Client)
+            eConnection <- try (connect addr) :: IO (Either SocketError DBus.Client.Client)
             case eConnection of
                 Left _           -> return Nothing
                 Right connection -> return . Just $ connection
@@ -52,14 +57,14 @@ throwIfLeft :: Exception a => Either a b -> IO b
 throwIfLeft (Left err) = throwIO err
 throwIfLeft (Right v) = return v
 
-setMute :: Bool -> ObjectPath -> Client -> IO ()
+setMute :: Bool -> ObjectPath -> DBus.Client.Client -> IO ()
 setMute value path client = do
     throwIfLeft =<< setProperty client
                      (methodCall path "org.PulseAudio.Core1.Device" "Mute")
                      (toVariant . toVariant $ value)
     return ()
 
-getMute      :: ObjectPath -> Client -> IO Bool
+getMute      :: ObjectPath -> DBus.Client.Client -> IO Bool
 getMute path client = do
     eth <- getProperty client $ methodCall path "org.PulseAudio.Core1.Device" "Mute"
     fromJust . fromVariant <$> throwIfLeft eth
@@ -68,10 +73,10 @@ getMute path client = do
 mute   = setMute True
 unmute = setMute False
 
-toggleMute   :: ObjectPath -> Client -> IO ()
+toggleMute   :: ObjectPath -> DBus.Client.Client -> IO ()
 toggleMute p c = getMute p c >>= \x -> setMute (not x) p c
 
-setVolume    :: Word32 -> ObjectPath -> Client -> IO ()
+setVolume    :: Word32 -> ObjectPath -> DBus.Client.Client -> IO ()
 setVolume v path client = do
     -- list since the sink can have multiple channels.
     -- single values means set all
@@ -80,13 +85,13 @@ setVolume v path client = do
                        (toVariant (toVariant [ v ]))
     return ()
 
-getVolume    :: ObjectPath -> Client -> IO [Word32]
+getVolume    :: ObjectPath -> DBus.Client.Client -> IO [Word32]
 getVolume path client = do
     eth <- getProperty client $ methodCall path "org.PulseAudio.Core1.Device" "Volume"
     lst <- fromJust . fromVariant <$> throwIfLeft eth
     return lst
 
-changeVolume :: (Word32 -> Word32) -> ObjectPath -> Client -> IO Word32
+changeVolume :: (Word32 -> Word32) -> ObjectPath -> DBus.Client.Client -> IO Word32
 changeVolume f p c = do
     v <- getVolume p c
     let v' = f $ maximum v
@@ -94,21 +99,21 @@ changeVolume f p c = do
     return v'
 
 -- The fromIntegral's are to ensure we don't get a negative overflow
-modVolume :: Integral a => a -> ObjectPath -> Client -> IO Word32
+modVolume :: Integral a => a -> ObjectPath -> DBus.Client.Client -> IO Word32
 modVolume change = changeVolume (fromIntegral . max 0 . min (2^16) . (+ change) . fromIntegral)
 
-getSinks :: Client -> IO [ObjectPath]
+getSinks :: DBus.Client.Client -> IO [ObjectPath]
 getSinks client = do
     sinks <- getProperty client $ methodCall "/org/pulseaudio/core1" "org.PulseAudio.Core1" "Sinks"
     fromJust . fromVariant <$> throwIfLeft sinks
 
 -- Returns names suitable for getSinkByName
-getDeviceName :: ObjectPath -> Client -> IO String
+getDeviceName :: ObjectPath -> DBus.Client.Client -> IO String
 getDeviceName path client = do
     sinks <- getProperty client $ methodCall path "org.PulseAudio.Core1.Device" "Name"
     fromJust . fromVariant <$> throwIfLeft sinks
 
-getSinkByName :: String -> Client -> IO (Maybe ObjectPath)
+getSinkByName :: String -> DBus.Client.Client -> IO (Maybe ObjectPath)
 getSinkByName name client = do
     eth <- call client $ (methodCall "/org/pulseaudio/core1" "org.PulseAudio.Core1" "GetSinkByName")
                              { methodCallBody = [toVariant name] }
@@ -117,7 +122,7 @@ getSinkByName name client = do
         Left  err -> do putStrLn . show $ err
                         return Nothing
 
-listSinks :: Client -> IO [(ObjectPath, String)]
+listSinks :: DBus.Client.Client -> IO [(ObjectPath, String)]
 listSinks client = do
     sinks <- getSinks client
     mapM (\path -> do
