@@ -1,2 +1,5 @@
 LC_TIME=sv_SE.UTF-8
 export LC_TIME
+
+LC_PAPER=sv_SE.UTF-8
+export LC_PAPER

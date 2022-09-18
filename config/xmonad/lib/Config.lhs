@@ -4,6 +4,10 @@
 > ( xmain
 > ) where
 
+#ifndef MIN_VERSION_xmonad_contrib
+#error XMonad contrib required for building.
+#endif
+
 > import System.IO (hPutStrLn)
 > import System.Environment (setEnv)
 > import System.Locale (defaultTimeLocale, TimeLocale(wDays))
@@ -487,8 +491,9 @@ Color config borrowed from my Termite config .
 > loggerIfFile :: FilePath -> Logger.Logger -> Logger.Logger
 > loggerIfFile path logger = do
 >     exists <- io (doesPathExist path)
->     if exists then logger
->     else return Nothing
+>     if exists
+>       then logger
+>       else return Nothing
 
 > roundNearest :: Int -> Int -> Int
 > roundNearest target n = target * (n `div` target)
