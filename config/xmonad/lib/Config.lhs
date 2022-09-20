@@ -110,6 +110,11 @@ to happen at points not currently in focus.
 
 
 
+> type KeyBind = (KeyMask, KeySym)
+> type KeyAction = (KeyBind, X ())
+
+
+
 > dropRight n = reverse . drop n . reverse
 
 
@@ -129,7 +134,7 @@ Borrowed from darcs. Warps the mouse to the center of the current
 
 gs_navigate : TwoD a (Maybe a)
 makeXEventHandler : ((KeySym, String, KeyMask) -> TwoD a (Maybe a)) -> TwoD a (Maybe a)
-shadowWithKeymap : Map (KeyMask, KeySym) a -> ((KeySym, String, KeyMask) -> a) -> (KeySym, String, KeyMask) -> a
+shadowWithKeymap : Map KeyBind a -> ((KeySym, String, KeyMask) -> a) -> (KeySym, String, KeyMask) -> a
 
 It would be really nice if these showed previews of the windows,
 for terminals displayed the last command run, and also display
@@ -229,7 +234,7 @@ type signature as follows, and is defined in the appendix.
 >                         -> (a -> X ())
 >                         -> [(KeySym, a)]
 >                         -> XConfig l
->                         -> [((KeyMask, KeySym), X ())]
+>                         -> [KeyAction]
 
 
 
@@ -293,7 +298,7 @@ Especially good on larger screens.
 > data Redraw = Redraw deriving Typeable
 > instance Message Redraw
 
-> spaceSubmap :: XConfig a -> M.Map (KeyMask, KeySym) (X ())
+> spaceSubmap :: XConfig a -> M.Map KeyBind (X ())
 > spaceSubmap conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
 Directions are inverted to what is "normal". This since I want to think about
@@ -326,14 +331,14 @@ Keybinds for flipping the monitor upside down.
 Only enabled on single screen setups, since it turns off every screen
 except the primary, and since it's only really useful on laptops.
 
-> monitorFlipKeys :: Int -> XConfig l -> [((KeyMask, KeySym), X())]
+> monitorFlipKeys :: Int -> XConfig l -> [KeyAction]
 > monitorFlipKeys 1 conf@XConfig {XMonad.modMask = modm} =
 >     [ ((modm, xK_Up)   , spawn "xrandr -o inverted")
 >     , ((modm, xK_Down) , spawn "xrandr -o normal") ]
 > monitorFlipKeys _ _ = []
 >
 
-> otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
+> otherKeys :: XConfig l -> [KeyAction]
 > otherKeys conf@XConfig {XMonad.modMask = modm} =
 >     [ ms xK_Return  $ spawn $ XMonad.terminal conf
 >     , m  xK_Return  $ windows W.swapMaster
