@@ -5,6 +5,8 @@
                     ignore-error)
   #:replace (let*))
 
+;; TODO many of these should be imported from (what is currently) calp.
+
 (use-modules (srfi srfi-1)
              (ice-9 match))
 
