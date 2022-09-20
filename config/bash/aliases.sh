@@ -38,7 +38,6 @@ alias arnoldc="java -jar ~/Downloads/otherPackages/arnoldC/ArnoldC.jar -declaim"
 alias ecat='elinks -dump'
 
 # joke aliases
-alias kitty="cat"
 alias nano="echo \"Seriously? Why don't you just use Notepade.exe? Or MS Paint?\""
 
 if [ $(uname -s) == "Linux" ]; then
