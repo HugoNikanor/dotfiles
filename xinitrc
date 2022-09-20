@@ -29,7 +29,9 @@ export XCURSOR_SIZE=48
 
 [[ -f ~/.profile ]] && . ~/.profile
 
+systemctl import-environment --user DISPLAY
+systemctl start --user graphical-session.target 2>/dev/null &
+
 # Final fallback for WM, and start it.
 export WM=${WM:-xmonad}
 exec $WM
-

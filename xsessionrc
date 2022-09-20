@@ -2,4 +2,7 @@
 
 test -f ~/.Xresources && xrdb -merge ~/.Xresources
 
+systemctl import-environment --user DISPLAY
+systemctl start --user xapps.target 2>/dev/null &
+
 [ -f ~/.profile ] && . ~/.profile
