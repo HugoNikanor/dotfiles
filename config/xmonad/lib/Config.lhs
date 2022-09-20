@@ -335,53 +335,52 @@ except the primary, and since it's only really useful on laptops.
 
 > otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
 > otherKeys conf@XConfig {XMonad.modMask = modm} =
->     [ f (ms xK_Return)  $ spawn $ XMonad.terminal conf
->     , f (m  xK_Return)  $ windows W.swapMaster
+>     [ ms xK_Return  $ spawn $ XMonad.terminal conf
+>     , m  xK_Return  $ windows W.swapMaster
 
 Same bindings again, since my laptop' enter key is apparently (?) the
 numpad enter...
 
->     , f (ms xK_KP_Enter)  $ spawn $ XMonad.terminal conf
->     , f (m  xK_KP_Enter)  $ windows W.swapMaster
+>     , ms xK_KP_Enter  $ spawn $ XMonad.terminal conf
+>     , m  xK_KP_Enter  $ windows W.swapMaster
 
->     , f (m  xK_Tab)     $ S.onGroup W.focusDown'
->     , f (ms xK_Tab)     $ S.onGroup W.focusUp'
->     , f (m  xK_t)       $ withFocused $ windows . W.sink
->     , f (m  xK_f)       $ sendMessage $ Toggle FULL
->     , f (m  xK_n)       $ sendMessage NextLayout
+>     , m  xK_Tab     $ S.onGroup W.focusDown'
+>     , ms xK_Tab     $ S.onGroup W.focusUp'
+>     , m  xK_t       $ withFocused $ windows . W.sink
+>     , m  xK_f       $ sendMessage $ Toggle FULL
+>     , m  xK_n       $ sendMessage NextLayout
 >
->     , f (m  xK_j)         B.focusDown
->     , f (m  xK_k)         B.focusUp
->     , f (ms xK_j)       $ windows W.swapDown
->     , f (ms xK_k)       $ windows W.swapUp
+>     , m  xK_j         B.focusDown
+>     , m  xK_k         B.focusUp
+>     , ms xK_j       $ windows W.swapDown
+>     , ms xK_k       $ windows W.swapUp
 >
->     , f (m  xK_m)       $ sendMessage Shrink
->     , f (m  xK_w)       $ sendMessage Expand
->     , f (ms xK_m)       $ sendMessage $ IncMasterN    1
->     , f (ms xK_w)       $ sendMessage $ IncMasterN $ -1
+>     , m  xK_m       $ sendMessage Shrink
+>     , m  xK_w       $ sendMessage Expand
+>     , ms xK_m       $ sendMessage $ IncMasterN    1
+>     , ms xK_w       $ sendMessage $ IncMasterN $ -1
 >
->     , f (m  xK_l)       $ S.onGroup W.focusDown'
->     , f (m  xK_h)       $ S.onGroup W.focusUp'
+>     , m  xK_l       $ S.onGroup W.focusDown'
+>     , m  xK_h       $ S.onGroup W.focusUp'
 >
->     , f (ms xK_c)         kill
+>     , ms xK_c         kill
 >
->     , f (m  xK_s)         toggleWS
->     , f (m  xK_g)       $ spawn "rofi -show window -show-icons"
->     , f (m  xK_p)       $ shellPrompt myXPConfig { autoComplete = Nothing
->                                                  , searchPredicate = isInfixOf }
->     , f (ms xK_p)       $ spawn "rofi -show drun -show-icons"
->     , f (m  xK_x)       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
->     , f (m  xK_y)       $ spawn "passmenu"
->     , f (m  xK_q)         restartXMonad
+>     , m  xK_s         toggleWS
+>     , m  xK_g       $ spawn "rofi -show window -show-icons"
+>     , ms xK_p       $ shellPrompt myXPConfig { autoComplete = Nothing
+>                                              , searchPredicate = isInfixOf }
+>     , m  xK_p       $ spawn "rofi -show drun -show-icons"
+>     , m  xK_x       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
+>     , m  xK_y       $ spawn "passmenu"
+>     , m  xK_q         restartXMonad
 >
->     , f (ms xK_f)       $ scratchpadSpawnActionCustom "dolphin --name scratchpad"
+>     , ms xK_f       $ scratchpadSpawnActionCustom "dolphin --name scratchpad"
 >
->     , f (m  xK_space)   $ submap $ spaceSubmap conf
+>     , m  xK_space   $ submap $ spaceSubmap conf
 
 >
->     ] where f a b = (a, b)
->             m x = (modm, x)
->             ms x = (modm .|. shiftMask, x)
+>     ] where m x op = ((modm, x), op)
+>             ms x op = ((modm .|. shiftMask, x), op)
 
 
 
