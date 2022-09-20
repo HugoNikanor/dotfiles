@@ -11,6 +11,7 @@
 
 (use-modules (conf-base)
              (util)
+             (list)
              ((vdirsyncer) #:prefix vdirsyncer:)
              ((timeedit) #:prefix timeedit:)
              (files)
@@ -76,6 +77,11 @@
               (objects . ,(? timeedit-objects))
               ))
 
+         ;; "0.n,12.n" From 0 months out to 12 months out
+         ;; n - month
+         ;; w - week
+         ;; d - day
+         ;; h - hour
          (period ,(list (start-of-year (current-date))
                         (-> (current-date)
                             start-of-year
@@ -175,11 +181,11 @@
          (url-fragment "liuformulastudent.se_ls8331n8jpo570ilur31ig3vq0"))
 
 
-(account TDDI41_TDP031 (timeedit)
-         (period 4)
-         (search ,'("TDDI41" "TDP031"))
+(account TDDI41_TDP031 (http)
+         ;; (period "0.n,12.n")
+         ;; (search ,'("TDDI41" "TDP031"))
          (color "BA55D3")
-         )
+         (remote (url "https://cloud.timeedit.net/liu/web/schema/ri6Y4X96Q6wZ80QwX3042Q35yYYn1Z6Z9425459Q167.ics")))
 
 ; flervariabel
 (account TATA76 (timeedit))
@@ -190,6 +196,8 @@
 
 (account TDDD14 (timeedit)
          (color "5500FF"))
+
+(account TFYA93 (timeedit))
 
 ;; statistik
 (account TAMS42 (timeedit))
@@ -256,16 +264,17 @@
      ;; lithekod_styrelse
      fruux
 
-     ;; TDDI41_TDP031
-     TATA76
-     TDDD20
-     TDDD98
-     TDDD14
-     TAMS42
-     TATA42
+     TDDI41_TDP031
+     ;; TATA76
+     ;; TDDD20
+     ;; TDDD98
+     ;; TDDD14
+     ;; TAMS42
+     ;; TATA42
+     ;; TFYA93
 
      d_sektionen
-     admittansen
+     ;; admittansen
 
      alma
      lintek
@@ -285,9 +294,8 @@
      calendars)))
 
 
+;; TODO enable systemd timers?
+
 (with-output-to-file
-  (path-append destdir "/home/hugo/.config/vdirsyncer/calendars")
-  (lambda ()
-    (for-each (lambda (cal)
-                (format #t "~a~%" (get-field (instanciate cal) '(acc-name))))
-              calendars)))
+  (path-append destdir (xdg-config-home) "/vdirsyncer/calendars")
+  (lambda () (display-list (account-names calendars))))
