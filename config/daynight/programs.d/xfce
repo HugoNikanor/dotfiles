@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# This claims to be xfce-specifiec, but works as long as xfsettingsd
+# is enabled. It for example works inside xmonad
+
+. $(dirname $(dirname $(realpath $0)))/common
+
+# TODO prefers dark mode setting?
+
+# TODO ensure that these themes are installed
+case $1 in
+	dusk) theme=Arc-Dark ;;
+	dawn) theme=Arc ;;
+esac
+
+xfconf-query -c xsettings -p /Net/ThemeName -s $theme
