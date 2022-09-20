@@ -322,6 +322,17 @@ it like a lasso going out in that direction.
 >   -- , ("M-<Space> M-d", removeEmptyWorkspace)
 >       ]
 
+Keybinds for flipping the monitor upside down.
+Only enabled on single screen setups, since it turns off every screen
+except the primary, and since it's only really useful on laptops.
+
+> monitorFlipKeys :: Int -> XConfig l -> [((KeyMask, KeySym), X())]
+> monitorFlipKeys 1 conf@XConfig {XMonad.modMask = modm} =
+>     [ ((modm, xK_Up)   , spawn "xrandr -o inverted")
+>     , ((modm, xK_Down) , spawn "xrandr -o normal") ]
+> monitorFlipKeys _ _ = []
+>
+
 > otherKeys :: XConfig l -> [((KeyMask, KeySym), X ())]
 > otherKeys conf@XConfig {XMonad.modMask = modm} =
 >     [ f (ms xK_Return)  $ spawn $ XMonad.terminal conf
@@ -367,8 +378,6 @@ numpad enter...
 >
 >     , f (m  xK_space)   $ submap $ spaceSubmap conf
 
->     , f (m  xK_Up)      $ spawn "xrandr -o inverted"
->     , f (m  xK_Down)    $ spawn "xrandr -o normal"
 >
 >     ] where f a b = (a, b)
 >             m x = (modm, x)
@@ -668,6 +677,7 @@ Allows rofi to find windows
 >         , keys = \conf -> M.fromList . mconcat . fmap ($ conf) $
 >               [ otherKeys
 >               , monitorKeys
+>               , monitorFlipKeys nScreens
 >               -- , movementKeys
 >               , volumeKeys
 >               , brightnessKeys
