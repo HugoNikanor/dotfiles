@@ -1,4 +1,4 @@
-let s:cpp  = "-std=gnu++11 -pedantic -Wall -Wextra "
+let s:cpp  = "-std=gnu++17 -pedantic -Wall -Wextra "
 let g:syntastic_cpp_compiler_options = s:cpp
 
 " let s:c  = "-std=c99 -pedantic -Wall -lm"
