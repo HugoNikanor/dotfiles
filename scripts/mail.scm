@@ -8,9 +8,10 @@
 (use-modules (conf-base)
              (ice-9 popen)
              (ice-9 rdelim)
+             (list)
              ((mutt) #:prefix mutt:)
              ((mbsync) #:prefix mbsync:)
-             ((util) #:select (pass escape pass/escape)))
+             ((util) #:select (pass escape pass/escape xdg-config-home)))
 
 
 
@@ -230,6 +231,7 @@
 
 (account admittansen (google)
          (pass-path "admittansen/hugo@admittansen.se")
+
          (address "hugo@admittansen.se")
 
          (signature "Hugo Hörnquist\nLedamot Admittansen")
@@ -394,10 +396,12 @@
     "Leaving passwords in manager"))
 (newline)
 
+(with-output-to-file (path-append (xdg-config-home) "/active-mail-accounts")
+  (lambda () (display-list (account-names account-list))))
+
 (with-output-to-file
   (format #f "~a/profile.d/private-mailconf.sh.~a"
-          (or (getenv "XDG_CONFIG_HOME")
-              (path-append (getenv "HOME") "/.config"))
+          (xdg-config-home)
           (gethostname))
   (lambda ()
     (display

@@ -1,5 +1,6 @@
 (define-module (util)
-  #:export (pass escape pass/escape)
+  #:export (pass escape pass/escape xdg-config-home)
+  #:use-module ((conf-base) #:select (path-append))
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
   )
@@ -25,3 +26,8 @@
 
 (define* (pass/escape path #:optional (charset (char-set #\")))
   (format #f "\"~a\"" (escape charset (pass path))))
+
+
+(define (xdg-config-home)
+  (or (getenv "XDG_CONFIG_HOME")
+      (path-append (getenv "HOME") "/.config")))
