@@ -1,5 +1,6 @@
 [core]
 	editor = vim
+	quotepath = off
 [user]
 	email = hugo@lysator.liu.se
 	name = Hugo Hörnquist
