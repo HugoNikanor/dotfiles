@@ -1,4 +1,4 @@
-syntax region Comment start=/"""/ end=/"""/
+syntax region Comment start=/r\?"""/ end=/"""/
 syntax region Comment start=/'''/ end=/'''/
 
 
