@@ -22,6 +22,21 @@ let g:tagbar_type_vimwiki = {
 			\ ,  'ctagsargs' : 'default'
 			\ }
 
+" Find a non-used finlename, and insert a link to that file in the
+" current document.
+function VimwikiCreateDynamic()
+	" Should really be null, set to current filename to force name
+	" conflict for loop.
+	let l:filename = expand('%:r')
+	while file_readable(l:filename . '.wiki')
+		let l:r = rand()
+		let l:filename = "wi_" . l:r
+	endwhile
+	call setline('.', getline('.') . ' [[' . l:filename . '|Note]]')
+	execute 'norm $'
+endfunction
+nnoremap <Leader>n :call VimwikiCreateDynamic()<cr>
+
 " !xdg-open ...
 " echomsg link_infos.index " 0
 " echomsg link_infos.scheme " wiki0

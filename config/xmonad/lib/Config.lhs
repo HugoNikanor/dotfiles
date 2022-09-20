@@ -4,6 +4,10 @@
 > ( xmain
 > ) where
 
+#ifndef MIN_VERSION_xmonad_contrib
+#error XMonad contrib required for building.
+#endif
+
 > import System.IO (hPutStrLn)
 > import System.Environment (setEnv)
 > import System.Locale (defaultTimeLocale, TimeLocale(wDays))
@@ -466,6 +470,18 @@ Color config borrowed from my Termite config .
 > dzenPos :: (Show a, Integral a) => a -> String
 > dzenPos p = "^p(" ++ show p ++ ")"
 
+> data DzenPosSpecial = LOCK_X
+>                     | UNLOCK_X
+>                     | LEFT
+>                     | RIGHT
+>                     | TOP
+>                     | CENTER
+>                     | BOTTOM
+>                     deriving (Enum, Show)
+
+> dzenMove :: DzenPosSpecial -> String
+> dzenMove s = "^p(_" ++ show s ++ ")"
+
 > dzenRect :: (Show a, Integral a) => a -> a -> String
 > dzenRect width height = "^r(" ++ show width ++ "x" ++ show height ++ ")"
 
@@ -475,8 +491,9 @@ Color config borrowed from my Termite config .
 > dzenCircle' :: (Show a, Integral a) => a -> String
 > dzenCircle' r = "^co(" ++ show r ++ ")"
 
-> formatBatteryDzen :: Int -> String
-> formatBatteryDzen n = concat [ color n, dzenIcon "battery", " " , show n, "%" ]
+> formatBatteryDzen :: String -> Int -> String
+> -- TODO dzenIcon icon
+> formatBatteryDzen icon n = concat [ color n, dzenIcon "battery", " " , show n, "%" ]
 >   where
 >     color n
 >         | n < 10    = dzenFg "red"
@@ -487,14 +504,36 @@ Color config borrowed from my Termite config .
 > loggerIfFile :: FilePath -> Logger.Logger -> Logger.Logger
 > loggerIfFile path logger = do
 >     exists <- io (doesPathExist path)
->     if exists then logger
->     else return Nothing
+>     if exists
+>       then logger
+>       else return Nothing
+
+> roundNearest :: Int -> Int -> Int
+> roundNearest target n = target * (n `div` target)
+
+>        -- https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-power
+> batteryStatusInfix :: String -> String
+> batteryStatusInfix "Charging"     = "-charging"
+> batteryStatusInfix "Discharging"  = ""
+> batteryStatusInfix "Unknown"      = "-missing"
+> batteryStatusInfix "Not charging" = ""
+> batteryStatusInfix "Full"         = ""
+
+> batteryStatusMost :: Int -> String -> String
+> batteryStatusMost _ "Unknown" = "battery-missing"
+> batteryStatus percentage status = "battery-level-"
+>               ++ (show . roundNearest 10 $ percentage)
+>               ++ batteryStatusInfix status
 
 > battery :: FilePath -> Logger.Logger
 > battery supply = do
->     let path = "/sys/class/power_supply/" ++ supply ++ "/capacity"
->     loggerIfFile path $
->        Just . formatBatteryDzen . read . dropRight 1 <$> io (readFile path)
+>     let prefix = "/sys/class/power_supply/" ++ supply
+>     let path = prefix ++ "/capacity"
+>     loggerIfFile path $ do
+>        percentage <- read . dropRight 1 <$> io (readFile path)
+>        status <- dropRight 1 <$> io (readFile $ prefix ++ "/status")
+>        let batIcon = batteryStatusMost percentage status ++ "-symbolic.symbolic.xpm"
+>        return . Just . formatBatteryDzen batIcon $ percentage
 
 > dzenSlider :: (RealFrac a) => Integer -> Integer -> String -> a -> String
 > dzenSlider width radius icon value =
@@ -655,7 +694,12 @@ Set up brightness stuff
 
 >     let gray x  = dzenFg "#ABABAB" ++ x
 >     let white x = dzenFg "white" ++ x
->     let loghookExtras = [ return $ Just "^p(_RIGHT)^p(-360)"-- "^ba(1920,_RIGHT)" --
+>     let fontWidth = 10
+>     let w = 100 * length brightnessHook
+>           + 100 * length volumeHook
+>           + fontWidth * length " | 2021-09-28 05:22:08 (Tis v39) | BB 100% |  |  "
+>     let loghookExtras = [ return . Just $ dzenMove RIGHT ++ dzenPos (- w)
+>     -- "^ba(1920,_RIGHT)" --
 >                         , date $ gray "%Y-%m-%d" ++ white " %T " ++ gray "(%a v%V)"
 >                         , battery "BAT0"
 >                         -- , swap

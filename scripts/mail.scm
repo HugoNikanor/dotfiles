@@ -1,6 +1,9 @@
-#!/usr/bin/guile \
---no-auto-compile -s
+#!/usr/bin/env sh
+GUILE=${GUILE:-guile}
+exec $GUILE --no-auto-compile -s "$@" "$0"
 !#
+
+;; TODO check that guile version is at least 2.2
 
 (add-to-load-path (dirname (current-filename)))
 
@@ -340,7 +343,8 @@
               (exit 1)))
           required-env)
 
-(define domainname (read-line (open-input-pipe "hostname --domain")))
+;; --domain doesn't work on BSD
+(define domainname (read-line (open-input-pipe "hostname -d")))
 
 (define account-list
   (list
@@ -375,7 +379,10 @@
 ;; leak details if the file exists world readable beforehand.
 (umask #o077)
 
-(chmod (path-append $HOME ".mbsyncrc") #o600)
+(catch 'system-error
+       (lambda () (chmod (path-append $HOME ".mbsyncrc") #o600))
+       (lambda _ 'ignore))
+
 (with-output-to-file (path-append $HOME ".mbsyncrc")
   (lambda ()
     (mbsync:render

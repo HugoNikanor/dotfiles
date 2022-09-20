@@ -71,7 +71,9 @@
 (define (render base-acc accounts)
   (define muttrc (path-append (getenv "HOME") "/.mutt/muttrc"))
   (mkdir-p (path-append (getenv "HOME") ".mutt"))
-  (chmod muttrc #o600)
+  (catch 'system-error
+         (lambda () (chmod muttrc #o600))
+         (lambda _ 'ignore))
   (with-output-to-file muttrc
     (lambda ()
       ;; (display (read-string base-port))
