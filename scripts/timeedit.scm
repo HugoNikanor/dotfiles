@@ -21,6 +21,7 @@
   (cond ((list? period) (string-join (map parse-period period) "," 'infix))
         ((number? period) (format #f "~a.d" period))
         ((date? period) (date->string period "~Y~m~d.x"))
+        ((string? period) period)
         (else (error "Invalid period type"))))
 
 (define-public (scramble string)
