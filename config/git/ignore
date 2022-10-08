@@ -3,6 +3,7 @@ bin/
 *.zip
 *.tar.*
 *.log
+vgcore.*
 
 # vim / emacs
 *~
