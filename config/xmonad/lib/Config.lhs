@@ -13,6 +13,7 @@
 > import System.Locale (defaultTimeLocale, TimeLocale(wDays))
 > import System.Time (getClockTime, toCalendarTime, formatCalendarTime)
 > import System.Directory (doesPathExist, findExecutable)
+> import System.FilePath (takeFileName)
 > import Data.List (isInfixOf)
 > import Data.Function (fix)
 > import Data.Foldable (toList)
@@ -643,13 +644,21 @@ we just return a constant True here.
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
 
-set fallback sequnece for terminal emulators
+Find a suitable terminal emulator.
+First by finding one present on the system, and the by (possibly)
+futher specifying how we want to invoke it.
 
->     termCommand <- head . catMaybes <$> mapM findExecutable
+TODO alacritty might be present, but the OpenGL version is to old to
+run it. Check for that condition.
+
+>     termCommand' <- head . catMaybes <$> mapM findExecutable
 >           [ "alacritty"
 >           , "termite"
 >           , "xterm"
 >           ]
+>     let termCommand = if (takeFileName termCommand') == "alacritty"
+>                         then "alacritty msg create-window || alacritty"
+>                         else termCommand'
 
 >     xmproc <- spawnPipe $ xmproc hostname
 >
