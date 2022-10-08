@@ -21,7 +21,7 @@ set guifont=Fira\ Mono\ 10
 " colorscheme darkblue
 colorscheme delek
 
-" https://new.reddit.com/r/vim/comments/k7w0gy/a_simple_function_for_zooming_in_gui_version_of/ {{{
+" https://www.reddit.com/r/vim/comments/k7w0gy/a_simple_function_for_zooming_in_gui_version_of/
 " Increases the font size with `amount`
 function! Zoom(amount) abort
   call ZoomSet(matchstr(&guifont, '\d\+$') + a:amount)
@@ -37,4 +37,3 @@ noremap <silent> <C--> :call Zoom(-v:count1)<CR>
 " No idea why C-- gives C-_, but eh.
 noremap <silent> <C-_> :call Zoom(-v:count1)<CR>
 noremap <silent> <C-0> :call ZoomSet(11)<CR>
-" }}}
