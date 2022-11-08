@@ -86,6 +86,7 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
            ;; keep tree above message
            ;; (pager_index_lines 10)
            (muttlisp_inline_eval yes)
+           (strict_threads yes)
 
            (mime_forward yes)
            (autoedit yes) ;; skips `To:' and `Subject:' prompts when composing mail
