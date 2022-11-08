@@ -53,6 +53,7 @@ call plug#begin("~/.vim/plugged")
 	endif
 	Plug 'junegunn/fzf.vim'
 	Plug 'wellle/context.vim'
+	Plug 'dense-analysis/ale'
 
 call plug#end()
 
