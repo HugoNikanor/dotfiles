@@ -8,5 +8,4 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_python_checkers =
 			\ [ 'mypy'
 			\ , 'flake8'
-			\ , 'pydocstyle'
 			\ ]
