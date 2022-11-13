@@ -20,6 +20,11 @@ import time
 import urllib
 import urllib.parse
 
+# Om mbsync sen matar ur sig
+# > IMAP command 'NAMESPACE' returned an error: BAD User is authenticated but not connected.
+# betyder det antagligen att authentiserats med fel ckonto. (Konto A
+# förväntades, men du har blivit inloggad som Konto B)
+
 
 # Can also be set to 'common'
 TENANT = '913f18ec-7f26-4c5f-a816-784fe9a58edd'
@@ -75,6 +80,10 @@ class PasswordStore:
 
     def put(self, key, value):
         """Store value in password store."""
+        if isinstance(value, dict):
+            value = json.dumps(value)
+        if isinstance(value, str):
+            value = value.encode('UTF-8')
         subprocess.run(['pass', 'insert', '--multiline', '--force',
                         os.path.join(self.passbase, key)],
                        input=value)
@@ -142,7 +151,14 @@ def new_token(token_name):
     redir_uri = f"http%3A//localhost:{port}/myapp/"
     prompt_user_login(redir_uri)
     authentication_code = q.get(block=True)
-    return get_token(authentication_code, redir_uri)
+    token = get_token(authentication_code, redir_uri)
+
+    def task():
+        time.sleep(1)
+        web_server.shutdown()
+    threading.Thread(target=task).start()
+
+    return token
 
 
 def prompt_user_login(redir_uri):
@@ -176,7 +192,7 @@ def get_token(code, redir_uri):
     response = conn.getresponse()
     data = response.read()
     conn.close()
-    return data
+    return json.loads(data)
 
 
 def refresh_refresh_token(refresh_token, token_name):
@@ -194,7 +210,7 @@ def refresh_refresh_token(refresh_token, token_name):
     response = conn.getresponse()
     data = response.read()
     conn.close()
-    return data
+    return json.loads(data)
 
 
 def __main(token_name):
@@ -207,18 +223,30 @@ def __main(token_name):
         refresh_token = data['refresh_token']
         if not refresh_token:
             token = new_token(token_name)
-            pw_store.put(token_name, token)
+            if token.get('error'):
+                print(token['error'])
+                print(token['error_description'])
+            else:
+                pw_store.put(token_name, token)
         else:
             elapsed = time.time() - pw_store.mtime(token_name)
             if elapsed > 3599:
                 print(f"Refreshing token '{token_name}'", file=sys.stderr)
                 token = refresh_refresh_token(refresh_token, token_name)
-                pw_store.put(token_name, token)
+                if token.get('error'):
+                    print(token['error'])
+                    print(token['error_description'])
+                else:
+                    pw_store.put(token_name, token)
             else:
                 print(f"token '{token_name}' still good", file=sys.stderr)
     except Exception:
         token = new_token(token_name)
-        pw_store.put(token_name, token)
+        if token.get('error'):
+            print(token['error'])
+            print(token['error_description'])
+        else:
+            pw_store.put(token_name, token)
 
     print(json.loads(pw_store.get(token_name))['access_token'])
 
