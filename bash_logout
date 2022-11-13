@@ -1,6 +1,9 @@
 # kill color on logout
-echo goodbye
 case $TERM in
-	linux) echo -en '\e]P0000000'; clear ;;
-	*)     echo -en '\e]11;#000000\a' ;;
+	linux) type=linux ;;
+	*)     type=osc   ;;
 esac
+
+cat ${XDG_CACHE_HOME:-~/.cache/}"/colors/$type/regular" 2>/dev/null
+
+unset type

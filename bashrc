@@ -36,21 +36,13 @@ if [ "$TERM" == xterm-termite ]; then
 fi
 
 if [ -n "$SSH_CLIENT" ]; then
-	# https://bottosson.github.io/misc/colorpicker/#335e73
-	case $(hostname) in
-		gandalf)   color='335e73';;
-		hornquist) color='5e1212';;
-		*)         color='000000';;
-	esac
 	case $TERM in
-		# https://man7.org/linux/man-pages/man4/console_codes.4.html
-		# console_codes(4)
-		linux) echo -en "\e]P0${color}"; clear ;;
-		# OSC (Operating system command)
-		# https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Operating-System-Commands
-		*)     echo -en "\e]11;#${color}\e\\" ;;
+		linux) type=linux ;;
+		*)     type=osc   ;;
 	esac
-	unset color
+
+	cat ${XDG_CACHE_HOME:-~/.cache/}"/colors/$type/$(hostname)" 2>/dev/null
+	unset type
 fi
 
 # PS1='$(printf "%%%$((`tput cols` - 2))s\r")'"$PS1"
