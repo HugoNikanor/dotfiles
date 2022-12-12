@@ -50,6 +50,7 @@ workbench.xmi
 *.xdv
 
 #Python
+*.egg-info
 __pycache__/
 *.pyc
 
@@ -73,6 +74,8 @@ ExportedObj/
 *.hi
 *.autosave
 *.dyn_*
+dist-newstyle/
+*.project.local
 
 # CTags
 tags
