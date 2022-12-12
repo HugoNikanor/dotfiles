@@ -272,7 +272,7 @@ Choose one of these, depending on the current monitor setup.
 >   (send . P)
 >   [ (xK_ä, a), (xK_comma,  a) -- Double bindings for both swedish
 >   , (xK_ö, b), (xK_period, b) -- and american dvorak keyboards.
->   -- , (xK_p, c)
+>   , (xK_p, c)
 >   , (xK_o, d)
 >   , (xK_e, e)
 >   , (xK_u, f) ]
@@ -377,11 +377,11 @@ numpad enter...
 >
 >     , m  xK_s         toggleWS
 >     , m  xK_g       $ spawn "rofi -show window -show-icons"
->     , ms xK_p       $ shellPrompt myXPConfig { autoComplete = Nothing
+>     , ms xK_y       $ shellPrompt myXPConfig { autoComplete = Nothing
 >                                              , searchPredicate = isInfixOf }
->     , m  xK_p       $ spawn "rofi -show drun -show-icons"
+>     , m  xK_y       $ spawn "rofi -show drun -show-icons"
 >     , m  xK_x       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
->     , m  xK_y       $ spawn "passmenu"
+>     , m  xK_i       $ spawn "passmenu"
 >     , m  xK_q         restartXMonad
 >
 >     , ms xK_f       $ scratchpadSpawnActionCustom "dolphin --name scratchpad"
