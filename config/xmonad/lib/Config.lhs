@@ -343,6 +343,21 @@ except the primary, and since it's only really useful on laptops.
 > monitorFlipKeys _ _ = []
 >
 
+Program starter. Boolean indicates if we have rofi or not
+
+> prgrMenuKeys :: Bool -> XConfig l -> [KeyAction]
+> prgrMenuKeys True conf@XConfig {XMonad.modMask = modm} =
+>     [ ((modm .|. shiftMask,  xK_p), shellPrompt myXPConfig
+>                                           { autoComplete = Nothing
+>                                           , searchPredicate = isInfixOf })
+>     , ((modm, xK_p), spawn "rofi -show drun -show-icons")
+>     ]
+> prgrMenuKeys False conf@XConfig {XMonad.modMask = modm} =
+>     [ ((modm .|. shiftMask, xK_p), cmd)
+>     , ((modm, xK_p), cmd)
+>     ] where cmd = shellPrompt myXPConfig { autoComplete = Nothing
+>                                          , searchPredicate = isInfixOf }
+
 > otherKeys :: XConfig l -> [KeyAction]
 > otherKeys conf@XConfig {XMonad.modMask = modm} =
 >     [ ms xK_Return  $ spawn $ XMonad.terminal conf
@@ -377,9 +392,6 @@ numpad enter...
 >
 >     , m  xK_s         toggleWS
 >     , m  xK_g       $ spawn "rofi -show window -show-icons"
->     , ms xK_p       $ shellPrompt myXPConfig { autoComplete = Nothing
->                                              , searchPredicate = isInfixOf }
->     , m  xK_p       $ spawn "rofi -show drun -show-icons"
 >     , m  xK_x       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
 >     , m  xK_y       $ spawn "passmenu"
 >     , m  xK_q         restartXMonad
@@ -725,6 +737,11 @@ Config Modifiers
 - ewmh
 Allows rofi to find windows
 
+>     rofi' <- findExecutable "rofi"
+>     hasRofi <- case rofi' of
+>       Just _  -> return True
+>       Nothing -> return False
+
 
 >     xmonad $ docks . ewmh $ def
 >         { modMask = mod4Mask
@@ -735,6 +752,7 @@ Allows rofi to find windows
 >               [ otherKeys
 >               , monitorKeys
 >               , monitorFlipKeys nScreens
+>               , prgrMenuKeys hasRofi
 >               -- , movementKeys
 >               , volumeKeys
 >               , brightnessKeys
