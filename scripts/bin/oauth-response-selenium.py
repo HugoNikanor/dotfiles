@@ -7,7 +7,7 @@ Procedure for going through Microsofts authentication dance to allow
 IMAP access to email.
 """
 
-from http.server import HTTPServer, BaseHTTPRequestHandler
+#from http.server import HTTPServer, BaseHTTPRequestHandler
 import base64
 import http.client
 import json
@@ -19,6 +19,9 @@ import threading
 import time
 import urllib
 import urllib.parse
+from urllib.parse import urlparse
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 # Om mbsync sen matar ur sig
 # > IMAP command 'NAMESPACE' returned an error: BAD User is authenticated but not connected.
@@ -41,7 +44,7 @@ SECRET = 'JqQX2PNo9bpM0uEihUPzyrh'
 offline_access = 'offline_access'
 imap = 'https://outlook.office.com/IMAP.AccessAsUser.All'
 smtp = 'https://outlook.office.com/SMTP.Send'
-SCOPE = '%20'.join([offline_access, imap, smtp])
+SCOPE = ' '.join([offline_access, imap, smtp])
 
 HOME = os.getenv('HOME') or '/tmp'
 
@@ -111,57 +114,33 @@ def write_xoauth2_token(user, token):
     print(msg)
 
 
-q: queue.Queue = queue.Queue()
-
-
-class OAuthServer(BaseHTTPRequestHandler):
-    """Server for capturing authentication code from the server."""
-
-    def do_GET(self):
-        """Capture code query param."""
-        url = urllib.parse.urlparse(self.path)
-        query = urllib.parse.parse_qs(url.query)
-        # This is the code get_authentication_code refers to
-        q.put(query['code'][0])
-
-
-def run_server(webserver):
-    """Start server in new thread."""
-    def task():
-        webserver.serve_forever()
-
-    thread = threading.Thread(target=task)
-    thread.start()
-
-
 def new_token(token_name):
     """Retrieve a new token."""
     print(f"Getting brand new token for '{token_name}'", file=sys.stderr)
 
-    for port in range(8080, 9000):
-        try:
-            web_server = HTTPServer(('localhost', port), OAuthServer)
-            break
-        except OSError:
-            # Address already in use
-            pass
+    redir_uri = f"http%3A//localhost/myapp/"
 
-    run_server(web_server)
+    options = FirefoxOptions()
+    options.add_argument('--safe-mode')
+    browser = webdriver.Firefox(options=options)
 
-    redir_uri = f"http%3A//localhost:{port}/myapp/"
-    prompt_user_login(redir_uri)
-    authentication_code = q.get(block=True)
+    # Asks the user to log in in i browser window
+    prompt_user_login(browser, redir_uri)
+    # authentication_code = q.get(block=True)
+    url = urlparse(browser.current_url)
+    while url.netloc != 'localhost':
+        time.sleep(0.1)
+        url = urlparse(browser.current_url)
+    authentication_code = urllib.parse.parse_qs(url.query)['code'][0]
+
     token = get_token(authentication_code, redir_uri)
 
-    def task():
-        time.sleep(1)
-        web_server.shutdown()
-    threading.Thread(target=task).start()
+    browser.quit()
 
     return token
 
 
-def prompt_user_login(redir_uri):
+def prompt_user_login(browser, redir_uri):
     """Open uri in a graphical browser."""
     params_dict = {
         'client_id': CLIENT_ID,
@@ -172,7 +151,14 @@ def prompt_user_login(redir_uri):
     }
     params = '&'.join(f'{key}={value}' for key, value in params_dict.items())
     url = AUTHURL + '?' + params
-    subprocess.run(['xdg-open', url])
+    browser.get(url)
+
+    # TODO
+    # Auto fill username (and optionally password).
+    # Setting the value directly doesn't seem to work, probably due to
+    # Microsofts interesting ideas about how to build pages.
+    # Simulating button presses is probably better.
+    # browser.execute_script('document.querySelector(\'input[type="email"]\').value = "name@example.com"')
 
 
 def get_token(code, redir_uri):

@@ -272,7 +272,7 @@ Choose one of these, depending on the current monitor setup.
 >   (send . P)
 >   [ (xK_ä, a), (xK_comma,  a) -- Double bindings for both swedish
 >   , (xK_ö, b), (xK_period, b) -- and american dvorak keyboards.
->   -- , (xK_p, c)
+>   , (xK_p, c)
 >   , (xK_o, d)
 >   , (xK_e, e)
 >   , (xK_u, f) ]
@@ -347,14 +347,14 @@ Program starter. Boolean indicates if we have rofi or not
 
 > prgrMenuKeys :: Bool -> XConfig l -> [KeyAction]
 > prgrMenuKeys True conf@XConfig {XMonad.modMask = modm} =
->     [ ((modm .|. shiftMask,  xK_p), shellPrompt myXPConfig
+>     [ ((modm .|. shiftMask,  xK_y), shellPrompt myXPConfig
 >                                           { autoComplete = Nothing
 >                                           , searchPredicate = isInfixOf })
->     , ((modm, xK_p), spawn "rofi -show drun -show-icons")
+>     , ((modm, xK_y), spawn "rofi -show drun -show-icons")
 >     ]
 > prgrMenuKeys False conf@XConfig {XMonad.modMask = modm} =
->     [ ((modm .|. shiftMask, xK_p), cmd)
->     , ((modm, xK_p), cmd)
+>     [ ((modm .|. shiftMask, xK_y), cmd)
+>     , ((modm, xK_y), cmd)
 >     ] where cmd = shellPrompt myXPConfig { autoComplete = Nothing
 >                                          , searchPredicate = isInfixOf }
 
@@ -393,7 +393,7 @@ numpad enter...
 >     , m  xK_s         toggleWS
 >     , m  xK_g       $ spawn "rofi -show window -show-icons"
 >     , m  xK_x       $ xmonadPrompt myXPConfig { autoComplete = Nothing }
->     , m  xK_y       $ spawn "passmenu"
+>     , m  xK_i       $ spawn "passmenu"
 >     , m  xK_q         restartXMonad
 >
 >     , ms xK_f       $ scratchpadSpawnActionCustom "dolphin --name scratchpad"
