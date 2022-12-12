@@ -165,35 +165,32 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
                     )))
 
 (account outlook (default)
+         (token-name ,(format #f "xoauth-~a" (? acc-name)))
          (IMAPAccount
-          (Host "outlook.office365.com")
-          (AuthMechs LOGIN)))
-
-(account liu (outlook)
-         (address "hugho389@student.liu.se")
-         (pass-path "liu/mail/hugho389")
-
-         (signature "Hugo Hörnquist (hugho389)")
-         (mutt (set (hostname "liu.se"))))
-
-(account liu-work (outlook)
-         (address "hugo.hornquist@liu.se")
-         ;; (pass-path "liu/hugho26")
-
-         (IMAPAccount (User "hugho26@liu.se")
-                      ;; NOTE that xouath2 isn't always available.
-                      ;; Install something like the aur package
-                      ;; cyrus-sasl-xoauth2-git
-                      (AuthMechs XOAUTH2)
-                      (PassCmd ,(format #f "+\"~a/oauth-response liu-imap\"" BINDIR))
-                      (! Pass))
+           (Host "outlook.office365.com")
+           ;; NOTE that xouath2 isn't always available.
+           ;; Install something like the aur package
+           ;; cyrus-sasl-xoauth2-git
+           (AuthMechs XOAUTH2)
+           (PassCmd ,(format #f "+\"~a/oauth-response-selenium.py ~a\""
+                             BINDIR (? token-name)))
+           (! Pass))
 
          (mutt (set (hostname "liu.se"))
                (account-hook
                  (imap-password
                    ,(list (? mutt imap-addr)
-                          (format #f "set imap_pass='`~a/oauth-response liu-imap`'"
-                                  BINDIR))))))
+                          (format #f "set imap_pass='`~a/oauth-response ~a`'"
+                                  BINDIR (? token-name)))))))
+
+(account liu (outlook)
+         (address "hugho389@student.liu.se")
+         (signature "Hugo Hörnquist (hugho389)")
+         (mutt (set (hostname "liu.se"))))
+
+(account liu-work (outlook)
+         (address "hugo.hornquist@liu.se")
+         (IMAPAccount (User "hugho26@liu.se")))
 
 
 (account vg-base (default)
