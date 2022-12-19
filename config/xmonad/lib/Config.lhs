@@ -113,6 +113,8 @@ to happen at points not currently in focus.
 > import qualified DBus.Client as DBus
 #endif
 
+> import Hostname (getHostName)
+
 
 
 > type KeyBind = (KeyMask, KeySym)
@@ -652,7 +654,7 @@ we just return a constant True here.
 > nameMatches pattern str = True
 
 > xmain = do
->     hostname <- head . lines <$> readFile "/etc/hostname"
+>     hostname <- getHostName
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
 
