@@ -640,10 +640,21 @@ https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Util-Loggers
 
 
 
+Start arguments for dock by hostname. Mostly to place it correctly
+depending on different monitor configurations.
+TODO this data should be autodetected through xrandr or similar.
+
 > xmproc :: String -> String
 >     -- Setting an -y value breaks -dock, also, -dock is undocumented?
 > xmproc "gandalf" = "dzen2 -fn 'Roboto' -w 1920 -x 1920 -ta l -dock"
-> xmproc _         = "dzen2 -fn 'Fira Mono' -ta l -dock"
+
+Placing the dock on lains primary monitor doesn't allocate space for it.
+Placing it on the sub-screen works, but the space always gets
+allocated at the bottom. So lets just place it at the bottom.
+
+> xmproc "lain"    = "dzen2 -x 2560 -y 1920 -w 1080 -ta l -dock"
+
+> xmproc _         = "dzen2 -ta l -dock"
 
 nameMatches is used when finding proper PulseAudio sinks for the volume slider.
 However, since the current first alternative currently works for all
