@@ -22,6 +22,7 @@ import urllib.parse
 from urllib.parse import urlparse
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from password_store import PasswordStore
 
 # Om mbsync sen matar ur sig
 # > IMAP command 'NAMESPACE' returned an error: BAD User is authenticated but not connected.
@@ -51,55 +52,6 @@ HOME = os.getenv('HOME') or '/tmp'
 # export PASSWORD_STORE=${PASSWORD_STORE:-$HOME/.password-store}
 # PASSBASE=automation/
 
-
-class PasswordStore:
-    """
-    Wrapper around pass(1).
-
-    [Parameters]:
-        passbase -- Prefix which should be added to all keys.
-        password_store -- Alternative storage location of the store.
-                          Defaults to PASSWORD_STORE.
-    """
-
-    def __init__(self, passbase='automation/', password_store=None):
-        self.passbase = passbase
-
-        if password_store:
-            self.password_store = password_store
-        else:
-            self.password_store = os.getenv('PASSWORD_STORE') \
-                or os.path.join(HOME, '.password-store')
-
-    def get(self, key):
-        """
-        Get value from password store.
-
-        TODO what happens if key isn't present?
-        """
-        cmd = subprocess.run(['pass', os.path.join(self.passbase, key)],
-                             capture_output=True)
-        return cmd.stdout
-
-    def put(self, key, value):
-        """Store value in password store."""
-        if isinstance(value, dict):
-            value = json.dumps(value)
-        if isinstance(value, str):
-            value = value.encode('UTF-8')
-        subprocess.run(['pass', 'insert', '--multiline', '--force',
-                        os.path.join(self.passbase, key)],
-                       input=value)
-
-    def mtime(self, key):
-        """
-        Return mtime of item in password store.
-
-        TODO what happens if key isn't present?
-        """
-        path = os.path.join(self.password_store, self.passbase, key + '.gpg')
-        st = os.stat(path)
-        return st.st_mtime
 
 
 def write_xoauth2_token(user, token):
@@ -201,7 +153,8 @@ def refresh_refresh_token(refresh_token, token_name):
 
 def __main(token_name):
 
-    pw_store = PasswordStore()
+    pw_store = PasswordStore(os.getenv('PASSWORD_STORE') or
+                             os.path.join(HOME, '.password-store'))
 
     try:
         p = pw_store.get(token_name)
