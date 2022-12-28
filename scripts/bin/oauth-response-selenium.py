@@ -23,6 +23,12 @@ from urllib.parse import urlparse
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from password_store import PasswordStore
+from kv_store import KVStore
+
+try:
+    from xdg.BaseDirectory import xdg_cache_home
+except ImportError:
+    xdg_cache_home = os.path.append(os.getenv('HOME'), '.cache')
 
 # Om mbsync sen matar ur sig
 # > IMAP command 'NAMESPACE' returned an error: BAD User is authenticated but not connected.
@@ -153,12 +159,12 @@ def refresh_refresh_token(refresh_token, token_name):
 
 def __main(token_name):
 
-    pw_store = PasswordStore(os.getenv('PASSWORD_STORE') or
-                             os.path.join(HOME, '.password-store'))
+    # pw_store = PasswordStore(os.getenv('PASSWORD_STORE') or
+    #                          os.path.join(HOME, '.password-store'))
+    pw_store = KVStore(os.path.join(xdg_cache_home, 'xoauth'))
 
     try:
-        p = pw_store.get(token_name)
-        data = json.loads(p)
+        data = pw_store.get(token_name)
         refresh_token = data['refresh_token']
         if not refresh_token:
             token = new_token(token_name)
@@ -187,7 +193,7 @@ def __main(token_name):
         else:
             pw_store.put(token_name, token)
 
-    print(json.loads(pw_store.get(token_name))['access_token'])
+    print(pw_store.get(token_name)['access_token'])
 
 
 if __name__ == '__main__':
