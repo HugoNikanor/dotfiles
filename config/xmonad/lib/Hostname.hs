@@ -1,22 +1,25 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, ScopedTypeVariables #-}
 
 module Hostname (getHostName)
 where
 
-#if defined MIN_VERSION_hostname && MIN_VERSION_hostname(1,0,0)
-import qualified Network.HostName as HN
+#if defined MIN_VERSION_hostname
+    #if ! MIN_VERSION_hostname(1,0,0)
+        #error "Hostname library found, but to old version"
+    #else
+        import qualified Network.HostName as HN
+    #endif
 #else
-import System.Process 
-    ( createProcess
-    , std_out
-    , CreatePipe
+import System.Process
+    ( readProcess
+    , StdStream(CreatePipe)
     , proc
     )
+import Control.Exception (try)
+import Data.Either (fromRight)
+import GHC.Exception.Type
 #endif
 
-
--- | Return basename of hostname, found by a suitable method.
-getHostName :: IO String
 
 swap :: (a, b) -> (b, a)
 swap (a, b) = (b, a)
@@ -37,13 +40,20 @@ splitBy' x (y:ys)
 splitBy :: Eq a => a -> [a] -> ([a], [a])
 splitBy x = swap . splitBy' x
 
-#if defined MIN_VERSION_hostname && MIN_VERSION_hostname(1,0,0)
+
+-- | Return basename of hostname, found by a suitable method.
+getHostName :: IO String
+
+#if defined MIN_VERSION_hostname
 getHostName = fst . splitBy '.' <$> HN.getHostName
 #else
-getHostName = fst . splitBy '.' . init
-            <$> readCreateProcess (proc "hostname" []) ""
--- head . lines <$> readFile "/etc/hostname"
--- hostname
--- hostname -s
--- uname -n
+getHostName = do
+    -- A apperently need to specify the exception kind here.
+    -- SomeException is hopefully some form of "base" exception, since
+    -- we want to catch everything.
+    eHostname :: Either GHC.Exception.Type.SomeException String
+        <- try $ fst . splitBy '.' . init <$> readProcess "hostname" [] []
+    case eHostname of
+        Right hn -> return hn
+        Left _ -> return "unknown"
 #endif
