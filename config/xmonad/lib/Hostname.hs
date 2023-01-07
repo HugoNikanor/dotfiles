@@ -4,11 +4,11 @@ module Hostname (getHostName)
 where
 
 #if defined MIN_VERSION_hostname
-    #if ! MIN_VERSION_hostname(1,0,0)
-        #error "Hostname library found, but to old version"
-    #else
-        import qualified Network.HostName as HN
-    #endif
+#    if ! MIN_VERSION_hostname(1,0,0)
+#        error "Hostname library found, but to old version"
+#    else
+import qualified Network.HostName as HN
+#    endif
 #else
 import System.Process
     ( readProcess
