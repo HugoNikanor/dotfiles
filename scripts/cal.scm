@@ -185,10 +185,19 @@
          ;; (period "0.n,12.n")
          ;; (search ,'("TDDI41" "TDP031"))
          (color "BA55D3")
-         (remote (url "https://cloud.timeedit.net/liu/web/schema/ri6Y4X96Q6wZ80QwX3042Q35yYYn1Z6Z9425459Q167.ics")))
+         (remote (url "https://cloud.timeedit.net/liu/web/schema/ri6Y4X96Q6wZ80QwX3042Q35yYYn1Z6Z9425459Q167.ics"))
+         )
 
 ; flervariabel
-(account TATA76 (timeedit))
+(account TATA76 (http)
+         (color "316c5a")
+         (remote (url
+                   "https://cloud.timeedit.net/liu/web/schema/ri607QQQY77Zn7Q5108554Z2y6Z06.ics")))
+;; Advancerad C++
+(account TDDD38 (http)
+         (color "1a4574")
+         (remote (url
+                   "https://cloud.timeedit.net/liu/web/schema/ri607QQQY70Zn7Q5248554Z2y6Z06.ics")))
 
 (account TDDD20 (timeedit))
 
@@ -197,7 +206,15 @@
 (account TDDD14 (timeedit)
          (color "5500FF"))
 
-(account TFYA93 (timeedit))
+(account TFYA93 (http)
+         (color "FF4500")
+         (remote (url "https://cloud.timeedit.net/liu/web/schema/ri667XQQ746Z50Qv47025gZ6y1Y7559Q6Y46Y9.ics"))
+         )
+
+(account TDDD07 (http)
+         (color "0B6623")
+         (remote (url
+                   "https://cloud.timeedit.net/liu/web/schema/ri66Z656X64Z04Q6Z76g4Y55y6076Y58n09gQY6Q507166Q70.ics")))
 
 ;; statistik
 (account TAMS42 (timeedit))
@@ -239,6 +256,14 @@
           (client_id ,(pass "admittansen/google/oauth/client_id"))
           (client_secret ,(pass "admittansen/google/oauth/client_secret"))))
 
+(account for3 (http)
+         (color "BFBFBD")
+         (remote (url "https://calendar.for3.lysator.liu.se/everything.ics")))
+
+(account kent (http)
+         (color "000000")
+         (remote (url "https://cloud.timeedit.net/liu/web/schema/ri667XQ6697Z56Qm8Z0536Z6y6YQ605n5Y85Y9gQ60.ics")))
+
 (define path (path-append
                destdir
                (get-field (instanciate cal-top)
@@ -264,24 +289,29 @@
      ;; lithekod_styrelse
      fruux
 
-     TDDI41_TDP031
-     ;; TATA76
+     ;; TDDI41_TDP031
+     TATA76
+     TDDD38
      ;; TDDD20
      ;; TDDD98
      ;; TDDD14
      ;; TAMS42
      ;; TATA42
      ;; TFYA93
+     TDDD07
 
      d_sektionen
      ;; admittansen
 
-     alma
+     ;; alma
      lintek
 
      ;; nolle_p_2020_fadder
      ;; nolle_p_2020_klassfadder
      nolle_p_2021_fadder
+
+     for3
+     kent
      ))
 
 
