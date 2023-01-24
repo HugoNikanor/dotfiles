@@ -281,7 +281,7 @@
      ;; STABEN2021
 
      formulastudent
-     formulastudent_management
+     ;; formulastudent_management
 
      ;; STABEN
      Facebook
@@ -311,7 +311,7 @@
      nolle_p_2021_fadder
 
      for3
-     kent
+     ;; kent
      ))
 
 
