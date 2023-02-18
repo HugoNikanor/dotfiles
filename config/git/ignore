@@ -41,6 +41,9 @@ workbench.xmi
 
 #LaTeX
 *.fdb_latexmk
+*-eps-converted-to.pdf
+*.bbl
+*.blg
 *.aux
 *.fls
 *.dvi
