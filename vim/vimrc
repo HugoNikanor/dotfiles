@@ -220,6 +220,8 @@ set formatoptions=croqnlj
 " than in ftplugin.
 
 let g:vimwiki_list = []
+let g:vimwiki_auto_chdir = 1
+" let g:vimwiki_conceal_pre = 1
 
 " Dynamically load wikis from disk, instead of hardcoding them here
 " We might want something to define an order here, instead of taking
