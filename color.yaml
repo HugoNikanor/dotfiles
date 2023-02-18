@@ -1,22 +1,33 @@
 hosts:
   gandalf:
     colors:
+      black:
+        bright: 657B83
+        normal: 002B36
       blue:
-        normal: 3394EE
+        bright: 268BD2
+        normal: 268BD2
       cyan:
-        bright: 00FFFF
-        normal: 007d7d
+        bright: 2AA198
+        normal: 2AA198
       green:
-        normal: 00FF00
+        bright: '859900'
+        normal: '859900'
       magenta:
-        normal: FF00FF
+        bright: 6C71C4
+        normal: 6C71C4
       red:
-        normal: FF5544
+        bright: DC322F
+        normal: DC322F
+      white:
+        bright: FDF6E3
+        normal: 93A1A1
       yellow:
-        normal: FFFF00
+        bright: B58900
+        normal: B58900
     primary:
-      background: 335e72
-      foreground: E0E0E0
+      background: 002B36
+      foreground: 93A1A1
   hornquist:
     primary:
       background: 5e1212
