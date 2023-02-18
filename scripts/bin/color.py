@@ -9,6 +9,7 @@ $XDG_CACHE_HOME/colors/$term/$host
 
 import yaml
 import os.path
+import argparse
 from typing import (
     Literal,
     Optional,
@@ -95,6 +96,7 @@ color_codes: dict[str, int] = {
     'white':   7,
 }
 
+color_names = list(color_codes)
 
 NORMAL = 0
 BRIGHT = 8
@@ -112,7 +114,6 @@ ColorName: TypeAlias = Union[Literal['black'],
                              Literal['magenta'],
                              Literal['cyan'],
                              Literal['white']]
-
 
 
 OSC = b'\033]'
@@ -168,7 +169,33 @@ def mkdir_safe(dir):
         pass
 
 
-def main():
+# --------------------------------------------------
+
+def parse_alacritty_yaml(data: dict) -> Colorscheme:
+    def convert(x):
+        return '{:06X}'.format(int(x, 16))
+
+    colors = data['colors']
+    normal = colors['normal']
+    bright = colors['bright']
+
+    return {'primary': {'foreground': convert(colors['primary']['foreground']),
+                        'background': convert(colors['primary']['background'])},
+            'colors':
+            {name: {'normal': convert(normal[name]),
+                    'bright': convert(bright[name])}
+             for name in color_names}}
+
+
+# --------------------------------------------------
+
+def main_alacritty(args):
+    data = yaml.full_load(args.input)
+    result = parse_alacritty_yaml(data)
+    yaml.dump(result, stream=args.output)
+
+
+def main_generate(args):
     with open(os.path.join(HOME, 'dotfiles/color.yaml')) as f:
         data = yaml.safe_load(f)
 
@@ -181,6 +208,64 @@ def main():
                 f.write(handle_colors(x))
             if x := data.get('primary'):
                 f.write(handle_primary(x))
+
+
+def main_import(args):
+    data = yaml.full_load(args.colorfile)
+    args.colorfile.seek(0)
+    new_scheme = yaml.full_load(args.addition)
+    hostname = args.host
+    data['hosts'][hostname] = new_scheme
+    yaml.dump(data, stream=args.colorfile)
+    args.colorfile.truncate()
+
+
+# --------------------------------------------------
+
+def setup_alacritty_parser(subparsers):
+    parser = subparsers.add_parser('from-alacritty',
+                                   help='Convert a alacritty.yaml to this format')
+    parser.add_argument('--output', '-o',
+                        default='-',
+                        type=argparse.FileType('w'))
+    parser.add_argument('input', help='File to parse',
+                        type=argparse.FileType('r'))
+    parser.set_defaults(func=main_alacritty)
+    return parser
+
+
+def setup_generate_parser(subparsers):
+    parser = subparsers.add_parser('generate',
+                                   help='Generate cat-file with escape sequences')
+    parser.set_defaults(func=main_generate)
+    return parser
+
+
+def setup_import_parser(subparsers):
+    parser = subparsers.add_parser('import', help='Import colorscheme into file')
+    parser.add_argument('host',
+                        help='Hostname to save colorscheme under')
+    parser.add_argument('colorfile',
+                        type=argparse.FileType('r+'),
+                        help='colors.yaml')
+    parser.add_argument('addition',
+                        type=argparse.FileType('r'))
+    parser.set_defaults(func=main_import)
+    return parser
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers()
+    setup_alacritty_parser(subparsers)
+    setup_generate_parser(subparsers)
+    setup_import_parser(subparsers)
+
+    args = parser.parse_args()
+    if 'func' in args:
+        args.func(args)
+    else:
+        parser.print_help()
 
 
 if __name__ == '__main__':
