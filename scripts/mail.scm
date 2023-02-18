@@ -342,7 +342,10 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
           required-env)
 
 ;; --domain doesn't work on BSD
-(define domainname (read-line (open-input-pipe "hostname -d")))
+;; (define domainname (read-line (open-input-pipe "hostname -d")))
+(define fqdn (vector-ref (gethost (gethostname)) 0))
+
+(define domainname (car (string-split fqdn #\.)))
 
 (define account-list
   (list
