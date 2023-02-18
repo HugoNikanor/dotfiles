@@ -1,0 +1,54 @@
+hosts:
+  gandalf:
+    primary:
+      background: '335e72'
+      foreground: 'E0E0E0'
+    colors:
+      red:
+        normal: 'FF5544'
+      green:  
+        normal: '00FF00'
+      yellow: 
+        normal: 'FFFF00'
+      blue:   
+        normal: '3394EE'
+      magenta: 
+        normal: 'FF00FF'
+      cyan:   
+        normal: '007d7d'
+        bright: '00FFFF'
+
+  hornquist:
+    primary:
+      background: '5e1212'
+      foreground: 'FFFFFF'
+
+  regular:
+    primary:
+      background: '1d1f21'
+      foreground: 'c5c8c6'
+    colors:
+      black:   
+        normal: '1d1f21'
+        bright: '959992'
+      red:     
+        normal: 'a54242'
+        bright: 'cc6666'
+      green:   
+        normal: '8c9440'
+        bright: 'b5bd68'
+      yellow:  
+        normal: 'de935f'
+        bright: 'f0c674'
+      blue:    
+        normal: '2f6c9e'
+        bright: '81a2be'
+      magenta: 
+        normal: '85678f'
+        bright: 'b294bb'
+      cyan:    
+        normal: '5e8d87'
+        bright: '8abeb7'
+      white:   
+        normal: 'c5c8c6'
+        bright: 'c5c8c6'
