@@ -352,7 +352,7 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
     lysator
     gmail
     liu
-    liu-work
+    ;; liu-work
     ;; guckel
     ;; valberedningen
     ;; propaganda
