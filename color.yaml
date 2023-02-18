@@ -1,54 +1,52 @@
 hosts:
   gandalf:
-    primary:
-      background: '335e72'
-      foreground: 'E0E0E0'
     colors:
+      blue:
+        normal: 3394EE
+      cyan:
+        bright: 00FFFF
+        normal: 007d7d
+      green:
+        normal: 00FF00
+      magenta:
+        normal: FF00FF
       red:
-        normal: 'FF5544'
-      green:  
-        normal: '00FF00'
-      yellow: 
-        normal: 'FFFF00'
-      blue:   
-        normal: '3394EE'
-      magenta: 
-        normal: 'FF00FF'
-      cyan:   
-        normal: '007d7d'
-        bright: '00FFFF'
-
+        normal: FF5544
+      yellow:
+        normal: FFFF00
+    primary:
+      background: 335e72
+      foreground: E0E0E0
   hornquist:
     primary:
-      background: '5e1212'
-      foreground: 'FFFFFF'
-
+      background: 5e1212
+      foreground: FFFFFF
   regular:
-    primary:
-      background: '1d1f21'
-      foreground: 'c5c8c6'
     colors:
-      black:   
-        normal: '1d1f21'
+      black:
         bright: '959992'
-      red:     
-        normal: 'a54242'
-        bright: 'cc6666'
-      green:   
-        normal: '8c9440'
-        bright: 'b5bd68'
-      yellow:  
-        normal: 'de935f'
-        bright: 'f0c674'
-      blue:    
-        normal: '2f6c9e'
-        bright: '81a2be'
-      magenta: 
-        normal: '85678f'
-        bright: 'b294bb'
-      cyan:    
-        normal: '5e8d87'
-        bright: '8abeb7'
-      white:   
-        normal: 'c5c8c6'
-        bright: 'c5c8c6'
+        normal: 1d1f21
+      blue:
+        bright: 81a2be
+        normal: 2f6c9e
+      cyan:
+        bright: 8abeb7
+        normal: 5e8d87
+      green:
+        bright: b5bd68
+        normal: 8c9440
+      magenta:
+        bright: b294bb
+        normal: 85678f
+      red:
+        bright: cc6666
+        normal: a54242
+      white:
+        bright: c5c8c6
+        normal: c5c8c6
+      yellow:
+        bright: f0c674
+        normal: de935f
+    primary:
+      background: 1d1f21
+      foreground: c5c8c6
