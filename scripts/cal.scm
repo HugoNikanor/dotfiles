@@ -280,7 +280,7 @@
      ;; STABEN2020
      ;; STABEN2021
 
-     formulastudent
+     ;; formulastudent
      ;; formulastudent_management
 
      ;; STABEN
@@ -305,10 +305,6 @@
 
      ;; alma
      lintek
-
-     ;; nolle_p_2020_fadder
-     ;; nolle_p_2020_klassfadder
-     nolle_p_2021_fadder
 
      for3
      ;; kent
