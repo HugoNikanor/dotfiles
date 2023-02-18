@@ -246,3 +246,7 @@ let g:vimwiki_diary_months = {
 			\ }
 
 " }}}
+
+autocmd BufNewFile *.tex 0r ~/templates/base.tex
+autocmd BufNewFile *.tex /maketitle
+autocmd BufNewFile *.html 0r ~/templates/index.html
