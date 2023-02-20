@@ -1,0 +1,8 @@
+# Configuration for `git open`
+# https://git.lysator.liu.se/hugo/git-scripts/-/blob/master/git-open
+patterns:
+  - i: https?://aur.archlinux.org/(.*)
+    o: https://aur.archlinux.org/packages/$1
+  - i: git@git.hornquist.se:git/(.*).git
+    o: https://git.hornquist.se/$1
+
