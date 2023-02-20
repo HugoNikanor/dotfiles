@@ -1,5 +1,5 @@
-hosts:
-  gandalf:
+schemes:
+  solarized.dark: &id001
     colors:
       black:
         bright: 657B83
@@ -28,11 +28,11 @@ hosts:
     primary:
       background: 002B36
       foreground: 93A1A1
-  hornquist:
+  "falu_r\xF6d": &id002
     primary:
       background: 5e1212
       foreground: FFFFFF
-  regular:
+  regular: &id003
     colors:
       black:
         bright: '959992'
@@ -61,3 +61,7 @@ hosts:
     primary:
       background: 1d1f21
       foreground: c5c8c6
+hosts:
+  gandalf: *id001
+  hornquist: *id002
+  regular: *id003

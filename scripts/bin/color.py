@@ -197,7 +197,7 @@ def main_alacritty(args):
 
 def main_generate(args):
     with open(os.path.join(HOME, 'dotfiles/color.yaml')) as f:
-        data = yaml.safe_load(f)
+        data = yaml.full_load(f)
 
     cache = os.path.join(xdg_cache_home, 'colors')
     mkdir_safe(cache)
@@ -210,13 +210,38 @@ def main_generate(args):
                 f.write(handle_primary(x))
 
 
+def to_yaml_anchor(str):
+    chars = set(map(chr, range(ord('A', ord('Z') + 1)))) \
+            | set(map(chr, range(ord('a'), ord('z') + 1))) \
+            | set(map(chr, range(ord('0'), ord('9') + 1)))
+
+    try:
+        from transliterate import translit
+    except ModuleNotFoundError:
+        # Dirty fallback transliterate, moves everything ∉ ASCII ∩ alphanum
+        # to '_'
+        def translit(str, reversed=True):
+            return ''.join(c if c in chars else '_' for c in str)
+
+    return ''.join(c if c in chars else '_' for c in str)
+
+
 def main_import(args):
     data = yaml.full_load(args.colorfile)
     args.colorfile.seek(0)
     new_scheme = yaml.full_load(args.addition)
-    hostname = args.host
-    data['hosts'][hostname] = new_scheme
-    yaml.dump(data, stream=args.colorfile)
+    key = args.key
+    # TODO data['schemes'][key] should ideally have the YAML anchor
+    # to_yaml_anchor(key)
+    data['schemes'][key] = new_scheme
+    yaml.dump(data,
+              stream=args.colorfile,
+              # These force the output to preserve the order of keys.
+              # And we REALLY want schemes before hosts, since hosts
+              # should reference schemes (and not the other way
+              # aronud)
+              default_flow_style=False,
+              sort_keys=False)
     args.colorfile.truncate()
 
 
@@ -243,8 +268,8 @@ def setup_generate_parser(subparsers):
 
 def setup_import_parser(subparsers):
     parser = subparsers.add_parser('import', help='Import colorscheme into file')
-    parser.add_argument('host',
-                        help='Hostname to save colorscheme under')
+    parser.add_argument('key',
+                        help='Name of imported colorscheme')
     parser.add_argument('colorfile',
                         type=argparse.FileType('r+'),
                         help='colors.yaml')
