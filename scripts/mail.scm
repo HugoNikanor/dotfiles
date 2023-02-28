@@ -55,7 +55,7 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
           (AltMap yes)
           (Path ,(path-append (? path-base) (? fancy-acc-name) "/"))
           (Inbox ,(path-append (? MaildirStore Path)
-                                 "INBOX"))
+                               "INBOX"))
           (SubFolders Verbatim))
 
          (IMAPStore
@@ -67,10 +67,10 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
           (Patterns "*")
           (SyncState "*")
           ,@(if (version<= "1.4" mbsync-version)
-              ((Far    ,(format #f ":~a:" (mbsync:category-transformer 'IMAPStore (? acc-name))))
-               (Near   ,(format #f ":~a:" (mbsync:category-transformer 'MaildirStore (? acc-name)))))
-              ((Master ,(format #f ":~a:" (mbsync:category-transformer 'IMAPStore (? acc-name))))
-               (Slave  ,(format #f ":~a:" (mbsync:category-transformer 'MaildirStore (? acc-name))))))
+                ((Far    ,(format #f ":~a:" (mbsync:category-transformer 'IMAPStore (? acc-name))))
+                 (Near   ,(format #f ":~a:" (mbsync:category-transformer 'MaildirStore (? acc-name)))))
+                ((Master ,(format #f ":~a:" (mbsync:category-transformer 'IMAPStore (? acc-name))))
+                 (Slave  ,(format #f ":~a:" (mbsync:category-transformer 'MaildirStore (? acc-name))))))
           )
 
 
@@ -142,15 +142,15 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
 
          #;
          (mutt
-          (set
-           (from "Hugo Hörnquist <hugo@hornquist.se>"))))
+         (set
+         (from "Hugo Hörnquist <hugo@hornquist.se>"))))
 
 (account lysator (default)
          (address "hugo@lysator.liu.se")
          (pass-path "lysator/mail/hugo")
 
          (IMAPAccount
-           (Host "imap.lysator.liu.se"))
+          (Host "imap.lysator.liu.se"))
 
          (signature "hugo")
 
@@ -159,29 +159,29 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
 
          (mutt (set (hostname "lysator.liu.se")
                     (record ,(if (string=? domainname "lysator.liu.se")
-                               "=Lysator"
-                               "=Lysator/INBOX"))
+                                 "=Lysator"
+                                 "=Lysator/INBOX"))
 
                     )))
 
 (account outlook (default)
          (token-name ,(format #f "xoauth-~a" (? acc-name)))
          (IMAPAccount
-           (Host "outlook.office365.com")
-           ;; NOTE that xouath2 isn't always available.
-           ;; Install something like the aur package
-           ;; cyrus-sasl-xoauth2-git
-           (AuthMechs XOAUTH2)
-           (PassCmd ,(format #f "+\"~a/oauth-response-selenium.py ~a\""
-                             BINDIR (? token-name)))
-           (! Pass))
+          (Host "outlook.office365.com")
+          ;; NOTE that xouath2 isn't always available.
+          ;; Install something like the aur package
+          ;; cyrus-sasl-xoauth2-git
+          (AuthMechs XOAUTH2)
+          (PassCmd ,(format #f "+\"~a/oauth-response-selenium.py ~a\""
+                            BINDIR (? token-name)))
+          (! Pass))
 
          (mutt (set (hostname "liu.se"))
                (account-hook
-                 (imap-password
-                   ,(list (? mutt imap-addr)
-                          (format #f "set imap_pass='`~a/oauth-response ~a`'"
-                                  BINDIR (? token-name)))))))
+                (imap-password
+                 ,(list (? mutt imap-addr)
+                        (format #f "set imap_pass='`~a/oauth-response ~a`'"
+                                BINDIR (? token-name)))))))
 
 (account liu (outlook)
          (address "hugho389@student.liu.se")
@@ -200,18 +200,18 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
          (pass-path ,(format #f "vastgota.nation.liu.se/~a" (?  acc-name)))
 
          (IMAPAccount
-           (Host "vastgota.nation.liu.se")
-           (AuthMechs "LOGIN")
-           (User ,(? acc-name)))
+          (Host "vastgota.nation.liu.se")
+          (AuthMechs "LOGIN")
+          (User ,(? acc-name)))
 
          (mutt (set (hostname "vastgota.nation.liu.se")
                     (record ,(format #f "=Vastgota.~a/INBOX" (?  fancy-acc-name)))))
 
          (MaildirStore
-           (Path ,(path-append (? path-base)
-                               (string-append "Vastgota."
-                                 (? fancy-acc-name))
-                               "/"))))
+          (Path ,(path-append (? path-base)
+                              (string-append "Vastgota."
+                                             (? fancy-acc-name))
+                              "/"))))
 
 (account guckel (vg-base))
 (account valberedningen (vg-base)
@@ -227,8 +227,8 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
          (mutt (set (hostname "liuformulastudent.se")))
 
          (signature
-           ,(format #f "~a, Team leader IT & Driverless~%✆ ~a"
-                    (? name) (getenv "PHONE"))))
+          ,(format #f "~a, Team leader IT & Driverless~%✆ ~a"
+                   (? name) (getenv "PHONE"))))
 
 (account admittansen (google)
          (pass-path "admittansen/hugo@admittansen.se")
@@ -278,21 +278,21 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
 
 
          (macro
-           (index ,`("\\cb |urlview\n"
-                     "\\Ck <tag-prefix><clear-flag>o<tag-prefix><save-message>=Lysator/Junk<return><return>"
-                     ;; https://brianbuccola.com/how-to-mark-all-emails-as-read-in-mutt/
-                     "A <tag-pattern>~N<enter><tag-prefix><clear-flag>N"  ;; mark al new as read
-                     ;; TODO find better bindings
-                     ,(format #f "<F8> \"<shell-escape>mu find --clearlinks --format=links --linksdir=~a/search \" \"mu find\""
-                             mailfolder)
-                     ;; TODO change this to took on =search
-                     ,(format #f "<F9> \"<change-folder-readonly>~a/search\" \"mu find results\""
-                             mailfolder)
-                     ))
+             (index ,`("\\cb |urlview\n"
+                       "\\Ck <tag-prefix><clear-flag>o<tag-prefix><save-message>=Lysator/Junk<return><return>"
+                       ;; https://brianbuccola.com/how-to-mark-all-emails-as-read-in-mutt/
+                       "A <tag-pattern>~N<enter><tag-prefix><clear-flag>N"  ;; mark al new as read
+                       ;; TODO find better bindings
+                       ,(format #f "<F8> \"<shell-escape>mu find --clearlinks --format=links --linksdir=~a/search \" \"mu find\""
+                                mailfolder)
+                       ;; TODO change this to took on =search
+                       ,(format #f "<F9> \"<change-folder-readonly>~a/search\" \"mu find results\""
+                                mailfolder)
+                       ))
            (pager ,`("\\cb |urlview\n"
                      ,(format #f "i '<enter-command>set pager_index_lines = ~s<enter>'"
                               '(if (equal $pager_index_lines 0) 10 0))
-                  ))
+                     ))
            )
 
          (source ,'("~/.mutt/vim" "~/.mutt/colors"))
@@ -310,23 +310,23 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
 
 (account mutt-global-lysator (mutt-global)
          (set
-           (from "Hugo Hörnquist <hugo@lysator.liu.se>")
-           (hostname "lysator.liu.se")
+          (from "Hugo Hörnquist <hugo@lysator.liu.se>")
+          (hostname "lysator.liu.se")
 
-           (mask "!(dovecot|cur|tmp|new)")
-           (spoolfile "/mp/mail/hugo/Maildir")
-           (mbox      "/mp/mail/hugo/Maildir")
-           (folder "~/.local/var/mail/")
+          (mask "!(dovecot|cur|tmp|new)")
+          (spoolfile "/mp/mail/hugo/Maildir")
+          (mbox      "/mp/mail/hugo/Maildir")
+          (folder "~/.local/var/mail/")
 
-           (record "=Lysator")
+          (record "=Lysator")
 
-           ))
+          ))
 
 (account mutt-global-gpg (mutt-global)
          (set
-           (spoolfile "/var/mail/hugo/Gmail/")
-           (crypt_use_gpgme yes)
-           (pgp_default_key "E376B3821453F4BE1ED6F3C1265514B158C4CA23")))
+          (spoolfile "/var/mail/hugo/Gmail/")
+          (crypt_use_gpgme yes)
+          (pgp_default_key "E376B3821453F4BE1ED6F3C1265514B158C4CA23")))
 
 
 
@@ -349,15 +349,15 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
 
 (define account-list
   (list
-    lysator
-    gmail
-    liu
-    ;; liu-work
-    ;; guckel
-    ;; valberedningen
-    ;; propaganda
-    formulastudent
-    admittansen
+   lysator
+   gmail
+   liu
+   ;; liu-work
+   ;; guckel
+   ;; valberedningen
+   ;; propaganda
+   formulastudent
+   admittansen
 
    ;; guckel
    ;; valberedningen
@@ -374,22 +374,22 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
    ;; lokal
    ;; propaganda
 
-    ))
+   ))
 
 ;; TODO this only applies to newly created files, meaning that we
 ;; leak details if the file exists world readable beforehand.
 (umask #o077)
 
 (catch 'system-error
-       (lambda () (chmod (path-append $HOME ".mbsyncrc") #o600))
-       (lambda _ 'ignore))
+  (lambda () (chmod (path-append $HOME ".mbsyncrc") #o600))
+  (lambda _ 'ignore))
 
 (with-output-to-file (path-append $HOME ".mbsyncrc")
   (lambda ()
     (mbsync:render
-      (if (string=? domainname "lysator.liu.se")
-        (delete lysator account-list)
-        account-list))))
+     (if (string=? domainname "lysator.liu.se")
+         (delete lysator account-list)
+         account-list))))
 (chmod (path-append $HOME ".mbsyncrc") #o400)
 
 (mutt:render
@@ -399,20 +399,20 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
  account-list)
 
 (display
-  (if static-passwords
-    "Embedding passwords in file"
-    "Leaving passwords in manager"))
+ (if static-passwords
+     "Embedding passwords in file"
+     "Leaving passwords in manager"))
 (newline)
 
 (with-output-to-file (path-append (xdg-config-home) "/active-mail-accounts")
   (lambda () (display-list (account-names account-list))))
 
 (with-output-to-file
-  (format #f "~a/profile.d/private-mailconf.sh.~a"
-          (xdg-config-home)
-          (gethostname))
+    (format #f "~a/profile.d/private-mailconf.sh.~a"
+            (xdg-config-home)
+            (gethostname))
   (lambda ()
     (display
-      (if static-passwords
-        "systemctl set-environment --user STATIC_MAILCONF=1\n"
-        "systemctl unset-environment --user STATIC_MAILCONF\n"))))
+     (if static-passwords
+         "systemctl set-environment --user STATIC_MAILCONF=1\n"
+         "systemctl unset-environment --user STATIC_MAILCONF\n"))))
