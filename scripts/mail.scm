@@ -11,6 +11,7 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
 (use-modules (conf-base)
              (ice-9 popen)
              (ice-9 rdelim)
+             (web uri)
              (list)
              ((mutt) #:prefix mutt:)
              ((mbsync) #:prefix mbsync:)
@@ -41,15 +42,23 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
          (path-base ,mailfolder)
          (fancy-acc-name ,(string-titlecase (? acc-name)))
 
+         (imap-pass-path ,(? pass-path))
+         (smtp-pass-path ,(? pass-path))
+
          ;; (pass ,(string-append "pass " (? pass-path)))
+
+         (smtp-scheme smtps)
+         (smtp-user ,(? address))
+         (smtp-port 465)
+         ;; (smtp-host )
 
          (IMAPAccount
           (SSLType "IMAPS")
           (CertificateFile "/etc/ssl/certs/ca-certificates.crt")
           (User ,(? address))
           ,@(if static-passwords
-                ((Pass ,(pass/escape (? pass-path))))
-                ((PassCmd ,(format #f "+\"pass ~a\"" (? pass-path))))))
+                ((Pass ,(pass/escape (? imap-pass-path))))
+                ((PassCmd ,(format #f "+\"pass ~a\"" (? imap-pass-path))))))
 
          (MaildirStore
           (AltMap yes)
@@ -81,19 +90,15 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
            (from ,(format #f "~a <~a>" (? name) (? address)))
            (realname ,(? name))
            (record ,(format #f "=~a/INBOX" (? fancy-acc-name)))
-           (sidebar_divider_char "│")
-           (edit_headers yes)
-           ;; keep tree above message
-           ;; (pager_index_lines 10)
-           (muttlisp_inline_eval yes)
-           (strict_threads yes)
-
-           (mime_forward yes)
-           (autoedit yes) ;; skips `To:' and `Subject:' prompts when composing mail
-           (include yes)  ;; skips `include-copy' prompt
-
-           ;; (forward_format "[%a: %s]")
-           (forward_format "FWD: %s")
+           (smtp_url ,(uri->string (build-uri (? smtp-scheme)
+                                              #:userinfo (? smtp-user)
+                                              #:host (? smtp-host)
+                                              #:port (? smtp-port))))
+           (smtp_pass
+            ,(if static-passwords
+                 (pass/escape (? smtp-pass-path)
+                              (char-set #\" #\' #\`))
+                 (format #f "`pass ~a`" (? smtp-pass-path))))
            )
 
           (file
@@ -104,15 +109,15 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
            (account-signature ,(path-append (? mutt file signature-dir) (? address))))
 
           ;; (imap-pass ,(? pass))
-          (imap-addr ,(format #f "imaps://~a@~a"
-                              (? IMAPAccount User)
-                              (? IMAPAccount Host)))
+          (imap-addr ,(uri->string (build-uri 'imaps
+                                              #:userinfo (? IMAPAccount User)
+                                              #:host (? IMAPAccount Host))))
           (account-hook
            (imap-password ,(list (? mutt imap-addr)
                                  (if static-passwords
                                      (format #f "set imap_pass='~a'" (escape (char-set #\" #\' #\`)
-                                                                             (pass (? pass-path))))
-                                     (format #f "set imap_pass='`pass ~a`'" (? pass-path))))))
+                                                                             (pass (? imap-pass-path))))
+                                     (format #f "set imap_pass='`pass ~a`'" (? imap-pass-path))))))
 
           (folder-hook
            (hk1 ,(list (format #f "(~a|~a)"
@@ -131,24 +136,30 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
           (Host "imap.gmail.com")
           (AuthMechs "LOGIN"))
          (Channel
-          (Patterns "* ![Gmail]*")))
+          (Patterns "* ![Gmail]*"))
+         (smtp-host "smtp.gmail.com"))
 
 
 
 
+;; https://support.google.com/mail/answer/7126229#zippy=%2Cstep-change-smtp-other-settings-in-your-email-client
 (account gmail (google)
          (address "hugo.hornquist@gmail.com")
          (pass-path "google.com/hugo.hornquist/mutt")
 
-         #;
          (mutt
-         (set
-         (from "Hugo Hörnquist <hugo@hornquist.se>"))))
+          (set
+           (from "Hugo Hörnquist <hugo@hornquist.se>"))))
 
+
+;; https://datorhandbok.lysator.liu.se/index.php/AUTHSMTP
+;; https://datorhandbok.lysator.liu.se/index.php/Elektronisk_post_p%C3%A5_Lysatorvis
 (account lysator (default)
          (address "hugo@lysator.liu.se")
          (pass-path "lysator/mail/hugo")
+         (smtp-user "hugo")
 
+         (smtp-host "mail.lysator.liu.se")
          (IMAPAccount
           (Host "imap.lysator.liu.se"))
 
@@ -164,6 +175,8 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
 
                     )))
 
+;; https://support.microsoft.com/en-us/office/pop-imap-and-smtp-settings-for-outlook-com-d088b986-291d-42b8-9564-9c414e2aa040
+;; https://liudesk.liu.se/tas/public/ssp/content/detail/knowledgeitem?unid=42dec97e4a4f45cca288e300a2e85b67
 (account outlook (default)
          (token-name ,(format #f "xoauth-~a" (? acc-name)))
          (IMAPAccount
@@ -176,19 +189,30 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
                             BINDIR (? token-name)))
           (! Pass))
 
-         (mutt (set (hostname "liu.se"))
-               (account-hook
+         (smtp-host "smtp.office365.com")
+         (smtp-port 587)
+         ;; (smtp-pass-path "")
+
+         (mutt (account-hook
                 (imap-password
                  ,(list (? mutt imap-addr)
                         (format #f "set imap_pass='`~a/oauth-response ~a`'"
                                 BINDIR (? token-name)))))))
 
-(account liu (outlook)
+(account liu-base ()
+         (pass-path "lysator/mail/hugo")
+         (smtp-user "hugo")
+         (smtp-host "mail.lysator.liu.se")
+         (smtp-port 465)
+
+         (mutt (set (hostname "liu.se"))))
+
+(account liu (liu-base outlook)
          (address "hugho389@student.liu.se")
          (signature "Hugo Hörnquist (hugho389)")
          (mutt (set (hostname "liu.se"))))
 
-(account liu-work (outlook)
+(account liu-work (liu-base outlook)
          (address "hugo.hornquist@liu.se")
          (IMAPAccount (User "hugho26@liu.se")))
 
@@ -198,6 +222,8 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
          (postnamn ,(string-titlecase (format #f "~agöte" (? acc-name))))
          (signature ,(format #f "~a, ~a" (? name) (? postnamn)))
          (pass-path ,(format #f "vastgota.nation.liu.se/~a" (?  acc-name)))
+         (smtp-user ,(? acc-name))
+         (smtp-host "vastgota.nation.liu.se")
 
          (IMAPAccount
           (Host "vastgota.nation.liu.se")
@@ -252,27 +278,34 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
               (header_cache "~/.mutt/cache")
               (message_cachedir "~/.mutt/cache")
               (folder ,mailfolder)
-              (record ,(path-append (? set folder) "sent"))
               (postponed ,(path-append (? set folder) "postponed"))
               (imap_check_subscribed yes)
               (imap_list_subscribed yes)
               (ssl_starttls yes)
-              (smtp_url "smtp://hugo@mail.lysator.liu.se:26")
-              (smtp_pass ,(if static-passwords
-                              (pass/escape "lysator/mail/hugo"
-                                           (char-set #\" #\' #\`))
-                              "`pass lysator/mail/hugo`"))
               (ssl_force_tls yes)
               (assumed_charset "utf-8:iso-8859-1")
               (mbox_type "Maildir")
 
-              (realname "Hugo Hörnquist")
-              (from "Hugo Hörnquist <hugo@hornquist.se>")
+              ;; (realname "Hugo Hörnquist")
+              ;; (from "Hugo Hörnquist <hugo@hornquist.se>")
 
               (markers no)
 
               (rfc2047_parameters yes)
 
+              (sidebar_divider_char "│")
+              (edit_headers yes)
+              ;; keep tree above message
+              ;; (pager_index_lines 10)
+              (muttlisp_inline_eval yes)
+              (strict_threads yes)
+
+              (mime_forward yes)
+              (autoedit yes) ;; skips `To:' and `Subject:' prompts when composing mail
+              (include yes)  ;; skips `include-copy' prompt
+
+              ;; (forward_format "[%a: %s]")
+              (forward_format "FWD: %s")
               )
 
 
