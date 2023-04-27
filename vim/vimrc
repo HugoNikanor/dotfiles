@@ -202,6 +202,10 @@ set path+=**
 set scrolloff=1
 set nrformats-=octal
 
+if exists('+smoothscroll')
+	set smoothscroll
+endif
+
 set wildignore+=tags
 set wildignore+=*.o
 set wildignore+=*.a
