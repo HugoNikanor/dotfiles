@@ -1,1 +1,1 @@
-command -v pandoc >/dev/null && eval "$(pandoc --bash-completion)"
+cache_completion pandoc --bash-completion
