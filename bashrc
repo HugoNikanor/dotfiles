@@ -3,7 +3,10 @@
 
 PS1='\h [\w] \$ '
 
-if [ -d "$HOME/.config/bash/" ]; then
+CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}
+CONFIG_DIR=${XDG_CONFIG_HOME:-$HOME/.config}
+
+if [ -d "${CONFIG_DIR}/bash/" ]; then
 	for file in $HOME/.config/bash/*.sh; do
 		test -r "$file" && . "$file"
 	done
@@ -41,7 +44,7 @@ if [ -n "$SSH_CLIENT" ]; then
 		*)     type=osc   ;;
 	esac
 
-	cat ${XDG_CACHE_HOME:-~/.cache/}"/colors/$type/$(hostname)" 2>/dev/null
+	cat "${CACHE_DIR}/colors/$type/$(hostname)" 2>/dev/null
 	unset type
 fi
 
