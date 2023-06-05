@@ -24,7 +24,7 @@ alias ip="ip -c"
 
 alias weeslack="weechat -d ~/.local/share/weechat/slack"
 
-vibin() { $EDITOR $(which $1); }
+vibin() { "$EDITOR" "$(which "$1")"; }
 
 # Creates paste. Uploads file if argument is given, STDIN otherwise.
 # pb() { curl -F c="@${1:--}" https://ptpb.pw?u=1; }
@@ -40,10 +40,14 @@ alias ecat='elinks -dump'
 # joke aliases
 alias nano="echo \"Seriously? Why don't you just use Notepade.exe? Or MS Paint?\""
 
-if [ $(uname -s) == "Linux" ]; then
+if [ "$(uname -s)" == "Linux" ]; then
 	# enable colors if available
-	if [ -x /usr/bin/dircolors ]; then
-		test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	if command -v dircolors >/dev/null; then
+		if [ -r ~/.dircolors ]; then
+			eval "$(dircolors -b ~/.dircolors)"
+		else
+			eval "$(dircolors -b)"
+		fi
 		alias ls='ls -N --color=auto'
 		alias grep='grep --color=auto'
 	fi
@@ -53,8 +57,8 @@ fi
 
 
 sl() {
-	$(which sl) $*
-	ls $*
+	"$(which sl)" "$@"
+	ls "$@"
 }
 
 __ntpq_helper() {
