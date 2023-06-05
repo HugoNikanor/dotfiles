@@ -1,9 +1,10 @@
-#general
+# General
 bin/
 *.zip
 *.tar.*
 *.log
 vgcore.*
+.nfs*
 
 # vim / emacs
 *~
@@ -15,7 +16,7 @@ ltxpng/
 .~lock*
 .#*
 
-#c++
+# C++
 *.exe
 *.out
 *.a
@@ -23,23 +24,28 @@ ltxpng/
 *.so
 obj/
 
-#java
+# Qt
+*.pro.user
+*.pro.user*
+*.qm
+
+# Java
 *.class
 *.jar
 !jars/*jar
 
-#Gradle
+# Gradle
 build/
 gen/
 .gradle/
 
-#Eclim / Eclipse
+# Eclim / Eclipse
 workbench.xmi
 .classpath
 .project
 .settings/
 
-#LaTeX
+# LaTeX
 *.fdb_latexmk
 *-eps-converted-to.pdf
 *.bbl
@@ -52,7 +58,7 @@ workbench.xmi
 *.info
 *.xdv
 
-#Python
+# Python
 *.egg-info
 __pycache__/
 *.pyc
@@ -79,6 +85,7 @@ ExportedObj/
 *.dyn_*
 dist-newstyle/
 *.project.local
+cabal.project.local~*
 
 # CTags
 tags
@@ -86,8 +93,6 @@ TAGS
 !issues/**/tags
 !tags/
 !TAGS/
-
-.nfs*
 
 # Aspell
 *.bak
@@ -98,5 +103,8 @@ TAGS
 # Javascript
 *.tmp-browserify*
 node_modules/
-# Haskell
-cabal.project.local~*
+
+
+
+
+.*.pp_breakpoints
