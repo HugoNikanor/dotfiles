@@ -7,7 +7,7 @@ CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}
 CONFIG_DIR=${XDG_CONFIG_HOME:-$HOME/.config}
 
 if [ -d "${CONFIG_DIR}/bash/" ]; then
-	for file in $HOME/.config/bash/*.sh; do
+	for file in "${CONFIG_DIR}"/bash/*.sh; do
 		test -r "$file" && . "$file"
 	done
 	unset file

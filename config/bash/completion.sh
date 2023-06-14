@@ -23,8 +23,8 @@ cache_completion() {
 		|| {
 		if command -v "$cmd" >/dev/null; then
 			$cmdline > "$COMPLETION_CACHE/${cmd}.sh"
+			. "${COMPLETION_CACHE}/${cmd}.sh"
 		fi
-		. "${COMPLETION_CACHE}/${cmd}.sh"
 	}
 }
 
