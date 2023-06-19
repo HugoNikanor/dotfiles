@@ -50,7 +50,7 @@
 [rebase]
 	autoSquash = true
 [safe]
-	directory = /mp/www/roxen
+	directory = *
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
