@@ -20,8 +20,8 @@ HISTSIZE=1000
 HISTFILESIZE=2000
 
 test "$BROWSER" = elinks || export BROWSER=elinks
-export EDITOR="/usr/bin/vim"
-export RTV_EDITOR="/usr/bin/vim"
+export EDITOR="vim"
+export RTV_EDITOR="vim"
 export RTV_URLVIEWER="/usr/bin/urlview"
 export INFO_PRINT_COMMAND=">/tmp/info"
 export XDG_DOCUMENTS_DIR="$HOME/ldoc"
