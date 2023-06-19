@@ -8,8 +8,7 @@ vgcore.*
 
 # vim / emacs
 *~
-*.swp
-*.swo
+*.sw*
 \#**
 .breakpoints_*
 ltxpng/
