@@ -71,6 +71,10 @@
         js2-mode
         tide
 
+        lsp-mode
+        svelte-mode
+;; pyls pylsp ruff-lsp semgrep-ls
+
         ))
 
 (package-initialize)
