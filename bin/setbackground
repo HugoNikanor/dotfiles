@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 get_images() {
 	for x in { 1..$monitor_count }; do
 		tmp=$(mktemp --suffix .png)
