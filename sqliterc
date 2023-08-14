@@ -1,3 +1,4 @@
-.mode columns
+-- .mode columns
+.mode box --wrap 100 --ww
 .headers on
 .timer on
