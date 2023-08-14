@@ -112,6 +112,11 @@ ENVIRONMENTS: all hooks to bind to"
 
 
 
+(setq auto-save-file-name-transforms
+      '((".*" "~/.cache/emacs/saves/" t)))
+
+
+
 (require 'popup)
 
 
