@@ -688,7 +688,12 @@ STR: target string"
    )
 
   (evil-define-key '(normal emacs insert) geiser-repl-mode-map
-    (kbd "C-l") 'geiser-repl-clear-buffer)
+    (kbd "C-l") 'geiser-repl-clear-buffer
+    (kbd "M-.") 'geiser-edit-symbol-at-point
+    (kbd "C-]") 'geiser-edit-symbol-at-point)
+
+  (evil-define-key '(normal) geiser-debug-mode-map
+    (kbd ",") 'geiser-debug--debugger-transient)
 
   (evil-define-key '(normal insert) scheme-mode-map
     (kbd "M-.") 'geiser-edit-symbol-at-point
