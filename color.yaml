@@ -27,10 +27,11 @@ schemes:
         normal: B58900
     primary:
       background: 002B36
-      foreground: 93A1A1
+      foreground: c5c8c6
   "falu_r\xF6d": &id002
     primary:
-      background: 5e1212
+      # background: 5e1212
+      background: '511212'
       foreground: FFFFFF
   regular: &id003
     colors:
