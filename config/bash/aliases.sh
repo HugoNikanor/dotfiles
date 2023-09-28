@@ -8,8 +8,6 @@ alias uuuu="cd ../../../.."
 alias l="ls"
 alias ll="cd -"
 
-alias tree='tree --gitignore'
-
 # Mostly for Fedora
 if command -v vimx >/dev/null; then
 	alias vim=vimx
