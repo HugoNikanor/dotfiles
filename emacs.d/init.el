@@ -787,6 +787,9 @@ STR: target string"
 
 ;;; Other
 
+(setq browse-url-handlers
+      '(("^https?://www.lispworks.com/documentation/HyperSpec/.*" . eww)))
+
 (add-hook 'Buffer-menu-mode-hook #'hl-line-mode)
 (evil-define-key '(motion) Buffer-menu-mode-map
   (kbd "C-d") 'evil-scroll-down
