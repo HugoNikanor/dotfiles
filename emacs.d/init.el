@@ -423,6 +423,19 @@ WIDTH: number of dashes in line"
 
 
 
+;; Emacs mode works better in the shell,
+;; But keep the window commands every other window uses.
+(with-eval-after-load 'esh-mode
+  (evil-emacs-state)
+  (keymap-set eshell-mode-map "C-w h" #'evil-window-left)
+  (keymap-set eshell-mode-map "C-w j" #'evil-window-down)
+  (keymap-set eshell-mode-map "C-w k" #'evil-window-up)
+  (keymap-set eshell-mode-map "C-w l" #'evil-window-right)
+  (setq-local show-trailing-whitespace nil))
+
+
+
+
 
 (add-to-list 'auto-mode-alist '("rfc[0-9]+\\.txt\\'" . irfc-mode))
 
