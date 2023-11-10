@@ -112,3 +112,6 @@ node_modules/
 
 
 .*.pp_breakpoints
+
+# FreeCAD
+*.FCBak
