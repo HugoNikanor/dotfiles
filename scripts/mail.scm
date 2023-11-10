@@ -264,6 +264,11 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
          (signature "Hugo Hörnquist\nLedamot Admittansen")
          (mutt (set (hostname "admittansen.se"))))
 
+(account talman (google)
+         (pass-path "lintek/talman")
+         (address "talman@lintek.liu.se")
+         (signature "Hugo Hörnquist\nTalman LinTek"))
+
 
 
 (account mutt-global ()
@@ -406,6 +411,7 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
    ;; sekreterare
    ;; lokal
    ;; propaganda
+   talman
 
    ))
 
