@@ -149,7 +149,9 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
 
          (mutt
           (set
-           (from "Hugo Hörnquist <hugo@hornquist.se>"))))
+           ;; (from "Hugo Hörnquist <hugo@hornquist.se>")
+           (from "Hugo Hörnquist <hugo.hornquist@gmail.com>")
+           )))
 
 
 ;; https://datorhandbok.lysator.liu.se/index.php/AUTHSMTP
