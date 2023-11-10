@@ -14,6 +14,7 @@ vgcore.*
 ltxpng/
 .~lock*
 .#*
+.ccls-cache/
 
 # C++
 *.exe
@@ -56,11 +57,14 @@ workbench.xmi
 *.toc
 *.info
 *.xdv
+*.bcf
+*.run.xml
 
 # Python
 *.egg-info
 __pycache__/
 *.pyc
+.mypy_cache/
 
 # Unity
 Temp/
@@ -103,7 +107,8 @@ TAGS
 *.tmp-browserify*
 node_modules/
 
-
+# SCSS
+.sass-cache
 
 
 .*.pp_breakpoints
