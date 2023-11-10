@@ -1,10 +1,10 @@
 # General
-bin/
 *.zip
 *.tar.*
 *.log
 vgcore.*
 .nfs*
+.*.pp_breakpoints
 
 # vim / emacs
 *~
@@ -22,7 +22,6 @@ ltxpng/
 *.a
 *.o
 *.so
-obj/
 
 # Qt
 *.pro.user
@@ -35,12 +34,9 @@ obj/
 !jars/*jar
 
 # Gradle
-build/
-gen/
 .gradle/
 
 # Eclim / Eclipse
-workbench.xmi
 .classpath
 .project
 .settings/
@@ -68,10 +64,8 @@ __pycache__/
 
 # Unity
 Temp/
-Library/
 
 # MonoDevelop
-ExportedObj/
 *.svd
 *.userprefs
 /*.csproj
@@ -90,13 +84,6 @@ dist-newstyle/
 *.project.local
 cabal.project.local~*
 
-# CTags
-tags
-TAGS
-!issues/**/tags
-!tags/
-!TAGS/
-
 # Aspell
 *.bak
 
@@ -109,9 +96,6 @@ node_modules/
 
 # SCSS
 .sass-cache
-
-
-.*.pp_breakpoints
 
 # FreeCAD
 *.FCBak
