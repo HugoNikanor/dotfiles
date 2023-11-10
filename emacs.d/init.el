@@ -82,7 +82,6 @@
 (package-refresh-contents t)
 (package-install-selected-packages)
 
-
 
 
 ;;; Local Packages
@@ -355,6 +354,7 @@ WIDTH: number of dashes in line"
 (add-hook 'scheme-mode-hook #'prettify-scheme)
 (add-hook 'geiser-repl-mode-hook #'prettify-scheme)
 
+
 (defun prettify-tex ()
   ;; \mathnote{v = p} -> /v = p/ (but with larger slashes)
 
@@ -504,7 +504,6 @@ STR: target string"
   "Eval sexp before point, quietly."
   (interactive)
   (funcall (symbol-function *eval-sexp*)))
-
 
 (with-eval-after-load 'paredit
   (define-key paredit-mode-map (kbd "C-j")
