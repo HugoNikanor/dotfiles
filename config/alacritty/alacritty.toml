@@ -3,7 +3,7 @@ import = [
 	"/home/hugo/.config/alacritty/color.toml", 
 # override them with day/night specific if present
 	"/home/hugo/.config/alacritty/daynight.toml", 
-	"/home/hugo/.config/alacritty/host.toml",
+	"/home/hugo/.config/alacritty/host-override.toml",
 ]
 live_config_reload = true
 
@@ -20,6 +20,9 @@ shape = "block"
 
 [env]
 TERM = "xterm-256color"
+
+[font]
+size = 8.0
 
 [font.normal]
 family = "Fira Mono"
