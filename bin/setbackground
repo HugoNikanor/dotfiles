@@ -1,14 +1,18 @@
 #!/bin/bash
 
+wallpaper_dir=${WALLPAPER_DIR:-/var/tmp/wallpaper}
+
+monitor_count=$(xrandr --listmonitors | awk -F' ' '/^Monitors:/ { print $2 }')
+
+mkdir -p "$wallpaper_dir"
+
 get_images() {
-	for x in { 1..$monitor_count }; do
-		tmp=$(mktemp --suffix .png)
-		echo $tmp
-		curl --silent -L -o $tmp https://wrya.net/services/wallpaper/4chan.php
+	for _ in $(seq 1 "$monitor_count"); do
+		tmp=$(mktemp --tmpdir="$wallpaper_dir" --suffix .png)
+		echo "$tmp"
+		curl --silent -L -o "$tmp" https://wrya.net/services/wallpaper/4chan.php
 	done
 }
 
-monitor_count=`xrandr --listmonitors | awk -F' ' '/^Monitors:/ { print }'`
-
+# shellcheck disable=SC2046
 feh --no-fehbg --bg-fill $(get_images)
-
