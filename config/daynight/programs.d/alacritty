@@ -7,8 +7,8 @@ case $1 in
 	dusk) theme=dark ;;
 esac
 
-alacritty="$CONF/alacritty/daynight.yml"
+alacritty="$CONF/alacritty/daynight.toml"
 rm $alacritty
-ln -s "$CONF/alacritty/${theme}.yml" $alacritty
+ln -s "$CONF/alacritty/${theme}.toml" $alacritty
 # force reload
-touch "$(dirname $alacritty)/alacritty.yml"
+touch "$(dirname $alacritty)/alacritty.toml"

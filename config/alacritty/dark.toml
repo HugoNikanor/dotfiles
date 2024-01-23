@@ -1,0 +1,31 @@
+[colors.primary]
+background = "#1d1f21"
+foreground = "#c5c8c6"
+
+[colors.normal]
+black   = "#1d1f21"
+# shifted saturation from 39 to 70
+#blue = '#5f819d'
+blue    = "#2f6c9e"
+# cyan: H 174, S 45, V 55
+cyan    = "#5e8d87"
+green   = "#8c9440"
+magenta = "#85678f"
+red     = "#a54242"
+white   = "#c5c8c6"
+yellow  = "#de935f"
+
+# dim left unset to get automatically dimmed normal colors
+
+# Alacrittys default normal colors
+# but coincidentally almost my exact bright colors
+# (excluding black)
+[colors.bright]
+black   = "#959992"
+blue    = "#81a2be"
+cyan    = "#8abeb7"
+green   = "#b5bd68"
+magenta = "#b294bb"
+red     = "#cc6666"
+white   = "#c5c8c6"
+yellow  = "#f0c674"
