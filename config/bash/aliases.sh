@@ -24,6 +24,8 @@ alias ip="ip -c"
 
 alias weeslack="weechat -d ~/.local/share/weechat/slack"
 
+alias mounted='findmnt -n -o SOURCE --target'
+
 vibin() { "$EDITOR" "$(which "$1")"; }
 
 # Creates paste. Uploads file if argument is given, STDIN otherwise.
