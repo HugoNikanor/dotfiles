@@ -1,43 +1,7 @@
-#!/usr/bin/env python3
+#!/bin/sh
 
-"""
-Manage host specific alacritty configuration.
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-~/.config}
 
-Creates a symlink in the alacritty configuration directory from
-'host-override.toml' to 'host-override-$(hostname).toml'.
-This allows the main alacritty configuration to include
-'host-override.toml', and have that mean different things on different
-systems. The host-specific configuration files should be tracked by
-version controll, but the symlink created by this script
-('host-override.toml') should not.
-
-This program is written in python rather than shell, since `hostname`
-isn't portable...
-"""
-
-import platform
-from os import symlink, getuid
-from pwd import getpwuid
-import os.path
-import sys
-
-hostname = platform.node()
-
-CONFIG_HOME = os.getenv("XDG_CONFIG_HOME")
-if not CONFIG_HOME:
-    HOME = os.getenv("HOME")
-    if not HOME:
-        try:
-            HOME = getpwuid(getuid()).pw_dir
-        except KeyError:
-            print("Failed getting home, falling back to '/'.",
-                  file=sys.stderr)
-            HOME = '/'
-    CONFIG_HOME = os.path.join(HOME, ".config")
-
-
-try:
-    symlink("host-override-{}.toml".format(hostname),
-            os.path.join(CONFIG_HOME, "alacritty", "host-override.toml"))
-except FileExistsError:
-    pass
+ln -s "host-override-$(uname -n).toml" \
+	"$XDG_CONFIG_HOME/alacritty/host-override.toml" \
+	2>/dev/null
