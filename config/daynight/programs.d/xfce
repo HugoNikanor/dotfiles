@@ -13,4 +13,4 @@ case $1 in
 	dawn) theme=Arc ;;
 esac
 
-command xfconf-query 2>/dev/null && xfconf-query -c xsettings -p /Net/ThemeName -s $theme
+xfconf-query -c xsettings -p /Net/ThemeName -s $theme
