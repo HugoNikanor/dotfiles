@@ -1,4 +1,9 @@
 import = [
+# Later configuration items take priority over earlier items.
+# Ideally, we would have the base configuration inline, and then put
+# the imports at the very end. This however doesn't work since TOML
+# lacks the ability to return to the global scope...
+	"/home/hugo/.config/alacritty/base.toml",
 # Sets default colors
 	"/home/hugo/.config/alacritty/color.toml",
 # override them with day/night specific if present
@@ -6,99 +11,3 @@ import = [
 	"/home/hugo/.config/alacritty/host-override.toml",
 ]
 live_config_reload = true
-
-[colors.normal]
-# cyan: H 174, S 55, V 45
-cyan = "#33726c"
-
-[cursor]
-unfocused_hollow = true
-
-[cursor.style]
-blinking = "on"
-shape = "block"
-
-[env]
-TERM = "xterm-256color"
-
-[font]
-size = 8.0
-
-[font.normal]
-family = "Fira Mono"
-
-[font.offset]
-x = 0
-
-# Run "$ alacritty --print-events | grep Key"
-# to find scancodes if a name is missing.
-#
-# for names of (some) of them
-# https://docs.rs/glutin/0.26.0/glutin/event/enum.VirtualKeyCode.html
-[[keyboard.bindings]]
-action = "ToggleViMode"
-key = "Escape"
-mode = "Vi|~Search"
-
-[[keyboard.bindings]]
-action = "ToggleViMode"
-key = "G"
-mode = "Vi|~Search"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "ToggleViMode"
-key = "Q"
-mode = "Vi|~Search"
-
-[[keyboard.bindings]]
-action = "SearchCancel"
-key = "G"
-mode = "Search"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "SearchBackward"
-key = 22
-mode = "Vi|~Search"
-
-[[keyboard.bindings]]
-action = "First"
-key = 36
-mode = "Vi|~Search"
-
-[[keyboard.bindings]]
-action = "Last"
-key = 20
-mode = "Vi|~Search"
-
-[[keyboard.bindings]]
-action = "ScrollLineUp"
-key = "Up"
-mode = "~Vi"
-mods = "Shift|Control"
-
-[[keyboard.bindings]]
-action = "ScrollLineDown"
-key = "Down"
-mode = "~Vi"
-mods = "Shift|Control"
-
-[[keyboard.bindings]]
-action = "CreateNewWindow"
-key = "T"
-mods = "Control|Shift"
-
-[scrolling]
-multiplier = 5
-
-[window]
-dynamic_padding = false
-dynamic_title = true
-
-[window.padding]
-x = 2
-y = 2
-
-# [mouse.url.launcher]
-# program = xdg-open
