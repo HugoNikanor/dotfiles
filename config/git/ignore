@@ -4,7 +4,7 @@
 *.log
 vgcore.*
 .nfs*
-.*.pp_breakpoints
+.*.*_breakpoints
 
 # vim / emacs
 *~
