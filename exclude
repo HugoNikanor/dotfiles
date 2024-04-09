@@ -1,0 +1,13 @@
+LICENSE
+README.md
+bin
+color
+color-sample
+config
+dosbox.*
+elinks
+installer.sh
+mutt/scripts
+exclude
+hooks
+mutt
