@@ -333,7 +333,7 @@
 ;;
 
 ;;; Require
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))
 (require 'url-vars)
 (require 'thingatpt)
 

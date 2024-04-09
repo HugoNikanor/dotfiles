@@ -9,7 +9,7 @@
   (interactive)
 
   (unless (= (point) (point-at-eol))
-    (setf (point) (point-at-eol)))
+    (goto-char (point-at-eol)))
 
   (unless (= (point-at-bol) (point-at-eol))
     (newline))
