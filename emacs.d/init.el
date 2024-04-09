@@ -202,7 +202,8 @@ COUNT: number of lines to add"
 
 ;; evil-want-C-u-scroll does exist, but only works for motion state
 (evil-define-key '(normal motion) 'global
-  (kbd "C-u") 'evil-scroll-up)
+  (kbd "C-u") 'evil-scroll-up
+  (kbd "C-p") 'project-find-files)
 
 (with-eval-after-load 'paredit
   (evil-define-key '(motion) paredit-mode-map
