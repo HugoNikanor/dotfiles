@@ -1,5 +1,5 @@
 #!/bin/bash
 
-for f in $(dirname $(realpath $0))/programs.d/*; do
-	test -x "$f" && "$f" $(basename $0)
+for f in "$(dirname "$(realpath "$0")")"/programs.d/*; do
+	test -x "$f" && "$f" "$(basename "$0")"
 done
