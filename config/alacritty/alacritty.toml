@@ -3,11 +3,11 @@ import = [
 # Ideally, we would have the base configuration inline, and then put
 # the imports at the very end. This however doesn't work since TOML
 # lacks the ability to return to the global scope...
-	"/home/hugo/.config/alacritty/base.toml",
+	"~/.config/alacritty/base.toml",
 # Sets default colors
-	"/home/hugo/.config/alacritty/color.toml",
+	"~/.config/alacritty/color.toml",
 # override them with day/night specific if present
-	"/home/hugo/.config/alacritty/daynight.toml",
-	"/home/hugo/.config/alacritty/host-override.toml",
+	"~/.config/alacritty/daynight.toml",
+	"~/.config/alacritty/host-override.toml",
 ]
 live_config_reload = true
