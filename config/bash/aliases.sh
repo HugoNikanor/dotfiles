@@ -24,7 +24,9 @@ alias ip="ip -c"
 
 alias weeslack="weechat -d ~/.local/share/weechat/slack"
 
-alias mounted='findmnt -n -o SOURCE --target'
+mounted() {
+	findmnt -n -o SOURCE --target "$@" || echo 'No such file or directory' >&2
+}
 
 vibin() { "$EDITOR" "$(which "$1")"; }
 
