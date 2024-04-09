@@ -1,1 +1,1 @@
-expandtab
+set expandtab
