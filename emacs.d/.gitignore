@@ -17,3 +17,4 @@ custom.el
 auto-save-list/
 transient/
 projects
+.lsp-session*
