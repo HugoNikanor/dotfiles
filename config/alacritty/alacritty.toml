@@ -1,8 +1,8 @@
 import = [
 # Sets default colors
-	"/home/hugo/.config/alacritty/color.toml", 
+	"/home/hugo/.config/alacritty/color.toml",
 # override them with day/night specific if present
-	"/home/hugo/.config/alacritty/daynight.toml", 
+	"/home/hugo/.config/alacritty/daynight.toml",
 	"/home/hugo/.config/alacritty/host-override.toml",
 ]
 live_config_reload = true
