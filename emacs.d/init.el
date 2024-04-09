@@ -418,6 +418,7 @@ WIDTH: number of dashes in line"
     "f" 'Info-follow-reference
     "g" 'Info-goto-node
     (kbd "RET") 'Info-follow-nearest-node
+    "," 'Info-index-next
     ))
 
 (evil-define-key 'motion help-mode-map
