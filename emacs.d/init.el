@@ -339,10 +339,11 @@ WIDTH: number of dashes in line"
   (setq prettify-symbols-alist
         (append
          prettify-symbols-alist
-         '(("lambda" . #x3bb)           ; λ
-           ("<=" . #x2264)              ; ≤
-           (">=" . #x2265)              ; ≥
-           ("memv" . ?∈)
+         '(("lambda" . ?λ)
+           ("<="     . ?≤)
+           (">="     . ?≥)
+           ("memv"   . ?∈)
+           ("<-"     . ?←)
            ;; ("sum" . #x2211)              ; ∑
            ;; ("prod" . #x220f)             ; ∏
            ;; These are nice, but my font doesn't render them
