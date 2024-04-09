@@ -11,3 +11,5 @@ if exists("*syntastic#util#parseShebang")
 				\ , 'flake8'
 				\ ]
 endif
+
+" syntax region xSqlInner start="cur.execute([\"']+)" end="[\"']+" contains=sql
