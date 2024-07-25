@@ -118,6 +118,12 @@ ENVIRONMENTS: all hooks to bind to"
 
 (require 'popup)
 
+;;; Width for `gq` re-flow.
+;;; TODO This is done by `fill-region` in `lisp/textmodes/fill.el`.
+;;; It claimes that a "prefix arg" will justify the text as well.
+;;; TODO how do I give a prefix arg?
+(setq-default fill-column 70)
+
 
 ;;; Evil
 
