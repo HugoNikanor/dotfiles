@@ -801,10 +801,19 @@ STR: target string"
 (setq company-tooltip-align-annotations t)
 
 ;; formats the buffer before saving
+;; TODO shouldn't this be limited to buffers with tide mode?
 (add-hook 'before-save-hook 'tide-format-before-save)
 
 (setq typescript-indent-level 2)
+
+;;; Older typescript plugins
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
+;;; Emacs 29+ bulit in typescript
+(add-hook 'typescript-ts-mode-hook #'setup-tide-mode)
+
+(add-to-list 'auto-mode-alist
+             '("\\.ts\\'" . typescript-ts-mode))
+
 
 
 
