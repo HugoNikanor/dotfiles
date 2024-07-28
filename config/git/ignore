@@ -61,6 +61,7 @@ ltxpng/
 __pycache__/
 *.pyc
 .mypy_cache/
+.venv/
 
 # Unity
 Temp/
