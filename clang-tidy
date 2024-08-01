@@ -1,0 +1,21 @@
+---
+
+# Global clang-tidy configuration file.
+# clang-tidy works by checking for a `.clang-tidy` file in each
+# directory from the directory of the sourcefile, and going up.
+#
+# This default file is mostly needed due to Ale (vim lsp plugin)
+# running on all C files.
+
+Checks:
+  # This warning is way to verbose. It dissallows basically functions
+  # operating directly on memory regions (e.g. memmove), but also on
+  # stuff like fprintf. In their place it recommends functions from
+  # Annex K, which (among all other problems) don't even have man
+  # pages on my systems!
+  #
+  # See https://github.com/llvm/llvm-project/issues/64027 for further
+  # details.
+  - '-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling'
+
+# ft=yaml
