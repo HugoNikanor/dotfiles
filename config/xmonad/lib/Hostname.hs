@@ -1,59 +1,29 @@
-{-# LANGUAGE CPP, ScopedTypeVariables #-}
+{-# LANGUAGE CApiFFI #-}
 
-module Hostname (getHostName)
-where
+module Hostname
+( hostname
+, hostnameShort
+) where
 
-#if defined MIN_VERSION_hostname
-#    if ! MIN_VERSION_hostname(1,0,0)
-#        error "Hostname library found, but to old version"
-#    else
-import qualified Network.HostName as HN
-#    endif
-#else
-import System.Process
-    ( readProcess
-    , StdStream(CreatePipe)
-    , proc
-    )
-import Control.Exception (try)
-import Data.Either (fromRight)
-import GHC.Exception.Type
-#endif
+import Data.List.Split (splitOn)
 
+import Foreign.C.Types (CSize (CSize), CInt (CInt), CLong(CLong))
+import Foreign.C.String (CString, peekCString)
+import Foreign.Marshal.Alloc (allocaBytes)
+import Foreign.C.Error (throwErrno)
 
-swap :: (a, b) -> (b, a)
-swap (a, b) = (b, a)
+foreign import capi "unistd.h gethostname" c_gethostname :: CString -> CSize -> IO CInt
+foreign import capi "unistd.h sysconf" c_sysconf :: CInt -> IO CLong
+foreign import capi "unistd.h value _SC_HOST_NAME_MAX" _sc_host_name_max :: CInt
 
--- | Split list once by value, returning the tail along with the head.
--- Use splitBy instead.
--- ==== __Examples__
--- >>> splitBy' '.' "www.example.com"
--- ("example.com", "www")
-splitBy' :: Eq a => a -> [a] -> ([a], [a])
-splitBy' x [] = ([], [])
-splitBy' x (y:ys)
-    | x == y    = (ys, [])
-    | otherwise = (y:) <$> splitBy' x ys
+hostname :: IO String
+hostname = do
+    host_name_max <- c_sysconf _sc_host_name_max
+    allocaBytes (fromIntegral host_name_max) $ \ptr -> do
+        ret <- c_gethostname ptr (fromIntegral host_name_max)
+        if ret == 0
+            then peekCString ptr
+            else throwErrno "hostname"
 
--- | Split list once by value, returning the head and tail, not
--- including the delimiter.
-splitBy :: Eq a => a -> [a] -> ([a], [a])
-splitBy x = swap . splitBy' x
-
-
--- | Return basename of hostname, found by a suitable method.
-getHostName :: IO String
-
-#if defined MIN_VERSION_hostname
-getHostName = fst . splitBy '.' <$> HN.getHostName
-#else
-getHostName = do
-    -- A apperently need to specify the exception kind here.
-    -- SomeException is hopefully some form of "base" exception, since
-    -- we want to catch everything.
-    eHostname :: Either GHC.Exception.Type.SomeException String
-        <- try $ fst . splitBy '.' . init <$> readProcess "hostname" [] []
-    case eHostname of
-        Right hn -> return hn
-        Left _ -> return "unknown"
-#endif
+hostnameShort :: IO String
+hostnameShort = head . splitOn '.' <$> hostname

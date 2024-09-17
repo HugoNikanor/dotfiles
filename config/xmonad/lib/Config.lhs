@@ -113,7 +113,7 @@ to happen at points not currently in focus.
 > import qualified DBus.Client as DBus
 #endif
 
-> import Hostname (getHostName)
+> import Hostname (hostnameShort)
 
 
 
@@ -665,7 +665,7 @@ we just return a constant True here.
 > nameMatches pattern str = True
 
 > xmain = do
->     hostname <- getHostName
+>     hostname <- hostnameShort
 >     setEnv "_JAVA_AWT_WM_NOREPARENTING" "1"
 >     nScreens    <- countScreens
 
