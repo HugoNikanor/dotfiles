@@ -1,3 +1,4 @@
+[general]
 import = [
 # Later configuration items take priority over earlier items.
 # Ideally, we would have the base configuration inline, and then put
