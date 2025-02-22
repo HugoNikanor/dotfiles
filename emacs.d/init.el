@@ -122,7 +122,9 @@ ENVIRONMENTS: all hooks to bind to"
 ;;; TODO This is done by `fill-region` in `lisp/textmodes/fill.el`.
 ;;; It claimes that a "prefix arg" will justify the text as well.
 ;;; TODO how do I give a prefix arg?
+;;; What difference between setq and setq-default
 (setq-default fill-column 70)
+(setq fill-column 70)
 
 
 ;;; Evil
@@ -279,7 +281,7 @@ where is a buffer or nil"
 
 
 
-(setq-default fill-column 80)
+;; (setq-default fill-column 80)
 (add-hook 'text-mode-hook #'auto-fill-mode)
 ;; (add-hook 'tex-mode-hook (lambda () (setq fill-column 60)))
 
