@@ -53,7 +53,7 @@ exec $GUILE --no-auto-compile -s "$@" "$0"
          ;; (smtp-host )
 
          (IMAPAccount
-          (SSLType "IMAPS")
+          (TLSType "IMAPS")
           (CertificateFile "/etc/ssl/certs/ca-certificates.crt")
           (User ,(? address))
           ,@(if static-passwords
