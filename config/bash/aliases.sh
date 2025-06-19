@@ -21,6 +21,8 @@ alias wig="wi -w private"
 alias net="watch -n1 -c nmcli -c yes"
 alias nmail="newmail --watch"
 alias ip="ip -c"
+alias diff="git diff --no-index"
+
 
 alias weeslack="weechat -d ~/.local/share/weechat/slack"
 
