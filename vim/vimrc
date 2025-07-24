@@ -55,6 +55,8 @@ call plug#begin("~/.vim/plugged")
 	Plug 'wellle/context.vim'
 	Plug 'dense-analysis/ale'
 
+	Plug 'chrisbra/recover.vim'
+
 call plug#end()
 
 if g:downloaded_plug
