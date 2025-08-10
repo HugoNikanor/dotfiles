@@ -1,9 +1,9 @@
 # propper aliases
 
-alias u="cd .."
-alias uu="cd ../.."
-alias uuu="cd ../../.."
-alias uuuu="cd ../../../.."
+u() { cd "$(printf '../%.0s' $(seq 1 "${1:- 1}"))" || exit; }
+alias uu='u 2'
+alias uuu='u 3'
+alias uuuu='u 4'
 
 alias l="ls"
 alias ll="cd -"
