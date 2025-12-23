@@ -633,6 +633,11 @@ STR: target string"
    (put 'test-assert             'scheme-indent-function 1)
    (put 'with-atomic-output-to-file 'scheme-indent-function
         (get 'with-output-to-file 'scheme-indent-function))
+   (put 'declare-header! 'scheme-indent-function 1)
+   (put 'declare-opaque!-header 'scheme-indent-function 1)
+   (put 'sxml-match 'scheme-indent-function 1)
+   (put 'namespaced-sxml-match 'scheme-indent-function 1)
+   (put 'destructure 'scheme-indent-function 1)
 
    (font-lock-add-keywords
     'scheme-mode
@@ -645,6 +650,7 @@ STR: target string"
       ("(\\<\\(define-\\w*\\)\\>\s +(?\\(\\S +\\)?"
        (1 ,font-lock-keyword-face) (2 ,font-lock-function-name-face))
       ("\\<with-\\w*\\>" . font-lock-keyword-face)
+      ("\\<destructure\\>" . font-lock-keyword-face)
       )))
 
 
