@@ -2,6 +2,14 @@
 
 # Open a new emacsclient frame and show the file in it. 
 
+# TODO
+# 1. Start emacs demon if not already running
+#    (systemctl start --user emacs)
+# 2. Extend systemd service to handle multiple instances
+#    (systemctl status --user emacs@instance-id)
+# 3. Extend this script to include a service manager
+#    (systemctl status --user 'emacs@*'
+
 if [ ! -z $DISPLAY ]; then
 	emacsclient -c "$@" &
 else
