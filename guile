@@ -9,6 +9,13 @@
   (lambda args
     (display "Failed to initialize readline\n" (current-error-port))))
 
+;;; Added with Guile 3.0.11
+(catch 'misc-error
+  (lambda ()
+    (read-enable 'bytestrings)
+    (print-enable 'bytestrings))
+  (lambda _ 'noop))
+
 (use-modules ((system repl common)
              :select (repl-default-option-set!
                        repl-welcome

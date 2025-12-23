@@ -11,4 +11,11 @@
    (truncated-print obj)
    (newline)))
 
+;;; Added with Guile 3.0.11
+(catch 'misc-error
+  (lambda ()
+    (read-enable 'bytestrings)
+    (print-enable 'bytestrings))
+  (lambda _ 'noop))
+
 (set! repl-welcome (const #t))
