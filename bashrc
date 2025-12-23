@@ -44,7 +44,7 @@ if [ -n "$SSH_CLIENT" ]; then
 		*)     type=osc   ;;
 	esac
 
-	cat "${CACHE_DIR}/colors/$type/$(hostname)" 2>/dev/null
+	cat "${CACHE_DIR}/colors/$type/$(uname -n)" 2>/dev/null
 	unset type
 fi
 
