@@ -56,5 +56,7 @@
              (string-drop pretty-string prompt-width))))
 
 (set! repl-welcome (const #t))
+;;; TODO only available from 3.0.11 and forward
+((@ (system repl repl) %inhibit-welcome-message) #t)
 
 ;;; vim: filetype=scheme
