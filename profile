@@ -19,7 +19,7 @@ if [ -d "${XDG_CONFIG_HOME}/profile.d/" ]; then
 	for file in "${XDG_CONFIG_HOME}/profile.d/"*.sh."$(hostname -d)"; do
 		test -r "$file" && . "$file"
 	done
-	for file in "${XDG_CONFIG_HOME}/profile.d/"*.sh."$(hostname)"; do
+	for file in "${XDG_CONFIG_HOME}/profile.d/"*.sh."$(uname -n)"; do
 		test -r "$file" && . "$file"
 	done
 	unset file
